@@ -734,20 +734,29 @@ MINI WEB TEMPLATE — KETERANGAN KODE
         <div class="bg-white rounded-2xl w-full max-w-5xl h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200">
             
             <!-- Dashboard Header -->
-            <div class="bg-slate-900 text-white p-4 px-6 flex justify-between items-center border-b border-slate-800">
-                <div class="flex items-center space-x-3">
-                    <div class="p-2 bg-yellow-500 rounded-lg text-slate-900">
-                        <i class="fa-solid fa-table text-xl"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-bold">Dashboard Guru - Hasil Skor Siswa</h2>
-                        <p class="text-xs text-slate-400">Database Firebase Realtime SPENSAKA BATANG</p>
-                    </div>
-                </div>
-                <button onclick="toggleTeacherModal()" class="text-slate-400 hover:text-white p-2 text-xl">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
+            <!-- Dashboard Header -->
+<div class="bg-slate-900 text-white p-4 px-6 flex justify-between items-center border-b border-slate-800">
+    <div class="flex items-center space-x-3">
+        <div class="p-2 bg-yellow-500 rounded-lg text-slate-900">
+            <i class="fa-solid fa-table text-xl"></i>
+        </div>
+        <div>
+            <h2 class="text-lg font-bold">Dashboard Guru - Hasil Skor Siswa</h2>
+            <p class="text-xs text-slate-400">Database Firebase Realtime SPENSAKA BATANG</p>
+        </div>
+    </div>
+    <div class="flex items-center space-x-2">
+        <!-- TOMBOL HOME BARU DI DASHBOARD -->
+        <a href="https://ruangbelajarinteraktif.github.io/" 
+           class="text-slate-400 hover:text-white p-2 text-xl" 
+           title="Kembali ke Home">
+            <i class="fa-solid fa-house"></i>
+        </a>
+        <button onclick="toggleTeacherModal()" class="text-slate-400 hover:text-white p-2 text-xl">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+</div>
 
             <!-- PIN Auth Bar if protected -->
             <div id="teacher-auth-bar" class="p-6 bg-slate-50 flex flex-col items-center justify-center flex-grow">
