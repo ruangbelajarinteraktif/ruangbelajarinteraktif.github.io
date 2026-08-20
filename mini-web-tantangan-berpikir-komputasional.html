@@ -1,0 +1,1775 @@
+<!--
+=========================================================
+MINI WEB TEMPLATE — KETERANGAN KODE
+=========================================================
+🟢 EDIT / UBAH: bagian yang diberi komentar "EDIT / UBAH"
+🔵 ENGINE: bagian inti sistem, sebaiknya tidak diubah
+🟡 OPSIONAL: dapat diubah jika diperlukan
+=========================================================
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tantangan Berpikir Komputasional - Informatika Fase D</title>
+    <!--
+    // 🔵 ENGINE — Library tampilan
+    // Tailwind CSS digunakan untuk styling antarmuka.
+    // Sebaiknya tidak diubah kecuali ingin mengganti framework.
+    -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!--
+    // 🟡 OPSIONAL — Library ikon
+    // Dapat diganti atau dihapus jika tidak menggunakan FontAwesome.
+    -->
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!--
+    // 🔵 ENGINE — Library export Excel
+    // Digunakan oleh fitur Dashboard Guru > Download Excel.
+    -->
+    <!-- SheetJS for Export to Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!--
+    // 🟡 OPSIONAL — Font
+    // Dapat diganti sesuai identitas visual Mini Web.
+    -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            max-width: 820px;
+            max-height: 55vh;
+            aspect-ratio: 16/9;
+            margin: 0 auto;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            cursor: crosshair;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .bounce-anim {
+            animation: bounce 1s infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-800 h-screen overflow-hidden flex flex-col justify-between">
+
+    <!--
+    // 🟢 EDIT / UBAH — AUDIO
+    // Ganti URL pada atribut src untuk mengganti musik latar.
+    // Jika tidak membutuhkan musik, bagian audio dan tombol audio dapat dihapus.
+    -->
+    <!-- HTML5 BACKGROUND AUDIO ELEMENT -->
+    <audio id="bg-audio" loop preload="auto" src="https://agrarian-pen-jrb3r.hostmora.app/DJ SAKADUNG KADING PAK DUNG DING DUNGPAK DUNGKIN SLOW VIRAL TIKTOK FULL SONG MAMAN FVNDY 2026.mp3"></audio>
+
+    <!--
+    // 🟢 EDIT / UBAH — HEADER / IDENTITAS WEB
+    // Ubah judul Mini Web, nama sekolah, logo, warna, dan tombol sesuai proyek.
+    // Struktur header dapat dipertahankan sebagai template.
+    -->
+    <!-- HEADER -->
+    <header class="bg-gradient-to-r from-blue-700 via-yellow-500 to-blue-800 text-white shadow-md py-2 px-3 flex-shrink-0">
+        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center px-2">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-white/95 rounded-full p-0.5 flex items-center justify-center shadow-lg border-2 border-yellow-300">
+                    <!-- AUTHENTIC SPENSAKA EMBLEM SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" class="w-full h-full drop-shadow-md">
+    <defs>
+        <radialGradient id="skyGradient" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="40%" stop-color="#7dd3fc" />
+            <stop offset="100%" stop-color="#0284c7" />
+        </radialGradient>
+
+        <path id="textArcPath" d="M 100,240 A 150,150 0 0,1 400,240" fill="none" />
+    </defs>
+
+    <path d="M 250,10 
+             C 285,55 330,45 370,75 
+             C 405,100 405,145 440,175 
+             C 475,210 460,260 470,305 
+             C 480,350 440,380 430,425 
+             C 415,475 365,455 330,480 
+             C 290,505 260,470 250,490 
+             C 240,470 210,505 170,480 
+             C 135,455 85,475 70,425 
+             C 60,380 20,350 30,305 
+             C 40,260 25,210 60,175 
+             C 95,145 95,100 130,75 
+             C 170,45 215,55 250,10 Z" 
+          fill="#1c2b36" />
+    
+    <path d="M 250,20 
+             C 282,62 324,52 362,80 
+             C 395,104 395,146 428,174 
+             C 460,206 446,252 456,294 
+             C 465,336 428,364 418,406 
+             C 404,452 356,434 322,458 
+             C 285,481 258,449 250,468 
+             C 242,449 215,481 178,458 
+             C 144,434 96,452 82,406 
+             C 72,364 35,336 44,294 
+             C 54,252 40,206 72,174 
+             C 105,146 105,104 138,80 
+             C 176,52 218,62 250,20 Z" 
+          fill="#00a3e0" stroke="#ffffff" stroke-width="6" />
+
+    <circle cx="250" cy="240" r="170" fill="#ffeb3b" stroke="#1c2b36" stroke-width="5" />
+    <circle cx="250" cy="240" r="130" fill="url(#skyGradient)" stroke="#1c2b36" stroke-width="4" />
+
+    <text font-family="'Arial Black', 'Impact', sans-serif" font-size="22" font-weight="900" fill="#155e75" letter-spacing="1px">
+        <textPath href="#textArcPath" startOffset="50%" text-anchor="middle">
+            SMP NEGERI 1 KANDEMAN
+        </textPath>
+    </text>
+
+    <g stroke="#1c2b36" stroke-width="2" fill="#e5e7eb">
+        <path d="M 160,320 C 130,260 135,180 160,140" fill="none" stroke="#1c2b36" stroke-width="4" />
+        <path d="M 155,140 C 140,145 130,135 145,130 C 155,135 155,140 155,140 Z" fill="#e5e7eb"/>
+        <path d="M 160,155 C 140,160 130,145 150,140 C 160,148 160,155 160,155 Z" fill="#e5e7eb"/>
+        <path d="M 155,170 C 135,175 125,160 145,155 C 155,163 155,170 155,170 Z" fill="#e5e7eb"/>
+        <path d="M 150,185 C 130,190 120,175 140,170 C 150,178 150,185 150,185 Z" fill="#e5e7eb"/>
+        <path d="M 148,200 C 128,205 118,190 138,185 C 148,193 148,200 148,200 Z" fill="#e5e7eb"/>
+        <path d="M 148,215 C 128,220 118,205 138,200 C 148,208 148,215 148,215 Z" fill="#e5e7eb"/>
+        <path d="M 150,230 C 130,235 120,220 140,215 C 150,223 150,230 150,230 Z" fill="#e5e7eb"/>
+        <path d="M 155,245 C 135,250 125,235 145,230 C 155,238 155,245 155,245 Z" fill="#e5e7eb"/>
+        <path d="M 160,260 C 140,265 130,250 150,245 C 160,253 160,260 160,260 Z" fill="#e5e7eb"/>
+    </g>
+
+    <g stroke="#1c2b36" stroke-width="2">
+        <path d="M 340,320 C 370,260 365,180 340,140" fill="none" stroke="#15803d" stroke-width="4" />
+        <circle cx="342" cy="145" r="12" fill="#ffffff" />
+        <path d="M 342,153 L 337,160 L 347,160 Z" fill="#15803d" />
+        <circle cx="352" cy="175" r="13" fill="#ffffff" />
+        <path d="M 352,183 L 345,190 L 357,190 Z" fill="#15803d" />
+        <circle cx="357" cy="210" r="14" fill="#ffffff" />
+        <path d="M 357,219 L 350,226 L 362,226 Z" fill="#15803d" />
+        <circle cx="352" cy="248" r="14" fill="#ffffff" />
+        <path d="M 352,257 L 345,264 L 357,264 Z" fill="#15803d" />
+        <circle cx="342" cy="283" r="13" fill="#ffffff" />
+        <path d="M 342,291 L 335,298 L 347,298 Z" fill="#15803d" />
+    </g>
+
+    <path d="M 170,200 L 250,220 L 330,200 L 335,280 L 250,295 L 165,280 Z" fill="#a3e635" stroke="#1c2b36" stroke-width="3" />
+    <path d="M 165,210 L 250,228 L 335,210 L 340,290 L 250,305 L 160,290 Z" fill="#b91c1c" stroke="#1c2b36" stroke-width="3" />
+    
+    <path d="M 180,205 Q 215,215 250,220 Q 285,215 320,205 L 320,270 Q 285,280 250,282 Q 215,280 180,270 Z" fill="#ffffff" stroke="#1c2b36" stroke-width="3" />
+    <line x1="250" y1="220" x2="250" y2="282" stroke="#1c2b36" stroke-width="3" />
+    <path d="M 190,220 Q 220,228 245,232" fill="none" stroke="#94a3b8" stroke-width="2" />
+    <path d="M 190,235 Q 220,243 245,247" fill="none" stroke="#94a3b8" stroke-width="2" />
+    <path d="M 310,220 Q 280,228 255,232" fill="none" stroke="#94a3b8" stroke-width="2" />
+    <path d="M 310,235 Q 280,243 255,247" fill="none" stroke="#94a3b8" stroke-width="2" />
+
+    <rect x="244" y="130" width="12" height="110" fill="#334155" stroke="#1c2b36" stroke-width="3" />
+    <path d="M 250,200 L 242,230 L 250,250 L 258,230 Z" fill="#eab308" stroke="#1c2b36" stroke-width="2" />
+    <circle cx="250" cy="225" r="2.5" fill="#1c2b36" />
+    <line x1="250" y1="227" x2="250" y2="250" stroke="#1c2b36" stroke-width="1.5" />
+
+    <polygon points="250,90 256,108 275,108 260,119 265,137 250,126 235,137 240,119 225,108 244,108" 
+             fill="#facc15" stroke="#1c2b36" stroke-width="2" stroke-linejoin="round"/>
+
+    <path d="M 160,310 C 180,295 210,335 250,315 C 290,335 320,295 340,310 C 350,320 330,335 250,330 C 170,335 150,320 160,310 Z" 
+          fill="#facc15" stroke="#1c2b36" stroke-width="3" />
+
+    <polygon points="120,345 80,330 110,365 70,395 130,380" fill="#dc2626" stroke="#1c2b36" stroke-width="3" />
+    <polygon points="125,340 100,325 120,360 90,385 135,370" fill="#ef4444" />
+    <polygon points="380,345 420,330 390,365 430,395 370,380" fill="#dc2626" stroke="#1c2b36" stroke-width="3" />
+    <polygon points="375,340 400,325 380,360 410,385 365,370" fill="#ef4444" />
+
+    <path d="M 125,345 Q 250,320 375,345 L 365,395 Q 250,370 135,395 Z" fill="#ffffff" stroke="#1c2b36" stroke-width="4" />
+    
+    <path d="M 130,351 Q 250,328 370,351" fill="none" stroke="#dc2626" stroke-width="3" />
+    <path d="M 138,388 Q 250,365 362,388" fill="none" stroke="#dc2626" stroke-width="3" />
+
+    <text x="250" y="366" 
+          font-family="'Arial Black', 'Impact', 'Trebuchet MS', sans-serif" 
+          font-size="26" 
+          font-weight="900" 
+          fill="#1c2b36" 
+          text-anchor="middle" 
+          dominant-baseline="central" 
+          letter-spacing="2px">
+        SPENSAKA
+    </text>
+</svg>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-sm md:text-base tracking-wide uppercase leading-tight drop-shadow">Tantangan Berpikir Komputasional</h1>
+                    <p class="text-[10px] font-semibold text-yellow-100">Informatika Fase D • SMP Negeri 1 Kandeman</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button id="audio-toggle-btn" onclick="toggleAudio()" class="px-3 py-1.5 bg-slate-900/40 hover:bg-slate-900/60 text-white font-bold rounded-lg shadow-md transition transform active:scale-95 text-xs flex items-center gap-1.5 border border-yellow-400/40">
+                    <i id="audio-icon" class="fa-solid fa-volume-xmark text-yellow-300 text-sm"></i>
+                    <span id="audio-text">Music: OFF</span>
+                </button>
+                <button onclick="toggleTeacherModal()" class="px-3 py-1.5 bg-yellow-400 hover:bg-yellow-300 text-blue-950 font-bold rounded-lg shadow-md transition transform active:scale-95 text-xs flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-gear text-sm"></i>
+                    Dashboard Guru
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!--
+    // 🔵 ENGINE + 🟢 KONTEN
+    // Area utama Mini Web.
+    // Struktur dapat dipertahankan untuk proyek berikutnya.
+    -->
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow flex items-center justify-center p-2 overflow-hidden">
+        
+        <!--
+        // 🔵 ENGINE — FORM INPUT SISWA
+        // Input yang dapat diisi pengguna:
+        // 1. Nama Lengkap
+        // 2. Kelas
+        // 3. Nomor Absen
+        // Label dan daftar kelas dapat disesuaikan.
+        -->
+        <!-- START SCREEN MODAL (Registration) -->
+        <div id="start-modal" class="w-full max-w-sm md:max-w-md glass-card rounded-2xl p-4 md:p-6 shadow-2xl relative z-20 border-t-4 border-yellow-400 my-auto">
+            <div class="text-center mb-3">
+                <div class="inline-block w-12 h-12 p-1 bg-white rounded-full shadow-lg border-2 border-yellow-400 mb-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" class="w-full h-full drop-shadow-md">
+    <defs>
+        <radialGradient id="skyGradient" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="40%" stop-color="#7dd3fc" />
+            <stop offset="100%" stop-color="#0284c7" />
+        </radialGradient>
+
+        <path id="textArcPath" d="M 100,240 A 150,150 0 0,1 400,240" fill="none" />
+    </defs>
+
+    <path d="M 250,10 
+             C 285,55 330,45 370,75 
+             C 405,100 405,145 440,175 
+             C 475,210 460,260 470,305 
+             C 480,350 440,380 430,425 
+             C 415,475 365,455 330,480 
+             C 290,505 260,470 250,490 
+             C 240,470 210,505 170,480 
+             C 135,455 85,475 70,425 
+             C 60,380 20,350 30,305 
+             C 40,260 25,210 60,175 
+             C 95,145 95,100 130,75 
+             C 170,45 215,55 250,10 Z" 
+          fill="#1c2b36" />
+    
+    <path d="M 250,20 
+             C 282,62 324,52 362,80 
+             C 395,104 395,146 428,174 
+             C 460,206 446,252 456,294 
+             C 465,336 428,364 418,406 
+             C 404,452 356,434 322,458 
+             C 285,481 258,449 250,468 
+             C 242,449 215,481 178,458 
+             C 144,434 96,452 82,406 
+             C 72,364 35,336 44,294 
+             C 54,252 40,206 72,174 
+             C 105,146 105,104 138,80 
+             C 176,52 218,62 250,20 Z" 
+          fill="#00a3e0" stroke="#ffffff" stroke-width="6" />
+
+    <circle cx="250" cy="240" r="170" fill="#ffeb3b" stroke="#1c2b36" stroke-width="5" />
+    <circle cx="250" cy="240" r="130" fill="url(#skyGradient)" stroke="#1c2b36" stroke-width="4" />
+
+    <text font-family="'Arial Black', 'Impact', sans-serif" font-size="22" font-weight="900" fill="#155e75" letter-spacing="1px">
+        <textPath href="#textArcPath" startOffset="50%" text-anchor="middle">
+            SMP NEGERI 1 KANDEMAN
+        </textPath>
+    </text>
+
+    <g stroke="#1c2b36" stroke-width="2" fill="#e5e7eb">
+        <path d="M 160,320 C 130,260 135,180 160,140" fill="none" stroke="#1c2b36" stroke-width="4" />
+        <path d="M 155,140 C 140,145 130,135 145,130 C 155,135 155,140 155,140 Z" fill="#e5e7eb"/>
+        <path d="M 160,155 C 140,160 130,145 150,140 C 160,148 160,155 160,155 Z" fill="#e5e7eb"/>
+        <path d="M 155,170 C 135,175 125,160 145,155 C 155,163 155,170 155,170 Z" fill="#e5e7eb"/>
+        <path d="M 150,185 C 130,190 120,175 140,170 C 150,178 150,185 150,185 Z" fill="#e5e7eb"/>
+        <path d="M 148,200 C 128,205 118,190 138,185 C 148,193 148,200 148,200 Z" fill="#e5e7eb"/>
+        <path d="M 148,215 C 128,220 118,205 138,200 C 148,208 148,215 148,215 Z" fill="#e5e7eb"/>
+        <path d="M 150,230 C 130,235 120,220 140,215 C 150,223 150,230 150,230 Z" fill="#e5e7eb"/>
+        <path d="M 155,245 C 135,250 125,235 145,230 C 155,238 155,245 155,245 Z" fill="#e5e7eb"/>
+        <path d="M 160,260 C 140,265 130,250 150,245 C 160,253 160,260 160,260 Z" fill="#e5e7eb"/>
+    </g>
+
+    <g stroke="#1c2b36" stroke-width="2">
+        <path d="M 340,320 C 370,260 365,180 340,140" fill="none" stroke="#15803d" stroke-width="4" />
+        <circle cx="342" cy="145" r="12" fill="#ffffff" />
+        <path d="M 342,153 L 337,160 L 347,160 Z" fill="#15803d" />
+        <circle cx="352" cy="175" r="13" fill="#ffffff" />
+        <path d="M 352,183 L 345,190 L 357,190 Z" fill="#15803d" />
+        <circle cx="357" cy="210" r="14" fill="#ffffff" />
+        <path d="M 357,219 L 350,226 L 362,226 Z" fill="#15803d" />
+        <circle cx="352" cy="248" r="14" fill="#ffffff" />
+        <path d="M 352,257 L 345,264 L 357,264 Z" fill="#15803d" />
+        <circle cx="342" cy="283" r="13" fill="#ffffff" />
+        <path d="M 342,291 L 335,298 L 347,298 Z" fill="#15803d" />
+    </g>
+
+    <path d="M 170,200 L 250,220 L 330,200 L 335,280 L 250,295 L 165,280 Z" fill="#a3e635" stroke="#1c2b36" stroke-width="3" />
+    <path d="M 165,210 L 250,228 L 335,210 L 340,290 L 250,305 L 160,290 Z" fill="#b91c1c" stroke="#1c2b36" stroke-width="3" />
+    
+    <path d="M 180,205 Q 215,215 250,220 Q 285,215 320,205 L 320,270 Q 285,280 250,282 Q 215,280 180,270 Z" fill="#ffffff" stroke="#1c2b36" stroke-width="3" />
+    <line x1="250" y1="220" x2="250" y2="282" stroke="#1c2b36" stroke-width="3" />
+    <path d="M 190,220 Q 220,228 245,232" fill="none" stroke="#94a3b8" stroke-width="2" />
+    <path d="M 190,235 Q 220,243 245,247" fill="none" stroke="#94a3b8" stroke-width="2" />
+    <path d="M 310,220 Q 280,228 255,232" fill="none" stroke="#94a3b8" stroke-width="2" />
+    <path d="M 310,235 Q 280,243 255,247" fill="none" stroke="#94a3b8" stroke-width="2" />
+
+    <rect x="244" y="130" width="12" height="110" fill="#334155" stroke="#1c2b36" stroke-width="3" />
+    <path d="M 250,200 L 242,230 L 250,250 L 258,230 Z" fill="#eab308" stroke="#1c2b36" stroke-width="2" />
+    <circle cx="250" cy="225" r="2.5" fill="#1c2b36" />
+    <line x1="250" y1="227" x2="250" y2="250" stroke="#1c2b36" stroke-width="1.5" />
+
+    <polygon points="250,90 256,108 275,108 260,119 265,137 250,126 235,137 240,119 225,108 244,108" 
+             fill="#facc15" stroke="#1c2b36" stroke-width="2" stroke-linejoin="round"/>
+
+    <path d="M 160,310 C 180,295 210,335 250,315 C 290,335 320,295 340,310 C 350,320 330,335 250,330 C 170,335 150,320 160,310 Z" 
+          fill="#facc15" stroke="#1c2b36" stroke-width="3" />
+
+    <polygon points="120,345 80,330 110,365 70,395 130,380" fill="#dc2626" stroke="#1c2b36" stroke-width="3" />
+    <polygon points="125,340 100,325 120,360 90,385 135,370" fill="#ef4444" />
+    <polygon points="380,345 420,330 390,365 430,395 370,380" fill="#dc2626" stroke="#1c2b36" stroke-width="3" />
+    <polygon points="375,340 400,325 380,360 410,385 365,370" fill="#ef4444" />
+
+    <path d="M 125,345 Q 250,320 375,345 L 365,395 Q 250,370 135,395 Z" fill="#ffffff" stroke="#1c2b36" stroke-width="4" />
+    
+    <path d="M 130,351 Q 250,328 370,351" fill="none" stroke="#dc2626" stroke-width="3" />
+    <path d="M 138,388 Q 250,365 362,388" fill="none" stroke="#dc2626" stroke-width="3" />
+
+    <text x="250" y="366" 
+          font-family="'Arial Black', 'Impact', 'Trebuchet MS', sans-serif" 
+          font-size="26" 
+          font-weight="900" 
+          fill="#1c2b36" 
+          text-anchor="middle" 
+          dominant-baseline="central" 
+          letter-spacing="2px">
+        SPENSAKA
+    </text>
+</svg>
+                </div>
+                <h2 class="text-xl font-bold text-blue-900">Selamat Datang!</h2>
+                <p class="text-xs text-slate-600 mt-0.5">Silakan isi data diri sebelum memulai tantangan.</p>
+            </div>
+
+            <form id="student-form" onsubmit="event.preventDefault(); startGame();" class="space-y-2.5">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-700 uppercase mb-0.5">Nama Lengkap</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                            <i class="fa-solid fa-user text-xs"></i>
+                        </span>
+                        <input type="text" id="input-name" required placeholder="Masukkan Nama Lengkap" autocomplete="off"
+								class="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-xs transition"
+								oninput="checkFormValid()">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 uppercase mb-0.5">Kelas</label>
+                        <select id="input-class" required
+                            class="w-full px-2.5 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-amber-400 focus:border-amber-400 outline-none text-xs transition"
+                            onchange="checkFormValid()">
+                            <option value="">Pilih Kelas</option>
+                            <!--
+                            // 🟢 EDIT / UBAH — DAFTAR KELAS
+                            // Sesuaikan daftar kelas dengan kebutuhan sekolah.
+                            -->
+                            <!-- KELAS 7 -->
+                            <option value="7A">7 A</option>
+                            <option value="7B">7 B</option>
+                            <option value="7C">7 C</option>
+                            <option value="7D">7 D</option>
+                            <option value="7E">7 E</option>
+                            <option value="7F">7 F</option>
+                            <option value="7G">7 G</option>
+                            <option value="7H">7 H</option>
+                            <option value="7I">7 I</option>
+                            <!-- KELAS 8 -->
+                            <option value="8A">8 A</option>
+                            <option value="8B">8 B</option>
+                            <option value="8C">8 C</option>
+                            <option value="8D">8 D</option>
+                            <option value="8E">8 E</option>
+                            <option value="8F">8 F</option>
+                            <option value="8G">8 G</option>
+                            <option value="8H">8 H</option>
+                            <option value="8I">8 I</option>
+                            <!-- KELAS 9 -->
+                            <option value="9A">9 A</option>
+                            <option value="9B">9 B</option>
+                            <option value="9C">9 C</option>
+                            <option value="9D">9 D</option>
+                            <option value="9E">9 E</option>
+                            <option value="9F">9 F</option>
+                            <option value="9G">9 G</option>
+                            <option value="9H">9 H</option>
+                            <option value="9I">9 I</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 uppercase mb-0.5">No. Absen</label>
+                        <input type="number" id="input-absen" min="1" max="50" required placeholder="1-40"
+                            class="w-full px-2.5 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-xs transition"
+                            oninput="checkFormValid()">
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-start" disabled
+                    class="w-full mt-2 py-2.5 bg-slate-400 text-white font-bold rounded-xl shadow-lg cursor-not-allowed transition duration-200 text-xs uppercase tracking-wider flex justify-center items-center gap-2">
+                    <i class="fa-solid fa-play"></i> Mulai Bermain
+                </button>
+            </form>
+        </div>
+
+        <!--
+        // 🔵 ENGINE — AREA PERMAINAN / AKTIVITAS
+        // Untuk proyek lain, bagian ini dapat diganti dengan aktivitas utama.
+        // Jika menggunakan game yang sama, tidak perlu diubah.
+        -->
+        <!-- GAME SCREEN CONTAINER -->
+        <div id="game-container" class="hidden w-full max-w-4xl flex flex-col items-center">
+            
+            <div class="w-full bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white py-1.5 px-4 rounded-t-xl flex items-center justify-between border-b border-blue-700/50 shadow-md">
+                <div class="flex items-center space-x-2">
+                    <div class="w-6 h-6 bg-white rounded-full p-0.5 flex items-center justify-center shadow border border-yellow-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" class="w-full h-full drop-shadow-md">
+    <defs>
+        <radialGradient id="skyGradient" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="40%" stop-color="#7dd3fc" />
+            <stop offset="100%" stop-color="#0284c7" />
+        </radialGradient>
+
+        <path id="textArcPath" d="M 100,240 A 150,150 0 0,1 400,240" fill="none" />
+    </defs>
+
+    <path d="M 250,10 
+             C 285,55 330,45 370,75 
+             C 405,100 405,145 440,175 
+             C 475,210 460,260 470,305 
+             C 480,350 440,380 430,425 
+             C 415,475 365,455 330,480 
+             C 290,505 260,470 250,490 
+             C 240,470 210,505 170,480 
+             C 135,455 85,475 70,425 
+             C 60,380 20,350 30,305 
+             C 40,260 25,210 60,175 
+             C 95,145 95,100 130,75 
+             C 170,45 215,55 250,10 Z" 
+          fill="#1c2b36" />
+    
+    <path d="M 250,20 
+             C 282,62 324,52 362,80 
+             C 395,104 395,146 428,174 
+             C 460,206 446,252 456,294 
+             C 465,336 428,364 418,406 
+             C 404,452 356,434 322,458 
+             C 285,481 258,449 250,468 
+             C 242,449 215,481 178,458 
+             C 144,434 96,452 82,406 
+             C 72,364 35,336 44,294 
+             C 54,252 40,206 72,174 
+             C 105,146 105,104 138,80 
+             C 176,52 218,62 250,20 Z" 
+          fill="#00a3e0" stroke="#ffffff" stroke-width="6" />
+
+    <circle cx="250" cy="240" r="170" fill="#ffeb3b" stroke="#1c2b36" stroke-width="5" />
+    <circle cx="250" cy="240" r="130" fill="url(#skyGradient)" stroke="#1c2b36" stroke-width="4" />
+
+    <text font-family="'Arial Black', 'Impact', sans-serif" font-size="22" font-weight="900" fill="#155e75" letter-spacing="1px">
+        <textPath href="#textArcPath" startOffset="50%" text-anchor="middle">
+            SMP NEGERI 1 KANDEMAN
+        </textPath>
+    </text>
+
+    <g stroke="#1c2b36" stroke-width="2" fill="#e5e7eb">
+        <path d="M 160,320 C 130,260 135,180 160,140" fill="none" stroke="#1c2b36" stroke-width="4" />
+        <path d="M 155,140 C 140,145 130,135 145,130 C 155,135 155,140 155,140 Z" fill="#e5e7eb"/>
+        <path d="M 160,155 C 140,160 130,145 150,140 C 160,148 160,155 160,155 Z" fill="#e5e7eb"/>
+        <path d="M 155,170 C 135,175 125,160 145,155 C 155,163 155,170 155,170 Z" fill="#e5e7eb"/>
+        <path d="M 150,185 C 130,190 120,175 140,170 C 150,178 150,185 150,185 Z" fill="#e5e7eb"/>
+        <path d="M 148,200 C 128,205 118,190 138,185 C 148,193 148,200 148,200 Z" fill="#e5e7eb"/>
+        <path d="M 148,215 C 128,220 118,205 138,200 C 148,208 148,215 148,215 Z" fill="#e5e7eb"/>
+        <path d="M 150,230 C 130,235 120,220 140,215 C 150,223 150,230 150,230 Z" fill="#e5e7eb"/>
+        <path d="M 155,245 C 135,250 125,235 145,230 C 155,238 155,245 155,245 Z" fill="#e5e7eb"/>
+        <path d="M 160,260 C 140,265 130,250 150,245 C 160,253 160,260 160,260 Z" fill="#e5e7eb"/>
+    </g>
+
+    <g stroke="#1c2b36" stroke-width="2">
+        <path d="M 340,320 C 370,260 365,180 340,140" fill="none" stroke="#15803d" stroke-width="4" />
+        <circle cx="342" cy="145" r="12" fill="#ffffff" />
+        <path d="M 342,153 L 337,160 L 347,160 Z" fill="#15803d" />
+        <circle cx="352" cy="175" r="13" fill="#ffffff" />
+        <path d="M 352,183 L 345,190 L 357,190 Z" fill="#15803d" />
+        <circle cx="357" cy="210" r="14" fill="#ffffff" />
+        <path d="M 357,219 L 350,226 L 362,226 Z" fill="#15803d" />
+        <circle cx="352" cy="248" r="14" fill="#ffffff" />
+        <path d="M 352,257 L 345,264 L 357,264 Z" fill="#15803d" />
+        <circle cx="342" cy="283" r="13" fill="#ffffff" />
+        <path d="M 342,291 L 335,298 L 347,298 Z" fill="#15803d" />
+    </g>
+
+    <path d="M 170,200 L 250,220 L 330,200 L 335,280 L 250,295 L 165,280 Z" fill="#a3e635" stroke="#1c2b36" stroke-width="3" />
+    <path d="M 165,210 L 250,228 L 335,210 L 340,290 L 250,305 L 160,290 Z" fill="#b91c1c" stroke="#1c2b36" stroke-width="3" />
+    
+    <path d="M 180,205 Q 215,215 250,220 Q 285,215 320,205 L 320,270 Q 285,280 250,282 Q 215,280 180,270 Z" fill="#ffffff" stroke="#1c2b36" stroke-width="3" />
+    <line x1="250" y1="220" x2="250" y2="282" stroke="#1c2b36" stroke-width="3" />
+    <path d="M 190,220 Q 220,228 245,232" fill="none" stroke="#94a3b8" stroke-width="2" />
+    <path d="M 190,235 Q 220,243 245,247" fill="none" stroke="#94a3b8" stroke-width="2" />
+    <path d="M 310,220 Q 280,228 255,232" fill="none" stroke="#94a3b8" stroke-width="2" />
+    <path d="M 310,235 Q 280,243 255,247" fill="none" stroke="#94a3b8" stroke-width="2" />
+
+    <rect x="244" y="130" width="12" height="110" fill="#334155" stroke="#1c2b36" stroke-width="3" />
+    <path d="M 250,200 L 242,230 L 250,250 L 258,230 Z" fill="#eab308" stroke="#1c2b36" stroke-width="2" />
+    <circle cx="250" cy="225" r="2.5" fill="#1c2b36" />
+    <line x1="250" y1="227" x2="250" y2="250" stroke="#1c2b36" stroke-width="1.5" />
+
+    <polygon points="250,90 256,108 275,108 260,119 265,137 250,126 235,137 240,119 225,108 244,108" 
+             fill="#facc15" stroke="#1c2b36" stroke-width="2" stroke-linejoin="round"/>
+
+    <path d="M 160,310 C 180,295 210,335 250,315 C 290,335 320,295 340,310 C 350,320 330,335 250,330 C 170,335 150,320 160,310 Z" 
+          fill="#facc15" stroke="#1c2b36" stroke-width="3" />
+
+    <polygon points="120,345 80,330 110,365 70,395 130,380" fill="#dc2626" stroke="#1c2b36" stroke-width="3" />
+    <polygon points="125,340 100,325 120,360 90,385 135,370" fill="#ef4444" />
+    <polygon points="380,345 420,330 390,365 430,395 370,380" fill="#dc2626" stroke="#1c2b36" stroke-width="3" />
+    <polygon points="375,340 400,325 380,360 410,385 365,370" fill="#ef4444" />
+
+    <path d="M 125,345 Q 250,320 375,345 L 365,395 Q 250,370 135,395 Z" fill="#ffffff" stroke="#1c2b36" stroke-width="4" />
+    
+    <path d="M 130,351 Q 250,328 370,351" fill="none" stroke="#dc2626" stroke-width="3" />
+    <path d="M 138,388 Q 250,365 362,388" fill="none" stroke="#dc2626" stroke-width="3" />
+
+    <text x="250" y="366" 
+          font-family="'Arial Black', 'Impact', 'Trebuchet MS', sans-serif" 
+          font-size="26" 
+          font-weight="900" 
+          fill="#1c2b36" 
+          text-anchor="middle" 
+          dominant-baseline="central" 
+          letter-spacing="2px">
+        SPENSAKA
+    </text>
+</svg>
+                    </div>
+                    <div>
+                        <span class="text-[9px] font-extrabold uppercase tracking-wider text-yellow-300 block leading-tight">INFORMATIKA SPENSAKA</span>
+                        <p class="text-[8px] text-slate-300 font-medium">SMP Negeri 1 Kandeman</p>
+                    </div>
+                </div>
+                <div class="text-[10px] bg-yellow-400/20 text-yellow-300 font-bold px-2.5 py-0.5 rounded-full border border-yellow-400/30 flex items-center gap-1">
+                    <i class="fa-solid fa-basketball animate-bounce"></i> Tantangan Berpikir Komputasional
+                </div>
+            </div>
+
+            <!-- HUD HEADER -->
+            <div class="w-full bg-slate-800 text-white py-1.5 px-4 flex flex-wrap justify-between items-center shadow-lg border-b border-slate-700">
+                <div class="flex items-center space-x-3">
+                    <div class="text-xs">
+                        <span class="text-slate-400 block uppercase text-[8px] font-semibold">Pemain</span>
+                        <span id="hud-student-info" class="font-bold text-yellow-300 text-xs">-</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="text-center">
+                        <span class="text-slate-400 block uppercase text-[8px] font-semibold">Soal</span>
+                        <span id="hud-stage" class="font-black text-sm text-cyan-400">1/10</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-slate-400 block uppercase text-[8px] font-semibold">Skor</span>
+                        <span id="hud-score" class="font-black text-base text-emerald-400">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!--
+            // 🟡 OPSIONAL — AREA CANVAS
+            // Bagian ini khusus untuk game interaktif berbasis Canvas.
+            // Untuk Mini Web non-game, area ini dapat diganti.
+            -->
+            <!-- CANVAS INTERACTIVE GAME AREA -->
+            <div class="canvas-container w-full bg-slate-900 rounded-b-xl overflow-hidden shadow-2xl relative">
+                <canvas id="gameCanvas" width="900" height="506"></canvas>
+
+                <!-- INSTRUCTION / WIND OVERLAY -->
+                <div class="absolute top-2 left-3 bg-slate-900/80 backdrop-blur border border-slate-700 text-white text-[11px] px-2.5 py-1 rounded-lg flex items-center space-x-2 pointer-events-none">
+                    <div id="wind-indicator" class="flex items-center space-x-1">
+                        <i class="fa-solid fa-wind text-cyan-300 text-xs"></i>
+                        <span id="wind-text" class="font-semibold text-slate-200">Angin: 0</span>
+                    </div>
+                    <div class="h-2.5 w-px bg-slate-600"></div>
+                    <div class="text-yellow-300 font-medium" id="stage-tip">
+                        <i class="fa-solid fa-circle-info"></i> Tarik & Lepas bola!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!--
+    // 🔵 ENGINE — MODAL KUIS
+    // Struktur tampilan soal tetap.
+    // Isi pertanyaan berasal dari quizDatabase di JavaScript.
+    -->
+    <!-- QUIZ MODAL -->
+    <div id="quiz-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
+        <div class="glass-card rounded-2xl w-full max-w-xl p-6 shadow-2xl border-t-8 border-yellow-400 transform transition-all scale-100">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-200 mb-4">
+                <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wider flex items-center gap-1.5">
+                    <i class="fa-solid fa-trophy text-yellow-500"></i> SWISH! Bola Masuk Ring!
+                </span>
+                <span id="quiz-number-badge" class="font-bold text-slate-500 text-sm">Soal 1 dari 10</span>
+            </div>
+
+            <h3 id="quiz-question" class="text-base md:text-lg font-bold text-slate-800 mb-5 leading-relaxed">
+                Loading Pertanyaan...
+            </h3>
+
+            <div id="quiz-options" class="space-y-2.5">
+                <!-- Options injected by JS -->
+            </div>
+
+            <div id="quiz-feedback" class="mt-4 p-3 rounded-xl text-sm font-bold text-center hidden"></div>
+        </div>
+    </div>
+
+    <!--
+    // 🔵 ENGINE — HASIL
+    // Nama, kelas, absen, dan skor diisi otomatis dari data pengguna.
+    // Pesan hasil dapat disesuaikan.
+    -->
+    <!-- RESULT MODAL -->
+    <div id="result-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
+        <div class="glass-card rounded-2xl w-full max-w-md p-6 text-center shadow-2xl relative overflow-hidden">
+            <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
+                <i class="fa-solid fa-award text-3xl text-yellow-500"></i>
+            </div>
+
+            <h2 class="text-2xl font-black text-slate-800">Tantangan Selesai!</h2>
+            <p class="text-xs text-slate-500 mb-4">Terima kasih telah berpartisipasi dalam pembelajaran Informatika.</p>
+
+            <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-5 text-slate-700 space-y-2">
+                <div class="flex justify-between text-xs">
+                    <span>Nama Student:</span>
+                    <strong id="res-name" class="text-blue-900">-</strong>
+                </div>
+                <div class="flex justify-between text-xs">
+                    <span>Kelas / Absen:</span>
+                    <strong id="res-class" class="text-blue-900">-</strong>
+                </div>
+                <hr class="border-blue-200">
+                <div class="flex justify-between items-center pt-1">
+                    <span class="font-bold text-sm">Skor Akhir:</span>
+                    <span id="res-score" class="text-3xl font-black text-emerald-600">0</span>
+                </div>
+            </div>
+
+            <p id="res-message" class="text-xs font-semibold mb-6 text-slate-600 italic">"Hasil latihanmu telah tersimpan!"</p>
+
+            <div class="flex space-x-3">
+                <button onclick="restartGame()" class="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition text-sm">
+                    <i class="fa-solid fa-rotate-right mr-1"></i> Main Lagi
+                </button>
+                <button onclick="toggleTeacherModal()" class="flex-1 py-3 bg-yellow-500 hover:bg-yellow-400 text-blue-950 font-bold rounded-xl shadow-md transition text-sm">
+                    <i class="fa-solid fa-chart-line mr-1"></i> Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!--
+    // 🔵 ENGINE — DASHBOARD GURU
+    // Menampilkan data nilai, pencarian, refresh, dan export Excel.
+    // Struktur ini dapat digunakan ulang untuk Mini Web berikutnya.
+    -->
+    <!-- TEACHER DASHBOARD MODAL -->
+    <div id="teacher-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 z-50 hidden">
+        <div class="bg-white rounded-2xl w-full max-w-5xl h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200">
+            
+            <!-- Dashboard Header -->
+            <div class="bg-slate-900 text-white p-4 px-6 flex justify-between items-center border-b border-slate-800">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-yellow-500 rounded-lg text-slate-900">
+                        <i class="fa-solid fa-table text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold">Dashboard Guru - Hasil Skor Siswa</h2>
+                        <p class="text-xs text-slate-400">Database Firebase Realtime SPENSAKA BATANG</p>
+                    </div>
+                </div>
+                <button onclick="toggleTeacherModal()" class="text-slate-400 hover:text-white p-2 text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- PIN Auth Bar if protected -->
+            <div id="teacher-auth-bar" class="p-6 bg-slate-50 flex flex-col items-center justify-center flex-grow">
+                <div class="max-w-xs w-full bg-white p-6 rounded-xl shadow-md border border-slate-200 text-center">
+                    <i class="fa-solid fa-lock text-3xl text-blue-600 mb-3"></i>
+                    <h3 class="font-bold text-slate-800 mb-2">Akses Guru</h3>
+                    <p class="text-xs text-slate-500 mb-4">Masukkan password untuk membuka data nilai siswa (Default: <code class="bg-slate-100 px-1 py-0.5 rounded text-blue-600">guru123</code>)</p>
+                    <input type="password" id="teacher-pin" placeholder="Password Guru" class="w-full px-3 py-2 border rounded-lg mb-3 text-center text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                    <button onclick="unlockDashboard()" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-sm shadow">
+                        Buka Dashboard
+                    </button>
+                    <p id="pin-error" class="text-xs text-red-500 mt-2 hidden">Password salah!</p>
+                </div>
+            </div>
+
+            <!-- Protected Dashboard Content -->
+            <div id="teacher-content" class="hidden flex-col flex-grow overflow-hidden p-4 sm:p-6 bg-slate-50">
+                
+                <!-- Action Controls -->
+                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                    <div class="flex items-center space-x-2">
+                        <input type="text" id="search-table" onkeyup="filterTable()" placeholder="Cari nama atau kelas..."
+                            class="px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 w-48 sm:w-64">
+                        <span id="data-count-badge" class="text-xs font-semibold bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">
+                            0 Siswa
+                        </span>
+                    </div>
+
+                    <div class="flex items-center space-x-2">
+                        <button onclick="loadStudentScores(true)" class="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+    <i class="fa-solid fa-arrows-rotate"></i> Refresh Data
+</button>
+                        <button onclick="exportToExcel()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-file-excel text-sm"></i> Download Excel (.xlsx)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Score Table -->
+                <div class="flex-grow overflow-auto border border-slate-200 rounded-xl bg-white shadow-inner">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-600 border-collapse">
+                        <thead class="bg-slate-100 text-slate-700 font-bold uppercase sticky top-0 border-b border-slate-200">
+                            <tr>
+                                <th class="p-3 text-center w-12">No</th>
+                                <th class="p-3">Nama Lengkap</th>
+                                <th class="p-3 text-center">Kelas</th>
+                                <th class="p-3 text-center">No. Absen</th>
+                                <th class="p-3 text-center">Skor</th>
+                                <th class="p-3 text-center">Tanggal & Jam</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scores-table-body" class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="6" class="p-8 text-center text-slate-400">
+                                    <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 block"></i>
+                                    Memuat data siswa dari Firebase...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!--
+    // 🟢 EDIT / UBAH — FOOTER
+    // Ubah tahun, nama sekolah, nama penulis, dan deskripsi media.
+    -->
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-500 text-center py-1.5 text-[10px] flex-shrink-0">
+        © 2026 SPENSAKA BATANG • Media Pembelajaran Informatika Kelas 7,8,9 • Tegar Pambuditama
+    </footer>
+
+    <!--
+    // 🔵 ENGINE — FIREBASE + PENYIMPANAN DATA
+    // Sebaiknya tidak diubah kecuali konfigurasi database perlu diganti.
+    // Bagian ini menangani penyimpanan dan pengambilan nilai.
+    -->
+    <!-- FIREBASE & GAME LOGIC SCRIPT -->
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { 
+        getFirestore, 
+        collection, 
+        addDoc, 
+        getDocs, 
+        query, 
+        orderBy, 
+        limit 
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'spensaka-bk-informatika';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' 
+        ? JSON.parse(__firebase_config) 
+        : {
+            apiKey: "AIzaSyDummyKeyForFallbackPurposeOnly",
+            authDomain: "dummy-app.firebaseapp.com",
+            projectId: "dummy-app",
+            storageBucket: "dummy-app.appspot.com",
+            messagingSenderId: "000000000000",
+            appId: "1:000000000000:web:000000000000"
+        };
+
+    let app, db, auth;
+    let currentUser = null;
+
+    try {
+        app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            signInWithCustomToken(auth, __initial_auth_token)
+                .then((userCredential) => { currentUser = userCredential.user; })
+                .catch(() => signInAnonymously(auth).then(res => currentUser = res.user));
+        } else {
+            signInAnonymously(auth).then(res => currentUser = res.user);
+        }
+    } catch (e) {
+        console.warn("Firebase initialized in fallback mode:", e);
+    }
+
+    window.saveScoreToFirebase = async function(scoreData) {
+        if (!db) {
+            saveLocalScore(scoreData);
+            return;
+        }
+        try {
+            const scoresRef = collection(db, 'artifacts', appId, 'public', 'data', 'student_scores');
+            await addDoc(scoresRef, {
+                ...scoreData,
+                timestamp: new Date().toISOString()
+            });
+            console.log("Score successfully recorded in Firestore.");
+        } catch (err) {
+            console.error("Error saving score to Firebase:", err);
+            saveLocalScore(scoreData);
+        }
+    };
+
+    // OPTIMASI: Query Server-Side dengan limit 100 data terbaru
+    window.fetchScoresFromFirebase = async function(limitCount = 100) {
+        let scores = [];
+        if (db) {
+            try {
+                const scoresRef = collection(db, 'artifacts', appId, 'public', 'data', 'student_scores');
+                // Mengambil data terurut dari server secara langsung
+                const q = query(scoresRef, orderBy('timestamp', 'desc'), limit(limitCount));
+                const snapshot = await getDocs(q);
+                
+                snapshot.forEach(doc => {
+                    scores.push({ id: doc.id, ...doc.data() });
+                });
+            } catch (err) {
+                console.warn("Query terurut gagal/belum terindeks, menjalankan fallback biasa:", err);
+                try {
+                    const scoresRef = collection(db, 'artifacts', appId, 'public', 'data', 'student_scores');
+                    const snapshot = await getDocs(scoresRef);
+                    snapshot.forEach(doc => {
+                        scores.push({ id: doc.id, ...doc.data() });
+                    });
+                    scores.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+                } catch (fallbackErr) {
+                    console.error("Error fetching scores:", fallbackErr);
+                    scores = getLocalScores();
+                }
+            }
+        } else {
+            scores = getLocalScores();
+        }
+        return scores;
+    };
+
+    function saveLocalScore(scoreData) {
+        const current = getLocalScores();
+        current.push({ ...scoreData, timestamp: new Date().toISOString() });
+        localStorage.setItem('spensaka_scores', JSON.stringify(current));
+    }
+
+    function getLocalScores() {
+        try {
+            return JSON.parse(localStorage.getItem('spensaka_scores') || '[]');
+        } catch { return []; }
+    }
+</script>
+
+    <script>
+        /*
+        // 🟡 OPSIONAL — EFEK SUARA
+        // Mengatur suara bounce, swish, jawaban benar, dan jawaban salah.
+        // Dapat dipertahankan atau dihapus jika Mini Web tidak memerlukan efek suara.
+        */
+        /* WEB AUDIO API SOUND SYNTHESIZER */
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'bounce') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(120, now);
+                osc.frequency.exponentialRampToValueAtTime(30, now + 0.15);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.15);
+                osc.start(now);
+                osc.stop(now + 0.15);
+            } else if (type === 'swish') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.2);
+                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.25);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            } else if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.1);
+                osc.frequency.setValueAtTime(783.99, now + 0.2);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.4);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.linearRampToValueAtTime(110, now + 0.3);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            }
+        }
+
+        /*
+        // 🟢 EDIT / UBAH — KONTEN UTAMA / BANK SOAL
+        // INI ADALAH BAGIAN YANG PALING SERING DIGANTI.
+        // Untuk proyek baru, pertahankan struktur data:
+        // q       = pertanyaan
+        // options = pilihan jawaban
+        // correct = indeks jawaban benar (dimulai dari 0)
+        //
+        // Contoh:
+        // correct: 0 = pilihan A
+        // correct: 1 = pilihan B
+        // correct: 2 = pilihan C
+        // correct: 3 = pilihan D
+        */
+        /* 10 BERPIKIR KOMPUTASIONAL QUESTIONS */
+        /*
+        // =====================================================
+        // 🟢 EDIT / UBAH — KONFIGURASI MINI WEB
+        // =====================================================
+        // Gunakan bagian ini untuk identitas proyek berikutnya.
+        // Judul, sekolah, penulis, dan nama file export dapat
+        // dijadikan pusat konfigurasi jika nanti ingin direfactor.
+        // =====================================================
+        */
+
+        const quizDatabase = [
+            {
+                q: "Berpikir komputasional memiliki empat aspek, salah satunya adalah bagaimana kita memecahkan masalah besar menjadi masalah - masalah kecil, aspek ini dinamakan...",
+                options: ["A. Pengenalan Pola", "B. Dekomposisi", "C. Algoritma", "D. Abstraksi"],
+                correct: 1
+            },
+            {
+                q: "Serangkaian langkah logis dan sistematis untuk menyelesaikan masalah dan mencapai tujuan tertentu disebut...",
+                options: ["A. Algoritma", "B. Dekomposisi", "C. Abstraksi", "D. Pengenalan Pola"],
+                correct: 0
+            },
+            {
+                q: "Berpikir komputasional adalah cara berpikir yang digunakan untuk...",
+                options: ["A. Menghafal semua perintah komputer", "B. Menggunakan komputer sepanjang waktu", "C. Menyelesaikan masalah secara sistematis dan logis", "D. Membuat komputer bekerja tanpa manusia"],
+                correct: 2
+            },
+            {
+                q: "Rina ingin membuat jadwal piket kelas. Ia membagi pekerjaan menjadi beberapa bagian, yaitu menyapu, menghapus papan tulis, merapikan meja, dan membuang sampah. Cara yang dilakukan Rina merupakan penerapan...",
+                options: ["A. Abstraksi", "B. Algoritma", "C. Dekomposisi", "D. Pengenalan pola"],
+                correct: 2
+            },
+            {
+                q: "Setiap pagi, Budi memperhatikan bahwa jalan menuju sekolah selalu macet pada pukul 07.00. Ia kemudian memilih berangkat pukul 06.30 untuk menghindari kemacetan. Budi menerapkan konsep...",
+                options: ["A. Pengenalan pola", "B. Algoritma", "C. Dekomposisi", "D. Debugging"],
+                correct: 0
+            },
+            {
+                q: "Dalam membuat peta sederhana perjalanan dari rumah ke sekolah, kita hanya menampilkan jalan utama dan lokasi penting, sedangkan detail seperti warna rumah dan bentuk pagar tidak ditampilkan. Hal tersebut merupakan contoh...",
+                options: ["A. Dekomposisi", "B. Abstraksi", "C. Algoritma", "D. Pengulangan"],
+                correct: 1
+            },
+            {
+                q: "Setiap hari, Rani memperhatikan bahwa ketika langit mulai mendung dan angin bertiup cukup kencang, biasanya hujan akan turun tidak lama kemudian. Berdasarkan pengamatannya, Rani mulai membawa payung ketika melihat tanda-tanda tersebut. Kegiatan Rani merupakan penerapan konsep berpikir komputasional berupa...",
+                options: ["A. Dekomposisi", "B. Algoritma", "C. Pengenalan pola", "D. Abstraksi"],
+                correct: 2
+            },
+            {
+                q: "Andi membuat algoritma untuk menghitung luas persegi panjang, tetapi hasil yang diperoleh salah karena ia menggunakan rumus panjang + lebar bukan panjang × lebar. Kegiatan mencari dan memperbaiki kesalahan tersebut disebut...",
+                options: ["A. Abstraksi", "B. Debugging", "C. Dekomposisi", "D. Pengenalan pola"],
+                correct: 1
+            },
+            {
+                q: "Saat akan membuat aplikasi untuk mencatat data siswa, seorang siswa menyadari bahwa data yang diperlukan hanya nama, kelas, dan nilai. Data seperti warna kesukaan dan makanan favorit tidak diperlukan. Tindakan tersebut merupakan penerapan...",
+                options: ["A. Dekomposisi", "B. Algoritma", "C. Abstraksi", "D. Debugging"],
+                correct: 2
+            },
+            {
+                q: "Ketika membuat aplikasi kasir sederhana, masalah besar “menghitung total belanja” dibagi menjadi beberapa tugas: memasukkan harga barang, menghitung jumlah setiap barang, menjumlahkan seluruh harga, dan menghitung kembalian. Cara tersebut merupakan penerapan",
+                options: ["A. Abstraksi", "B. Dekomposisi", "C. Algoritma", "D. Debugging"],
+                correct: 1
+            }
+        ];
+
+        /*
+        // 🔵 ENGINE — DATA INPUT SISWA
+        // Nilai berasal dari form:
+        // input-name  = nama
+        // input-class = kelas
+        // input-absen = nomor absen
+        */
+        let studentData = { name: '', class: '', absen: '' };
+        let currentStage = 0;
+        let totalScore = 0;
+        let isQuizActive = false;
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const bgImage = new Image();
+        bgImage.crossOrigin = "anonymous";
+        /*
+        // 🟢 EDIT / UBAH — GAMBAR LATAR GAME
+        // Ganti URL berikut dengan gambar latar Mini Web yang baru.
+        // Pastikan gambar dapat diakses melalui browser.
+        */
+        bgImage.src = 'https://lh3.googleusercontent.com/d/1EmyTo_39GtIOVAg7Wr4WBshiD70OQJ2t';
+        let bgLoaded = false;
+        bgImage.onload = () => { bgLoaded = true; };
+        /*
+        // 🟢 EDIT / UBAH — LOGO SPENSAKA AREA PERMAINAN
+        // Logo Canvas sekarang menggunakan SVG yang SAMA PERSIS
+        // dengan logo Spensaka pada Header utama.
+        //
+        // Jangan menggambar ulang logo menggunakan bentuk Canvas.
+        // Jika logo Header diganti, bagian ini sebaiknya ikut diperbarui
+        // menggunakan SVG logo yang sama.
+        */
+
+        const SPENSAKA_LOGO_SVG_BASE64 = "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgNTAwIiBjbGFzcz0idy1mdWxsIGgtZnVsbCBkcm9wLXNoYWRvdy1tZCI+CiAgICA8ZGVmcz4KICAgICAgICA8cmFkaWFsR3JhZGllbnQgaWQ9InNreUdyYWRpZW50IiBjeD0iNTAlIiBjeT0iNDAlIiByPSI2MCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iIzdkZDNmYyIgLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDI4NGM3IiAvPgogICAgICAgIDwvcmFkaWFsR3JhZGllbnQ+CgogICAgICAgIDxwYXRoIGlkPSJ0ZXh0QXJjUGF0aCIgZD0iTSAxMDAsMjQwIEEgMTUwLDE1MCAwIDAsMSA0MDAsMjQwIiBmaWxsPSJub25lIiAvPgogICAgPC9kZWZzPgoKICAgIDxwYXRoIGQ9Ik0gMjUwLDEwIAogICAgICAgICAgICAgQyAyODUsNTUgMzMwLDQ1IDM3MCw3NSAKICAgICAgICAgICAgIEMgNDA1LDEwMCA0MDUsMTQ1IDQ0MCwxNzUgCiAgICAgICAgICAgICBDIDQ3NSwyMTAgNDYwLDI2MCA0NzAsMzA1IAogICAgICAgICAgICAgQyA0ODAsMzUwIDQ0MCwzODAgNDMwLDQyNSAKICAgICAgICAgICAgIEMgNDE1LDQ3NSAzNjUsNDU1IDMzMCw0ODAgCiAgICAgICAgICAgICBDIDI5MCw1MDUgMjYwLDQ3MCAyNTAsNDkwIAogICAgICAgICAgICAgQyAyNDAsNDcwIDIxMCw1MDUgMTcwLDQ4MCAKICAgICAgICAgICAgIEMgMTM1LDQ1NSA4NSw0NzUgNzAsNDI1IAogICAgICAgICAgICAgQyA2MCwzODAgMjAsMzUwIDMwLDMwNSAKICAgICAgICAgICAgIEMgNDAsMjYwIDI1LDIxMCA2MCwxNzUgCiAgICAgICAgICAgICBDIDk1LDE0NSA5NSwxMDAgMTMwLDc1IAogICAgICAgICAgICAgQyAxNzAsNDUgMjE1LDU1IDI1MCwxMCBaIiAKICAgICAgICAgIGZpbGw9IiMxYzJiMzYiIC8+CiAgICAKICAgIDxwYXRoIGQ9Ik0gMjUwLDIwIAogICAgICAgICAgICAgQyAyODIsNjIgMzI0LDUyIDM2Miw4MCAKICAgICAgICAgICAgIEMgMzk1LDEwNCAzOTUsMTQ2IDQyOCwxNzQgCiAgICAgICAgICAgICBDIDQ2MCwyMDYgNDQ2LDI1MiA0NTYsMjk0IAogICAgICAgICAgICAgQyA0NjUsMzM2IDQyOCwzNjQgNDE4LDQwNiAKICAgICAgICAgICAgIEMgNDA0LDQ1MiAzNTYsNDM0IDMyMiw0NTggCiAgICAgICAgICAgICBDIDI4NSw0ODEgMjU4LDQ0OSAyNTAsNDY4IAogICAgICAgICAgICAgQyAyNDIsNDQ5IDIxNSw0ODEgMTc4LDQ1OCAKICAgICAgICAgICAgIEMgMTQ0LDQzNCA5Niw0NTIgODIsNDA2IAogICAgICAgICAgICAgQyA3MiwzNjQgMzUsMzM2IDQ0LDI5NCAKICAgICAgICAgICAgIEMgNTQsMjUyIDQwLDIwNiA3MiwxNzQgCiAgICAgICAgICAgICBDIDEwNSwxNDYgMTA1LDEwNCAxMzgsODAgCiAgICAgICAgICAgICBDIDE3Niw1MiAyMTgsNjIgMjUwLDIwIFoiIAogICAgICAgICAgZmlsbD0iIzAwYTNlMCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjYiIC8+CgogICAgPGNpcmNsZSBjeD0iMjUwIiBjeT0iMjQwIiByPSIxNzAiIGZpbGw9IiNmZmViM2IiIHN0cm9rZT0iIzFjMmIzNiIgc3Ryb2tlLXdpZHRoPSI1IiAvPgogICAgPGNpcmNsZSBjeD0iMjUwIiBjeT0iMjQwIiByPSIxMzAiIGZpbGw9InVybCgjc2t5R3JhZGllbnQpIiBzdHJva2U9IiMxYzJiMzYiIHN0cm9rZS13aWR0aD0iNCIgLz4KCiAgICA8dGV4dCBmb250LWZhbWlseT0iJ0FyaWFsIEJsYWNrJywgJ0ltcGFjdCcsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiMxNTVlNzUiIGxldHRlci1zcGFjaW5nPSIxcHgiPgogICAgICAgIDx0ZXh0UGF0aCBocmVmPSIjdGV4dEFyY1BhdGgiIHN0YXJ0T2Zmc2V0PSI1MCUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPgogICAgICAgICAgICBTTVAgTkVHRVJJIDEgS0FOREVNQU4KICAgICAgICA8L3RleHRQYXRoPgogICAgPC90ZXh0PgoKICAgIDxnIHN0cm9rZT0iIzFjMmIzNiIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSIjZTVlN2ViIj4KICAgICAgICA8cGF0aCBkPSJNIDE2MCwzMjAgQyAxMzAsMjYwIDEzNSwxODAgMTYwLDE0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMWMyYjM2IiBzdHJva2Utd2lkdGg9IjQiIC8+CiAgICAgICAgPHBhdGggZD0iTSAxNTUsMTQwIEMgMTQwLDE0NSAxMzAsMTM1IDE0NSwxMzAgQyAxNTUsMTM1IDE1NSwxNDAgMTU1LDE0MCBaIiBmaWxsPSIjZTVlN2ViIi8+CiAgICAgICAgPHBhdGggZD0iTSAxNjAsMTU1IEMgMTQwLDE2MCAxMzAsMTQ1IDE1MCwxNDAgQyAxNjAsMTQ4IDE2MCwxNTUgMTYwLDE1NSBaIiBmaWxsPSIjZTVlN2ViIi8+CiAgICAgICAgPHBhdGggZD0iTSAxNTUsMTcwIEMgMTM1LDE3NSAxMjUsMTYwIDE0NSwxNTUgQyAxNTUsMTYzIDE1NSwxNzAgMTU1LDE3MCBaIiBmaWxsPSIjZTVlN2ViIi8+CiAgICAgICAgPHBhdGggZD0iTSAxNTAsMTg1IEMgMTMwLDE5MCAxMjAsMTc1IDE0MCwxNzAgQyAxNTAsMTc4IDE1MCwxODUgMTUwLDE4NSBaIiBmaWxsPSIjZTVlN2ViIi8+CiAgICAgICAgPHBhdGggZD0iTSAxNDgsMjAwIEMgMTI4LDIwNSAxMTgsMTkwIDEzOCwxODUgQyAxNDgsMTkzIDE0OCwyMDAgMTQ4LDIwMCBaIiBmaWxsPSIjZTVlN2ViIi8+CiAgICAgICAgPHBhdGggZD0iTSAxNDgsMjE1IEMgMTI4LDIyMCAxMTgsMjA1IDEzOCwyMDAgQyAxNDgsMjA4IDE0OCwyMTUgMTQ4LDIxNSBaIiBmaWxsPSIjZTVlN2ViIi8+CiAgICAgICAgPHBhdGggZD0iTSAxNTAsMjMwIEMgMTMwLDIzNSAxMjAsMjIwIDE0MCwyMTUgQyAxNTAsMjIzIDE1MCwyMzAgMTUwLDIzMCBaIiBmaWxsPSIjZTVlN2ViIi8+CiAgICAgICAgPHBhdGggZD0iTSAxNTUsMjQ1IEMgMTM1LDI1MCAxMjUsMjM1IDE0NSwyMzAgQyAxNTUsMjM4IDE1NSwyNDUgMTU1LDI0NSBaIiBmaWxsPSIjZTVlN2ViIi8+CiAgICAgICAgPHBhdGggZD0iTSAxNjAsMjYwIEMgMTQwLDI2NSAxMzAsMjUwIDE1MCwyNDUgQyAxNjAsMjUzIDE2MCwyNjAgMTYwLDI2MCBaIiBmaWxsPSIjZTVlN2ViIi8+CiAgICA8L2c+CgogICAgPGcgc3Ryb2tlPSIjMWMyYjM2IiBzdHJva2Utd2lkdGg9IjIiPgogICAgICAgIDxwYXRoIGQ9Ik0gMzQwLDMyMCBDIDM3MCwyNjAgMzY1LDE4MCAzNDAsMTQwIiBmaWxsPSJub25lIiBzdHJva2U9IiMxNTgwM2QiIHN0cm9rZS13aWR0aD0iNCIgLz4KICAgICAgICA8Y2lyY2xlIGN4PSIzNDIiIGN5PSIxNDUiIHI9IjEyIiBmaWxsPSIjZmZmZmZmIiAvPgogICAgICAgIDxwYXRoIGQ9Ik0gMzQyLDE1MyBMIDMzNywxNjAgTCAzNDcsMTYwIFoiIGZpbGw9IiMxNTgwM2QiIC8+CiAgICAgICAgPGNpcmNsZSBjeD0iMzUyIiBjeT0iMTc1IiByPSIxMyIgZmlsbD0iI2ZmZmZmZiIgLz4KICAgICAgICA8cGF0aCBkPSJNIDM1MiwxODMgTCAzNDUsMTkwIEwgMzU3LDE5MCBaIiBmaWxsPSIjMTU4MDNkIiAvPgogICAgICAgIDxjaXJjbGUgY3g9IjM1NyIgY3k9IjIxMCIgcj0iMTQiIGZpbGw9IiNmZmZmZmYiIC8+CiAgICAgICAgPHBhdGggZD0iTSAzNTcsMjE5IEwgMzUwLDIyNiBMIDM2MiwyMjYgWiIgZmlsbD0iIzE1ODAzZCIgLz4KICAgICAgICA8Y2lyY2xlIGN4PSIzNTIiIGN5PSIyNDgiIHI9IjE0IiBmaWxsPSIjZmZmZmZmIiAvPgogICAgICAgIDxwYXRoIGQ9Ik0gMzUyLDI1NyBMIDM0NSwyNjQgTCAzNTcsMjY0IFoiIGZpbGw9IiMxNTgwM2QiIC8+CiAgICAgICAgPGNpcmNsZSBjeD0iMzQyIiBjeT0iMjgzIiByPSIxMyIgZmlsbD0iI2ZmZmZmZiIgLz4KICAgICAgICA8cGF0aCBkPSJNIDM0MiwyOTEgTCAzMzUsMjk4IEwgMzQ3LDI5OCBaIiBmaWxsPSIjMTU4MDNkIiAvPgogICAgPC9nPgoKICAgIDxwYXRoIGQ9Ik0gMTcwLDIwMCBMIDI1MCwyMjAgTCAzMzAsMjAwIEwgMzM1LDI4MCBMIDI1MCwyOTUgTCAxNjUsMjgwIFoiIGZpbGw9IiNhM2U2MzUiIHN0cm9rZT0iIzFjMmIzNiIgc3Ryb2tlLXdpZHRoPSIzIiAvPgogICAgPHBhdGggZD0iTSAxNjUsMjEwIEwgMjUwLDIyOCBMIDMzNSwyMTAgTCAzNDAsMjkwIEwgMjUwLDMwNSBMIDE2MCwyOTAgWiIgZmlsbD0iI2I5MWMxYyIgc3Ryb2tlPSIjMWMyYjM2IiBzdHJva2Utd2lkdGg9IjMiIC8+CiAgICAKICAgIDxwYXRoIGQ9Ik0gMTgwLDIwNSBRIDIxNSwyMTUgMjUwLDIyMCBRIDI4NSwyMTUgMzIwLDIwNSBMIDMyMCwyNzAgUSAyODUsMjgwIDI1MCwyODIgUSAyMTUsMjgwIDE4MCwyNzAgWiIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjMWMyYjM2IiBzdHJva2Utd2lkdGg9IjMiIC8+CiAgICA8bGluZSB4MT0iMjUwIiB5MT0iMjIwIiB4Mj0iMjUwIiB5Mj0iMjgyIiBzdHJva2U9IiMxYzJiMzYiIHN0cm9rZS13aWR0aD0iMyIgLz4KICAgIDxwYXRoIGQ9Ik0gMTkwLDIyMCBRIDIyMCwyMjggMjQ1LDIzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOTRhM2I4IiBzdHJva2Utd2lkdGg9IjIiIC8+CiAgICA8cGF0aCBkPSJNIDE5MCwyMzUgUSAyMjAsMjQzIDI0NSwyNDciIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzk0YTNiOCIgc3Ryb2tlLXdpZHRoPSIyIiAvPgogICAgPHBhdGggZD0iTSAzMTAsMjIwIFEgMjgwLDIyOCAyNTUsMjMyIiBmaWxsPSJub25lIiBzdHJva2U9IiM5NGEzYjgiIHN0cm9rZS13aWR0aD0iMiIgLz4KICAgIDxwYXRoIGQ9Ik0gMzEwLDIzNSBRIDI4MCwyNDMgMjU1LDI0NyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOTRhM2I4IiBzdHJva2Utd2lkdGg9IjIiIC8+CgogICAgPHJlY3QgeD0iMjQ0IiB5PSIxMzAiIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMTAiIGZpbGw9IiMzMzQxNTUiIHN0cm9rZT0iIzFjMmIzNiIgc3Ryb2tlLXdpZHRoPSIzIiAvPgogICAgPHBhdGggZD0iTSAyNTAsMjAwIEwgMjQyLDIzMCBMIDI1MCwyNTAgTCAyNTgsMjMwIFoiIGZpbGw9IiNlYWIzMDgiIHN0cm9rZT0iIzFjMmIzNiIgc3Ryb2tlLXdpZHRoPSIyIiAvPgogICAgPGNpcmNsZSBjeD0iMjUwIiBjeT0iMjI1IiByPSIyLjUiIGZpbGw9IiMxYzJiMzYiIC8+CiAgICA8bGluZSB4MT0iMjUwIiB5MT0iMjI3IiB4Mj0iMjUwIiB5Mj0iMjUwIiBzdHJva2U9IiMxYzJiMzYiIHN0cm9rZS13aWR0aD0iMS41IiAvPgoKICAgIDxwb2x5Z29uIHBvaW50cz0iMjUwLDkwIDI1NiwxMDggMjc1LDEwOCAyNjAsMTE5IDI2NSwxMzcgMjUwLDEyNiAyMzUsMTM3IDI0MCwxMTkgMjI1LDEwOCAyNDQsMTA4IiAKICAgICAgICAgICAgIGZpbGw9IiNmYWNjMTUiIHN0cm9rZT0iIzFjMmIzNiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CgogICAgPHBhdGggZD0iTSAxNjAsMzEwIEMgMTgwLDI5NSAyMTAsMzM1IDI1MCwzMTUgQyAyOTAsMzM1IDMyMCwyOTUgMzQwLDMxMCBDIDM1MCwzMjAgMzMwLDMzNSAyNTAsMzMwIEMgMTcwLDMzNSAxNTAsMzIwIDE2MCwzMTAgWiIgCiAgICAgICAgICBmaWxsPSIjZmFjYzE1IiBzdHJva2U9IiMxYzJiMzYiIHN0cm9rZS13aWR0aD0iMyIgLz4KCiAgICA8cG9seWdvbiBwb2ludHM9IjEyMCwzNDUgODAsMzMwIDExMCwzNjUgNzAsMzk1IDEzMCwzODAiIGZpbGw9IiNkYzI2MjYiIHN0cm9rZT0iIzFjMmIzNiIgc3Ryb2tlLXdpZHRoPSIzIiAvPgogICAgPHBvbHlnb24gcG9pbnRzPSIxMjUsMzQwIDEwMCwzMjUgMTIwLDM2MCA5MCwzODUgMTM1LDM3MCIgZmlsbD0iI2VmNDQ0NCIgLz4KICAgIDxwb2x5Z29uIHBvaW50cz0iMzgwLDM0NSA0MjAsMzMwIDM5MCwzNjUgNDMwLDM5NSAzNzAsMzgwIiBmaWxsPSIjZGMyNjI2IiBzdHJva2U9IiMxYzJiMzYiIHN0cm9rZS13aWR0aD0iMyIgLz4KICAgIDxwb2x5Z29uIHBvaW50cz0iMzc1LDM0MCA0MDAsMzI1IDM4MCwzNjAgNDEwLDM4NSAzNjUsMzcwIiBmaWxsPSIjZWY0NDQ0IiAvPgoKICAgIDxwYXRoIGQ9Ik0gMTI1LDM0NSBRIDI1MCwzMjAgMzc1LDM0NSBMIDM2NSwzOTUgUSAyNTAsMzcwIDEzNSwzOTUgWiIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjMWMyYjM2IiBzdHJva2Utd2lkdGg9IjQiIC8+CiAgICAKICAgIDxwYXRoIGQ9Ik0gMTMwLDM1MSBRIDI1MCwzMjggMzcwLDM1MSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZGMyNjI2IiBzdHJva2Utd2lkdGg9IjMiIC8+CiAgICA8cGF0aCBkPSJNIDEzOCwzODggUSAyNTAsMzY1IDM2MiwzODgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjMjYyNiIgc3Ryb2tlLXdpZHRoPSIzIiAvPgoKICAgIDx0ZXh0IHg9IjI1MCIgeT0iMzY2IiAKICAgICAgICAgIGZvbnQtZmFtaWx5PSInQXJpYWwgQmxhY2snLCAnSW1wYWN0JywgJ1RyZWJ1Y2hldCBNUycsIHNhbnMtc2VyaWYiIAogICAgICAgICAgZm9udC1zaXplPSIyNiIgCiAgICAgICAgICBmb250LXdlaWdodD0iOTAwIiAKICAgICAgICAgIGZpbGw9IiMxYzJiMzYiIAogICAgICAgICAgdGV4dC1hbmNob3I9Im1pZGRsZSIgCiAgICAgICAgICBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCIgCiAgICAgICAgICBsZXR0ZXItc3BhY2luZz0iMnB4Ij4KICAgICAgICBTUEVOU0FLQQogICAgPC90ZXh0Pgo8L3N2Zz4=";
+        const spensakaLogoImage = new Image();
+        spensakaLogoImage.onload = () => {
+            spensakaLogoLoaded = true;
+        };
+        spensakaLogoImage.src = "data:image/svg+xml;base64," + SPENSAKA_LOGO_SVG_BASE64;
+        let spensakaLogoLoaded = false;
+
+        function drawSchoolLogoOnCanvas(x, y, scale = 1, alpha = 1) {
+            if (!spensakaLogoLoaded) return;
+
+            ctx.save();
+            ctx.globalAlpha = alpha;
+
+            // Lingkaran putih seperti wadah logo pada Header
+            ctx.beginPath();
+            ctx.arc(x, y, 16 * scale, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.strokeStyle = "#facc15";
+            ctx.lineWidth = 1.5 * scale;
+            ctx.stroke();
+
+            // Logo SVG asli
+            const size = 28 * scale;
+            ctx.drawImage(
+                spensakaLogoImage,
+                x - size / 2,
+                y - size / 2,
+                size,
+                size
+            );
+
+            ctx.restore();
+        }
+
+
+        /*
+        // 🔵 ENGINE — STATUS LOGO
+        // spensakaLogoLoaded memastikan SVG selesai dimuat sebelum digambar.
+        */
+        function drawCanvasHeader() {
+            ctx.save();
+            const centerX = canvas.width / 2;
+            const topY = 65;
+
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.8)';
+            ctx.strokeStyle = '#facc15';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            if (ctx.roundRect) {
+                ctx.roundRect(centerX - 245, topY - 20, 490, 36, 18);
+            } else {
+                ctx.rect(centerX - 245, topY - 20, 490, 36);
+            }
+            ctx.fill();
+            ctx.stroke();
+
+            /*
+            // 🟢 EDIT / UBAH — LOGO & JUDUL AREA PERMAINAN
+            // Logo menggunakan SVG yang sama persis dengan logo Header.
+            // Logo berada tepat di sebelah kiri judul.
+            // Ubah centerX - 145 untuk posisi logo.
+            // Ubah centerX - 125 untuk posisi awal judul.
+            */
+            drawSchoolLogoOnCanvas(centerX - 145, topY - 2, 1.0, 1.0);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '900 13px Poppins, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.shadowColor = '#000000';
+            ctx.shadowBlur = 6;
+            ctx.fillText('TANTANGAN BERPIKIR KOMPUTASIONAL', centerX - 125, topY - 2);
+            ctx.shadowBlur = 0;
+
+            ctx.restore();
+        }
+
+        const gravity = 0.38;
+        let ball = {
+            x: 470,
+            y: 350,
+            radius: 14,
+            vx: 0,
+            vy: 0,
+            isDragging: false,
+            isShot: false,
+            scored: false,
+            rotation: 0
+        };
+
+        const playerPos = { x: 440, y: 350 };
+
+        let hoop = {
+            x: 750,
+            y: 200,
+            ringWidth: 55,
+            backboardHeight: 90,
+            vy: 0,
+            vx: 0,
+            minY: 120,
+            maxY: 280,
+            minX: 680,
+            maxX: 820
+        };
+
+        let dragStart = { x: 0, y: 0 };
+        let currentMouse = { x: 0, y: 0 };
+        let wind = 0;
+
+        /*
+        // 🔵 ENGINE — VALIDASI INPUT
+        // Memastikan nama, kelas, dan absen sudah diisi sebelum bermain.
+        // Tidak perlu diubah untuk Mini Web standar.
+        */
+        function checkFormValid() {
+            const name = document.getElementById('input-name').value.trim();
+            const cls = document.getElementById('input-class').value;
+            const absen = document.getElementById('input-absen').value.trim();
+            const btn = document.getElementById('btn-start');
+
+            if (name.length >= 3 && cls !== "" && absen !== "") {
+                btn.disabled = false;
+                btn.classList.remove('bg-slate-400', 'cursor-not-allowed');
+                btn.classList.add('bg-blue-600', 'hover:bg-blue-700', 'cursor-pointer');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('bg-slate-400', 'cursor-not-allowed');
+                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700', 'cursor-pointer');
+            }
+        }
+
+        /*
+        // 🔵 ENGINE — MEMULAI MINI WEB
+        // Mengambil input siswa lalu menjalankan aktivitas utama.
+        */
+        function startGame() {
+            studentData.name = document.getElementById('input-name').value.trim();
+            studentData.class = document.getElementById('input-class').value;
+            studentData.absen = document.getElementById('input-absen').value.trim();
+
+            if (!isAudioPlaying) {
+                toggleAudio();
+            }
+
+            document.getElementById('start-modal').classList.add('hidden');
+            document.getElementById('game-container').classList.remove('hidden');
+
+            document.getElementById('hud-student-info').textContent = `${studentData.name} (${studentData.class} / #${studentData.absen})`;
+
+            currentStage = 0;
+            totalScore = 0;
+            updateHUD();
+            initStage(currentStage);
+
+            setupEventListeners();
+            requestAnimationFrame(gameLoop);
+        }
+
+        let bgAudio = null;
+        let isAudioPlaying = false;
+
+        window.toggleAudio = function() {
+            if (!bgAudio) {
+                bgAudio = document.getElementById('bg-audio');
+                bgAudio.volume = 0.45;
+            }
+
+            if (isAudioPlaying) {
+                bgAudio.pause();
+                isAudioPlaying = false;
+                document.getElementById('audio-icon').className = "fa-solid fa-volume-xmark text-yellow-300 text-sm";
+                document.getElementById('audio-text').textContent = "Music: OFF";
+            } else {
+                bgAudio.play().then(() => {
+                    isAudioPlaying = true;
+                    document.getElementById('audio-icon').className = "fa-solid fa-volume-high text-yellow-300 text-sm animate-pulse";
+                    document.getElementById('audio-text').textContent = "Music: ON";
+                }).catch(err => {
+                    console.warn("Autoplay prevented:", err);
+                });
+            }
+        };
+
+        function updateHUD() {
+            document.getElementById('hud-stage').textContent = `${currentStage + 1}/10`;
+            document.getElementById('hud-score').textContent = totalScore;
+        }
+
+        function initStage(stageIndex) {
+            ball.x = 470;
+            ball.y = 360;
+            ball.vx = 0;
+            ball.vy = 0;
+            ball.isShot = false;
+            ball.scored = false;
+
+            // Difficulty progression per stage
+            if (stageIndex < 3) {
+                hoop.x = 740;
+                hoop.y = 190;
+                hoop.vy = 0;
+                wind = 0;
+            } else if (stageIndex < 6) {
+                hoop.x = 760;
+                hoop.y = 160 + (stageIndex * 10);
+                hoop.vy = 0.6;
+                wind = (Math.random() - 0.5) * 1.5;
+            } else {
+                hoop.x = 720;
+                hoop.y = 180;
+                hoop.vy = 1.2;
+                wind = (Math.random() - 0.5) * 3.0;
+            }
+
+            const windText = wind === 0 ? '0' : (wind > 0 ? `+${wind.toFixed(1)} (Kanan)` : `${wind.toFixed(1)} (Kiri)`);
+            document.getElementById('wind-text').textContent = `Angin: ${windText}`;
+        }
+
+        function setupEventListeners() {
+            const getPos = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: (clientX - rect.left) * (canvas.width / rect.width),
+                    y: (clientY - rect.top) * (canvas.height / rect.height)
+                };
+            };
+
+            const onDown = (e) => {
+                if (ball.isShot || isQuizActive) return;
+                const pos = getPos(e);
+                const dist = Math.hypot(pos.x - ball.x, pos.y - ball.y);
+                if (dist < 40) {
+                    ball.isDragging = true;
+                    dragStart = { x: ball.x, y: ball.y };
+                    currentMouse = pos;
+                }
+            };
+
+            const onMove = (e) => {
+                if (!ball.isDragging) return;
+                currentMouse = getPos(e);
+            };
+
+            const onUp = () => {
+                if (!ball.isDragging) return;
+                ball.isDragging = false;
+                ball.isShot = true;
+
+                const angleX = dragStart.x - currentMouse.x;
+                const angleY = dragStart.y - currentMouse.y;
+                ball.vx = angleX * 0.14;
+                ball.vy = angleY * 0.14;
+
+                playSound('bounce');
+            };
+
+            canvas.addEventListener('mousedown', onDown);
+            canvas.addEventListener('mousemove', onMove);
+            window.addEventListener('mouseup', onUp);
+
+            canvas.addEventListener('touchstart', onDown, { passive: true });
+            canvas.addEventListener('touchmove', onMove, { passive: true });
+            window.addEventListener('touchend', onUp);
+        }
+
+        function gameLoop() {
+            updatePhysics();
+            renderGame();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function updatePhysics() {
+            // Hoop vertical movement if moving stage
+            if (hoop.vy !== 0) {
+                hoop.y += hoop.vy;
+                if (hoop.y < hoop.minY || hoop.y > hoop.maxY) {
+                    hoop.vy *= -1;
+                }
+            }
+
+            if (ball.isShot && !ball.scored) {
+                ball.vx += wind * 0.02;
+                ball.vy += gravity;
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+                ball.rotation += ball.vx * 0.05;
+
+                // Rim collision detection (Swish check)
+                const rimLeftX = hoop.x - hoop.ringWidth / 2;
+                const rimRightX = hoop.x + hoop.ringWidth / 2;
+                const rimY = hoop.y;
+
+                // Check goal score
+                if (!ball.scored && ball.vy > 0 && ball.x > rimLeftX + 5 && ball.x < rimRightX - 5 && Math.abs(ball.y - rimY) < 8) {
+                    ball.scored = true;
+                    playSound('swish');
+                    triggerQuiz();
+                }
+
+                // Backboard collision
+                if (ball.x > hoop.x + hoop.ringWidth / 2 - 5 && ball.x < hoop.x + hoop.ringWidth / 2 + 10 && ball.y > hoop.y - hoop.backboardHeight && ball.y < hoop.y) {
+                    ball.vx *= -0.6;
+                    ball.x = hoop.x + hoop.ringWidth / 2 - 6;
+                    playSound('bounce');
+                }
+
+                // Floor or out of bounds reset
+                if (ball.y > canvas.height + 50 || ball.x > canvas.width + 50 || ball.x < -50) {
+                    if (!ball.scored) {
+                        // Missed shot retry
+                        ball.isShot = false;
+                        ball.x = 470;
+                        ball.y = 360;
+                        ball.vx = 0;
+                        ball.vy = 0;
+                    }
+                }
+            }
+        }
+
+        function renderGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Background Court Image or fallback gradient
+            if (bgLoaded) {
+                ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.35)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.fillStyle = '#1e293b';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            drawCanvasHeader();
+
+            // Draw Backboard & Hoop
+            ctx.save();
+            // Backboard
+            ctx.fillStyle = '#f8fafc';
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 4;
+            ctx.fillRect(hoop.x + hoop.ringWidth / 2, hoop.y - hoop.backboardHeight, 12, hoop.backboardHeight);
+            ctx.strokeRect(hoop.x + hoop.ringWidth / 2, hoop.y - hoop.backboardHeight, 12, hoop.backboardHeight);
+
+            // Support Pole
+            ctx.fillStyle = '#64748b';
+            ctx.fillRect(hoop.x + hoop.ringWidth / 2 + 4, hoop.y, 4, canvas.height - hoop.y);
+
+            // Rim
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.moveTo(hoop.x - hoop.ringWidth / 2, hoop.y);
+            ctx.lineTo(hoop.x + hoop.ringWidth / 2, hoop.y);
+            ctx.stroke();
+
+            // Net Lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(hoop.x - hoop.ringWidth / 2 + 4, hoop.y);
+            ctx.lineTo(hoop.x - hoop.ringWidth / 4, hoop.y + 35);
+            ctx.moveTo(hoop.x + hoop.ringWidth / 2 - 4, hoop.y);
+            ctx.lineTo(hoop.x + hoop.ringWidth / 4, hoop.y + 35);
+            ctx.stroke();
+
+            ctx.restore();
+
+            // Draw Aiming Line / Trajectory if dragging
+            if (ball.isDragging) {
+                ctx.save();
+                ctx.strokeStyle = 'rgba(250, 204, 21, 0.8)';
+                ctx.lineWidth = 3;
+                ctx.setLineDash([6, 6]);
+                ctx.beginPath();
+                ctx.moveTo(ball.x, ball.y);
+                const pullX = dragStart.x - currentMouse.x;
+                const pullY = dragStart.y - currentMouse.y;
+                ctx.lineTo(ball.x + pullX * 1.5, ball.y + pullY * 1.5);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // Draw Player Avatar
+            ctx.save();
+            ctx.fillStyle = '#3b82f6';
+            ctx.beginPath();
+            ctx.arc(playerPos.x, playerPos.y + 15, 20, Math.PI, 0, false);
+            ctx.fill();
+            ctx.fillStyle = '#fef08a';
+            ctx.beginPath();
+            ctx.arc(playerPos.x, playerPos.y - 12, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            // Draw Basketball
+            ctx.save();
+            ctx.translate(ball.x, ball.y);
+            ctx.rotate(ball.rotation);
+
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath();
+            ctx.arc(0, 0, ball.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#7c2d12';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // Ball seam lines
+            ctx.beginPath();
+            ctx.arc(0, 0, ball.radius, -Math.PI / 4, Math.PI / 4);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(0, 0, ball.radius, (3 * Math.PI) / 4, (5 * Math.PI) / 4);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        /*
+        // 🔵 ENGINE — MENAMPILKAN SOAL
+        // Mengambil soal dari quizDatabase sesuai tahap.
+        */
+        function triggerQuiz() {
+            isQuizActive = true;
+            const qData = quizDatabase[currentStage];
+
+            document.getElementById('quiz-number-badge').textContent = `Soal ${currentStage + 1} dari 10`;
+            document.getElementById('quiz-question').textContent = qData.q;
+            
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            qData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50 font-semibold text-slate-700 text-xs sm:text-sm transition flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>`;
+                btn.onclick = () => handleAnswer(idx, qData.correct);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            document.getElementById('quiz-modal').classList.remove('hidden');
+        }
+
+        /*
+        // 🔵 ENGINE — PEMERIKSAAN JAWABAN & SKOR
+        // Menentukan benar/salah dan menambahkan skor.
+        */
+        function handleAnswer(selectedIndex, correctIndex) {
+            const feedbackEl = document.getElementById('quiz-feedback');
+            feedbackEl.classList.remove('hidden');
+
+            const optionButtons = document.getElementById('quiz-options').children;
+            for (let btn of optionButtons) {
+                btn.disabled = true;
+            }
+
+            if (selectedIndex === correctIndex) {
+                playSound('correct');
+                totalScore += 10;
+                feedbackEl.className = "mt-4 p-3 rounded-xl text-sm font-bold text-center bg-emerald-100 text-emerald-800 border border-emerald-200";
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Jawaban Benar! (+10 Poin)`;
+            } else {
+                playSound('wrong');
+                feedbackEl.className = "mt-4 p-3 rounded-xl text-sm font-bold text-center bg-rose-100 text-rose-800 border border-rose-200";
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> Jawaban Kurang Tepat. (Jawaban benar: ${optionButtons[correctIndex].textContent})`;
+            }
+
+            setTimeout(() => {
+                document.getElementById('quiz-modal').classList.add('hidden');
+                isQuizActive = false;
+                currentStage++;
+
+                if (currentStage < 10) {
+                    updateHUD();
+                    initStage(currentStage);
+                } else {
+                    finishGame();
+                }
+            }, 1800);
+        }
+
+        /*
+        // 🔵 ENGINE — MENYELESAIKAN AKTIVITAS
+        // Menampilkan hasil dan menyimpan nilai ke database.
+        */
+        function finishGame() {
+            document.getElementById('game-container').classList.add('hidden');
+            document.getElementById('res-name').textContent = studentData.name;
+            document.getElementById('res-class').textContent = `${studentData.class} (Absen ${studentData.absen})`;
+            document.getElementById('res-score').textContent = totalScore;
+            
+            let msg = "Luar biasa! Pertahankan prestasi belajarmu.";
+            if (totalScore < 50) msg = "Terus semangat berlatih teknik dasar basket ya!";
+            document.getElementById('res-message').textContent = `"${msg}"`;
+
+            document.getElementById('result-modal').classList.remove('hidden');
+
+            // Save score to Firebase
+            if (typeof window.saveScoreToFirebase === 'function') {
+                window.saveScoreToFirebase({
+                    name: studentData.name,
+                    class: studentData.class,
+                    absen: studentData.absen,
+                    score: totalScore
+                });
+            }
+        }
+
+        /*
+        // 🔵 ENGINE — RESET / MAIN LAGI
+        */
+        function restartGame() {
+            document.getElementById('result-modal').classList.add('hidden');
+            document.getElementById('start-modal').classList.remove('hidden');
+            document.getElementById('student-form').reset();
+            checkFormValid();
+        }
+
+        /*
+        // 🔵 ENGINE — DASHBOARD GURU
+        */
+        function toggleTeacherModal() {
+            const modal = document.getElementById('teacher-modal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                document.getElementById('teacher-pin').value = '';
+                document.getElementById('pin-error').classList.add('hidden');
+                document.getElementById('teacher-auth-bar').classList.remove('hidden');
+                document.getElementById('teacher-content').classList.add('hidden');
+            }
+        }
+
+        function unlockDashboard() {
+            const pin = document.getElementById('teacher-pin').value;
+            if (pin === 'guru123') {
+                document.getElementById('teacher-auth-bar').classList.add('hidden');
+                document.getElementById('teacher-content').classList.remove('hidden');
+                document.getElementById('teacher-content').classList.add('flex');
+                loadStudentScores();
+            } else {
+                document.getElementById('pin-error').classList.remove('hidden');
+            }
+        }
+
+        let cachedScores = [];
+
+// Tambahkan parameter forceRefresh (default: false)
+async function loadStudentScores(forceRefresh = false) {
+    const tbody = document.getElementById('scores-table-body');
+
+    // Jika data sudah ada di memory dan tidak dipaksa refresh, tampilkan secara instan
+    if (cachedScores.length > 0 && !forceRefresh) {
+        renderTable(cachedScores);
+        return;
+    }
+
+    tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2 block"></i> Memuat data...</td></tr>`;
+
+    if (typeof window.fetchScoresFromFirebase === 'function') {
+        // Hanya mengambil 100 data terbaru
+        cachedScores = await window.fetchScoresFromFirebase(100);
+    } else {
+        cachedScores = [];
+    }
+
+    renderTable(cachedScores);
+}
+
+        function renderTable(data) {
+            const tbody = document.getElementById('scores-table-body');
+            document.getElementById('data-count-badge').textContent = `${data.length} Siswa`;
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400">Belum ada data nilai siswa yang tersimpan.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            data.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition border-b border-slate-100";
+                
+                const dateStr = item.timestamp ? new Date(item.timestamp).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : '-';
+
+                tr.innerHTML = `
+                    <td class="p-3 text-center font-semibold text-slate-500">${index + 1}</td>
+                    <td class="p-3 font-bold text-slate-800">${item.name || '-'}</td>
+                    <td class="p-3 text-center font-semibold text-blue-600">${item.class || '-'}</td>
+                    <td class="p-3 text-center">${item.absen || '-'}</td>
+                    <td class="p-3 text-center font-black text-emerald-600 text-base">${item.score ?? 0}</td>
+                    <td class="p-3 text-center text-slate-500 text-xs">${dateStr}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterTable() {
+            const query = document.getElementById('search-table').value.toLowerCase();
+            const filtered = cachedScores.filter(item => 
+                (item.name && item.name.toLowerCase().includes(query)) ||
+                (item.class && item.class.toLowerCase().includes(query))
+            );
+            renderTable(filtered);
+        }
+
+        /*
+        // 🔵 ENGINE — EXPORT NILAI
+        // Nama file Excel dan judul kolom dapat disesuaikan jika diperlukan.
+        */
+        function exportToExcel() {
+            if (cachedScores.length === 0) {
+                alert("Tidak ada data untuk di-export!");
+                return;
+            }
+
+            const exportData = cachedScores.map((s, idx) => ({
+                "No": idx + 1,
+                "Nama Lengkap": s.name,
+                "Kelas": s.class,
+                "No. Absen": s.absen,
+                "Skor": s.score,
+                "Waktu Selesai": s.timestamp ? new Date(s.timestamp).toLocaleString('id-ID') : '-'
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Nilai Informatika BK");
+            XLSX.writeFile(workbook, "Nilai_BK_SPENSAKA_Kelas8.xlsx");
+        }
+    </script>
+    <!--
+    =========================================================
+    // LEGENDA TEMPLATE MINI WEB
+    //
+    // 🟢 EDIT / UBAH
+    //    Bagian konten/identitas yang biasanya diganti.
+    //
+    // 🔵 ENGINE
+    //    Mesin utama Mini Web. Sebaiknya dipertahankan.
+    //
+    // 🟡 OPSIONAL
+    //    Dapat digunakan, diubah, atau dihapus sesuai proyek.
+    //
+    // BAGIAN YANG BIASANYA DIGANTI SAAT MEMBUAT PROYEK BARU:
+    // 1. Judul Mini Web
+    // 2. Nama sekolah
+    // 3. Logo
+    // 4. Warna/tampilan
+    // 5. Musik/background
+    // 6. Bank soal / materi
+    // 7. Pesan hasil
+    // 8. Nama file export
+    //
+    // BAGIAN YANG BIASANYA TETAP:
+    // 1. Validasi input
+    // 2. Sistem skor
+    // 3. Navigasi modal
+    // 4. Penyimpanan Firebase
+    // 5. Dashboard guru
+    // 6. Filter data
+    // 7. Export Excel
+    // =========================================================
+    -->
+</body>
+</html>
