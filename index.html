@@ -6,10 +6,11 @@
 <meta name="description" content="Ruang Belajar Interaktif - Platform pembelajaran dinamis dengan materi, soal, dan galeri">
 <title>Ruang Belajar Interaktif</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--primary:#2563eb;--primary-dark:#1e40af;--accent:#f59e0b;--bg:#f8fafc;--text:#1e293b;--text-light:#64748b;--white:#ffffff;--border:#e2e8f0;--space-xs:0.5rem;--space-sm:1rem;--space-md:1.5rem;--space-lg:2.5rem;--space-xl:4rem;--container-max:1200px;--container-padding:1rem;--radius-sm:8px;--radius-md:12px;--radius-lg:20px;--shadow-sm:0 2px 8px rgba(0,0,0,0.05);--shadow-md:0 4px 20px rgba(0,0,0,0.08);--transition:all 0.3s ease}
 html{scroll-behavior:smooth;font-size:16px}
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:var(--text);background:var(--bg);line-height:1.6;overflow-x:hidden}
+body{font-family:'Montserrat','Segoe UI',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.6;overflow-x:hidden}
 h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.2}
 h2{font-size:clamp(1.5rem,4vw,2.5rem);line-height:1.3}
 h3{font-size:clamp(1.2rem,3vw,1.5rem)}
@@ -20,11 +21,12 @@ a{color:var(--primary);text-decoration:none;transition:var(--transition)}
 a:hover{color:var(--primary-dark)}
 nav{position:sticky;top:0;background:var(--white);box-shadow:var(--shadow-sm);z-index:1000;padding:var(--space-sm) 0}
 .nav-container{max-width:var(--container-max);margin:0 auto;padding:0 var(--container-padding);display:flex;justify-content:space-between;align-items:center;position:relative}
-.logo{font-weight:700;font-size:1.3rem;color:var(--primary)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.3rem;color:var(--primary);letter-spacing:1px}
+.logo svg{width:45px;height:45px;flex-shrink:0}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px}
 .hamburger span{width:25px;height:3px;background:var(--text);border-radius:2px;transition:var(--transition)}
 .nav-links{display:flex;gap:var(--space-md);list-style:none;align-items:center}
-.nav-links a{color:var(--text);font-weight:500;padding:0.5rem 0.75rem;border-radius:var(--radius-sm)}
+.nav-links a{color:var(--text);font-weight:600;padding:0.5rem 0.75rem;border-radius:var(--radius-sm)}
 .nav-links a:hover{background:var(--bg);color:var(--primary)}
 @media (max-width:768px){.hamburger{display:flex}.nav-links{position:absolute;top:100%;left:0;right:0;background:var(--white);flex-direction:column;padding:var(--space-md);gap:var(--space-xs);box-shadow:var(--shadow-md);transform:translateY(-120%);transition:transform 0.3s ease;align-items:stretch}.nav-links.active{transform:translateY(0)}.nav-links a{display:block;padding:0.75rem 1rem}}
 .hero{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:var(--space-xl) var(--container-padding);background:linear-gradient(135deg,#dbeafe 0%,#fef3c7 100%);position:relative;overflow:hidden}
@@ -44,34 +46,182 @@ nav{position:sticky;top:0;background:var(--white);box-shadow:var(--shadow-sm);z-
 @media (max-width:768px){.marquee-content{animation-duration:15s;font-size:0.9rem}}
 section{padding:var(--space-xl) 0}
 .section-header{text-align:center;margin-bottom:var(--space-lg)}
-.section-number{display:inline-block;font-size:0.85rem;font-weight:700;color:var(--primary);letter-spacing:2px;margin-bottom:var(--space-xs)}
+.section-number{display:inline-block;font-size:0.85rem;font-weight:800;color:var(--primary);letter-spacing:2px;margin-bottom:var(--space-xs)}
 .section-title{margin-bottom:var(--space-xs)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:1.5rem}
-.card{background:var(--white);padding:1.5rem;border-radius:var(--radius-md);box-shadow:var(--shadow-sm);border:1px solid var(--border);transition:var(--transition)}
+.card{background:var(--white);padding:1.5rem;border-radius:var(--radius-md);box-shadow:var(--shadow-sm);border:1px solid var(--border);transition:var(--transition);display:flex;flex-direction:column}
 .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--primary)}
 .card h3{margin-bottom:0.5rem;color:var(--text);font-size:1.2rem}
-.card p{color:var(--text-light);margin-bottom:1rem;font-size:0.95rem}
-.card ul{list-style:none;padding:0}
+.card p{color:var(--text-light);margin-bottom:1rem;font-size:0.95rem;flex-grow:1}
+.card ul{list-style:none;padding:0;margin-top:auto}
 .card ul li{padding:0.5rem 0;border-bottom:1px dashed var(--border)}
 .card ul li:last-child{border-bottom:none}
 .download-box{background:linear-gradient(135deg,#eff6ff,#fef3c7);padding:2.5rem;border-radius:var(--radius-lg);text-align:center;max-width:800px;margin:0 auto}
 .contact-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-top:1.5rem}
-.contact-item{display:flex;align-items:center;gap:0.5rem;background:var(--white);padding:0.75rem 1.25rem;border-radius:var(--radius-sm);box-shadow:var(--shadow-sm)}
+.contact-item{display:flex;align-items:center;gap:0.5rem;background:var(--white);padding:0.75rem 1.25rem;border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);font-weight:600}
 footer{background:var(--text);color:var(--white);text-align:center;padding:var(--space-md)}
 footer p{margin:0;opacity:0.8}
 </style>
 </head>
 <body>
-<nav><div class="nav-container"><div class="logo">RUANGBELAJAR</div><button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button><ul class="nav-links"><li><a href="#home">Home</a></li><li><a href="#profil">Profil</a></li><li><a href="#materi">Materi</a></li><li><a href="#soal">Soal</a></li><li><a href="#download">Download</a></li><li><a href="#galeri">Galeri</a></li><li><a href="#kontak">Kontak</a></li></ul></div></nav>
-<section class="hero" id="home"><div class="hero-content"><h1>Web Pembelajaran Interaktif</h1><p><strong>Belajar lebih dinamis. Lebih bermakna.</strong></p><p>Selamat datang di ruang belajar digital. Website ini dirancang sebagai pusat materi, latihan soal, sumber unduhan, dan dokumentasi pembelajaran yang terus berkembang.</p><div class="hero-buttons"><a href="#materi" class="btn btn-primary">Jelajahi Materi →</a><a href="#soal" class="btn btn-secondary">Mulai Latihan</a></div></div></section>
+<nav><div class="nav-container">
+<a href="#home" class="logo">
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-label="RBI Logo">
+<defs>
+<linearGradient id="bL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0755C9"/><stop offset="100%" stop-color="#123A9A"/></linearGradient>
+<linearGradient id="bR" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#19B8F2"/><stop offset="100%" stop-color="#087FD1"/></linearGradient>
+</defs>
+<path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="url(#bL)"/>
+<path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR)"/>
+<path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
+<text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
+<path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
+<path d="M335 335 Q295 338 256 360 L256 400 Q295 376 335 373 Z" fill="#102D68"/>
+<path d="M250 358 L250 404" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+</svg>
+<span>RUANG BELAJAR</span>
+</a>
+<button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+<ul class="nav-links">
+<li><a href="#home">Home</a></li>
+<li><a href="#profil">Profil</a></li>
+<li><a href="#materi">Materi</a></li>
+<li><a href="#soal">Soal</a></li>
+<li><a href="#download">Download</a></li>
+<li><a href="#galeri">Galeri</a></li>
+<li><a href="#kontak">Kontak</a></li>
+</ul>
+</div></nav>
+
+<section class="hero" id="home"><div class="hero-content">
+<h1>Web Pembelajaran Interaktif</h1>
+<p><strong>Belajar lebih dinamis. Lebih bermakna.</strong></p>
+<p>Selamat datang di ruang belajar digital. Website ini dirancang sebagai pusat materi, latihan soal, sumber unduhan, dan dokumentasi pembelajaran yang terus berkembang.</p>
+<div class="hero-buttons">
+<a href="#materi" class="btn btn-primary">Jelajahi Materi →</a>
+<a href="#soal" class="btn btn-secondary">Mulai Latihan</a>
+</div>
+</div></section>
+
 <div class="marquee"><div class="marquee-content">MATERI • SOAL INTERAKTIF • DOWNLOAD • GALERI • PEMBELAJARAN BERKELANJUTAN • &nbsp;&nbsp; MATERI • SOAL INTERAKTIF • DOWNLOAD • GALERI •</div></div>
-<section id="profil"><div class="container"><div class="section-header"><span class="section-number">01 — Profil</span><h2 class="section-title">Tentang Pengajar</h2><p>Ruang untuk tumbuh dan belajar</p></div><p>Assalamualaikum warahmatullahi wabarakatuh. Selamat datang di Ruang Belajar, ruang untuk tumbuh, belajar, berbagi, dan berkembang bersama. Perkenalkan, saya <strong>Tegar Pambuditama</strong>, rekan belajar Anda yang akan selalu siap berkolaborasi dan menjadi bagian dari perjalanan pembelajaran.</p><br><p>Ruang ini saya hadirkan sebagai wadah untuk menemukan pengetahuan, mengasah kemampuan, mencoba hal-hal baru, dan membangun pengalaman belajar yang lebih menyenangkan, interaktif, dan bermakna.</p><br><p>Saya percaya bahwa belajar bukan sekadar memahami materi, tetapi tentang bertanya, mencoba, menemukan, berproses, dan terus berkembang. Karena itu, mari kita jadikan Ruang Belajar ini sebagai tempat setiap rasa ingin tahu mendapatkan ruang, setiap kesalahan menjadi bagian dari proses, dan setiap langkah kecil membawa kita semakin dekat pada versi terbaik diri kita.</p><br><p><em>Mari belajar bersama, tumbuh bersama, dan menciptakan pembelajaran yang bermakna.</em></p></div></section>
-<section id="materi" style="background:var(--white)"><div class="container"><div class="section-header"><span class="section-number">02 — Materi</span><h2 class="section-title">Materi Pembelajaran</h2></div><div class="grid"><div class="card"><h3>📘 Materi Utama</h3><p>Kumpulan Praktik IOT.</p><a href="https://www.dropbox.com/scl/fi/wywxggkgwamq59lcksmut/KUMPULAN-PRAKTIK-IOT.pdf?rlkey=881r7kdpaslf9hzqlzwif78ri&st=nh5qvc17&dl=1" target="_blank">Download PDF →</a></div><div class="card"><h3>🧩 Media Interaktif</h3><p>Aktivitas digital, simulasi, dan elemen interaktif untuk memperkuat pemahaman.</p></div><div class="card"><h3>💡 Ide Praktik Ruang GTK</h3><p>Masuk menggunakan email belajar.id:</p><ul><li><a href="https://guru.kemendikdasmen.go.id/cerita-praktik/MykDXop6Ww" target="_blank">GALIWARA: Trik Sederhana</a></li><li><a href="https://guru.kemendikdasmen.go.id/cerita-praktik/qRv9NgK0z3" target="_blank">Jejak Petra si Pemburu Cokelat</a></li></ul></div></div></div></section>
-<section id="soal"><div class="container"><div class="section-header"><span class="section-number">03 — Soal</span><h2 class="section-title">Latihan & Evaluasi</h2></div><div class="grid"><div class="card"><h3>✏️ Latihan Harian</h3><p>Soal latihan yang dapat terus ditambah dan diperbarui sesuai kebutuhan pembelajaran.</p></div><div class="card"><h3>🎯 Kuis Interaktif</h3><p>Kuis interaktif berbasis gamifikasi:</p><ul><li><a href="tantangan-berpikir-komputasional.html">Berpikir Komputasional (Fase D)</a></li><li><a href="latihan-soal-kelas-v.html">Kelipatan Persekutuan (Fase C)</a></li><li><a href="segitiga_ketapel_burung.html">Segitiga Matematika (Kelas 8)</a></li></ul></div><div class="card"><h3>📊 Evaluasi</h3><p>Halaman evaluasi dan rekap hasil yang dapat dikembangkan menjadi sistem penilaian.</p></div></div></div></section>
-<section id="download"><div class="container"><div class="section-header"><span class="section-number">04 — Download</span><h2 class="section-title">Pusat Unduhan</h2><p>Modul, LKPD & perangkat pembelajaran</p></div><div class="download-box"><h3>📥 Akses Semua File Pembelajaran</h3><p style="margin:1rem 0;color:var(--text-light)">Tempat menyimpan file PDF, dokumen, presentasi, lembar kerja, dan sumber belajar lainnya.</p><a href="#" class="btn btn-primary">Buka Folder Download</a></div></div></section>
-<section id="galeri" style="background:var(--white)"><div class="container"><div class="section-header"><span class="section-number">05 — Galeri</span><h2 class="section-title">Dokumentasi</h2></div><div class="grid"><div class="card"><h3>📷 Kegiatan</h3><p>Dokumentasi aktivitas pembelajaran dan kegiatan sekolah.</p></div><div class="card"><h3>🖼️ Karya Siswa</h3><p>Galeri karya dan proyek siswa yang dapat ditampilkan secara visual.</p></div><div class="card"><h3>🌟 Momen Inspiratif</h3><p>Koleksi momen pembelajaran yang berkesan.</p></div></div></div></section>
-<section id="kontak" style="background:var(--white)"><div class="container"><div class="section-header"><span class="section-number">06 — Kontak</span><h2 class="section-title">Mari Terhubung</h2><p>Hubungi pengajar</p></div><div class="contact-grid"><div class="contact-item">📧 tegarpambuditama@gmail.com</div><div class="contact-item">📱 (+62) 812-2905-6658</div><div class="contact-item">📸 @pambuditama.tegar</div></div></div></section>
+
+<section id="profil"><div class="container">
+<div class="section-header">
+<span class="section-number">01 — Profil</span>
+<h2 class="section-title">Tentang Pengajar</h2>
+<p>Ruang untuk tumbuh dan belajar</p>
+</div>
+<p>Assalamualaikum warahmatullahi wabarakatuh. Selamat datang di Ruang Belajar, ruang untuk tumbuh, belajar, berbagi, dan berkembang bersama. Perkenalkan, saya <strong>Tegar Pambuditama</strong>, rekan belajar Anda yang akan selalu siap berkolaborasi dan menjadi bagian dari perjalanan pembelajaran.</p><br>
+<p>Ruang ini saya hadirkan sebagai wadah untuk menemukan pengetahuan, mengasah kemampuan, mencoba hal-hal baru, dan membangun pengalaman belajar yang lebih menyenangkan, interaktif, dan bermakna.</p><br>
+<p>Saya percaya bahwa belajar bukan sekadar memahami materi, tetapi tentang bertanya, mencoba, menemukan, berproses, dan terus berkembang. Karena itu, mari kita jadikan Ruang Belajar ini sebagai tempat setiap rasa ingin tahu mendapatkan ruang, setiap kesalahan menjadi bagian dari proses, dan setiap langkah kecil membawa kita semakin dekat pada versi terbaik diri kita.</p><br>
+<p><em>Mari belajar bersama, tumbuh bersama, dan menciptakan pembelajaran yang bermakna.</em></p>
+</div></section>
+
+<section id="materi" style="background:var(--white)"><div class="container">
+<div class="section-header">
+<span class="section-number">02 — Materi</span>
+<h2 class="section-title">Materi Pembelajaran</h2>
+</div>
+<div class="grid">
+<div class="card">
+<h3>📘 Materi Utama</h3>
+<p>Kumpulan Praktik IOT.</p>
+<a href="https://www.dropbox.com/scl/fi/wywxggkgwamq59lcksmut/KUMPULAN-PRAKTIK-IOT.pdf?rlkey=881r7kdpaslf9hzqlzwif78ri&st=nh5qvc17&dl=1" target="_blank" style="background:var(--primary);color:var(--white);padding:0.5rem 1rem;border-radius:var(--radius-sm);font-size:0.9rem;display:inline-block;text-align:center;font-weight:600;">Download PDF →</a>
+</div>
+<div class="card">
+<h3>🧩 Media Interaktif</h3>
+<p>Aktivitas digital, simulasi, dan elemen interaktif untuk memperkuat pemahaman.</p>
+</div>
+<div class="card">
+<h3>💡 Ide Praktik Ruang GTK</h3>
+<p>Masuk menggunakan email belajar.id:</p>
+<ul>
+<li><a href="https://guru.kemendikdasmen.go.id/cerita-praktik/MykDXop6Ww" target="_blank">GALIWARA: Trik Sederhana</a></li>
+<li><a href="https://guru.kemendikdasmen.go.id/cerita-praktik/qRv9NgK0z3" target="_blank">Jejak Petra si Pemburu Cokelat</a></li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section id="soal"><div class="container">
+<div class="section-header">
+<span class="section-number">03 — Soal</span>
+<h2 class="section-title">Latihan & Evaluasi</h2>
+</div>
+<div class="grid">
+<div class="card">
+<h3>✏️ Latihan Harian</h3>
+<p>Soal latihan yang dapat terus ditambah dan diperbarui sesuai kebutuhan pembelajaran.</p>
+</div>
+<div class="card">
+<h3>🎯 Kuis Interaktif</h3>
+<p>Kuis interaktif berbasis gamifikasi:</p>
+<ul>
+<li><a href="tantangan-berpikir-komputasional.html">Berpikir Komputasional (Fase D)</a></li>
+<li><a href="latihan-soal-kelas-v.html">Kelipatan Persekutuan (Fase C)</a></li>
+<li><a href="segitiga_ketapel_burung.html">Segitiga Matematika (Kelas 8)</a></li>
+</ul>
+</div>
+<div class="card">
+<h3>📊 Evaluasi</h3>
+<p>Halaman evaluasi dan rekap hasil yang dapat dikembangkan menjadi sistem penilaian.</p>
+</div>
+</div>
+</div></section>
+
+<section id="download"><div class="container">
+<div class="section-header">
+<span class="section-number">04 — Download</span>
+<h2 class="section-title">Pusat Unduhan</h2>
+<p>Modul, LKPD & perangkat pembelajaran</p>
+</div>
+<div class="download-box">
+<h3>📥 Akses Semua File Pembelajaran</h3>
+<p style="margin:1rem 0;color:var(--text-light)">Tempat menyimpan file PDF, dokumen, presentasi, lembar kerja, dan sumber belajar lainnya.</p>
+<a href="#" class="btn btn-primary">Buka Folder Download</a>
+</div>
+</div></section>
+
+<section id="galeri" style="background:var(--white)"><div class="container">
+<div class="section-header">
+<span class="section-number">05 — Galeri</span>
+<h2 class="section-title">Dokumentasi</h2>
+</div>
+<div class="grid">
+<div class="card">
+<h3>📷 Kegiatan</h3>
+<p>Dokumentasi aktivitas pembelajaran dan kegiatan sekolah.</p>
+</div>
+<div class="card">
+<h3>🖼️ Karya Siswa</h3>
+<p>Galeri karya dan proyek siswa yang dapat ditampilkan secara visual.</p>
+</div>
+<div class="card">
+<h3>🌟 Momen Inspiratif</h3>
+<p>Koleksi momen pembelajaran yang berkesan.</p>
+</div>
+</div>
+</div></section>
+
+<section id="kontak" style="background:var(--white)"><div class="container">
+<div class="section-header">
+<span class="section-number">06 — Kontak</span>
+<h2 class="section-title">Mari Terhubung</h2>
+<p>Hubungi pengajar</p>
+</div>
+<div class="contact-grid">
+<div class="contact-item">📧 tegarpambuditama@gmail.com</div>
+<div class="contact-item">📱 (+62) 812-2905-6658</div>
+<div class="contact-item">📸 @pambuditama.tegar</div>
+</div>
+</div></section>
+
 <footer><p>© 2026 Ruang Belajar · Platform pembelajaran interaktif</p></footer>
-<script>const hamburger=document.querySelector('.hamburger');const navLinks=document.querySelector('.nav-links');hamburger?.addEventListener('click',()=>{navLinks.classList.toggle('active')});document.querySelectorAll('.nav-links a').forEach(link=>{link.addEventListener('click',()=>{navLinks.classList.remove('active')})});</script>
+
+<script>
+const h=document.querySelector('.hamburger'),n=document.querySelector('.nav-links');
+h?.addEventListener('click',()=>n.classList.toggle('active'));
+document.querySelectorAll('.nav-links a').forEach(l=>l.addEventListener('click',()=>n.classList.remove('active')));
+</script>
 </body>
 </html>
