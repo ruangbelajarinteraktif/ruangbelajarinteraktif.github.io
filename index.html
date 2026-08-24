@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<script async custom-element="amp-auto-ads"
-        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
-</script>
+<script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="Ruang Belajar Interaktif - Platform pembelajaran dinamis dengan materi, soal, dan galeri">
 <title>Ruang Belajar Interaktif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://www.dropbox.com">
+<link rel="preconnect" href="https://guru.kemendikdasmen.go.id">
+<link rel="dns-prefetch" href="https://www.dropbox.com">
+<link rel="dns-prefetch" href="https://guru.kemendikdasmen.go.id">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
@@ -61,15 +65,15 @@ section{padding:var(--space-xl) 0}
 .card ul li:last-child{border-bottom:none}
 .download-box{background:linear-gradient(135deg,#eff6ff,#fef3c7);padding:2.5rem;border-radius:var(--radius-lg);text-align:center;max-width:800px;margin:0 auto}
 .contact-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-top:1.5rem}
-.contact-item{display:flex;align-items:center;gap:0.5rem;background:var(--white);padding:0.75rem 1.25rem;border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);font-weight:600}
+.contact-item{display:flex;align-items:center;gap:0.5rem;background:var(--white);padding:0.75rem 1.25rem;border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);font-weight:600;text-decoration:none;color:var(--text)}
+.contact-item svg{flex-shrink:0}
+.contact-item{min-width:0;word-break:break-word;overflow-wrap:break-word}
+@media (max-width:480px){.contact-grid{flex-direction:column;width:100%}.contact-item{width:100%;justify-content:flex-start}}
 footer{background:var(--text);color:var(--white);text-align:center;padding:var(--space-md)}
 footer p{margin:0;opacity:0.8}
 </style>
 </head>
 <body>
-<amp-auto-ads type="adsense"
-        data-ad-client="ca-pub-6531365400567586">
-</amp-auto-ads>
 <nav><div class="nav-container">
 <a href="#home" class="logo">
 <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-label="RBI Logo">
@@ -98,7 +102,6 @@ footer p{margin:0;opacity:0.8}
 <li><a href="#kontak">Kontak</a></li>
 </ul>
 </div></nav>
-
 <section class="hero" id="home"><div class="hero-content">
 <h1>Web Pembelajaran Interaktif</h1>
 <p><strong>Belajar lebih dinamis. Lebih bermakna.</strong></p>
@@ -108,9 +111,7 @@ footer p{margin:0;opacity:0.8}
 <a href="#soal" class="btn btn-secondary">Mulai Latihan</a>
 </div>
 </div></section>
-
 <div class="marquee"><div class="marquee-content">MATERI • SOAL INTERAKTIF • DOWNLOAD • GALERI • PEMBELAJARAN BERKELANJUTAN • &nbsp;&nbsp; MATERI • SOAL INTERAKTIF • DOWNLOAD • GALERI •</div></div>
-
 <section id="profil"><div class="container">
 <div class="section-header">
 <span class="section-number">01 — Profil</span>
@@ -122,7 +123,6 @@ footer p{margin:0;opacity:0.8}
 <p>Saya percaya bahwa belajar bukan sekadar memahami materi, tetapi tentang bertanya, mencoba, menemukan, berproses, dan terus berkembang. Karena itu, mari kita jadikan Ruang Belajar ini sebagai tempat setiap rasa ingin tahu mendapatkan ruang, setiap kesalahan menjadi bagian dari proses, dan setiap langkah kecil membawa kita semakin dekat pada versi terbaik diri kita.</p><br>
 <p><em>Mari belajar bersama, tumbuh bersama, dan menciptakan pembelajaran yang bermakna.</em></p>
 </div></section>
-
 <section id="materi" style="background:var(--white)"><div class="container">
 <div class="section-header">
 <span class="section-number">02 — Materi</span>
@@ -131,29 +131,16 @@ footer p{margin:0;opacity:0.8}
 <div class="grid">
 <div class="card">
 <h3>📘 Materi Utama</h3>
-<p>Kumpulan Praktik IoT (Internet of Things) berbasis kehidupan sehari - hari, beberapa model pemrograman arduino yang siap digunakan seperti cuci tangan otomatis, jemuran otomatis, dan prototipe menarik lainnya.</p>
-<a href="https://www.dropbox.com/scl/fi/wywxggkgwamq59lcksmut/KUMPULAN-PRAKTIK-IOT.pdf?rlkey=881r7kdpaslf9hzqlzwif78ri&st=nh5qvc17&dl=1" target="_blank" rel="noopener noreferrer" style="background:var(--primary);color:var(--white);padding:0.5rem 1rem;border-radius:var(--radius-sm);font-size:0.9rem;display:inline-block;text-align:center;font-weight:600;">Download PDF</a>
+<p>Kumpulan Praktik IoT (Internet of Things) berbasis kehidupan sehari-hari, beberapa model pemrograman arduino yang siap digunakan seperti cuci tangan otomatis, jemuran otomatis, dan prototipe menarik lainnya.</p>
+<a href="https://www.dropbox.com/scl/fi/wywxggkgwamq59lcksmut/KUMPULAN-PRAKTIK-IOT.pdf?rlkey=881r7kdpaslf9hzqlzwif78ri&st=nh5qvc17&dl=1" target="_blank" rel="noopener noreferrer" style="background:var(--primary);color:var(--white);padding:0.5rem 1rem;border-radius:var(--radius-sm);font-size:0.9rem;display:inline-block;text-align:center;font-weight:600;">Download PDF →</a>
 </div>
 <div class="card">
 <h3>🧩 Media Interaktif</h3>
-<p style="margin-bottom: 1rem; color: var(--text-light);">
-  Kumpulan Prompt Interaktif Berbasis HTML Gemini siap pakai (buka Gemini AI dan copy-paste-kan kode di bawah ini setelah download):
-</p>
-
-<!-- Container Flexbox untuk mengatur susunan vertikal -->
-<div style="display: flex; flex-direction: column; gap: 0.75rem; max-width: 320px;">
-  
-  <a href="https://www.dropbox.com/scl/fi/i8r5mc35ud0ynsx0fe6ff/ipa-kelas-8-sistem-organ-tubuh.txt?rlkey=qwpdquiv2nm4qkk9ton88t88h&st=xi1jd36i&dl=1" target="_blank" rel="noopener noreferrer" style="background: var(--primary); color: var(--white); padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.95rem; text-align: center; font-weight: 600; text-decoration: none; transition: var(--transition); box-shadow: var(--shadow-sm);">
-    📄 IPA 8: Sistem Organ Tubuh
-  </a>
-
-  <a href="https://www.dropbox.com/scl/fi/k1agr4ko85youx3n32s5p/ipa-kelas-9-listrik-dinamis.txt?rlkey=6vhcnsrreyyrcc1lb6oq2a752&st=25k8u5p4&dl=1" target="_blank" rel="noopener noreferrer" style="background: var(--primary); color: var(--white); padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.95rem; text-align: center; font-weight: 600; text-decoration: none; transition: var(--transition); box-shadow: var(--shadow-sm);">
-    ⚡ IPA 9: Listrik Dinamis
-  </a>
-
-  <a href="https://www.dropbox.com/scl/fi/ovyf2j4tu020sqyc0i9ih/mtk-7-persamaan-linier.txt?rlkey=223enjqi8lutdk4uakjzkv1jt&st=ovd8abxk&dl=1" target="_blank" rel="noopener noreferrer" style="background: var(--primary); color: var(--white); padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.95rem; text-align: center; font-weight: 600; text-decoration: none; transition: var(--transition); box-shadow: var(--shadow-sm);">
-    📐 MTK 7: Persamaan Linier
-  </a>
+<p style="margin-bottom:1rem;color:var(--text-light)">Kumpulan Prompt Interaktif Berbasis HTML Gemini siap pakai (buka Gemini AI dan copy-paste-kan kode di bawah ini setelah download):</p>
+<div style="display:flex;flex-direction:column;gap:0.75rem;max-width:320px;">
+<a href="https://www.dropbox.com/scl/fi/i8r5mc35ud0ynsx0fe6ff/ipa-kelas-8-sistem-organ-tubuh.txt?rlkey=qwpdquiv2nm4qkk9ton88t88h&st=xi1jd36i&dl=1" target="_blank" rel="noopener noreferrer" style="background:var(--primary);color:var(--white);padding:0.75rem 1rem;border-radius:var(--radius-sm);font-size:0.95rem;text-align:center;font-weight:600;text-decoration:none;transition:var(--transition);box-shadow:var(--shadow-sm);">📄 IPA 8: Sistem Organ Tubuh</a>
+<a href="https://www.dropbox.com/scl/fi/k1agr4ko85youx3n32s5p/ipa-kelas-9-listrik-dinamis.txt?rlkey=6vhcnsrreyyrcc1lb6oq2a752&st=25k8u5p4&dl=1" target="_blank" rel="noopener noreferrer" style="background:var(--primary);color:var(--white);padding:0.75rem 1rem;border-radius:var(--radius-sm);font-size:0.95rem;text-align:center;font-weight:600;text-decoration:none;transition:var(--transition);box-shadow:var(--shadow-sm);">⚡ IPA 9: Listrik Dinamis</a>
+<a href="https://www.dropbox.com/scl/fi/ovyf2j4tu020sqyc0i9ih/mtk-7-persamaan-linier.txt?rlkey=223enjqi8lutdk4uakjzkv1jt&st=ovd8abxk&dl=1" target="_blank" rel="noopener noreferrer" style="background:var(--primary);color:var(--white);padding:0.75rem 1rem;border-radius:var(--radius-sm);font-size:0.95rem;text-align:center;font-weight:600;text-decoration:none;transition:var(--transition);box-shadow:var(--shadow-sm);">📐 MTK 7: Persamaan Linier</a>
 </div>
 </div>
 <div class="card">
@@ -166,7 +153,6 @@ footer p{margin:0;opacity:0.8}
 </div>
 </div>
 </div></section>
-
 <section id="soal"><div class="container">
 <div class="section-header">
 <span class="section-number">03 — Soal</span>
@@ -193,7 +179,6 @@ footer p{margin:0;opacity:0.8}
 </div>
 </div>
 </div></section>
-
 <section id="download"><div class="container">
 <div class="section-header">
 <span class="section-number">04 — Download</span>
@@ -206,7 +191,6 @@ footer p{margin:0;opacity:0.8}
 <a href="#" class="btn btn-primary">Buka Folder Download</a>
 </div>
 </div></section>
-
 <section id="galeri" style="background:var(--white)"><div class="container">
 <div class="section-header">
 <span class="section-number">05 — Galeri</span>
@@ -227,7 +211,6 @@ footer p{margin:0;opacity:0.8}
 </div>
 </div>
 </div></section>
-
 <section id="kontak" style="background:var(--white)"><div class="container">
 <div class="section-header">
 <span class="section-number">06 — Kontak</span>
@@ -235,7 +218,6 @@ footer p{margin:0;opacity:0.8}
 <p>Hubungi pengajar</p>
 </div>
 <div class="contact-grid">
-
 <a href="mailto:tegarpambuditama@gmail.com" class="contact-item">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="#EA4335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -243,14 +225,12 @@ footer p{margin:0;opacity:0.8}
 </svg>
 <span style="min-width:0;overflow-wrap:break-word">tegarpambuditama@gmail.com</span>
 </a>
-
 <div class="contact-item">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
 <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" stroke="#25D366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 <span>(+62) 812-2905-6658</span>
 </div>
-
 <a href="https://instagram.com/pambuditama.tegar" target="_blank" rel="noopener noreferrer" class="contact-item">
 <svg width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
 <defs>
@@ -269,12 +249,9 @@ footer p{margin:0;opacity:0.8}
 </svg>
 <span>@pambuditama.tegar</span>
 </a>
-
 </div>
 </div></section>
 <footer><p>© 2026 Ruang Belajar · Platform pembelajaran interaktif</p></footer>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6531365400567586"
-     crossorigin="anonymous"></script>
 <script>
 const h=document.querySelector('.hamburger'),n=document.querySelector('.nav-links');
 h?.addEventListener('click',()=>n.classList.toggle('active'));
