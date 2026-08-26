@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Materi Python Dasar untuk Pemula - Ruang Belajar Interaktif">
+    <meta name="keywords" content="python dasar, pemrograman python, variabel, tipe data, percabangan, coding pemula">
+    <title>Python Dasar - Ruang Belajar Interaktif</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='66' font-family='Montserrat,Arial,sans-serif' font-size='42' font-weight='800' fill='%23ffffff' text-anchor='middle' letter-spacing='-1'%3ERBI%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --accent: #f59e0b;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --container-max: 1200px;
+            --container-padding: 1rem;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        
+        body {
+            font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            line-height: 1.2;
+            margin-bottom: var(--space-sm);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            line-height: 1.3;
+            margin-top: 1.5rem;
+            color: var(--text);
+        }
+        
+        h3 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+        }
+        
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        a:hover {
+            color: var(--primary-dark);
+        }
+        
+        nav {
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+            padding: var(--space-sm) 0;
+        }
+        
+        .nav-container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+        
+        .logo svg {
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+        }
+        
+        .back-btn {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-btn:hover {
+            background: var(--primary-dark);
+            color: var(--white);
+        }
+        
+        .back-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%);
+            padding: var(--space-xl) var(--container-padding);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L40 20L20 40L0 20L20 0z' fill='%23ffffff' fill-opacity='0.4'/%3E%3C/svg%3E");
+            background-size: 40px 40px;
+            opacity: 0.6;
+            z-index: 1;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%);
+            opacity: 0.8;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            z-index: 2;
+            position: relative;
+            text-align: center;
+        }
+        
+        .hero p {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            text-align: center;
+        }
+        
+        .content-section {
+            padding: var(--space-xl) 0;
+        }
+        
+        .content-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+        
+        .content-card p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        .content-card ul,
+        .content-card ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .content-card li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .formula-box {
+            background: #eff6ff;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin: 1rem 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            white-space: pre-wrap;
+        }
+        
+        .example-box {
+            background: #fef3c7;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin: 1rem 0;
+        }
+        
+        .example-box strong {
+            color: var(--accent);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        .nav-btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        .nav-btn-primary:hover {
+            background: var(--primary-dark);
+            color: var(--white);
+        }
+        
+        .nav-btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .nav-btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        footer {
+            background: var(--text);
+            color: var(--white);
+            text-align: center;
+            padding: var(--space-md);
+        }
+        
+        footer p {
+            margin: 0;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: var(--space-lg) var(--container-padding);
+            }
+            
+            .content-card {
+                padding: 1.5rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-label="RBI Logo">
+                    <defs>
+                        <linearGradient id="bL" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0755C9"/>
+                            <stop offset="100%" stop-color="#123A9A"/>
+                        </linearGradient>
+                        <linearGradient id="bR" x1="100%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#19B8F2"/>
+                            <stop offset="100%" stop-color="#087FD1"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="url(#bL)"/>
+                    <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR)"/>
+                    <path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
+                    <text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
+                    <path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
+                    <path d="M335 335 Q295 338 256 360 L256 400 Q295 376 335 373 Z" fill="#102D68"/>
+                    <path d="M250 358 L250 404" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+                </svg>
+                <span>RUANG BELAJAR</span>
+            </a>
+            <a href="index.html" class="back-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+                Kembali ke Beranda
+            </a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Python Dasar</h1>
+            <p>Pengenalan bahasa pemrograman Python yang mudah dipelajari, mulai dari variabel, tipe data, hingga percabangan sederhana.</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h2>Apa itu Python dan Variabel?</h2>
+                <p><strong>Python</strong> adalah bahasa pemrograman tingkat tinggi yang terkenal karena sintaksnya yang mudah dibaca dan serbaguna. Sangat cocok untuk pemula.</p>
+                <p><strong>Variabel</strong> adalah tempat atau wadah untuk menyimpan data di dalam memori komputer. Di Python, kita tidak perlu mendeklarasikan tipe data secara eksplisit.</p>
+                
+                <div class="formula-box">nama = "Budi"
+umur = 15
+tinggi = 165.5</div>
+                <div class="example-box">
+                    <strong>Contoh:</strong><br>
+                    Pada kode di atas, <code>nama</code> menyimpan teks (string), <code>umur</code> menyimpan angka bulat (integer), dan <code>tinggi</code> menyimpan angka desimal (float).
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>Tipe Data Dasar</h2>
+                <p>Dalam Python, terdapat beberapa tipe data dasar yang sering digunakan:</p>
+                <ul>
+                    <li><strong>Integer (int):</strong> Angka bulat (contoh: <code>10</code>, <code>-5</code>)</li>
+                    <li><strong>Float:</strong> Angka desimal (contoh: <code>3.14</code>, <code>2.5</code>)</li>
+                    <li><strong>String (str):</strong> Teks yang diapit tanda kutip (contoh: <code>"Halo"</code>, <code>'Python'</code>)</li>
+                    <li><strong>Boolean (bool):</strong> Nilai kebenaran, hanya bernilai <code>True</code> atau <code>False</code></li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h2>Operasi Aritmatika</h2>
+                <p>Python dapat digunakan seperti kalkulator untuk melakukan perhitungan matematika dasar.</p>
+                <div class="formula-box">+  : Penjumlahan
+-  : Pengurangan
+*  : Perkalian
+/  : Pembagian
+** : Pemangkatan
+%  : Modulo (Sisa bagi)</div>
+                <div class="example-box">
+                    <strong>Contoh:</strong><br>
+                    <code>hasil = 10 + 5</code>  (hasilnya 15)<br>
+                    <code>sisa = 10 % 3</code>   (hasilnya 1, karena 10 dibagi 3 sisa 1)
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>Percabangan (If-Else)</h2>
+                <p>Percabangan digunakan untuk membuat keputusan dalam program berdasarkan kondisi tertentu. Python menggunakan indentasi (spasi) untuk menandai blok kode.</p>
+                <div class="formula-box">nilai = 80
+
+if nilai >= 75:
+    print("Lulus")
+else:
+    print("Tidak Lulus")</div>
+                <div class="example-box">
+                    <strong>Contoh:</strong><br>
+                    Karena nilai (80) lebih besar dari atau sama dengan 75, maka program akan mencetak <strong>"Lulus"</strong> ke layar.
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>Latihan Soal</h2>
+                <p>Uji pemahamanmu dengan tantangan coding berikut:</p>
+                <ol>
+                    <li>Buatlah dua variabel: <code>nama</code> (isi dengan namamu) dan <code>umur</code> (isi dengan umurmu), lalu tampilkan menggunakan fungsi <code>print()</code>.</li>
+                    <li>Tulis kode Python untuk menghitung luas persegi panjang dengan panjang 10 dan lebar 5, lalu simpan hasilnya dalam variabel <code>luas</code>.</li>
+                    <li>Buat program sederhana menggunakan <code>if-else</code> untuk mengecek apakah sebuah angka (misalnya 7) adalah bilangan genap atau ganjil (gunakan operator modulo <code>%</code>).</li>
+                </ol>
+            </div>
+
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-btn nav-btn-secondary">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                    </svg>
+                    Kembali ke Beranda
+                </a>
+                <a href="keamanan-data.html" class="nav-btn nav-btn-primary">
+                    Materi Selanjutnya: Keamanan Data
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Ruang Belajar · Platform pembelajaran interaktif</p>
+    </footer>
+</body>
+</html>
