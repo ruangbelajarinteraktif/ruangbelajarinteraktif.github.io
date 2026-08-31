@@ -379,5 +379,56 @@ function showAdminName() {
             fetchData();
         };
     </script>
-</body>
+<script>
+function simpanNilai() {
+    // 1. Ambil data teks
+    let nama = document.getElementById('namaSiswa').value.trim();
+    let kelas = document.getElementById('kelasSiswa').value;
+    
+    // 2. Ambil nilai angka. JIKA KOSONG, otomatis diisi 0
+    let t1 = document.getElementById('tugas1').value === "" ? 0 : Number(document.getElementById('tugas1').value);
+    let t2 = document.getElementById('tugas2').value === "" ? 0 : Number(document.getElementById('tugas2').value);
+    let t3 = document.getElementById('tugas3').value === "" ? 0 : Number(document.getElementById('tugas3').value);
+    let sikap = document.getElementById('sikap').value === "" ? 0 : Number(document.getElementById('sikap').value);
+    let aktif = document.getElementById('aktif').value === "" ? 0 : Number(document.getElementById('aktif').value);
+    let proyek = document.getElementById('proyek').value === "" ? 0 : Number(document.getElementById('proyek').value);
+
+    // 3. Validasi: Nama dan Kelas WAJIB diisi
+    if (nama === "" || kelas === "") {
+        alert("⚠️ Nama dan Kelas wajib diisi!");
+        return; // Hentikan proses
+    }
+
+    // 4. Konfirmasi UX: Peringatan jika semua nilai kognitif 0
+    let konfirmasi = true;
+    if (t1 === 0 && t2 === 0 && t3 === 0) {
+        konfirmasi = confirm("⚠️ Semua nilai kognitif (Tugas 1, 2, 3) kosong dan akan disimpan sebagai 0. Yakin ingin melanjutkan?");
+    }
+
+    // 5. Jika dikonfirmasi, siapkan data untuk dikirim
+    if (konfirmasi) {
+        const dataPayload = {
+            nama: nama,
+            kelas: kelas,
+            tugas1: t1, tugas2: t2, tugas3: t3,
+            sikap: sikap, aktif: aktif,
+            proyek: proyek
+        };
+
+        console.log("Data siap dikirim ke Database:", dataPayload);
+        
+        // TODO: Di sini kita akan sambungkan ke Google Apps Script (Langkah 2)
+        // Untuk saat ini, tampilkan alert sukses sebagai simulasi:
+        alert("✅ Data berhasil diproses! (Siap dikirim ke Google Sheets)");
+        
+        // Opsional: Reset form setelah simpan
+        // resetForm(); 
+    }
+}
+
+function resetForm() {
+    document.getElementById('formInputNilai').reset();
+}
+</script>
+    </body>
 </html>
