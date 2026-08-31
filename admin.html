@@ -14,7 +14,6 @@
         .bg-gradient-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
         .bg-gradient-warning { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
         .bg-gradient-info { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
-        
         .table-responsive { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 2px solid #dee2e6; }
         #dataTable { border-collapse: separate; border-spacing: 0; border: 2px solid #dee2e6; }
         #dataTable thead th { background-color: #212529 !important; color: white !important; border: 2px solid #495057 !important; padding: 15px 10px; font-weight: 600; text-align: center; vertical-align: middle; }
@@ -24,13 +23,12 @@
         #dataTable thead tr:last-child th { border-top: 1px solid #495057; border-bottom: 2px solid #495057; }
         #dataTable tbody tr:nth-child(even) td { background-color: #fafbfc; }
         #dataTable tbody tr:nth-child(odd) td { background-color: #ffffff; }
-
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
         .badge-na { font-size: 0.9em; padding: 8px 12px; }
         .rbi-logo-svg { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
     </style>
 </head>
-    <body>
+<body>
 
     <!-- Loading Overlay -->
     <div id="loading" class="loading-overlay">
@@ -50,14 +48,14 @@
         <h5 class="fw-bold text-dark">Memuat data dari Google Spreadsheet...</h5>
         <p class="text-muted small">Ruang Belajar Interaktif</p>
     </div>
-<!-- Script Proteksi Login - Letakkan di paling atas <body> -->
-<script>
-    // Cek apakah user sudah login
-    if (localStorage.getItem('rbi_admin_logged_in') !== 'true') {
-        // Jika belum login, redirect ke halaman login
-        window.location.href = 'login.html';
-    }
-</script>
+
+    <!-- Script Proteksi Login -->
+    <script>
+        if (localStorage.getItem('rbi_admin_logged_in') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
         <div class="container-fluid">
@@ -79,17 +77,18 @@
             </a>
             <span class="navbar-text text-white d-none d-md-block">DASHBOARD PENILAIAN INFORMATIKA KELAS 8</span>
             <div class="d-flex gap-2">
-    <button class="btn btn-light btn-sm fw-bold text-primary" data-bs-toggle="modal" data-bs-target="#modalInput">
-        <i class="fas fa-plus-circle me-1"></i> Tambah Nilai Manual
-    </button>
-    <button class="btn btn-danger btn-sm fw-bold text-white" onclick="logout()">
-        <i class="fas fa-sign-out-alt me-1"></i> Logout
-    </button>
-<span class="text-white small ms-2 d-none d-md-inline align-self-center">
-    <i class="fas fa-user-shield me-1"></i>
-    <span id="adminName">Admin</span>
-</span>                
-</div>
+                <!-- PERBAIKAN 1: data-bs-target disesuaikan dengan ID modal yang benar -->
+                <button class="btn btn-light btn-sm fw-bold text-primary" data-bs-toggle="modal" data-bs-target="#modalInputNilai">
+                    <i class="fas fa-plus-circle me-1"></i> Tambah Nilai Manual
+                </button>
+                <button class="btn btn-danger btn-sm fw-bold text-white" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </button>
+                <span class="text-white small ms-2 d-none d-md-inline align-self-center">
+                    <i class="fas fa-user-shield me-1"></i>
+                    <span id="adminName">Admin</span>
+                </span>                
+            </div>
         </div>
     </nav>
 
@@ -153,101 +152,76 @@
     </div>
 
     <!-- MODAL INPUT DATA MANUAL -->
-    <!-- Modal Input Nilai Manual -->
-<div class="modal fade" id="modalInputNilai" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Input Nilai Manual</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="formInputNilai">
-                    <div class="row mb-3">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Nama Siswa</label>
-                            <input type="text" class="form-control" id="namaSiswa" placeholder="Masukkan nama lengkap" required>
-                            <div id="infoSiswa" class="form-text text-primary mt-1"></div>
+    <div class="modal fade" id="modalInputNilai" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Input Nilai Manual</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formInputNilai">
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Nama Siswa</label>
+                                <input type="text" class="form-control" id="namaSiswa" placeholder="Masukkan nama lengkap" required>
+                                <div id="infoSiswa" class="form-text text-primary mt-1"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Kelas</label>
+                                <select class="form-control" id="kelasSiswa" required onchange="cekDataSiswa()">
+                                    <option value="">Pilih Kelas</option>
+                                    <option value="8A">Kelas 8A</option><option value="8B">Kelas 8B</option><option value="8C">Kelas 8C</option>
+                                    <option value="8D">Kelas 8D</option><option value="8E">Kelas 8E</option><option value="8F">Kelas 8F</option>
+                                    <option value="8G">Kelas 8G</option><option value="8H">Kelas 8H</option><option value="8I">Kelas 8I</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Kelas</label>
-                            <select class="form-control" id="kelasSiswa" required onchange="cekDataSiswa()">
-                                <option value="">Pilih Kelas</option>
-                                <option value="8A">Kelas 8A</option>
-                                <option value="8B">Kelas 8B</option>
-                                <option value="8C">Kelas 8C</option>
-                                <option value="8D">Kelas 8D</option>
-                                <option value="8E">Kelas 8E</option>
-                                <option value="8F">Kelas 8F</option>
-                                <option value="8G">Kelas 8G</option>
-                                <option value="8H">Kelas 8H</option>
-                                <option value="8I">Kelas 8I</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <div id="loadingData" class="alert alert-info d-none">
-                        <div class="d-flex align-items-center">
-                            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                            <span>Memuat data siswa...</span>
+                        <div id="loadingData" class="alert alert-info d-none">
+                            <div class="d-flex align-items-center">
+                                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                <span>Memuat data siswa...</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <h6 class="text-primary fw-bold">Asesmen Kognitif (0-100)</h6>
-                    <div class="row mb-3">
-                        <div class="col-md-4 mb-2">
-                            <label class="form-label small">Tugas 1</label>
-                            <input type="number" class="form-control" id="tugas1" placeholder="0-100" min="0" max="100">
+                        <h6 class="text-primary fw-bold">Asesmen Kognitif (0-100)</h6>
+                        <div class="row mb-3">
+                            <div class="col-md-4 mb-2"><label class="form-label small">Tugas 1</label><input type="number" class="form-control" id="tugas1" placeholder="0-100" min="0" max="100"></div>
+                            <div class="col-md-4 mb-2"><label class="form-label small">Tugas 2</label><input type="number" class="form-control" id="tugas2" placeholder="0-100" min="0" max="100"></div>
+                            <div class="col-md-4 mb-2"><label class="form-label small">Tugas 3</label><input type="number" class="form-control" id="tugas3" placeholder="0-100" min="0" max="100"></div>
                         </div>
-                        <div class="col-md-4 mb-2">
-                            <label class="form-label small">Tugas 2</label>
-                            <input type="number" class="form-control" id="tugas2" placeholder="0-100" min="0" max="100">
-                        </div>
-                        <div class="col-md-4 mb-2">
-                            <label class="form-label small">Tugas 3</label>
-                            <input type="number" class="form-control" id="tugas3" placeholder="0-100" min="0" max="100">
-                        </div>
-                    </div>
 
-                    <h6 class="text-success fw-bold">Asesmen Afektif (0-100)</h6>
-                    <div class="row mb-3">
-                        <div class="col-md-6 mb-2">
-                            <label class="form-label small">Sikap</label>
-                            <input type="number" class="form-control" id="sikap" placeholder="0-100" min="0" max="100">
+                        <h6 class="text-success fw-bold">Asesmen Afektif (0-100)</h6>
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-2"><label class="form-label small">Sikap</label><input type="number" class="form-control" id="sikap" placeholder="0-100" min="0" max="100"></div>
+                            <div class="col-md-6 mb-2"><label class="form-label small">Keaktifan</label><input type="number" class="form-control" id="aktif" placeholder="0-100" min="0" max="100"></div>
                         </div>
-                        <div class="col-md-6 mb-2">
-                            <label class="form-label small">Keaktifan</label>
-                            <input type="number" class="form-control" id="aktif" placeholder="0-100" min="0" max="100">
-                        </div>
-                    </div>
 
-                    <h6 class="text-warning fw-bold">Asesmen Proyek (0-100)</h6>
-                    <div class="mb-3">
-                        <label class="form-label small">Proyek</label>
-                        <input type="number" class="form-control" id="proyek" placeholder="0-100" min="0" max="100">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary" onclick="simpanNilai()">
-                    <i class="fas fa-save me-1"></i>Simpan ke Database
-                </button>
+                        <h6 class="text-warning fw-bold">Asesmen Proyek (0-100)</h6>
+                        <div class="mb-3"><label class="form-label small">Proyek</label><input type="number" class="form-control" id="proyek" placeholder="0-100" min="0" max="100"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <!-- PERBAIKAN 2: Memanggil fungsi simpanNilai() yang sudah diperbaiki -->
+                    <button type="button" class="btn btn-primary" onclick="simpanNilai()">
+                        <i class="fas fa-save me-1"></i>Simpan ke Database
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // ️ GANTI DENGAN LINK CSV PUBLIK ANDA
+        // ⚠️ PENTING: Ganti dengan URL Web App Apps Script Anda yang sebenarnya
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6-gSEgEMPQFmIvblKtUZsBgYbqy-O5KPy0LdXSGzsC2MJA3Psr-slJX4tZK1Xvxo/exec';
         const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRDT6utre3ZI2vX429X5KPvwTAF6IVEGcPQ1BCH2Ij1GIf7rTBP5UivIT9oxQcz5H8RD5PH24fRab_z/pub?output=csv';
         
-        // ⚠️ GANTI DENGAN LINK WEB APP APPS SCRIPT ANDA (Dari Langkah 1)
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6-gSEgEMPQFmIvblKtUZsBgYbqy-O5KPy0LdXSGzsC2MJA3Psr-slJX4tZK1Xvxo/exec';
-
         let allData = [];
 
         function fetchData() {
@@ -267,7 +241,6 @@
         }
 
         function processRawData(data) {
-            // Menyesuaikan dengan header CSV: Nama, Kelas, Tugas 1, Tugas 2, Tugas 3, Sikap, Keaktifan, Proyek
             return data.filter(row => row['Nama'] && row['Nama'].trim() !== '').map((row, index) => {
                 const t1 = parseFloat(row['Tugas 1']) || 0;
                 const t2 = parseFloat(row['Tugas 2']) || 0;
@@ -279,25 +252,12 @@
                 const rataKognitif = ((t1 + t2 + t3) / 3).toFixed(1);
                 const nilaiAkhir = ((rataKognitif * 0.5) + (((sikap + aktif)/2) * 0.2) + (proyek * 0.3)).toFixed(1);
                 
-                // --- TEMPEL KODE BARU INI ---
-let predikat = 'Perlu Bimbingan';
-let badgeClass = 'bg-danger';
+                let predikat = 'Perlu Bimbingan', badgeClass = 'bg-danger';
+                if (nilaiAkhir >= 81) { predikat = 'Sangat Baik'; badgeClass = 'bg-success'; } 
+                else if (nilaiAkhir >= 71) { predikat = 'Baik'; badgeClass = 'bg-primary'; } 
+                else if (nilaiAkhir >= 61) { predikat = 'Cukup'; badgeClass = 'bg-warning text-dark'; }
 
-if (nilaiAkhir >= 81) { 
-    predikat = 'Sangat Baik'; 
-    badgeClass = 'bg-success'; 
-} else if (nilaiAkhir >= 71) { 
-    predikat = 'Baik'; 
-    badgeClass = 'bg-primary'; 
-} else if (nilaiAkhir >= 61) { 
-    predikat = 'Cukup'; 
-    badgeClass = 'bg-warning text-dark'; 
-} else { 
-    predikat = 'Perlu Bimbingan'; 
-    badgeClass = 'bg-danger'; 
-}
-
-                return { nama: row['Nama'], kelas: row['Kelas'].toUpperCase().trim(), t1, t2, t3, rataKognitif, sikap, aktif, proyek, nilaiAkhir, predikat, badgeClass };
+                return { nama: row['Nama'], kelas: (row['Kelas'] || '').toUpperCase().trim(), t1, t2, t3, rataKognitif, sikap, aktif, proyek, nilaiAkhir, predikat, badgeClass };
             });
         }
 
@@ -354,44 +314,113 @@ if (nilaiAkhir >= 81) {
             }
         }
 
-        // FUNGSI KIRIM DATA KE GOOGLE SHEETS VIA APPS SCRIPT
-        function submitData() {
-            const btn = document.getElementById('btnSubmit');
-            const nama = document.getElementById('inputNama').value;
-            const kelas = document.getElementById('inputKelas').value;
-            const t1 = document.getElementById('inputT1').value;
-            const t2 = document.getElementById('inputT2').value;
-            const t3 = document.getElementById('inputT3').value;
-            const sikap = document.getElementById('inputSikap').value;
-            const aktif = document.getElementById('inputAktif').value;
-            const proyek = document.getElementById('inputProyek').value;
+        // ==========================================
+        // PERBAIKAN 3: Fungsi simpanNilai yang disatukan dan diperbaiki ID-nya
+        // ==========================================
+        function simpanNilai() {
+            const nama = document.getElementById('namaSiswa').value.trim();
+            const kelas = document.getElementById('kelasSiswa').value;
+            
+            // Jika kosong, jadikan 0 (mencegah error "lengkapi semua data")
+            const t1 = document.getElementById('tugas1').value === "" ? 0 : Number(document.getElementById('tugas1').value);
+            const t2 = document.getElementById('tugas2').value === "" ? 0 : Number(document.getElementById('tugas2').value);
+            const t3 = document.getElementById('tugas3').value === "" ? 0 : Number(document.getElementById('tugas3').value);
+            const sikap = document.getElementById('sikap').value === "" ? 0 : Number(document.getElementById('sikap').value);
+            const aktif = document.getElementById('aktif').value === "" ? 0 : Number(document.getElementById('aktif').value);
+            const proyek = document.getElementById('proyek').value === "" ? 0 : Number(document.getElementById('proyek').value);
 
-            if(!nama || !kelas || !t1) { alert("Mohon lengkapi semua data!"); return; }
+            if (nama === "" || kelas === "") {
+                alert("⚠️ Nama dan Kelas wajib diisi!");
+                return;
+            }
 
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Menyimpan...';
-            btn.disabled = true;
+            let konfirmasi = true;
+            if (t1 === 0 && t2 === 0 && t3 === 0) {
+                konfirmasi = confirm("⚠️ Semua nilai kognitif (Tugas 1, 2, 3) kosong dan akan disimpan sebagai 0. Yakin ingin melanjutkan?");
+            }
 
-            const dataPayload = { nama: nama, kelas: kelas, t1: t1, t2: t2, t3: t3, sikap: sikap, aktif: aktif, proyek: proyek };
+            if (konfirmasi) {
+                const btn = document.querySelector('#modalInputNilai .btn-primary');
+                const teksAsli = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Menyimpan...';
+                btn.disabled = true;
 
-            fetch(APPS_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors', // Wajib untuk Google Apps Script
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dataPayload)
-            }).then(() => {
-                alert("✅ Data berhasil disimpan ke Database! Silakan klik Refresh Data.");
-                document.getElementById('formInputNilai').reset();
-                bootstrap.Modal.getInstance(document.getElementById('modalInput')).hide();
-                btn.innerHTML = '<i class="fas fa-save me-1"></i> Simpan ke Database';
-                btn.disabled = false;
-            }).catch(err => {
-                alert(" Gagal menyimpan data.");
-                btn.innerHTML = '<i class="fas fa-save me-1"></i> Simpan ke Database';
-                btn.disabled = false;
+                const dataPayload = { nama: nama, kelas: kelas, tugas1: t1, tugas2: t2, tugas3: t3, sikap: sikap, aktif: aktif, proyek: proyek };
+
+                fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataPayload)
+                }).then(() => {
+                    alert("✅ Data berhasil dikirim ke Database! Silakan klik Refresh Data.");
+                    document.getElementById('formInputNilai').reset();
+                    document.getElementById('infoSiswa').innerHTML = '';
+                    
+                    const modalEl = document.getElementById('modalInputNilai');
+                    const modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+                    
+                    btn.innerHTML = teksAsli;
+                    btn.disabled = false;
+                }).catch(err => {
+                    alert("❌ Gagal menyimpan data.");
+                    btn.innerHTML = teksAsli;
+                    btn.disabled = false;
+                });
+            }
+        }
+
+        // Fungsi Auto-Load Data Siswa
+        function cekDataSiswa() {
+            const nama = document.getElementById('namaSiswa').value.trim();
+            const kelas = document.getElementById('kelasSiswa').value;
+            const infoDiv = document.getElementById('infoSiswa');
+            const loadingDiv = document.getElementById('loadingData');
+            
+            if (nama === '' || kelas === '') { infoDiv.innerHTML = ''; return; }
+            
+            loadingDiv.classList.remove('d-none');
+            infoDiv.innerHTML = '';
+            
+            fetch(APPS_SCRIPT_URL + '?action=getDataSiswa&nama=' + encodeURIComponent(nama) + '&kelas=' + encodeURIComponent(kelas), { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                loadingDiv.classList.add('d-none');
+                if (data.found) {
+                    infoDiv.innerHTML = `<div class="alert alert-success py-2 mb-0"><i class="fas fa-check-circle me-1"></i> Siswa ditemukan! Nilai yang sudah ada akan otomatis terisi.<br><small>Nilai Akhir: <strong>${data.nilaiAkhir}</strong> (${data.predikat})</small></div>`;
+                    if (data.tugas1 > 0) document.getElementById('tugas1').value = data.tugas1;
+                    if (data.tugas2 > 0) document.getElementById('tugas2').value = data.tugas2;
+                    if (data.tugas3 > 0) document.getElementById('tugas3').value = data.tugas3;
+                    if (data.sikap > 0) document.getElementById('sikap').value = data.sikap;
+                    if (data.aktif > 0) document.getElementById('aktif').value = data.aktif;
+                    if (data.proyek > 0) document.getElementById('proyek').value = data.proyek;
+                } else {
+                    infoDiv.innerHTML = `<div class="alert alert-info py-2 mb-0"><i class="fas fa-info-circle me-1"></i> Siswa baru - Data akan ditambahkan ke database</div>`;
+                    document.getElementById('formInputNilai').reset();
+                    document.getElementById('namaSiswa').value = nama;
+                    document.getElementById('kelasSiswa').value = kelas;
+                }
+            })
+            .catch(error => {
+                loadingDiv.classList.add('d-none');
+                infoDiv.innerHTML = '<div class="alert alert-warning py-2 mb-0">Gagal memuat data siswa</div>';
             });
         }
 
-                // FUNGSI LOGOUT
+        document.addEventListener('DOMContentLoaded', function() {
+            const namaInput = document.getElementById('namaSiswa');
+            let timeoutId;
+            if (namaInput) {
+                namaInput.addEventListener('input', function() {
+                    clearTimeout(timeoutId);
+                    timeoutId = setTimeout(cekDataSiswa, 1000);
+                });
+            }
+            showAdminName();
+            fetchData();
+        });
+
         function logout() {
             if (confirm('Apakah Anda yakin ingin logout?')) {
                 localStorage.removeItem('rbi_admin_logged_in');
@@ -400,105 +429,11 @@ if (nilaiAkhir >= 81) {
             }
         }
 
-        // TAMPILKAN NAMA ADMIN DI NAVBAR
-function showAdminName() {
-    const username = localStorage.getItem('rbi_admin_username');
-    const adminNameElement = document.getElementById('adminName');
-    
-    if (username && adminNameElement) {
-        adminNameElement.innerText = username;
-    }
-}
-
-        window.onload = function() {
-            showAdminName();
-            fetchData();
-        };
-    </script>
-<script>
-// GANTI URL DI BAWAH INI DENGAN URL WEB APP ANDA DARI LANGKAH 2B
-// URL Web App Google Apps Script
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx.../exec'; // GANTI DENGAN URL ANDA
-
-// Fungsi untuk cek data siswa saat nama dan kelas dipilih
-function cekDataSiswa() {
-    const nama = document.getElementById('namaSiswa').value.trim();
-    const kelas = document.getElementById('kelasSiswa').value;
-    const infoDiv = document.getElementById('infoSiswa');
-    const loadingDiv = document.getElementById('loadingData');
-    
-    if (nama === '' || kelas === '') {
-        infoDiv.innerHTML = '';
-        return;
-    }
-    
-    // Tampilkan loading
-    loadingDiv.classList.remove('d-none');
-    infoDiv.innerHTML = '';
-    
-    // Kirim request ke Google Apps Script
-    fetch(WEB_APP_URL + '?action=getDataSiswa&nama=' + encodeURIComponent(nama) + '&kelas=' + encodeURIComponent(kelas), {
-        method: 'GET'
-    })
-    .then(response => response.json())
-    .then(data => {
-        loadingDiv.classList.add('d-none');
-        
-        if (data.found) {
-            // Tampilkan info bahwa siswa sudah ada
-            infoDiv.innerHTML = `
-                <div class="alert alert-success py-2 mb-0">
-                    <i class="fas fa-check-circle me-1"></i>
-                    Siswa ditemukan! Nilai yang sudah ada akan otomatis terisi.
-                    <br><small>Nilai Akhir: <strong>${data.nilaiAkhir}</strong> (${data.predikat})</small>
-                </div>
-            `;
-            
-            // Auto-fill nilai yang sudah ada (hanya jika tidak 0)
-            if (data.tugas1 > 0) document.getElementById('tugas1').value = data.tugas1;
-            if (data.tugas2 > 0) document.getElementById('tugas2').value = data.tugas2;
-            if (data.tugas3 > 0) document.getElementById('tugas3').value = data.tugas3;
-            if (data.sikap > 0) document.getElementById('sikap').value = data.sikap;
-            if (data.aktif > 0) document.getElementById('aktif').value = data.aktif;
-            if (data.proyek > 0) document.getElementById('proyek').value = data.proyek;
-            
-        } else {
-            // Siswa belum ada
-            infoDiv.innerHTML = `
-                <div class="alert alert-info py-2 mb-0">
-                    <i class="fas fa-info-circle me-1"></i>
-                    Siswa baru - Data akan ditambahkan ke database
-                </div>
-            `;
-            
-            // Reset form
-            document.getElementById('formInputNilai').reset();
-            document.getElementById('namaSiswa').value = nama;
-            document.getElementById('kelasSiswa').value = kelas;
+        function showAdminName() {
+            const username = localStorage.getItem('rbi_admin_username');
+            const adminNameElement = document.getElementById('adminName');
+            if (username && adminNameElement) adminNameElement.innerText = username;
         }
-    })
-    .catch(error => {
-        loadingDiv.classList.add('d-none');
-        console.error('Error:', error);
-        infoDiv.innerHTML = '<div class="alert alert-warning py-2 mb-0">Gagal memuat data siswa</div>';
-    });
-}
-
-// Tambahkan event listener untuk auto-check saat mengetik nama
-document.addEventListener('DOMContentLoaded', function() {
-    const namaInput = document.getElementById('namaSiswa');
-    let timeoutId;
-    
-    if (namaInput) {
-        namaInput.addEventListener('input', function() {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(cekDataSiswa, 1000); // Cek setelah 1 detik tidak mengetik
-        });
-    }
-});
-function resetForm() {
-    document.getElementById('formInputNilai').reset();
-}
-</script>
-    </body>
+    </script>
+</body>
 </html>
