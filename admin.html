@@ -85,6 +85,10 @@
     <button class="btn btn-danger btn-sm fw-bold text-white" onclick="logout()">
         <i class="fas fa-sign-out-alt me-1"></i> Logout
     </button>
+<span class="text-white small ms-2 d-none d-md-inline align-self-center">
+    <i class="fas fa-user-shield me-1"></i>
+    <span id="adminName">Admin</span>
+</span>                
 </div>
         </div>
     </nav>
@@ -348,12 +352,14 @@
         }
 
         // TAMPILKAN NAMA ADMIN DI NAVBAR
-        function showAdminName() {
-            const username = localStorage.getItem('rbi_admin_username');
-            if (username) {
-                document.getElementById('adminName').innerText = username;
-            }
-        }
+function showAdminName() {
+    const username = localStorage.getItem('rbi_admin_username');
+    const adminNameElement = document.getElementById('adminName');
+    
+    if (username && adminNameElement) {
+        adminNameElement.innerText = username;
+    }
+}
 
         window.onload = function() {
             showAdminName();
