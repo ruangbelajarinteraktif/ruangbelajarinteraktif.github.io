@@ -30,7 +30,7 @@
         .rbi-logo-svg { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
     </style>
 </head>
-<body>
+    <body>
 
     <!-- Loading Overlay -->
     <div id="loading" class="loading-overlay">
@@ -50,7 +50,14 @@
         <h5 class="fw-bold text-dark">Memuat data dari Google Spreadsheet...</h5>
         <p class="text-muted small">Ruang Belajar Interaktif</p>
     </div>
-
+<!-- Script Proteksi Login - Letakkan di paling atas <body> -->
+<script>
+    // Cek apakah user sudah login
+    if (localStorage.getItem('rbi_admin_logged_in') !== 'true') {
+        // Jika belum login, redirect ke halaman login
+        window.location.href = 'login.html';
+    }
+</script>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
         <div class="container-fluid">
@@ -71,12 +78,14 @@
                 Ruang Belajar Interaktif
             </a>
             <span class="navbar-text text-white d-none d-md-block">DASHBOARD PENILAIAN INFORMATIKA KELAS 8</span>
-            <div>
-                <!-- Tombol Buka Modal Input -->
-                <button class="btn btn-light btn-sm fw-bold text-primary" data-bs-toggle="modal" data-bs-target="#modalInput">
-                    <i class="fas fa-plus-circle me-1"></i> Tambah Nilai Manual
-                </button>
-            </div>
+            <div class="d-flex gap-2">
+    <button class="btn btn-light btn-sm fw-bold text-primary" data-bs-toggle="modal" data-bs-target="#modalInput">
+        <i class="fas fa-plus-circle me-1"></i> Tambah Nilai Manual
+    </button>
+    <button class="btn btn-danger btn-sm fw-bold text-white" onclick="logout()">
+        <i class="fas fa-sign-out-alt me-1"></i> Logout
+    </button>
+</div>
         </div>
     </nav>
 
@@ -329,7 +338,27 @@
             });
         }
 
-        window.onload = fetchData;
+                // FUNGSI LOGOUT
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                localStorage.removeItem('rbi_admin_logged_in');
+                localStorage.removeItem('rbi_admin_username');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // TAMPILKAN NAMA ADMIN DI NAVBAR
+        function showAdminName() {
+            const username = localStorage.getItem('rbi_admin_username');
+            if (username) {
+                document.getElementById('adminName').innerText = username;
+            }
+        }
+
+        window.onload = function() {
+            showAdminName();
+            fetchData();
+        };
     </script>
 </body>
 </html>
