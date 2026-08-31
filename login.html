@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin - Ruang Belajar Interaktif</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+        .rbi-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+        }
+        .form-control {
+            border-radius: 10px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+        }
+        .form-control:focus {
+            border-color: #2a5298;
+            box-shadow: 0 0 0 0.2rem rgba(42, 82, 152, 0.25);
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.4);
+        }
+        .alert {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Logo RBI -->
+        <svg class="rbi-logo" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="bL" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#0755C9"/>
+                    <stop offset="100%" stop-color="#123A9A"/>
+                </linearGradient>
+                <linearGradient id="bR" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#19B8F2"/>
+                    <stop offset="100%" stop-color="#087FD1"/>
+                </linearGradient>
+            </defs>
+            <path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="url(#bL)"/>
+            <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR)"/>
+            <path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
+            <text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
+            <path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
+            <path d="M335 335 Q295 338 256 360 L256 400 Q295 376 335 373 Z" fill="#102D68"/>
+            <path d="M250 358 L250 404" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+
+        <h3 class="text-center fw-bold mb-2">Login Admin</h3>
+        <p class="text-center text-muted mb-4">Ruang Belajar Interaktif</p>
+
+        <div id="alertBox" class="alert alert-danger d-none" role="alert">
+            Username atau password salah!
+        </div>
+
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="username" class="form-label fw-bold">Username</label>
+                <input type="text" class="form-control" id="username" placeholder="Masukkan username" required>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="form-label fw-bold">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Masukkan password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-login w-100 text-white">
+                <i class="fas fa-sign-in-alt me-2"></i>Masuk
+            </button>
+        </form>
+
+        <div class="text-center mt-4">
+            <a href="index.html" class="text-muted text-decoration-none">
+                <i class="fas fa-arrow-left me-1"></i>Kembali ke Beranda
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        // Konfigurasi Login (GANTI DENGAN KREDENSIAL ANDA)
+        const VALID_USERNAME = 'admin';
+        const VALID_PASSWORD = 'rbi2026';
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const alertBox = document.getElementById('alertBox');
+
+            // Cek kredensial
+            if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                // Simpan session di localStorage
+                localStorage.setItem('rbi_admin_logged_in', 'true');
+                localStorage.setItem('rbi_admin_username', username);
+                
+                // Redirect ke admin dashboard
+                window.location.href = 'admin.html';
+            } else {
+                // Tampilkan error
+                alertBox.classList.remove('d-none');
+                setTimeout(() => {
+                    alertBox.classList.add('d-none');
+                }, 3000);
+            }
+        });
+
+        // Cek jika sudah login, langsung redirect
+        if (localStorage.getItem('rbi_admin_logged_in') === 'true') {
+            window.location.href = 'admin.html';
+        }
+    </script>
+</body>
+</html>
