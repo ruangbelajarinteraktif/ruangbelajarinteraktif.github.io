@@ -243,10 +243,23 @@
                 const rataKognitif = ((t1 + t2 + t3) / 3).toFixed(1);
                 const nilaiAkhir = ((rataKognitif * 0.5) + (((sikap + aktif)/2) * 0.2) + (proyek * 0.3)).toFixed(1);
                 
-                let predikat = 'D', badgeClass = 'bg-danger';
-                if (nilaiAkhir >= 90) { predikat = 'A'; badgeClass = 'bg-success'; }
-                else if (nilaiAkhir >= 80) { predikat = 'B'; badgeClass = 'bg-primary'; }
-                else if (nilaiAkhir >= 70) { predikat = 'C'; badgeClass = 'bg-warning text-dark'; }
+                // --- TEMPEL KODE BARU INI ---
+let predikat = 'Perlu Bimbingan';
+let badgeClass = 'bg-danger';
+
+if (nilaiAkhir >= 81) { 
+    predikat = 'Sangat Baik'; 
+    badgeClass = 'bg-success'; 
+} else if (nilaiAkhir >= 71) { 
+    predikat = 'Baik'; 
+    badgeClass = 'bg-primary'; 
+} else if (nilaiAkhir >= 61) { 
+    predikat = 'Cukup'; 
+    badgeClass = 'bg-warning text-dark'; 
+} else { 
+    predikat = 'Perlu Bimbingan'; 
+    badgeClass = 'bg-danger'; 
+}
 
                 return { nama: row['Nama'], kelas: row['Kelas'].toUpperCase().trim(), t1, t2, t3, rataKognitif, sikap, aktif, proyek, nilaiAkhir, predikat, badgeClass };
             });
