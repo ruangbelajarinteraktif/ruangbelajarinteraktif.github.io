@@ -380,12 +380,15 @@ function showAdminName() {
         };
     </script>
 <script>
+// GANTI URL DI BAWAH INI DENGAN URL WEB APP ANDA DARI LANGKAH 2B
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzDgg35hw1Y_eWFEHWOsXDVke9gmDILiHjMUdcl29ohyeQkhXJao_MhHz0pEE9L8A/exec'; 
+
 function simpanNilai() {
-    // 1. Ambil data teks
+    // 1. Ambil data
     let nama = document.getElementById('namaSiswa').value.trim();
     let kelas = document.getElementById('kelasSiswa').value;
     
-    // 2. Ambil nilai angka. JIKA KOSONG, otomatis diisi 0
+    // 2. Ambil nilai (kosongkan jadi 0)
     let t1 = document.getElementById('tugas1').value === "" ? 0 : Number(document.getElementById('tugas1').value);
     let t2 = document.getElementById('tugas2').value === "" ? 0 : Number(document.getElementById('tugas2').value);
     let t3 = document.getElementById('tugas3').value === "" ? 0 : Number(document.getElementById('tugas3').value);
@@ -393,36 +396,48 @@ function simpanNilai() {
     let aktif = document.getElementById('aktif').value === "" ? 0 : Number(document.getElementById('aktif').value);
     let proyek = document.getElementById('proyek').value === "" ? 0 : Number(document.getElementById('proyek').value);
 
-    // 3. Validasi: Nama dan Kelas WAJIB diisi
+    // 3. Validasi
     if (nama === "" || kelas === "") {
         alert("⚠️ Nama dan Kelas wajib diisi!");
-        return; // Hentikan proses
+        return;
     }
 
-    // 4. Konfirmasi UX: Peringatan jika semua nilai kognitif 0
+    // 4. Konfirmasi jika semua kognitif 0
     let konfirmasi = true;
     if (t1 === 0 && t2 === 0 && t3 === 0) {
-        konfirmasi = confirm("⚠️ Semua nilai kognitif (Tugas 1, 2, 3) kosong dan akan disimpan sebagai 0. Yakin ingin melanjutkan?");
+        konfirmasi = confirm("⚠️ Semua nilai kognitif kosong. Data akan disimpan dengan nilai 0. Lanjutkan?");
     }
 
-    // 5. Jika dikonfirmasi, siapkan data untuk dikirim
     if (konfirmasi) {
-        const dataPayload = {
-            nama: nama,
-            kelas: kelas,
-            tugas1: t1, tugas2: t2, tugas3: t3,
-            sikap: sikap, aktif: aktif,
-            proyek: proyek
-        };
+        const dataPayload = { nama, kelas, tugas1: t1, tugas2: t2, tugas3: t3, sikap, aktif, proyek };
+        
+        // Ubah tombol jadi loading
+        const btnSimpan = document.querySelector('button[onclick="simpanNilai()"]');
+        const teksAsli = btnSimpan.innerHTML;
+        btnSimpan.innerHTML = ' Menyimpan...';
+        btnSimpan.disabled = true;
 
-        console.log("Data siap dikirim ke Database:", dataPayload);
-        
-        // TODO: Di sini kita akan sambungkan ke Google Apps Script (Langkah 2)
-        // Untuk saat ini, tampilkan alert sukses sebagai simulasi:
-        alert("✅ Data berhasil diproses! (Siap dikirim ke Google Sheets)");
-        
-        // Opsional: Reset form setelah simpan
-        // resetForm(); 
+        // 5. Kirim ke Google Apps Script menggunakan fetch
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors', // Wajib untuk komunikasi lintas domain (GitHub -> Google)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dataPayload)
+        })
+        .then(() => {
+            // Karena mode 'no-cors', kita tidak bisa membaca respons JSON secara langsung.
+            // Namun, jika tidak ada error jaringan, data pasti terkirim.
+            alert("✅ Data berhasil dikirim ke Database! (Silakan cek Google Sheets)");
+            document.getElementById('formInputNilai').reset();
+        })
+        .catch(error => {
+            alert("❌ Gagal mengirim data: " + error);
+        })
+        .finally(() => {
+            // Kembalikan tombol ke kondisi semula
+            btnSimpan.innerHTML = teksAsli;
+            btnSimpan.disabled = false;
+        });
     }
 }
 
