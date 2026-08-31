@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Nilai Informatika | Ruang Belajar Interaktif</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .card-stat { border: none; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s; }
+        .card-stat:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .bg-gradient-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .bg-gradient-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
+        .bg-gradient-warning { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+        .bg-gradient-info { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
+        
+        .table-responsive { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 2px solid #dee2e6; }
+        #dataTable { border-collapse: separate; border-spacing: 0; border: 2px solid #dee2e6; }
+        #dataTable thead th { background-color: #212529 !important; color: white !important; border: 2px solid #495057 !important; padding: 15px 10px; font-weight: 600; text-align: center; vertical-align: middle; }
+        #dataTable tbody td { background-color: #ffffff; border: 1px solid #dee2e6; padding: 12px 8px; vertical-align: middle; text-align: center; }
+        #dataTable tbody tr:hover td { background-color: #f8f9fa; border-color: #adb5bd; }
+        #dataTable thead tr:first-child th { border-bottom: 2px solid #495057; }
+        #dataTable thead tr:last-child th { border-top: 1px solid #495057; border-bottom: 2px solid #495057; }
+        #dataTable tbody tr:nth-child(even) td { background-color: #fafbfc; }
+        #dataTable tbody tr:nth-child(odd) td { background-color: #ffffff; }
+
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        .badge-na { font-size: 0.9em; padding: 8px 12px; }
+        .rbi-logo-svg { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay">
+        <svg width="120" height="120" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-label="RBI Logo" class="mb-3 rbi-logo-svg">
+          <defs>
+            <linearGradient id="bL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0755C9"/><stop offset="100%" stop-color="#123A9A"/></linearGradient>
+            <linearGradient id="bR" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#19B8F2"/><stop offset="100%" stop-color="#087FD1"/></linearGradient>
+          </defs>
+          <path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="url(#bL)"/>
+          <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR)"/>
+          <path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
+          <text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
+          <path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
+          <path d="M335 335 Q295 338 256 360 L256 400 Q295 376 335 373 Z" fill="#102D68"/>
+          <path d="M250 358 L250 404" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+        <h5 class="fw-bold text-dark">Memuat data dari Google Spreadsheet...</h5>
+        <p class="text-muted small">Ruang Belajar Interaktif</p>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
+                <svg width="40" height="40" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-label="RBI Logo" class="me-2 rbi-logo-svg">
+                  <defs>
+                    <linearGradient id="bL-nav" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0755C9"/><stop offset="100%" stop-color="#123A9A"/></linearGradient>
+                    <linearGradient id="bR-nav" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#19B8F2"/><stop offset="100%" stop-color="#087FD1"/></linearGradient>
+                  </defs>
+                  <path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="url(#bL-nav)"/>
+                  <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR-nav)"/>
+                  <path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
+                  <text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
+                  <path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
+                  <path d="M335 335 Q295 338 256 360 L256 400 Q295 376 335 373 Z" fill="#102D68"/>
+                  <path d="M250 358 L250 404" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+                </svg>
+                Ruang Belajar Interaktif
+            </a>
+            <span class="navbar-text text-white d-none d-md-block">DASHBOARD PENILAIAN INFORMATIKA KELAS 8</span>
+            <div>
+                <!-- Tombol Buka Modal Input -->
+                <button class="btn btn-light btn-sm fw-bold text-primary" data-bs-toggle="modal" data-bs-target="#modalInput">
+                    <i class="fas fa-plus-circle me-1"></i> Tambah Nilai Manual
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4 px-4">
+        <!-- Filter & Search -->
+        <div class="row mb-4 g-3">
+            <div class="col-md-3">
+                <label class="form-label text-muted small fw-bold">FILTER KELAS</label>
+                <select id="filterKelas" class="form-select form-select-lg shadow-sm" onchange="filterData()">
+                    <option value="all">Semua Kelas (8A - 8I)</option>
+                    <option value="8A">Kelas 8A</option><option value="8B">Kelas 8B</option><option value="8C">Kelas 8C</option>
+                    <option value="8D">Kelas 8D</option><option value="8E">Kelas 8E</option><option value="8F">Kelas 8F</option>
+                    <option value="8G">Kelas 8G</option><option value="8H">Kelas 8H</option><option value="8I">Kelas 8I</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label text-muted small fw-bold">PENCARIAN</label>
+                <div class="input-group input-group-lg shadow-sm">
+                    <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
+                    <input type="text" id="searchNama" class="form-control border-start-0" placeholder="Cari nama siswa..." onkeyup="filterData()">
+                </div>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button class="btn btn-primary btn-lg w-100 shadow-sm" onclick="fetchData()">
+                    <i class="fas fa-sync-alt me-2"></i> Refresh Data
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistik -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3"><div class="card card-stat bg-gradient-primary p-3"><div class="d-flex justify-content-between align-items-center"><div><h6 class="mb-1 opacity-75">Total Siswa</h6><h2 class="fw-bold mb-0" id="statTotal">0</h2></div><i class="fas fa-users fa-2x opacity-50"></i></div></div></div>
+            <div class="col-md-3"><div class="card card-stat bg-gradient-success p-3"><div class="d-flex justify-content-between align-items-center"><div><h6 class="mb-1 opacity-75">Rata-rata</h6><h2 class="fw-bold mb-0" id="statRata">0</h2></div><i class="fas fa-chart-line fa-2x opacity-50"></i></div></div></div>
+            <div class="col-md-3"><div class="card card-stat bg-gradient-info p-3"><div class="d-flex justify-content-between align-items-center"><div><h6 class="mb-1 opacity-75">Tertinggi</h6><h2 class="fw-bold mb-0" id="statTertinggi">0</h2></div><i class="fas fa-arrow-up fa-2x opacity-50"></i></div></div></div>
+            <div class="col-md-3"><div class="card card-stat bg-gradient-warning p-3"><div class="d-flex justify-content-between align-items-center"><div><h6 class="mb-1 opacity-75">Terendah</h6><h2 class="fw-bold mb-0" id="statTerendah">0</h2></div><i class="fas fa-arrow-down fa-2x opacity-50"></i></div></div></div>
+        </div>
+
+        <!-- Tabel -->
+        <div class="table-responsive">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0"><i class="fas fa-table me-2 text-primary"></i>Rekapitulasi Nilai Informatika (Kelas 8)</h5>
+                <span class="badge bg-light text-dark border" id="dataCountBadge">0 Data</span>
+            </div>
+            <table class="table table-hover table-bordered align-middle" id="dataTable">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th rowspan="2" class="align-middle">No</th><th rowspan="2" class="align-middle">Nama Siswa</th><th rowspan="2" class="align-middle">Kelas</th>
+                        <th colspan="4">Asesmen Kognitif (3 Tugas)</th><th colspan="2">Asesmen Afektif</th>
+                        <th rowspan="2" class="align-middle">Proyek</th><th rowspan="2" class="align-middle">Nilai Akhir</th><th rowspan="2" class="align-middle">Predikat</th>
+                    </tr>
+                    <tr><th>T1</th><th>T2</th><th>T3</th><th>Rata</th><th>Sikap</th><th>Aktif</th></tr>
+                </thead>
+                <tbody id="tableBody" class="text-center"></tbody>
+            </table>
+            <div id="emptyState" class="text-center py-5 d-none">
+                <p class="text-muted fw-bold">Tidak ada data yang cocok.</p>
+            </div>
+        </div>
+        
+        <footer class="text-center text-muted mt-5 mb-3 small">&copy; 2026 Ruang Belajar Interaktif · Platform pembelajaran bermakna</footer>
+    </div>
+
+    <!-- MODAL INPUT DATA MANUAL -->
+    <div class="modal fade" id="modalInput" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-edit me-2"></i>Input Nilai Manual</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formInputNilai">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Nama Siswa</label>
+                                <input type="text" class="form-control" id="inputNama" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Kelas</label>
+                                <select class="form-select" id="inputKelas" required>
+                                    <option value="">Pilih Kelas</option>
+                                    <option value="8A">8A</option><option value="8B">8B</option><option value="8C">8C</option>
+                                    <option value="8D">8D</option><option value="8E">8E</option><option value="8F">8F</option>
+                                    <option value="8G">8G</option><option value="8H">8H</option><option value="8I">8I</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-12"><hr class="text-muted"><h6 class="fw-bold text-primary">Asesmen Kognitif (0-100)</h6></div>
+                            <div class="col-md-4"><label class="form-label">Tugas 1</label><input type="number" class="form-control" id="inputT1" min="0" max="100" required></div>
+                            <div class="col-md-4"><label class="form-label">Tugas 2</label><input type="number" class="form-control" id="inputT2" min="0" max="100" required></div>
+                            <div class="col-md-4"><label class="form-label">Tugas 3</label><input type="number" class="form-control" id="inputT3" min="0" max="100" required></div>
+
+                            <div class="col-12"><hr class="text-muted"><h6 class="fw-bold text-success">Asesmen Afektif (0-100)</h6></div>
+                            <div class="col-md-6"><label class="form-label">Sikap</label><input type="number" class="form-control" id="inputSikap" min="0" max="100" required></div>
+                            <div class="col-md-6"><label class="form-label">Keaktifan</label><input type="number" class="form-control" id="inputAktif" min="0" max="100" required></div>
+
+                            <div class="col-12"><hr class="text-muted"><h6 class="fw-bold text-info">Asesmen Proyek (0-100)</h6></div>
+                            <div class="col-md-12"><label class="form-label">Proyek</label><input type="number" class="form-control" id="inputProyek" min="0" max="100" required></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary fw-bold" onclick="submitData()" id="btnSubmit">
+                        <i class="fas fa-save me-1"></i> Simpan ke Database
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // ️ GANTI DENGAN LINK CSV PUBLIK ANDA
+        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRDT6utre3ZI2vX429X5KPvwTAF6IVEGcPQ1BCH2Ij1GIf7rTBP5UivIT9oxQcz5H8RD5PH24fRab_z/pub?output=csv';
+        
+        // ⚠️ GANTI DENGAN LINK WEB APP APPS SCRIPT ANDA (Dari Langkah 1)
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6-gSEgEMPQFmIvblKtUZsBgYbqy-O5KPy0LdXSGzsC2MJA3Psr-slJX4tZK1Xvxo/exec';
+
+        let allData = [];
+
+        function fetchData() {
+            document.getElementById('loading').style.display = 'flex';
+            Papa.parse(SHEET_CSV_URL, {
+                download: true, header: true,
+                complete: function(results) {
+                    allData = processRawData(results.data);
+                    filterData();
+                    document.getElementById('loading').style.display = 'none';
+                },
+                error: function(err) {
+                    alert("Gagal memuat data CSV.");
+                    document.getElementById('loading').style.display = 'none';
+                }
+            });
+        }
+
+        function processRawData(data) {
+            // Menyesuaikan dengan header CSV: Nama, Kelas, Tugas 1, Tugas 2, Tugas 3, Sikap, Keaktifan, Proyek
+            return data.filter(row => row['Nama'] && row['Nama'].trim() !== '').map((row, index) => {
+                const t1 = parseFloat(row['Tugas 1']) || 0;
+                const t2 = parseFloat(row['Tugas 2']) || 0;
+                const t3 = parseFloat(row['Tugas 3']) || 0;
+                const sikap = parseFloat(row['Sikap']) || 0;
+                const aktif = parseFloat(row['Keaktifan']) || 0;
+                const proyek = parseFloat(row['Proyek']) || 0;
+
+                const rataKognitif = ((t1 + t2 + t3) / 3).toFixed(1);
+                const nilaiAkhir = ((rataKognitif * 0.5) + (((sikap + aktif)/2) * 0.2) + (proyek * 0.3)).toFixed(1);
+                
+                let predikat = 'D', badgeClass = 'bg-danger';
+                if (nilaiAkhir >= 90) { predikat = 'A'; badgeClass = 'bg-success'; }
+                else if (nilaiAkhir >= 80) { predikat = 'B'; badgeClass = 'bg-primary'; }
+                else if (nilaiAkhir >= 70) { predikat = 'C'; badgeClass = 'bg-warning text-dark'; }
+
+                return { nama: row['Nama'], kelas: row['Kelas'].toUpperCase().trim(), t1, t2, t3, rataKognitif, sikap, aktif, proyek, nilaiAkhir, predikat, badgeClass };
+            });
+        }
+
+        function filterData() {
+            const kelasFilter = document.getElementById('filterKelas').value;
+            const searchFilter = document.getElementById('searchNama').value.toLowerCase();
+            const filtered = allData.filter(item => {
+                const matchKelas = kelasFilter === 'all' || item.kelas === kelasFilter;
+                const matchNama = item.nama.toLowerCase().includes(searchFilter);
+                return matchKelas && matchNama;
+            });
+            renderTable(filtered);
+            updateStats(filtered);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            const emptyState = document.getElementById('emptyState');
+            const badge = document.getElementById('dataCountBadge');
+            tbody.innerHTML = '';
+            badge.innerText = `${data.length} Data`;
+
+            if (data.length === 0) { emptyState.classList.remove('d-none'); return; }
+            else { emptyState.classList.add('d-none'); }
+
+            data.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td class="text-start fw-semibold">${item.nama}</td>
+                    <td><span class="badge bg-secondary">${item.kelas}</span></td>
+                    <td>${item.t1}</td><td>${item.t2}</td><td>${item.t3}</td>
+                    <td class="fw-bold text-primary">${item.rataKognitif}</td>
+                    <td>${item.sikap}</td><td>${item.aktif}</td>
+                    <td class="fw-bold text-info">${item.proyek}</td>
+                    <td class="fw-bold fs-5">${item.nilaiAkhir}</td>
+                    <td><span class="badge ${item.badgeClass} badge-na">${item.predikat}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateStats(data) {
+            document.getElementById('statTotal').innerText = data.length;
+            if (data.length > 0) {
+                const totalNilai = data.reduce((sum, item) => sum + parseFloat(item.nilaiAkhir), 0);
+                document.getElementById('statRata').innerText = (totalNilai / data.length).toFixed(1);
+                document.getElementById('statTertinggi').innerText = Math.max(...data.map(item => parseFloat(item.nilaiAkhir))).toFixed(1);
+                document.getElementById('statTerendah').innerText = Math.min(...data.map(item => parseFloat(item.nilaiAkhir))).toFixed(1);
+            } else {
+                document.getElementById('statRata').innerText = '0';
+                document.getElementById('statTertinggi').innerText = '0';
+                document.getElementById('statTerendah').innerText = '0';
+            }
+        }
+
+        // FUNGSI KIRIM DATA KE GOOGLE SHEETS VIA APPS SCRIPT
+        function submitData() {
+            const btn = document.getElementById('btnSubmit');
+            const nama = document.getElementById('inputNama').value;
+            const kelas = document.getElementById('inputKelas').value;
+            const t1 = document.getElementById('inputT1').value;
+            const t2 = document.getElementById('inputT2').value;
+            const t3 = document.getElementById('inputT3').value;
+            const sikap = document.getElementById('inputSikap').value;
+            const aktif = document.getElementById('inputAktif').value;
+            const proyek = document.getElementById('inputProyek').value;
+
+            if(!nama || !kelas || !t1) { alert("Mohon lengkapi semua data!"); return; }
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Menyimpan...';
+            btn.disabled = true;
+
+            const dataPayload = { nama: nama, kelas: kelas, t1: t1, t2: t2, t3: t3, sikap: sikap, aktif: aktif, proyek: proyek };
+
+            fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Wajib untuk Google Apps Script
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataPayload)
+            }).then(() => {
+                alert("✅ Data berhasil disimpan ke Database! Silakan klik Refresh Data.");
+                document.getElementById('formInputNilai').reset();
+                bootstrap.Modal.getInstance(document.getElementById('modalInput')).hide();
+                btn.innerHTML = '<i class="fas fa-save me-1"></i> Simpan ke Database';
+                btn.disabled = false;
+            }).catch(err => {
+                alert(" Gagal menyimpan data.");
+                btn.innerHTML = '<i class="fas fa-save me-1"></i> Simpan ke Database';
+                btn.disabled = false;
+            });
+        }
+
+        window.onload = fetchData;
+    </script>
+</body>
+</html>
