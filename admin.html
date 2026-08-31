@@ -417,81 +417,85 @@ function showAdminName() {
     </script>
 <script>
 // GANTI URL DI BAWAH INI DENGAN URL WEB APP ANDA DARI LANGKAH 2B
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzDgg35hw1Y_eWFEHWOsXDVke9gmDILiHjMUdcl29ohyeQkhXJao_MhHz0pEE9L8A/exec'; 
+// URL Web App Google Apps Script
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx.../exec'; // GANTI DENGAN URL ANDA
 
-function simpanNilai() {
-    // 1. Ambil data teks
-    let nama = document.getElementById('namaSiswa').value.trim();
-    let kelas = document.getElementById('kelasSiswa').value;
+// Fungsi untuk cek data siswa saat nama dan kelas dipilih
+function cekDataSiswa() {
+    const nama = document.getElementById('namaSiswa').value.trim();
+    const kelas = document.getElementById('kelasSiswa').value;
+    const infoDiv = document.getElementById('infoSiswa');
+    const loadingDiv = document.getElementById('loadingData');
     
-    // 2. Ambil nilai angka. JIKA KOSONG, otomatis diisi 0
-    let t1 = document.getElementById('tugas1').value === "" ? 0 : Number(document.getElementById('tugas1').value);
-    let t2 = document.getElementById('tugas2').value === "" ? 0 : Number(document.getElementById('tugas2').value);
-    let t3 = document.getElementById('tugas3').value === "" ? 0 : Number(document.getElementById('tugas3').value);
-    let sikap = document.getElementById('sikap').value === "" ? 0 : Number(document.getElementById('sikap').value);
-    let aktif = document.getElementById('aktif').value === "" ? 0 : Number(document.getElementById('aktif').value);
-    let proyek = document.getElementById('proyek').value === "" ? 0 : Number(document.getElementById('proyek').value);
-
-    // 3. Validasi HANYA Nama dan Kelas (JANGAN validasi nilai!)
-    if (nama === "" || kelas === "") {
-        alert("⚠️ Nama dan Kelas wajib diisi!");
+    if (nama === '' || kelas === '') {
+        infoDiv.innerHTML = '';
         return;
     }
-
-    // 4. Konfirmasi jika semua kognitif 0
-    let konfirmasi = true;
-    if (t1 === 0 && t2 === 0 && t3 === 0) {
-        konfirmasi = confirm("⚠️ Semua nilai kognitif (Tugas 1, 2, 3) kosong dan akan disimpan sebagai 0. Yakin ingin melanjutkan?");
-    }
-
-    if (konfirmasi) {
-        const dataPayload = {
-            nama: nama,
-            kelas: kelas,
-            tugas1: t1,
-            tugas2: t2,
-            tugas3: t3,
-            sikap: sikap,
-            aktif: aktif,
-            proyek: proyek
-        };
-
-        console.log("Data siap dikirim:", dataPayload);
+    
+    // Tampilkan loading
+    loadingDiv.classList.remove('d-none');
+    infoDiv.innerHTML = '';
+    
+    // Kirim request ke Google Apps Script
+    fetch(WEB_APP_URL + '?action=getDataSiswa&nama=' + encodeURIComponent(nama) + '&kelas=' + encodeURIComponent(kelas), {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        loadingDiv.classList.add('d-none');
         
-        // GANTI URL INI DENGAN URL WEB APP ANDA
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx.../exec';
-        
-        // Ubah tombol jadi loading
-        const btnSimpan = document.querySelector('button[onclick="simpanNilai()"]');
-        const teksAsli = btnSimpan.innerHTML;
-        btnSimpan.innerHTML = ' Menyimpan...';
-        btnSimpan.disabled = true;
-
-        // Kirim ke Google Apps Script
-        fetch(WEB_APP_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dataPayload)
-        })
-        .then(() => {
-            alert("✅ Data berhasil dikirim ke Database!");
+        if (data.found) {
+            // Tampilkan info bahwa siswa sudah ada
+            infoDiv.innerHTML = `
+                <div class="alert alert-success py-2 mb-0">
+                    <i class="fas fa-check-circle me-1"></i>
+                    Siswa ditemukan! Nilai yang sudah ada akan otomatis terisi.
+                    <br><small>Nilai Akhir: <strong>${data.nilaiAkhir}</strong> (${data.predikat})</small>
+                </div>
+            `;
+            
+            // Auto-fill nilai yang sudah ada (hanya jika tidak 0)
+            if (data.tugas1 > 0) document.getElementById('tugas1').value = data.tugas1;
+            if (data.tugas2 > 0) document.getElementById('tugas2').value = data.tugas2;
+            if (data.tugas3 > 0) document.getElementById('tugas3').value = data.tugas3;
+            if (data.sikap > 0) document.getElementById('sikap').value = data.sikap;
+            if (data.aktif > 0) document.getElementById('aktif').value = data.aktif;
+            if (data.proyek > 0) document.getElementById('proyek').value = data.proyek;
+            
+        } else {
+            // Siswa belum ada
+            infoDiv.innerHTML = `
+                <div class="alert alert-info py-2 mb-0">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Siswa baru - Data akan ditambahkan ke database
+                </div>
+            `;
+            
+            // Reset form
             document.getElementById('formInputNilai').reset();
-            // Tutup modal jika ada
-            if (typeof bootstrap !== 'undefined') {
-                const modal = bootstrap.Modal.getInstance(document.getElementById('modalInputNilai'));
-                if (modal) modal.hide();
-            }
-        })
-        .catch(error => {
-            alert("❌ Gagal mengirim data: " + error);
-        })
-        .finally(() => {
-            btnSimpan.innerHTML = teksAsli;
-            btnSimpan.disabled = false;
+            document.getElementById('namaSiswa').value = nama;
+            document.getElementById('kelasSiswa').value = kelas;
+        }
+    })
+    .catch(error => {
+        loadingDiv.classList.add('d-none');
+        console.error('Error:', error);
+        infoDiv.innerHTML = '<div class="alert alert-warning py-2 mb-0">Gagal memuat data siswa</div>';
+    });
+}
+
+// Tambahkan event listener untuk auto-check saat mengetik nama
+document.addEventListener('DOMContentLoaded', function() {
+    const namaInput = document.getElementById('namaSiswa');
+    let timeoutId;
+    
+    if (namaInput) {
+        namaInput.addEventListener('input', function() {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(cekDataSiswa, 1000); // Cek setelah 1 detik tidak mengetik
         });
     }
-}
+});
 function resetForm() {
     document.getElementById('formInputNilai').reset();
 }
