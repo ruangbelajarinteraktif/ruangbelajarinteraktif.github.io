@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapor Digital Siswa - Ruang Belajar Interaktif</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .login-card { max-width: 450px; margin: 50px auto; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: white; }
+        .rapor-card { max-width: 800px; margin: 30px auto; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: white; }
+        .header-rapor { border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px; }
+        .nilai-badge { font-size: 1.1em; padding: 8px 15px; border-radius: 8px; font-weight: bold; }
+        .bg-sangat-baik { background-color: #d1e7dd; color: #0f5132; }
+        .bg-baik { background-color: #cfe2ff; color: #084298; }
+        .bg-cukup { background-color: #fff3cd; color: #664d03; }
+        .bg-bimbingan { background-color: #f8d7da; color: #842029; }
+        .table-nilai th { background-color: #f8f9fa; }
+        
+        /* CSS Khusus Print / PDF */
+        @media print {
+            body { background-color: white !important; }
+            .no-print { display: none !important; }
+            .rapor-card { box-shadow: none; margin: 0; padding: 0; max-width: 100%; }
+            .container { max-width: 100%; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar Sederhana -->
+    <nav class="navbar navbar-dark no-print" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-arrow-left me-2"></i> Kembali ke Beranda
+            </a>
+            <span class="navbar-text text-white">
+			<svg width="50" height="50" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-label="RBI Logo" class="me-2 rbi-logo-svg">
+                  <defs>
+                    <linearGradient id="bL-nav" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#0755C9"/>
+                      <stop offset="100%" stop-color="#123A9A"/>
+                    </linearGradient>
+                    <linearGradient id="bR-nav" x1="100%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#19B8F2"/>
+                      <stop offset="100%" stop-color="#087FD1"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="url(#bL-nav)"/>
+                  <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR-nav)"/>
+                  <path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
+                  <text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
+                  <path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
+                  <path d="M335 335 Q295 338 256 360 L256 400 Q295 376 335 373 Z" fill="#102D68"/>
+                  <path d="M250 358 L250 404" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+                </svg>
+			Rapor Digital RBI</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <!-- BAGIAN 1: FORM LOGIN -->
+        <div id="loginSection" class="login-card">
+            <div class="text-center mb-4">
+                <i class="fas fa-user-graduate fa-3x text-primary mb-3"></i>
+                <h4 class="fw-bold">Cek Rapor Digital</h4>
+                <p class="text-muted small">Masukkan data diri untuk melihat pencapaian belajarmu.</p>
+            </div>
+            
+            <div id="loginAlert" class="alert alert-danger d-none"></div>
+
+            <form id="formLogin" onsubmit="event.preventDefault(); cekRapor();">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Nama Lengkap</label>
+                    <input type="text" class="form-control form-control-lg" id="inputNama" placeholder="Contoh: Iza" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Kelas</label>
+                    <select class="form-select form-select-lg" id="inputKelas" required>
+                        <option value="" disabled selected>Pilih Kelas</option>
+                        <option value="8A">8A</option><option value="8B">8B</option><option value="8C">8C</option>
+                        <option value="8D">8D</option><option value="8E">8E</option><option value="8F">8F</option>
+                        <option value="8G">8G</option><option value="8H">8H</option><option value="8I">8I</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 btn-lg fw-bold">
+                    <i class="fas fa-search me-2"></i> Lihat Rapor
+                </button>
+            </form>
+        </div>
+
+        <!-- BAGIAN 2: DASHBOARD RAPOR (Hidden by default) -->
+        <div id="raporSection" class="rapor-card d-none">
+            <div class="header-rapor d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <h3 class="fw-bold text-primary mb-1">Rapor Digital</h3>
+                    <p class="mb-0 text-muted">Ruang Belajar Interaktif - Informatika Kelas 8</p>
+                </div>
+                <div class="text-end mt-2 mt-md-0">
+                    <button onclick="window.print()" class="btn btn-outline-primary no-print">
+                        <i class="fas fa-print me-1"></i> Cetak / Simpan PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- Info Siswa -->
+            <div class="row mb-4 p-3 bg-light rounded mx-0">
+                <div class="col-md-6">
+                    <p class="mb-1 text-muted small">Nama Siswa</p>
+                    <h5 class="fw-bold mb-0" id="raporNama">-</h5>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-1 text-muted small">Kelas</p>
+                    <h5 class="fw-bold mb-0" id="raporKelas">-</h5>
+                </div>
+            </div>
+
+            <!-- Tabel Nilai -->
+            <h5 class="fw-bold mb-3"><i class="fas fa-chart-bar me-2 text-primary"></i>Rekap Pencapaian Nilai</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered table-nilai align-middle">
+                    <thead class="text-center">
+                        <tr>
+                            <th>Aspek Penilaian</th>
+                            <th style="width: 150px;">Nilai</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelNilaiBody">
+                        <!-- Diisi oleh JavaScript -->
+                    </tbody>
+                    <tfoot class="table-dark">
+                        <tr>
+                            <th class="text-center fs-5">NILAI AKHIR</th>
+                            <th class="text-center fs-4" id="finalNilaiAkhir">0</th>
+                            <th class="text-center fs-5" id="finalPredikat">-</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="alert alert-info mt-4 mb-0">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Catatan:</strong> Jika ada nilai yang masih kosong (0), berarti aspek tersebut belum dinilai oleh guru. Silakan hubungi guru untuk informasi lebih lanjut.
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="text-center text-muted mt-5 mb-3 small no-print">&copy; 2026 Ruang Belajar Interaktif . Platform Pembelajaran Bermakna</footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script>
+        // URL CSV Publik dari Google Sheets Anda (Sama dengan di admin.html)
+        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRDT6utre3ZI2vX429X5KPvwTAF6IVEGcPQ1BCH2Ij1GIf7rTBP5UivIT9oxQcz5H8RD5PH24fRab_z/pub?output=csv';
+
+        function cekRapor() {
+            const namaInput = document.getElementById('inputNama').value.trim();
+            const kelasInput = document.getElementById('inputKelas').value;
+            const alertBox = document.getElementById('loginAlert');
+            
+            alertBox.classList.add('d-none');
+
+            // Tampilkan loading (opsional, bisa ubah teks tombol)
+            const btn = document.querySelector('#formLogin button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Memuat data...';
+            btn.disabled = true;
+
+            Papa.parse(SHEET_CSV_URL, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    const data = results.data;
+                    let siswaDitemukan = null;
+
+                    // Cari data siswa (Case insensitive & trim spasi)
+                    for (let row of data) {
+                        const rowNama = row['Nama'] ? row['Nama'].trim().toLowerCase() : '';
+                        const rowKelas = row['Kelas'] ? row['Kelas'].trim().toUpperCase() : '';
+                        
+                        if (rowNama === namaInput.toLowerCase() && rowKelas === kelasInput.toUpperCase()) {
+                            siswaDitemukan = row;
+                            break;
+                        }
+                    }
+
+                    if (siswaDitemukan) {
+                        tampilkanRapor(siswaDitemukan);
+                    } else {
+                        alertBox.innerText = 'Data tidak ditemukan. Pastikan Nama dan Kelas yang kamu masukkan benar persis seperti di daftar kelas.';
+                        alertBox.classList.remove('d-none');
+                    }
+
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                },
+                error: function() {
+                    alertBox.innerText = 'Gagal terhubung ke database. Periksa koneksi internet Anda.';
+                    alertBox.classList.remove('d-none');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            });
+        }
+
+        function tampilkanRapor(data) {
+            // Sembunyikan login, tampilkan rapor
+            document.getElementById('loginSection').classList.add('d-none');
+            document.getElementById('raporSection').classList.remove('d-none');
+
+            // Isi Info Siswa
+            document.getElementById('raporNama').innerText = data['Nama'];
+            document.getElementById('raporKelas').innerText = data['Kelas'].toUpperCase();
+
+            // Helper untuk format nilai
+            const getNilai = (key) => parseFloat(data[key]) || 0;
+            const formatBar = (nilai) => {
+                if(nilai === 0) return '<span class="text-muted fst-italic">Belum dinilai</span>';
+                return `<div class="progress" style="height: 8px;"><div class="progress-bar bg-primary" style="width: ${nilai}%"></div></div><small class="fw-bold mt-1 d-block">${nilai}</small>`;
+            };
+
+            // Helper untuk badge predikat per aspek (opsional, untuk visual)
+            const getKet = (nilai) => {
+                if(nilai === 0) return 'Menunggu Penilaian';
+                if(nilai >= 81) return 'Sangat Baik';
+                if(nilai >= 71) return 'Baik';
+                if(nilai >= 61) return 'Cukup';
+                return 'Perlu Bimbingan';
+            };
+
+            const tbody = document.getElementById('tabelNilaiBody');
+            tbody.innerHTML = `
+                <tr>
+                    <td>Tugas 1 (Kognitif)</td>
+                    <td class="text-center">${formatBar(getNilai('Tugas 1'))}</td>
+                    <td>${getKet(getNilai('Tugas 1'))}</td>
+                </tr>
+                <tr>
+                    <td>Tugas 2 (Kognitif)</td>
+                    <td class="text-center">${formatBar(getNilai('Tugas 2'))}</td>
+                    <td>${getKet(getNilai('Tugas 2'))}</td>
+                </tr>
+                <tr>
+                    <td>Tugas 3 (Kognitif)</td>
+                    <td class="text-center">${formatBar(getNilai('Tugas 3'))}</td>
+                    <td>${getKet(getNilai('Tugas 3'))}</td>
+                </tr>
+                <tr>
+                    <td>Sikap (Afektif)</td>
+                    <td class="text-center">${formatBar(getNilai('Sikap'))}</td>
+                    <td>${getKet(getNilai('Sikap'))}</td>
+                </tr>
+                <tr>
+                    <td>Keaktifan (Afektif)</td>
+                    <td class="text-center">${formatBar(getNilai('Keaktifan'))}</td>
+                    <td>${getKet(getNilai('Keaktifan'))}</td>
+                </tr>
+                <tr>
+                    <td>Proyek</td>
+                    <td class="text-center">${formatBar(getNilai('Proyek'))}</td>
+                    <td>${getKet(getNilai('Proyek'))}</td>
+                </tr>
+            `;
+
+            // Nilai Akhir & Predikat Global
+            const na = getNilai('Nilai Akhir');
+            const predikat = data['Predikat'] || (na >= 81 ? 'Sangat Baik' : na >= 71 ? 'Baik' : na >= 61 ? 'Cukup' : 'Perlu Bimbingan');
+            
+            document.getElementById('finalNilaiAkhir').innerText = na > 0 ? na : '-';
+            
+            const elPredikat = document.getElementById('finalPredikat');
+            elPredikat.innerText = predikat;
+            elPredikat.className = 'text-center fs-5 nilai-badge ' + 
+                (predikat === 'Sangat Baik' ? 'bg-sangat-baik' : 
+                 predikat === 'Baik' ? 'bg-baik' : 
+                 predikat === 'Cukup' ? 'bg-cukup' : 'bg-bimbingan');
+        }
+    </script>
+</body>
+</html>
