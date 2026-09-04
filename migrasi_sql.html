@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panduan Migrasi dari Google Apps Script ke MySQL di Hostinger">
+    <meta name="keywords" content="migrasi database, MySQL, Hostinger, Google Apps Script, PHP, presensi RFID">
+    <title>Migrasi Apps Script ke MySQL - Ruang Belajar Interaktif</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='66' font-family='Montserrat,Arial,sans-serif' font-size='42' font-weight='800' fill='%23ffffff' text-anchor='middle' letter-spacing='-1'%3ERBI%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --accent: #f59e0b;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --container-max: 1200px;
+            --container-padding: 1rem;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        
+        body {
+            font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            line-height: 1.2;
+            margin-bottom: var(--space-sm);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            line-height: 1.3;
+            margin-top: 1.5rem;
+            color: var(--text);
+        }
+        
+        h3 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+        }
+        
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        a:hover {
+            color: var(--primary-dark);
+        }
+        
+        nav {
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+            padding: var(--space-sm) 0;
+        }
+        
+        .nav-container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+        
+        .logo svg {
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+        }
+        
+        .back-btn {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-btn:hover {
+            background: var(--primary-dark);
+            color: var(--white);
+        }
+        
+        .back-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%);
+            padding: var(--space-xl) var(--container-padding);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L40 20L20 40L0 20L20 0z' fill='%23ffffff' fill-opacity='0.4'/%3E%3C/svg%3E");
+            background-size: 40px 40px;
+            opacity: 0.6;
+            z-index: 1;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%);
+            opacity: 0.8;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            z-index: 2;
+            position: relative;
+            text-align: center;
+        }
+        
+        .hero p {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            text-align: center;
+        }
+        
+        .content-section {
+            padding: var(--space-xl) 0;
+        }
+        
+        .content-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+        
+        .content-card p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        .content-card ul,
+        .content-card ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .content-card li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .formula-box {
+            background: #eff6ff;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .example-box {
+            background: #fef3c7;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin: 1rem 0;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .example-box strong {
+            color: var(--accent);
+        }
+        
+        .warning-box {
+            background: #fee2e2;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin: 1rem 0;
+            border-left: 4px solid #ef4444;
+        }
+        
+        .success-box {
+            background: #d1fae5;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin: 1rem 0;
+            border-left: 4px solid #10b981;
+        }
+        
+        .checklist {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .checklist li {
+            padding-left: 2rem;
+            position: relative;
+            margin-bottom: 0.75rem;
+        }
+        
+        .checklist li::before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        .nav-btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        .nav-btn-primary:hover {
+            background: var(--primary-dark);
+            color: var(--white);
+        }
+        
+        .nav-btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .nav-btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        footer {
+            background: var(--text);
+            color: var(--white);
+            text-align: center;
+            padding: var(--space-md);
+        }
+        
+        footer p {
+            margin: 0;
+            opacity: 0.8;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        table th,
+        table td {
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        table th {
+            background: #eff6ff;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        code {
+            background: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--primary);
+        }
+        
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: var(--space-lg) var(--container-padding);
+            }
+            
+            .content-card {
+                padding: 1.5rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            table {
+                font-size: 0.85rem;
+            }
+            
+            table th,
+            table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-label="RBI Logo">
+                    <defs>
+                        <linearGradient id="bL" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0755C9"/>
+                            <stop offset="100%" stop-color="#123A9A"/>
+                        </linearGradient>
+                        <linearGradient id="bR" x1="100%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#19B8F2"/>
+                            <stop offset="100%" stop-color="#087FD1"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="url(#bL)"/>
+                    <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR)"/>
+                    <path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
+                    <text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
+                    <path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
+                    <path d="M335 335 Q295 338 256 360 L256 400 Q295 376 335 373 Z" fill="#102D68"/>
+                    <path d="M250 358 L250 404" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+                </svg>
+                <span>RUANG BELAJAR</span>
+            </a>
+            <a href="index.html" class="back-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+                Kembali ke Beranda
+            </a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Migrasi Google Apps Script ke MySQL</h1>
+            <p>Panduan lengkap migrasi sistem presensi RFID dari Google Sheets ke database MySQL di Hostinger untuk 1500+ siswa</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h2>Mengapa Harus Migrasi?</h2>
+                <p>Google Apps Script dan Google Sheets memiliki keterbatasan yang signifikan ketika menangani data dalam jumlah besar:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspek</th>
+                            <th>Google Apps Script</th>
+                            <th>MySQL + PHP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Waktu Eksekusi</td>
+                            <td>Maksimal 6 menit per script</td>
+                            <td>Tidak ada limit</td>
+                        </tr>
+                        <tr>
+                            <td>Request per Hari</td>
+                            <td>20.000 UrlFetch</td>
+                            <td>Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>Kecepatan Query</td>
+                            <td>3-10 detik (1500 data)</td>
+                            <td>0.05 detik (1500 data)</td>
+                        </tr>
+                        <tr>
+                            <td>Penyimpanan</td>
+                            <td>10 juta cell</td>
+                            <td>Tergantung storage server</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="warning-box">
+                    <strong>⚠️ Peringatan:</strong> Apps Script memiliki timeout 6 menit PER EKSEKUSI (bukan per hari). Jika proses rekap 1500 siswa melebihi 6 menit, script akan berhenti di tengah jalan!
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>Fase 1: Perencanaan Struktur Database</h2>
+                <p>Ubah data flat dari Google Sheets menjadi relational database:</p>
+                
+                <h3>Tabel Siswa</h3>
+                <div class="formula-box">
+CREATE TABLE siswa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nis VARCHAR(20) UNIQUE NOT NULL,
+    nama VARCHAR(100) NOT NULL,
+    kelas_id INT,
+    uid_rfid VARCHAR(20) UNIQUE,
+    tanggal_lahir DATE,
+    INDEX idx_nis (nis),
+    INDEX idx_uid (uid_rfid)
+);
+                </div>
+
+                <h3>Tabel Presensi</h3>
+                <div class="formula-box">
+CREATE TABLE presensi (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    siswa_id INT NOT NULL,
+    waktu_masuk DATETIME NOT NULL,
+    status ENUM('TEPAT_WAKTU','TERLAMBAT','IZIN','ALPHA'),
+    FOREIGN KEY (siswa_id) REFERENCES siswa(id),
+    INDEX idx_waktu (waktu_masuk)
+);
+                </div>
+
+                <div class="example-box">
+                    <strong>💡 Tips Penting:</strong> Selalu tambahkan INDEX pada kolom yang sering di-query (nis, uid_rfid, waktu_masuk). Ini mempercepat pencarian hingga 100x!
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>Fase 2: Pembuatan Database di Hostinger</h2>
+                <ol>
+                    <li>Login ke hPanel Hostinger</li>
+                    <li>Masuk ke menu <strong>Databases → MySQL Databases</strong></li>
+                    <li>Buat database baru dan catat informasinya:
+                        <div class="formula-box">
+Database Name : u123456789_presensi<br>
+Username      : u123456789_admin<br>
+Password      : (password yang dibuat)<br>
+Host          : localhost
+                        </div>
+                    </li>
+                    <li>Buka phpMyAdmin dan jalankan script CREATE TABLE</li>
+                </ol>
+
+                <div class="success-box">
+                    <strong>✅ Verifikasi:</strong> Pastikan 4 tabel muncul di panel kiri phpMyAdmin dan struktur kolom sudah sesuai.
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>Fase 3: Migrasi Data dari Google Sheets</h2>
+                
+                <h3>Ekspor dari Google Sheets</h3>
+                <div class="formula-box">
+File → Download → Comma Separated Values (.csv)
+                </div>
+
+                <h3>Import ke MySQL</h3>
+                <ol>
+                    <li>Buka phpMyAdmin → pilih tabel 'siswa'</li>
+                    <li>Klik tab "Import"</li>
+                    <li>Pilih file CSV yang sudah di-download</li>
+                    <li>Pengaturan:
+                        <ul>
+                            <li>Format: CSV</li>
+                            <li>Columns separated with: , (koma)</li>
+                            <li>☑ "CSV has column names in first row"</li>
+                        </ul>
+                    </li>
+                    <li>Klik "Go"</li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong>️ Penting:</strong> Pastikan urutan kolom di CSV sama dengan struktur tabel MySQL!
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>Fase 4: Membangun Backend API (PHP)</h2>
+                
+                <h3>File Konfigurasi Database</h3>
+                <pre><code>&lt;?php
+// config/database.php
+$host = 'localhost';
+$db   = 'u123456789_presensi';
+$user = 'u123456789_admin';
+$pass = 'password_anda';
+
+$pdo = new PDO(
+    "mysql:host=$host;dbname=$db;charset=utf8mb4",
+    $user, $pass,
+    [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+    ]
+);
+?&gt;</code></pre>
+
+                <h3>Endpoint Presensi dengan Logika Waktu</h3>
+                <pre><code>&lt;?php
+// api/presensi.php
+require_once '../config/database.php';
+
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+
+$uid = $_POST['uid'] ?? null;
+
+// Cek waktu (06:30 - 07:06)
+$sekarang = new DateTime();
+$jam = (int)$sekarang->format('H');
+$menit = (int)$sekarang->format('i');
+$waktuMenit = ($jam * 60) + $menit;
+
+$batasMulai = (6 * 60) + 30;  // 06:30
+$batasAkhir = (7 * 60) + 6;   // 07:06
+
+if ($waktuMenit < $batasMulai || $waktuMenit > $batasAkhir) {
+    echo json_encode([
+        'status' => 'failed',
+        'pesan' => 'Di luar jam presensi'
+    ]);
+    exit;
+}
+
+// Cek dan simpan data
+$stmt = $pdo->prepare("SELECT id, nama FROM siswa WHERE uid_rfid = ?");
+$stmt->execute([$uid]);
+$siswa = $stmt->fetch();
+
+if (!$siswa) {
+    echo json_encode(['status' => 'failed', 'pesan' => 'UID tidak terdaftar']);
+    exit;
+}
+
+$status = ($waktuMenit <= 420) ? 'TEPAT_WAKTU' : 'TERLAMBAT';
+
+$stmt = $pdo->prepare("INSERT INTO presensi (siswa_id, waktu_masuk, status) VALUES (?, NOW(), ?)");
+$stmt->execute([$siswa['id'], $status]);
+
+echo json_encode([
+    'status' => 'success',
+    'pesan' => 'Presensi berhasil',
+    'nama' => $siswa['nama']
+]);
+?&gt;</code></pre>
+            </div>
+
+            <div class="content-card">
+                <h2>Fase 5: Penyesuaian Frontend & RFID</h2>
+                
+                <h3>Perubahan di Frontend JavaScript</h3>
+                <div class="formula-box">
+// SEBELUM (Apps Script):<br>
+google.script.run.withSuccessHandler(tampilkan).getDataSiswa();<br><br>
+
+// SESUDAH (Fetch API):<br>
+fetch('https://domainanda.com/api/siswa.php?page=1')<br>
+  .then(res => res.json())<br>
+  .then(data => tampilkan(data.data));
+                </div>
+
+                <h3>Perubahan di Alat RFID (ESP8266/ESP32)</h3>
+                <pre><code>void kirimPresensi(String uid) {
+  HTTPClient http;
+  http.begin("https://domainanda.com/api/presensi.php");
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+  
+  String postData = "uid=" + uid;
+  int httpCode = http.POST(postData);
+  
+  if (httpCode == 200) {
+    String response = http.getString();
+    // Jika "success" → BEEP 1x, LCD: "Hadir"
+    // Jika "failed"  → BEEP 3x, LCD: "Ditolak"
+  }
+  http.end();
+}</code></pre>
+            </div>
+
+            <div class="content-card">
+                <h2>Fase 6: Deploy ke Hostinger</h2>
+                
+                <h3>Upload File</h3>
+                <ol>
+                    <li>Masuk ke hPanel → Files → File Manager</li>
+                    <li>Navigasi ke folder <code>public_html/</code></li>
+                    <li>Upload struktur folder:
+                        <div class="formula-box">
+public_html/
+├── config/database.php
+├── api/presensi.php
+── api/siswa.php
+└── index.html
+                        </div>
+                    </li>
+                </ol>
+
+                <h3>Aktifkan SSL (WAJIB!)</h3>
+                <ol>
+                    <li>hPanel → Advanced → SSL</li>
+                    <li>Install Let's Encrypt (Gratis)</li>
+                    <li>Aktifkan "Force HTTPS"</li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong>⚠️ Penting:</strong> Tanpa HTTPS, browser akan memblokir request API dari alat RFID!
+                </div>
+
+                <h3>Amankan Folder Config</h3>
+                <p>Buat file <code>.htaccess</code> di folder <code>config/</code>:</p>
+                <div class="formula-box">
+Deny from all
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>Troubleshooting</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Masalah</th>
+                            <th>Solusi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>500 Internal Server Error</td>
+                            <td>Cek Error Logs di hPanel → Advanced</td>
+                        </tr>
+                        <tr>
+                            <td>Access Denied Database</td>
+                            <td>Pastikan Host = localhost (bukan IP)</td>
+                        </tr>
+                        <tr>
+                            <td>CORS Error</td>
+                            <td>Tambahkan header Access-Control-Allow-Origin</td>
+                        </tr>
+                        <tr>
+                            <td>RFID tidak kirim data</td>
+                            <td>Pastikan domain sudah HTTPS</td>
+                        </tr>
+                        <tr>
+                            <td>Koneksi lambat</td>
+                            <td>Tambahkan INDEX pada kolom penting</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="content-card">
+                <h2>Checklist Final</h2>
+                <ul class="checklist">
+                    <li>Struktur tabel sudah dibuat di phpMyAdmin</li>
+                    <li>Data dari Sheets sudah di-import</li>
+                    <li>INDEX sudah ditambahkan di kolom penting</li>
+                    <li>File database.php sudah diisi kredensial Hostinger</li>
+                    <li>Semua endpoint API sudah dites (GET, POST)</li>
+                    <li>Logika waktu presensi sudah sesuai (06:30 - 07:06)</li>
+                    <li>SSL/HTTPS sudah aktif</li>
+                    <li>Force HTTPS sudah di-enable</li>
+                    <li>Folder config/ dilindungi .htaccess</li>
+                    <li>Alat RFID sudah di-update endpoint-nya ke HTTPS</li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-btn nav-btn-secondary">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                    </svg>
+                    Kembali ke Beranda
+                </a>
+                <a href="#" class="nav-btn nav-btn-primary" onclick="window.print(); return false;">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 12v2H8v-4h8v2zm2-2v-2H6v2H4v-4c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v4h-2z"/>
+                    </svg>
+                    Cetak PDF
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Ruang Belajar · Platform pembelajaran interaktif</p>
+    </footer>
+</body>
+</html>
