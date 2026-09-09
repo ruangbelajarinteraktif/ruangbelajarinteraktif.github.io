@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Latihan soal konsep dasar Teorema Pythagoras untuk SMP - Ruang Belajar Interaktif">
+    <meta name="keywords" content="teorema pythagoras, soal pythagoras, matematika smp, segitiga siku-siku">
+    <title>Soal Konsep Teorema Pythagoras - Ruang Belajar Interaktif</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='66' font-family='Montserrat,Arial,sans-serif' font-size='42' font-weight='800' fill='%23ffffff' text-anchor='middle' letter-spacing='-1'%3ERBI%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --accent: #f59e0b;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --container-max: 1200px;
+            --container-padding: 1rem;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        
+        body {
+            font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            line-height: 1.2;
+            margin-bottom: var(--space-sm);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            line-height: 1.3;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+        }
+        
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        a:hover {
+            color: var(--primary-dark);
+        }
+        
+        nav {
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+            padding: var(--space-sm) 0;
+        }
+        
+        .nav-container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+        
+        .logo svg {
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+        }
+        
+        .back-btn {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-btn:hover {
+            background: var(--primary-dark);
+            color: var(--white);
+        }
+        
+        .back-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%);
+            padding: var(--space-xl) var(--container-padding);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L40 20L20 40L0 20L20 0z' fill='%23ffffff' fill-opacity='0.4'/%3E%3C/svg%3E");
+            background-size: 40px 40px;
+            opacity: 0.6;
+            z-index: 1;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%);
+            opacity: 0.8;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            z-index: 2;
+            position: relative;
+            text-align: center;
+        }
+        
+        .hero p {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            text-align: center;
+        }
+        
+        .content-section {
+            padding: var(--space-xl) 0;
+        }
+        
+        .content-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+        
+        .content-card p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        /* Quiz Specific Styles */
+        .question-block {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .question-block:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .question-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+            display: flex;
+            gap: 0.5rem;
+            line-height: 1.5;
+        }
+        .question-number {
+            color: var(--primary);
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        .options-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+        .option-label:hover {
+            background: #dbeafe;
+            border-color: var(--primary);
+        }
+        .option-label input {
+            margin-right: 0.75rem;
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+        .option-label.correct {
+            background: #d1fae5 !important;
+            border-color: #10b981 !important;
+            color: #065f46 !important;
+        }
+        .option-label.incorrect {
+            background: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+        .option-label input:disabled {
+            cursor: not-allowed;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .nav-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        .nav-btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        .nav-btn-primary:hover {
+            background: var(--primary-dark);
+            color: var(--white);
+        }
+        
+        .nav-btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .nav-btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        .result-box {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #eff6ff;
+            border-radius: var(--radius-md);
+            text-align: center;
+            display: none;
+            border: 1px solid var(--border);
+        }
+        .result-box.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-score {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        
+        footer {
+            background: var(--text);
+            color: var(--white);
+            text-align: center;
+            padding: var(--space-md);
+        }
+        
+        footer p {
+            margin: 0;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: var(--space-lg) var(--container-padding);
+            }
+            .content-card {
+                padding: 1.5rem;
+            }
+            .nav-buttons {
+                flex-direction: column;
+            }
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-label="RBI Logo">
+                    <defs>
+                        <linearGradient id="bL" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0755C9"/>
+                            <stop offset="100%" stop-color="#123A9A"/>
+                        </linearGradient>
+                        <linearGradient id="bR" x1="100%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#19B8F2"/>
+                            <stop offset="100%" stop-color="#087FD1"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="url(#bL)"/>
+                    <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR)"/>
+                    <path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
+                    <text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
+                    <path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
+                    <path d="M335 335 Q295 338 256 360 L256 400 Q295 376 335 373 Z" fill="#102D68"/>
+                    <path d="M250 358 L250 404" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+                </svg>
+                <span>RUANG BELAJAR</span>
+            </a>
+            <a href="index.html" class="back-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+                Kembali ke Beranda
+            </a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Latihan Konsep Teorema Pythagoras</h1>
+            <p>Uji pemahaman dasar tentang teorema Pythagoras, ciri segitiga siku-siku, dan penerapannya. <strong>Perhatian:</strong> Kamu hanya dapat mengerjakan kuis ini satu kali.</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h2>Petunjuk Pengerjaan</h2>
+                <p>Pilihlah satu jawaban yang paling tepat untuk setiap soal di bawah ini. Setelah selesai, klik tombol <strong>"Periksa Jawaban"</strong>. Jawaban benar akan ditandai hijau dan jawaban salah ditandai merah. <em>Kamu tidak dapat mengubah jawaban setelah tombol ditekan.</em></p>
+                
+                <form id="quizForm">
+                    <!-- Soal 1 -->
+                    <div class="question-block" data-correct="B">
+                        <div class="question-title">
+                            <span class="question-number">1.</span>
+                            <span>Pernyataan yang tepat tentang Teorema Pythagoras adalah …</span>
+                        </div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q1" value="A"> A. Kuadrat sisi terpendek sama dengan jumlah kuadrat sisi lainnya.</label>
+                            <label class="option-label"><input type="radio" name="q1" value="B"> B. Kuadrat sisi terpanjang sama dengan jumlah kuadrat sisi-sisi lainnya.</label>
+                            <label class="option-label"><input type="radio" name="q1" value="C"> C. Jumlah semua sisi sama dengan kuadrat sisi terpanjang.</label>
+                            <label class="option-label"><input type="radio" name="q1" value="D"> D. Kuadrat sisi terpanjang sama dengan selisih kuadrat sisi-sisi lainnya.</label>
+                        </div>
+                    </div>
+
+                    <!-- Soal 2 -->
+                    <div class="question-block" data-correct="B">
+                        <div class="question-title">
+                            <span class="question-number">2.</span>
+                            <span>Segitiga siku-siku memiliki ciri utama, yaitu …</span>
+                        </div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q2" value="A"> A. Ketiga sudutnya sama besar</label>
+                            <label class="option-label"><input type="radio" name="q2" value="B"> B. Salah satu sudutnya 90°</label>
+                            <label class="option-label"><input type="radio" name="q2" value="C"> C. Semua sisinya sama panjang</label>
+                            <label class="option-label"><input type="radio" name="q2" value="D"> D. Memiliki dua sudut tumpul</label>
+                        </div>
+                    </div>
+
+                    <!-- Soal 3 -->
+                    <div class="question-block" data-correct="C">
+                        <div class="question-title">
+                            <span class="question-number">3.</span>
+                            <span>Pada sebuah segitiga siku-siku, sisi yang berada di depan sudut siku-siku disebut …</span>
+                        </div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q3" value="A"> A. Sisi alas</label>
+                            <label class="option-label"><input type="radio" name="q3" value="B"> B. Sisi tinggi</label>
+                            <label class="option-label"><input type="radio" name="q3" value="C"> C. Sisi miring atau hipotenusa</label>
+                            <label class="option-label"><input type="radio" name="q3" value="D"> D. Sisi tegak</label>
+                        </div>
+                    </div>
+
+                    <!-- Soal 4 -->
+                    <div class="question-block" data-correct="C">
+                        <div class="question-title">
+                            <span class="question-number">4.</span>
+                            <span>Perhatikan panjang sisi sebuah segitiga berikut: 6 cm, 8 cm, dan 10 cm. Segitiga tersebut merupakan …</span>
+                        </div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q4" value="A"> A. Segitiga lancip</label>
+                            <label class="option-label"><input type="radio" name="q4" value="B"> B. Segitiga tumpul</label>
+                            <label class="option-label"><input type="radio" name="q4" value="C"> C. Segitiga siku-siku</label>
+                            <label class="option-label"><input type="radio" name="q4" value="D"> D. Segitiga sama sisi</label>
+                        </div>
+                    </div>
+
+                    <!-- Soal 5 -->
+                    <div class="question-block" data-correct="C">
+                        <div class="question-title">
+                            <span class="question-number">5.</span>
+                            <span>Sebuah segitiga siku-siku mempunyai panjang alas 12 cm dan tinggi 5 cm. Luas segitiga tersebut adalah …</span>
+                        </div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q5" value="A"> A. 17 cm²</label>
+                            <label class="option-label"><input type="radio" name="q5" value="B"> B. 25 cm²</label>
+                            <label class="option-label"><input type="radio" name="q5" value="C"> C. 30 cm²</label>
+                            <label class="option-label"><input type="radio" name="q5" value="D"> D. 60 cm²</label>
+                        </div>
+                    </div>
+
+                    <!-- Soal 6 -->
+                    <div class="question-block" data-correct="C">
+                        <div class="question-title">
+                            <span class="question-number">6.</span>
+                            <span>Sebuah segitiga siku-siku memiliki panjang sisi siku-siku 6 cm dan 8 cm. Jika sisi miringnya 10 cm, keliling segitiga tersebut adalah …</span>
+                        </div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q6" value="A"> A. 18 cm</label>
+                            <label class="option-label"><input type="radio" name="q6" value="B"> B. 20 cm</label>
+                            <label class="option-label"><input type="radio" name="q6" value="C"> C. 24 cm</label>
+                            <label class="option-label"><input type="radio" name="q6" value="D"> D. 30 cm</label>
+                        </div>
+                    </div>
+
+                    <!-- Soal 7 -->
+                    <div class="question-block" data-correct="B">
+                        <div class="question-title">
+                            <span class="question-number">7.</span>
+                            <span>Rina ingin memasang tangga dari tanah ke dinding. Jarak kaki tangga dari dinding adalah 6 m, sedangkan ujung tangga mencapai dinding pada ketinggian 8 m. Panjang tangga yang diperlukan Rina adalah …</span>
+                        </div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q7" value="A"> A. 9 m</label>
+                            <label class="option-label"><input type="radio" name="q7" value="B"> B. 10 m</label>
+                            <label class="option-label"><input type="radio" name="q7" value="C"> C. 12 m</label>
+                            <label class="option-label"><input type="radio" name="q7" value="D"> D. 14 m</label>
+                        </div>
+                    </div>
+
+                    <!-- Soal 8 -->
+                    <div class="question-block" data-correct="A">
+                        <div class="question-title">
+                            <span class="question-number">8.</span>
+                            <span>Sebuah taman berbentuk persegi panjang memiliki panjang 12 m dan lebar 5 m. Jika seseorang berjalan secara diagonal dari satu sudut ke sudut yang berlawanan, jarak yang ditempuh adalah …</span>
+                        </div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q8" value="A"> A. 13 m</label>
+                            <label class="option-label"><input type="radio" name="q8" value="B"> B. 15 m</label>
+                            <label class="option-label"><input type="radio" name="q8" value="C"> C. 17 m</label>
+                            <label class="option-label"><input type="radio" name="q8" value="D"> D. 20 m</label>
+                        </div>
+                    </div>
+
+                    <!-- Soal 9 -->
+                    <div class="question-block" data-correct="A">
+                        <div class="question-title">
+                            <span class="question-number">9.</span>
+                            <span>Sebuah tiang setinggi 12 m ditopang oleh tali yang dipasang dari puncak tiang ke tanah. Jika ujung tali di tanah berjarak 5 m dari kaki tiang, panjang tali tersebut adalah …</span>
+                        </div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q9" value="A"> A. 13 m</label>
+                            <label class="option-label"><input type="radio" name="q9" value="B"> B. 15 m</label>
+                            <label class="option-label"><input type="radio" name="q9" value="C"> C. 17 m</label>
+                            <label class="option-label"><input type="radio" name="q9" value="D"> D. 19 m</label>
+                        </div>
+                    </div>
+
+                    <!-- Soal 10 -->
+                    <div class="question-block" data-correct="B">
+                        <div class="question-title">
+                            <span class="question-number">10.</span>
+                            <span>Pak Budi memiliki papan berbentuk persegi panjang dengan panjang 20 cm dan lebar 15 cm. Ia ingin mengetahui panjang diagonal papan untuk menentukan ukuran bingkai yang sesuai. Panjang diagonal papan tersebut adalah …</span>
+                        </div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q10" value="A"> A. 20 cm</label>
+                            <label class="option-label"><input type="radio" name="q10" value="B"> B. 25 cm</label>
+                            <label class="option-label"><input type="radio" name="q10" value="C"> C. 30 cm</label>
+                            <label class="option-label"><input type="radio" name="q10" value="D"> D. 35 cm</label>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="nav-buttons" id="actionButtons">
+                    <a href="index.html" class="nav-btn nav-btn-secondary">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                        </svg>
+                        Kembali ke Beranda
+                    </a>
+                    <button type="button" class="nav-btn nav-btn-primary" id="checkBtn" onclick="checkAnswers()">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        Periksa Jawaban
+                    </button>
+                </div>
+
+                <div id="resultBox" class="result-box">
+                    <h3>Hasil Pengerjaan</h3>
+                    <div class="result-score" id="scoreDisplay">0 / 10</div>
+                    <p id="messageDisplay"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Ruang Belajar · Platform pembelajaran interaktif</p>
+    </footer>
+
+    <script>
+        // Kunci penyimpanan di localStorage (versi berbeda dari soal penerapan)
+        const STORAGE_KEY_DONE = 'rbi_pythagoras_basic_done';
+        const STORAGE_KEY_SCORE = 'rbi_pythagoras_basic_score';
+
+        // Saat halaman dimuat, cek apakah sudah pernah mengerjakan
+        document.addEventListener('DOMContentLoaded', function() {
+            const isDone = localStorage.getItem(STORAGE_KEY_DONE);
+            if (isDone === 'true') {
+                lockQuizInterface();
+                const savedScore = localStorage.getItem(STORAGE_KEY_SCORE) || 0;
+                showResult(savedScore, true);
+            }
+        });
+
+        function checkAnswers() {
+            const questions = document.querySelectorAll('.question-block');
+            let score = 0;
+            let allAnswered = true;
+
+            questions.forEach(q => {
+                const correct = q.dataset.correct;
+                const selected = q.querySelector('input[type="radio"]:checked');
+                const labels = q.querySelectorAll('.option-label');
+                
+                if (!selected) {
+                    allAnswered = false;
+                }
+
+                // Tandai jawaban yang benar
+                labels.forEach(label => {
+                    label.classList.remove('correct', 'incorrect');
+                    const input = label.querySelector('input');
+                    if (input.value === correct) {
+                        label.classList.add('correct');
+                    }
+                });
+
+                // Evaluasi jawaban pengguna
+                if (selected) {
+                    if (selected.value === correct) {
+                        score++;
+                    } else {
+                        selected.parentElement.classList.add('incorrect');
+                    }
+                }
+            });
+
+            // Konfirmasi jika ada yang belum dijawab
+            if (!allAnswered) {
+                if(!confirm("Peringatan: Ada soal yang belum kamu jawab. Yakin ingin mengumpulkan jawaban sekarang?")) {
+                    return;
+                }
+            }
+
+            // Simpan status ke localStorage agar tidak bisa diulang
+            localStorage.setItem(STORAGE_KEY_DONE, 'true');
+            localStorage.setItem(STORAGE_KEY_SCORE, score);
+
+            // Kunci antarmuka dan tampilkan hasil
+            lockQuizInterface();
+            showResult(score, false);
+        }
+
+        function lockQuizInterface() {
+            // Nonaktifkan semua input radio
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.disabled = true;
+            });
+            
+            // Sembunyikan tombol periksa jawaban
+            const checkBtn = document.getElementById('checkBtn');
+            if (checkBtn) {
+                checkBtn.style.display = 'none';
+            }
+        }
+
+        function showResult(score, isReload) {
+            const resultBox = document.getElementById('resultBox');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const messageDisplay = document.getElementById('messageDisplay');
+
+            scoreDisplay.textContent = score + " / 10";
+            
+            if (isReload) {
+                messageDisplay.textContent = "⚠️ Anda telah menyelesaikan kuis ini sebelumnya. Berikut adalah hasil terakhir Anda. Jawaban tidak dapat diubah.";
+            } else {
+                if (score === 10) {
+                    messageDisplay.textContent = "🏆 Sempurna! Kamu menguasai konsep dasar Teorema Pythagoras dengan sangat baik!";
+                } else if (score >= 8) {
+                    messageDisplay.textContent = "🌟 Hebat! Pemahaman konsepmu sangat baik, pertahankan!";
+                } else if (score >= 5) {
+                    messageDisplay.textContent = "👍 Cukup baik! Terus berlatih untuk hasil yang lebih maksimal.";
+                } else {
+                    messageDisplay.textContent = "💪 Jangan menyerah! Pelajari kembali konsep dasarnya dan coba pahami lebih dalam.";
+                }
+            }
+            
+            resultBox.classList.add('show');
+            
+            // Scroll ke hasil hanya jika baru saja mengerjakan
+            if (!isReload) {
+                resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    </script>
+</body>
+</html>
