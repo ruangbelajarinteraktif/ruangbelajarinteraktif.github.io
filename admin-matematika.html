@@ -329,93 +329,119 @@
         }
 
         function simpanNilai() {
-            const nama = document.getElementById('namaSiswa').value.trim();
-            const kelas = document.getElementById('kelasSiswa').value;
-            
-            const uh1 = document.getElementById('uh1').value === "" ? 0 : Number(document.getElementById('uh1').value);
-            const uh2 = document.getElementById('uh2').value === "" ? 0 : Number(document.getElementById('uh2').value);
-            const uh3 = document.getElementById('uh3').value === "" ? 0 : Number(document.getElementById('uh3').value);
-            const sikap = document.getElementById('sikap').value === "" ? 0 : Number(document.getElementById('sikap').value);
-            const partisipasi = document.getElementById('partisipasi').value === "" ? 0 : Number(document.getElementById('partisipasi').value);
-            const problemSolving = document.getElementById('problemSolving').value === "" ? 0 : Number(document.getElementById('problemSolving').value);
+    const nis = document.getElementById('nisSiswa').value.trim();
+    const nama = document.getElementById('namaSiswa').value.trim();
+    const kelas = document.getElementById('kelasSiswa').value;
+    
+    const uh1 = document.getElementById('uh1').value === "" ? null : Number(document.getElementById('uh1').value);
+    const uh2 = document.getElementById('uh2').value === "" ? null : Number(document.getElementById('uh2').value);
+    const uh3 = document.getElementById('uh3').value === "" ? null : Number(document.getElementById('uh3').value);
+    const sikap = document.getElementById('sikap').value === "" ? null : Number(document.getElementById('sikap').value);
+    const partisipasi = document.getElementById('partisipasi').value === "" ? null : Number(document.getElementById('partisipasi').value);
+    const problemSolving = document.getElementById('problemSolving').value === "" ? null : Number(document.getElementById('problemSolving').value);
 
-            if (nama === "" || kelas === "") {
-                alert("⚠️ Nama dan Kelas wajib diisi!");
-                return;
-            }
+    if (nama === "" || kelas === "") {
+        alert("⚠️ Nama dan Kelas wajib diisi!");
+        return;
+    }
 
-            let konfirmasi = true;
-            if (uh1 === 0 && uh2 === 0 && uh3 === 0) {
-                konfirmasi = confirm("⚠️ Semua nilai kognitif (UH 1, 2, 3) kosong dan akan disimpan sebagai 0. Yakin ingin melanjutkan?");
-            }
+    if (uh1 === null && uh2 === null && uh3 === null && 
+        sikap === null && partisipasi === null && problemSolving === null) {
+        alert("⚠️ Minimal isi 1 nilai sebelum menyimpan!");
+        return;
+    }
 
-            if (konfirmasi) {
-                const btn = document.querySelector('#modalInputNilai .btn-primary');
-                const teksAsli = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Menyimpan...';
-                btn.disabled = true;
+    const btn = document.querySelector('#modalInputNilai .btn-primary');
+    const teksAsli = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Menyimpan...';
+    btn.disabled = true;
 
-                const dataPayload = { nama: nama, kelas: kelas, uh1: uh1, uh2: uh2, uh3: uh3, sikap: sikap, partisipasi: partisipasi, problemSolving: problemSolving };
+    const dataPayload = { nama: nama, kelas: kelas };
+    if (nis) dataPayload.nis = nis;
+    if (uh1 !== null) dataPayload.uh1 = uh1;
+    if (uh2 !== null) dataPayload.uh2 = uh2;
+    if (uh3 !== null) dataPayload.uh3 = uh3;
+    if (sikap !== null) dataPayload.sikap = sikap;
+    if (partisipasi !== null) dataPayload.partisipasi = partisipasi;
+    if (problemSolving !== null) dataPayload.problemSolving = problemSolving;
 
-                fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dataPayload)
-                }).then(() => {
-                    alert("✅ Data berhasil dikirim ke Database! Silakan klik Refresh Data.");
-                    document.getElementById('formInputNilai').reset();
-                    document.getElementById('infoSiswa').innerHTML = '';
-                    
-                    const modalEl = document.getElementById('modalInputNilai');
-                    const modal = bootstrap.Modal.getInstance(modalEl);
-                    if (modal) modal.hide();
-                    
-                    btn.innerHTML = teksAsli;
-                    btn.disabled = false;
-                }).catch(err => {
-                    alert("❌ Gagal menyimpan data.");
-                    btn.innerHTML = teksAsli;
-                    btn.disabled = false;
-                });
-            }
-        }
+    console.log('Mengirim data:', dataPayload);
+    console.log('URL:', APPS_SCRIPT_URL);
+
+    fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(dataPayload)
+    }).then(response => {
+        console.log('Response status:', response.status);
+        alert("✅ Data berhasil dikirim! Silakan klik Refresh Data.");
+        document.getElementById('formInputNilai').reset();
+        document.getElementById('infoSiswa').innerHTML = '';
+        
+        const modalEl = document.getElementById('modalInputNilai');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+        
+        btn.innerHTML = teksAsli;
+        btn.disabled = false;
+        
+        setTimeout(() => fetchData(), 1500);
+    }).catch(err => {
+        console.error('Error:', err);
+        alert("❌ Gagal menyimpan data: " + err.message);
+        btn.innerHTML = teksAsli;
+        btn.disabled = false;
+    });
+}
 
         function cekDataSiswa() {
-            const nama = document.getElementById('namaSiswa').value.trim();
-            const kelas = document.getElementById('kelasSiswa').value;
-            const infoDiv = document.getElementById('infoSiswa');
-            const loadingDiv = document.getElementById('loadingData');
+    const nama = document.getElementById('namaSiswa').value.trim().toUpperCase();
+    const kelas = document.getElementById('kelasSiswa').value;
+    const infoDiv = document.getElementById('infoSiswa');
+    const loadingDiv = document.getElementById('loadingData');
+    
+    if (nama === '' || kelas === '') { 
+        infoDiv.innerHTML = ''; 
+        return; 
+    }
+    
+    loadingDiv.classList.remove('d-none');
+    infoDiv.innerHTML = '';
+    
+    // Cari siswa dengan partial match (tidak harus exact)
+    fetch(APPS_SCRIPT_URL + '?action=cariSiswa&nama=' + encodeURIComponent(nama) + '&kelas=' + encodeURIComponent(kelas), { method: 'GET' })
+    .then(response => response.json())
+    .then(data => {
+        loadingDiv.classList.add('d-none');
+        
+        if (data.found) {
+            // Jika ditemukan, tampilkan info dan auto-fill
+            infoDiv.innerHTML = `<div class="alert alert-success py-2 mb-0"><i class="fas fa-check-circle me-1"></i> Siswa ditemukan: <strong>${data.namaLengkap}</strong><br><small>Nilai Akhir: <strong>${data.nilaiAkhir}</strong> (${data.predikat})</small></div>`;
             
-            if (nama === '' || kelas === '') { infoDiv.innerHTML = ''; return; }
+            // Auto-fill nama lengkap dari database
+            document.getElementById('namaSiswa').value = data.namaLengkap;
             
-            loadingDiv.classList.remove('d-none');
-            infoDiv.innerHTML = '';
-            
-            fetch(APPS_SCRIPT_URL + '?action=getDataSiswa&nama=' + encodeURIComponent(nama) + '&kelas=' + encodeURIComponent(kelas), { method: 'GET' })
-            .then(response => response.json())
-            .then(data => {
-                loadingDiv.classList.add('d-none');
-                if (data.found) {
-                    infoDiv.innerHTML = `<div class="alert alert-success py-2 mb-0"><i class="fas fa-check-circle me-1"></i> Siswa ditemukan! Nilai yang sudah ada akan otomatis terisi.<br><small>Nilai Akhir: <strong>${data.nilaiAkhir}</strong> (${data.predikat})</small></div>`;
-                    if (data.uh1 > 0) document.getElementById('uh1').value = data.uh1;
-                    if (data.uh2 > 0) document.getElementById('uh2').value = data.uh2;
-                    if (data.uh3 > 0) document.getElementById('uh3').value = data.uh3;
-                    if (data.sikap > 0) document.getElementById('sikap').value = data.sikap;
-                    if (data.partisipasi > 0) document.getElementById('partisipasi').value = data.partisipasi;
-                    if (data.problemSolving > 0) document.getElementById('problemSolving').value = data.problemSolving;
-                } else {
-                    infoDiv.innerHTML = `<div class="alert alert-info py-2 mb-0"><i class="fas fa-info-circle me-1"></i> Siswa baru - Data akan ditambahkan ke database</div>`;
-                    document.getElementById('formInputNilai').reset();
-                    document.getElementById('namaSiswa').value = nama;
-                    document.getElementById('kelasSiswa').value = kelas;
-                }
-            })
-            .catch(error => {
-                loadingDiv.classList.add('d-none');
-                infoDiv.innerHTML = '<div class="alert alert-warning py-2 mb-0">Gagal memuat data siswa</div>';
-            });
+            // Auto-fill nilai yang sudah ada
+            if (data.uh1 > 0) document.getElementById('uh1').value = data.uh1;
+            if (data.uh2 > 0) document.getElementById('uh2').value = data.uh2;
+            if (data.uh3 > 0) document.getElementById('uh3').value = data.uh3;
+            if (data.sikap > 0) document.getElementById('sikap').value = data.sikap;
+            if (data.partisipasi > 0) document.getElementById('partisipasi').value = data.partisipasi;
+            if (data.problemSolving > 0) document.getElementById('problemSolving').value = data.problemSolving;
+        } else if (data.matches && data.matches.length > 0) {
+            // Jika ada beberapa kemungkinan, tampilkan list
+            let matchList = data.matches.map(m => `<li>${m.nama}</li>`).join('');
+            infoDiv.innerHTML = `<div class="alert alert-warning py-2 mb-0"><i class="fas fa-exclamation-triangle me-1"></i> Ditemukan ${data.matches.length} siswa mirip:<ul class="mb-0 mt-1">${matchList}</ul><small>Silakan ketik nama lengkap atau pilih dari list.</small></div>`;
+        } else {
+            // Siswa baru
+            infoDiv.innerHTML = `<div class="alert alert-info py-2 mb-0"><i class="fas fa-info-circle me-1"></i> Siswa baru - Data akan ditambahkan ke database</div>`;
         }
+    })
+    .catch(error => {
+        loadingDiv.classList.add('d-none');
+        infoDiv.innerHTML = '<div class="alert alert-warning py-2 mb-0">Gagal memuat data siswa</div>';
+    });
+}
 
         document.addEventListener('DOMContentLoaded', function() {
             const namaInput = document.getElementById('namaSiswa');
