@@ -79,8 +79,11 @@
             <span class="navbar-text text-white d-none d-md-block">DASHBOARD PENILAIAN INFORMATIKA KELAS 8</span>
             <div class="d-flex gap-2">
                 <!-- PERBAIKAN 1: data-bs-target disesuaikan dengan ID modal yang benar -->
-                <button class="btn btn-light btn-sm fw-bold text-primary" data-bs-toggle="modal" data-bs-target="#modalInputNilai">
-                    <i class="fas fa-plus-circle me-1"></i> Tambah Nilai Manual
+                <button class="btn btn-outline-light btn-sm" onclick="backToDashboard()">
+                    <i class="fas fa-arrow-left me-1"></i> Dashboard
+                </button>
+				<button class="btn btn-light btn-sm fw-bold text-primary" data-bs-toggle="modal" data-bs-target="#modalInputNilai">
+                    <i class="fas fa-plus-circle me-1"></i> Tambah Nilai
                 </button>
                 <button class="btn btn-danger btn-sm fw-bold text-white" onclick="logout()">
                     <i class="fas fa-sign-out-alt me-1"></i> Logout
@@ -157,7 +160,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Input Nilai Manual</h5>
+                    <h5 class="modal-title">Input Nilai</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -219,9 +222,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // ⚠️ PENTING: Ganti dengan URL Web App Apps Script Anda yang sebenarnya
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwcEp13gANd-o8SKTEOGeR2KP57wmKDxJ1BCP9kfJnQklXO_KwxSJr6A_qdFM4dmx4q/exec';
-        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRDT6utre3ZI2vX429X5KPvwTAF6IVEGcPQ1BCH2Ij1GIf7rTBP5UivIT9oxQcz5H8RD5PH24fRab_z/pub?output=csv';
+        // URL Web App Apps Script yang aktif.
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwuHdXuh8eAaLP3j2wIPAwK-wNU0aa3gYt_jHOjp-kmKbb0bFXMlFvFbR3dwBzBJYIG/exec';
+
+        // Nilai manual ada di Sheet1, sedangkan beberapa input Apps Script tersimpan
+        // di DataNilaiMatematika. Dashboard membaca dan menyatukan kedua tab ini.
+        const SHEET_NAMES = ['Informatika'];
+        const SHEET_CSV_URL = (sheetName) =>
+            'https://docs.google.com/spreadsheets/d/1YvsYGvJpwBapzBiJKOt2yoS73HPWL7BQ0pD21kjcAMc/gviz/tq?tqx=out:csv&sheet=' + encodeURIComponent(sheetName);
         
         let allData = [];
 
