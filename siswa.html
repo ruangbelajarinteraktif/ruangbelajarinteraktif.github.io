@@ -145,40 +145,40 @@
             color: #333;
         }
         
-        /* --- STYLE TABEL BARU (LENGKUNG & GRADASI) --- */
+        /* --- STYLE TABEL BARU (PUTIH DENGAN GARIS HITAM) --- */
         .nilai-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
             margin-bottom: 25px;
             font-size: 0.95rem;
-            border: 2px solid #4facfe;
-            border-radius: 16px;
+            border: 2px solid #000000; /* Garis luar hitam */
+            border-radius: 16px; /* Sudut lengkung */
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.1);
+            background-color: #ffffff;
         }
         .nilai-table th {
-            background: linear-gradient(135deg, #4facfe 0%, #38ef7d 100%);
-            color: white;
+            background-color: #ffffff; /* Latar belakang putih */
+            color: #000000; /* Teks hitam */
             padding: 12px 10px;
             text-align: center;
-            font-weight: 600;
-            border-right: 1px solid rgba(255, 255, 255, 0.3);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            font-weight: 700;
+            border-right: 1px solid #000000; /* Garis kanan hitam */
+            border-bottom: 2px solid #000000; /* Garis bawah hitam */
         }
         .nilai-table th:last-child {
             border-right: none;
         }
         .nilai-table thead tr:last-child th {
-            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+            border-bottom: 2px solid #000000;
         }
         .nilai-table td {
             padding: 12px 10px;
-            border-right: 1px solid #e0f2fe;
-            border-bottom: 1px solid #e0f2fe;
+            border-right: 1px solid #000000; /* Garis kanan hitam */
+            border-bottom: 1px solid #000000; /* Garis bawah hitam */
             text-align: center;
-            color: #333;
-            background: white;
+            color: #000000; /* Teks hitam */
+            background-color: #ffffff;
         }
         .nilai-table td:last-child {
             border-right: none;
@@ -187,7 +187,7 @@
             border-bottom: none;
         }
         .nilai-table tbody tr:hover td {
-            background-color: #f0fbff;
+            background-color: #f8f9fa; /* Hover abu-abu sangat muda */
             transition: background-color 0.2s;
         }
         /* --------------------------------------------- */
@@ -195,16 +195,7 @@
         .nilai-akhir {
             font-size: 1.8rem;
             font-weight: 700;
-        }
-        .nilai-akhir.informatika { 
-            background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .nilai-akhir.matematika { 
-            background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #000000; /* Hitam agar terbaca jelas di latar putih */
         }
         .predikat {
             padding: 6px 16px;
@@ -293,22 +284,27 @@
             .nilai-table {
                 font-size: 0.85rem;
                 margin-bottom: 15px;
-                border: 2px solid #4facfe !important;
+                border: 2px solid #000000 !important;
                 border-radius: 16px !important;
                 overflow: hidden;
+                background-color: #ffffff !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
             .nilai-table th {
-                background: linear-gradient(135deg, #4facfe 0%, #38ef7d 100%) !important;
-                color: white !important;
+                background-color: #ffffff !important;
+                color: #000000 !important;
                 padding: 6px 8px;
                 font-size: 0.85rem;
+                border-right: 1px solid #000000 !important;
+                border-bottom: 2px solid #000000 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
             .nilai-table td {
                 padding: 5px 8px;
+                border-right: 1px solid #000000 !important;
+                border-bottom: 1px solid #000000 !important;
             }
             .section-title {
                 font-size: 1rem;
@@ -459,7 +455,7 @@
                                 <td id="infSikap">0</td>
                                 <td id="infAktif">0</td>
                                 <td id="infProyek">0</td>
-                                <td><div class="nilai-akhir informatika" id="infNilaiAkhir">0</div></td>
+                                <td><div class="nilai-akhir" id="infNilaiAkhir">0</div></td>
                                 <td><span class="predikat" id="infPredikat">-</span></td>
                             </tr>
                         </tbody>
@@ -494,7 +490,7 @@
                                 <td id="matSikap">0</td>
                                 <td id="matPartisipasi">0</td>
                                 <td id="matProblemSolving">0</td>
-                                <td><div class="nilai-akhir matematika" id="matNilaiAkhir">0</div></td>
+                                <td><div class="nilai-akhir" id="matNilaiAkhir">0</div></td>
                                 <td><span class="predikat" id="matPredikat">-</span></td>
                             </tr>
                         </tbody>
