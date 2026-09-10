@@ -417,49 +417,98 @@
         }
 
         function cekDataSiswa() {
-            const nama = document.getElementById('namaSiswa').value.trim().toUpperCase();
-            const kelas = document.getElementById('kelasSiswa').value;
-            const infoDiv = document.getElementById('infoSiswa');
-            const loadingDiv = document.getElementById('loadingData');
+    const nama = document.getElementById('namaSiswa').value.trim().toUpperCase();
+    const kelas = document.getElementById('kelasSiswa').value;
+    const infoDiv = document.getElementById('infoSiswa');
+    const loadingDiv = document.getElementById('loadingData');
+    
+    if (nama === '' || kelas === '') { 
+        infoDiv.innerHTML = ''; 
+        return; 
+    }
+    
+    loadingDiv.classList.remove('d-none');
+    infoDiv.innerHTML = '';
+    
+    fetch(APPS_SCRIPT_URL + '?action=cariSiswa&nama=' + encodeURIComponent(nama) + '&kelas=' + encodeURIComponent(kelas))
+    .then(response => response.json())
+    .then(data => {
+        loadingDiv.classList.add('d-none');
+        
+        if (data.found) {
+            const namaLengkap = data.namaLengkap || data.nama;
             
-            if (nama === '' || kelas === '') { 
-                infoDiv.innerHTML = ''; 
-                return; 
+            // Auto-fill NIS
+            if (data.nis) document.getElementById('nisSiswa').value = data.nis;
+            document.getElementById('namaSiswa').value = namaLengkap;
+            
+            // Cek apakah ada nilai yang sudah terisi
+            const hasValues = (data.uh1 > 0 || data.uh2 > 0 || data.uh3 > 0 || 
+                              data.sikap > 0 || data.partisipasi > 0 || data.problemSolving > 0);
+            
+            if (hasValues) {
+                // Tampilkan info dengan detail nilai yang sudah ada
+                let nilaiYangAda = [];
+                if (data.uh1 > 0) nilaiYangAda.push(`UH1: ${data.uh1}`);
+                if (data.uh2 > 0) nilaiYangAda.push(`UH2: ${data.uh2}`);
+                if (data.uh3 > 0) nilaiYangAda.push(`UH3: ${data.uh3}`);
+                if (data.sikap > 0) nilaiYangAda.push(`Sikap: ${data.sikap}`);
+                if (data.partisipasi > 0) nilaiYangAda.push(`Partisipasi: ${data.partisipasi}`);
+                if (data.problemSolving > 0) nilaiYangAda.push(`PS: ${data.problemSolving}`);
+                
+                infoDiv.innerHTML = `
+                    <div class="alert alert-success py-2 mb-0">
+                        <i class="fas fa-check-circle me-1"></i> 
+                        <strong>Siswa ditemukan: ${namaLengkap}</strong><br>
+                        <small>
+                            Nilai yang sudah ada: ${nilaiYangAda.join(', ')}<br>
+                            Nilai Akhir: <strong>${data.nilaiAkhir}</strong> (${data.predikat})
+                        </small>
+                    </div>`;
+                
+                // Auto-fill nilai yang sudah ada
+                if (data.uh1 > 0) document.getElementById('uh1').value = data.uh1;
+                if (data.uh2 > 0) document.getElementById('uh2').value = data.uh2;
+                if (data.uh3 > 0) document.getElementById('uh3').value = data.uh3;
+                if (data.sikap > 0) document.getElementById('sikap').value = data.sikap;
+                if (data.partisipasi > 0) document.getElementById('partisipasi').value = data.partisipasi;
+                if (data.problemSolving > 0) document.getElementById('problemSolving').value = data.problemSolving;
+            } else {
+                // Belum ada nilai sama sekali
+                infoDiv.innerHTML = `
+                    <div class="alert alert-info py-2 mb-0">
+                        <i class="fas fa-info-circle me-1"></i> 
+                        <strong>Siswa ditemukan: ${namaLengkap}</strong><br>
+                        <small>Belum ada nilai yang diinput. Silakan masukkan nilai.</small>
+                    </div>`;
             }
             
-            loadingDiv.classList.remove('d-none');
-            infoDiv.innerHTML = '';
-            
-            fetch(APPS_SCRIPT_URL + '?action=cariSiswa&nama=' + encodeURIComponent(nama) + '&kelas=' + encodeURIComponent(kelas))
-            .then(response => response.json())
-            .then(data => {
-                loadingDiv.classList.add('d-none');
-                
-                if (data.found) {
-                    const namaLengkap = data.namaLengkap || data.nama;
-                    if (data.nis) document.getElementById('nisSiswa').value = data.nis;
-                    document.getElementById('namaSiswa').value = namaLengkap;
-                    
-                    infoDiv.innerHTML = `<div class="alert alert-success py-2 mb-0"><i class="fas fa-check-circle me-1"></i> Siswa ditemukan: <strong>${namaLengkap}</strong><br><small>Nilai Akhir: <strong>${data.nilaiAkhir}</strong> (${data.predikat})</small></div>`;
-                    
-                    if (data.uh1 > 0) document.getElementById('uh1').value = data.uh1;
-                    if (data.uh2 > 0) document.getElementById('uh2').value = data.uh2;
-                    if (data.uh3 > 0) document.getElementById('uh3').value = data.uh3;
-                    if (data.sikap > 0) document.getElementById('sikap').value = data.sikap;
-                    if (data.partisipasi > 0) document.getElementById('partisipasi').value = data.partisipasi;
-                    if (data.problemSolving > 0) document.getElementById('problemSolving').value = data.problemSolving;
-                } else if (data.matches && data.matches.length > 0) {
-                    let matchList = data.matches.map(m => `<li>${m.nama}</li>`).join('');
-                    infoDiv.innerHTML = `<div class="alert alert-warning py-2 mb-0"><i class="fas fa-exclamation-triangle me-1"></i> Ditemukan ${data.matches.length} siswa mirip:<ul class="mb-0 mt-1">${matchList}</ul><small>Ketik nama lebih lengkap.</small></div>`;
-                } else {
-                    infoDiv.innerHTML = `<div class="alert alert-info py-2 mb-0"><i class="fas fa-info-circle me-1"></i> Siswa baru - Data akan ditambahkan ke database</div>`;
-                }
-            })
-            .catch(error => {
-                loadingDiv.classList.add('d-none');
-                infoDiv.innerHTML = '<div class="alert alert-warning py-2 mb-0">Gagal memuat data siswa</div>';
-            });
+        } else if (data.matches && data.matches.length > 0) {
+            // Ada beberapa kemungkinan nama
+            let matchList = data.matches.map(m => `<li>${m.nama}</li>`).join('');
+            infoDiv.innerHTML = `
+                <div class="alert alert-warning py-2 mb-0">
+                    <i class="fas fa-exclamation-triangle me-1"></i> 
+                    Ditemukan ${data.matches.length} siswa mirip:<br>
+                    <ul class="mb-0 mt-1">${matchList}</ul>
+                    <small>Ketik nama lebih lengkap atau pilih dari daftar.</small>
+                </div>`;
+        } else {
+            // Siswa baru
+            infoDiv.innerHTML = `
+                <div class="alert alert-info py-2 mb-0">
+                    <i class="fas fa-user-plus me-1"></i> 
+                    <strong>Siswa baru</strong><br>
+                    <small>Data akan ditambahkan ke database</small>
+                </div>`;
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        loadingDiv.classList.add('d-none');
+        infoDiv.innerHTML = '<div class="alert alert-warning py-2 mb-0">Gagal memuat data siswa</div>';
+    });
+}
 
         document.addEventListener('DOMContentLoaded', function() {
             const namaInput = document.getElementById('namaSiswa');
