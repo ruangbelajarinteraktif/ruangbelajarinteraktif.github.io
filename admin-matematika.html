@@ -76,8 +76,7 @@
                 </svg>
                 Ruang Belajar Interaktif
             </a>
-            <span class="navbar-text text-white d-none d-md-block ms-3">DASHBOARD PENILAIAN MATEMATIKA KELAS 8</span>
-            
+            <span class="navbar-text text-white d-none d-md-block">DASHBOARD PENILAIAN MATEMATIKA KELAS 8</span>
             <div class="d-flex gap-2 align-items-center ms-auto">
                 <button class="btn btn-outline-light btn-sm" onclick="backToDashboard()">
                     <i class="fas fa-arrow-left me-1"></i> Dashboard
@@ -172,7 +171,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Input Nilai Matematika Manual</h5>
+                    <h5 class="modal-title">Input Nilai</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -241,7 +240,7 @@
 
         // Nilai manual ada di Sheet1, sedangkan beberapa input Apps Script tersimpan
         // di DataNilaiMatematika. Dashboard membaca dan menyatukan kedua tab ini.
-        const SHEET_NAMES = ['Sheet1', 'DataNilaiMatematika'];
+        const SHEET_NAMES = ['Matematika'];
         const SHEET_CSV_URL = (sheetName) =>
             'https://docs.google.com/spreadsheets/d/1YvsYGvJpwBapzBiJKOt2yoS73HPWL7BQ0pD21kjcAMc/gviz/tq?tqx=out:csv&sheet=' + encodeURIComponent(sheetName);
         
