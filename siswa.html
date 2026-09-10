@@ -29,7 +29,7 @@
         .graduation-icon {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4facfe 0%, #38ef7d 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -39,24 +39,26 @@
             font-size: 40px;
         }
         .form-control-lg {
-            border-radius: 10px;
+            border-radius: 12px;
             border: 2px solid #e0e0e0;
         }
         .form-control-lg:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            border-color: #4facfe;
+            box-shadow: 0 0 0 0.2rem rgba(79, 172, 254, 0.25);
         }
         .btn-search {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4facfe 0%, #38ef7d 100%);
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 12px 30px;
             font-weight: 600;
+            color: white;
             transition: transform 0.2s;
         }
         .btn-search:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(56, 239, 125, 0.4);
+            color: white;
         }
         .subject-choice {
             display: none;
@@ -67,8 +69,8 @@
             width: 100%;
             padding: 20px;
             margin: 10px 0;
-            border: 3px solid #e0e0e0;
-            border-radius: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
             background: white;
             cursor: pointer;
             transition: all 0.3s;
@@ -76,39 +78,20 @@
         }
         .subject-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        .subject-btn.informatika {
-            border-left-color: #667eea;
-        }
-        .subject-btn.informatika:hover {
-            border-color: #667eea;
-            background: linear-gradient(135deg, rgba(102,126,234,0.05) 0%, rgba(118,75,162,0.05) 100%);
-        }
-        .subject-btn.matematika {
-            border-left-color: #11998e;
-        }
-        .subject-btn.matematika:hover {
-            border-color: #11998e;
-            background: linear-gradient(135deg, rgba(17,153,142,0.05) 0%, rgba(56,239,125,0.05) 100%);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #4facfe;
         }
         .subject-icon {
             width: 60px;
             height: 60px;
-            border-radius: 12px;
+            border-radius: 14px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             font-size: 28px;
             margin-right: 15px;
             vertical-align: middle;
-        }
-        .subject-btn.informatika .subject-icon {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        .subject-btn.matematika .subject-icon {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            background: linear-gradient(135deg, #4facfe 0%, #38ef7d 100%);
             color: white;
         }
         .subject-title {
@@ -116,6 +99,7 @@
             font-weight: 700;
             display: block;
             margin-bottom: 5px;
+            color: #1e3c72;
         }
         .subject-desc {
             color: #666;
@@ -123,23 +107,26 @@
         }
         .rapor-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 30px;
             margin: 30px auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             display: none;
             max-width: 900px;
         }
         .rapor-header {
             text-align: center;
-            border-bottom: 3px solid #1e3c72;
             padding-bottom: 15px;
             margin-bottom: 20px;
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(135deg, #4facfe 0%, #38ef7d 100%) 1;
         }
         .rapor-title {
             font-size: 1.8rem;
             font-weight: 700;
-            color: #1e3c72;
+            background: linear-gradient(135deg, #1e3c72 0%, #4facfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin: 0;
         }
         .rapor-subtitle {
@@ -147,71 +134,98 @@
             font-size: 0.95rem;
         }
         .info-siswa {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #f0fbff 0%, #f0fff4 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #e0f2fe;
         }
         .info-siswa .row > div {
             margin-bottom: 5px;
+            color: #333;
         }
+        
+        /* --- STYLE TABEL BARU (LENGKUNG & GRADASI) --- */
         .nilai-table {
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            border: 2px solid #4facfe;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.1);
         }
         .nilai-table th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4facfe 0%, #38ef7d 100%);
             color: white;
-            padding: 10px;
-            text-align: left;
+            padding: 12px 10px;
+            text-align: center;
             font-weight: 600;
+            border-right: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .nilai-table th:last-child {
+            border-right: none;
+        }
+        .nilai-table thead tr:last-child th {
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
         }
         .nilai-table td {
-            padding: 8px 10px;
-            border-bottom: 1px solid #dee2e6;
+            padding: 12px 10px;
+            border-right: 1px solid #e0f2fe;
+            border-bottom: 1px solid #e0f2fe;
+            text-align: center;
+            color: #333;
+            background: white;
         }
-        .nilai-table tr:last-child td {
+        .nilai-table td:last-child {
+            border-right: none;
+        }
+        .nilai-table tbody tr:last-child td {
             border-bottom: none;
         }
-        .nilai-box {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 12px;
-            margin: 8px 0;
+        .nilai-table tbody tr:hover td {
+            background-color: #f0fbff;
+            transition: background-color 0.2s;
         }
+        /* --------------------------------------------- */
+
         .nilai-akhir {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
         }
-        .nilai-akhir.informatika { color: #667eea; }
-        .nilai-akhir.matematika { color: #11998e; }
+        .nilai-akhir.informatika { 
+            background: linear-gradient(135deg, #4facfe 0%, #38ef7d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nilai-akhir.matematika { 
+            background: linear-gradient(135deg, #4facfe 0%, #38ef7d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
         .predikat {
-            padding: 8px 20px;
-            border-radius: 25px;
+            padding: 6px 16px;
+            border-radius: 20px;
             font-weight: 600;
             display: inline-block;
-            margin-top: 10px;
+            font-size: 0.9rem;
         }
         .predikat.sangat-baik { background: #38ef7d; color: white; }
         .predikat.baik { background: #4facfe; color: white; }
-        .predikat.cukup { background: #fee140; color: #333; }
-        .predikat.perlu-bimbingan { background: #fa709a; color: white; }
+        .predikat.cukup { background: #fde047; color: #333; }
+        .predikat.perlu-bimbingan { background: #f87171; color: white; }
+        
         .section-title {
             font-size: 1.2rem;
             font-weight: 700;
-            margin: 20px 0 15px 0;
+            margin: 25px 0 15px 0;
             padding-bottom: 8px;
-            border-bottom: 2px solid #dee2e6;
-        }
-        .section-title.informatika {
-            color: #667eea;
-            border-color: #667eea;
-        }
-        .section-title.matematika {
-            color: #11998e;
-            border-color: #11998e;
+            color: #1e3c72;
+            border-bottom: 3px solid #4facfe;
+            display: inline-block;
         }
         .loading {
             display: none;
@@ -224,6 +238,15 @@
         }
         .back-btn, .print-btn {
             margin: 5px;
+            border-radius: 10px;
+            padding: 8px 20px;
+        }
+        .print-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #38ef7d 100%);
+            border: none;
+        }
+        .print-btn:hover {
+            background: linear-gradient(135deg, #3b9ddb 0%, #2dd46a 100%);
         }
         .no-print {
             /* Default: visible */
@@ -235,80 +258,67 @@
                 size: A4;
                 margin: 1cm;
             }
-            
             body {
                 background: white;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
-            
             .navbar-custom, .search-card, .subject-choice, .no-print, footer {
                 display: none !important;
             }
-            
             .rapor-card {
                 display: block !important;
                 box-shadow: none;
                 margin: 0;
                 padding: 15px;
                 max-width: 100%;
+                border: 1px solid #e0e0e0;
             }
-            
             .rapor-header {
-                border-bottom: 2px solid #1e3c72;
+                border-bottom: 3px solid #4facfe !important;
                 padding-bottom: 10px;
                 margin-bottom: 15px;
             }
-            
             .rapor-title {
                 font-size: 1.5rem;
+                -webkit-text-fill-color: #1e3c72;
             }
-            
             .info-siswa {
-                background: #f8f9fa;
+                background: #f0fbff !important;
                 padding: 10px;
                 margin-bottom: 15px;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
-            
             .nilai-table {
                 font-size: 0.85rem;
                 margin-bottom: 15px;
+                border: 2px solid #4facfe !important;
+                border-radius: 16px !important;
+                overflow: hidden;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
-            
             .nilai-table th {
+                background: linear-gradient(135deg, #4facfe 0%, #38ef7d 100%) !important;
+                color: white !important;
                 padding: 6px 8px;
                 font-size: 0.85rem;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
-            
             .nilai-table td {
                 padding: 5px 8px;
             }
-            
             .section-title {
                 font-size: 1rem;
                 margin: 15px 0 10px 0;
                 padding-bottom: 5px;
+                border-color: #4facfe !important;
             }
-            
-            .nilai-box {
-                padding: 8px;
-                margin: 5px 0;
-            }
-            
-            .nilai-akhir {
-                font-size: 1.5rem;
-            }
-            
-            .predikat {
-                padding: 5px 15px;
-                font-size: 0.9rem;
-            }
-            
-            /* Force content to fit 1 page */
             .rapor-content {
                 page-break-inside: avoid;
             }
-            
             .row {
                 margin-bottom: 10px;
             }
@@ -320,13 +330,11 @@
                 padding: 20px;
                 margin: 20px 10px;
             }
-            
             .nilai-table {
                 font-size: 0.85rem;
             }
-            
             .nilai-table th, .nilai-table td {
-                padding: 6px 8px;
+                padding: 8px 6px;
             }
         }
     </style>
@@ -367,7 +375,7 @@
                     <label class="form-label fw-bold text-start d-block">Nomor Induk Siswa (NIS)</label>
                     <input type="text" class="form-control form-control-lg" id="nisInput" placeholder="Contoh: 11957" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-search btn-lg w-100">
+                <button type="submit" class="btn btn-search btn-lg w-100">
                     <i class="fas fa-search me-2"></i>Cari Data Siswa
                 </button>
             </form>
@@ -386,9 +394,9 @@
 
             <!-- Pilihan Mata Pelajaran -->
             <div class="subject-choice" id="subjectChoice">
-                <h5 class="mb-3">Pilih Mata Pelajaran:</h5>
+                <h5 class="mb-3 text-center">Pilih Mata Pelajaran:</h5>
                 
-                <button class="subject-btn informatika" onclick="tampilkanRapor('informatika')">
+                <button class="subject-btn" onclick="tampilkanRapor('informatika')">
                     <div class="subject-icon">
                         <i class="fas fa-laptop-code"></i>
                     </div>
@@ -396,7 +404,7 @@
                     <span class="subject-desc">Lihat nilai tugas, sikap, keaktifan, dan proyek</span>
                 </button>
 
-                <button class="subject-btn matematika" onclick="tampilkanRapor('matematika')">
+                <button class="subject-btn" onclick="tampilkanRapor('matematika')">
                     <div class="subject-icon">
                         <i class="fas fa-calculator"></i>
                     </div>
@@ -415,7 +423,7 @@
 
             <!-- Info Siswa -->
             <div class="info-siswa">
-                <div class="row">
+                <div class="row text-center">
                     <div class="col-md-4"><strong>NIS:</strong> <span id="infoNIS">-</span></div>
                     <div class="col-md-4"><strong>Nama:</strong> <span id="infoNama">-</span></div>
                     <div class="col-md-4"><strong>Kelas:</strong> <span id="infoKelas">-</span></div>
@@ -425,7 +433,7 @@
             <div class="rapor-content">
                 <!-- Nilai Informatika -->
                 <div id="cardInformatika" style="display: none;">
-                    <h3 class="section-title informatika"><i class="fas fa-laptop-code me-2"></i>Nilai Informatika</h3>
+                    <h3 class="section-title"><i class="fas fa-laptop-code me-2"></i>Nilai Informatika</h3>
                     <table class="nilai-table">
                         <thead>
                             <tr>
@@ -460,7 +468,7 @@
 
                 <!-- Nilai Matematika -->
                 <div id="cardMatematika" style="display: none;">
-                    <h3 class="section-title matematika"><i class="fas fa-calculator me-2"></i>Nilai Matematika</h3>
+                    <h3 class="section-title"><i class="fas fa-calculator me-2"></i>Nilai Matematika</h3>
                     <table class="nilai-table">
                         <thead>
                             <tr>
@@ -560,8 +568,8 @@
             const choiceDiv = document.getElementById('subjectChoice');
             choiceDiv.style.display = 'block';
             
-            const btnInf = choiceDiv.querySelector('.subject-btn.informatika');
-            const btnMat = choiceDiv.querySelector('.subject-btn.matematika');
+            const btnInf = choiceDiv.querySelectorAll('.subject-btn')[0];
+            const btnMat = choiceDiv.querySelectorAll('.subject-btn')[1];
             
             if (!hasInformatika) {
                 btnInf.style.opacity = '0.5';
