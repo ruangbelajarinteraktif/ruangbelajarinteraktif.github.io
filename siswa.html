@@ -282,43 +282,106 @@
                 print-color-adjust: exact;
             }
             .nilai-table {
-                font-size: 0.85rem;
-                margin-bottom: 15px;
-                border: 2px solid #000000 !important;
-                border-radius: 16px !important;
-                overflow: hidden;
-                background-color: #ffffff !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .nilai-table th {
-                background-color: #ffffff !important;
-                color: #000000 !important;
-                padding: 6px 8px;
-                font-size: 0.85rem;
-                border-right: 1px solid #000000 !important;
-                border-bottom: 2px solid #000000 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .nilai-table td {
-                padding: 5px 8px;
-                border-right: 1px solid #000000 !important;
-                border-bottom: 1px solid #000000 !important;
-            }
-            .section-title {
-                font-size: 1rem;
-                margin: 15px 0 10px 0;
-                padding-bottom: 5px;
-                border-color: #4facfe !important;
-            }
-            .rapor-content {
-                page-break-inside: avoid;
-            }
-            .row {
-                margin-bottom: 10px;
-            }
-        }
+    width: 100%;
+    border-collapse: collapse; /* Ganti dari separate ke collapse */
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    border: 2px solid #000000;
+    border-radius: 12px; /* Sedikit kurangi radius agar lebih rapi */
+    overflow: hidden;
+    background-color: #ffffff;
+}
+.nilai-table th {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 12px 10px;
+    text-align: center;
+    font-weight: 700;
+    border: 1px solid #000000; /* Semua border 1px solid hitam */
+}
+.nilai-table td {
+    padding: 12px 10px;
+    border: 1px solid #000000; /* Semua border 1px solid hitam */
+    text-align: center;
+    color: #000000;
+    background-color: #ffffff;
+}
+.nilai-table tbody tr:hover td {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s;
+}
+/* --------------------------------------------- */
+
+/* PRINT STYLES - Optimize for 1 page */
+@media print {
+    @page {
+        size: A4;
+        margin: 1cm;
+    }
+    body {
+        background: white;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .navbar-custom, .search-card, .subject-choice, .no-print, footer {
+        display: none !important;
+    }
+    .rapor-card {
+        display: block !important;
+        box-shadow: none;
+        margin: 0;
+        padding: 15px;
+        max-width: 100%;
+    }
+    .rapor-header {
+        border-bottom: 2px solid #4facfe !important;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+    .rapor-title {
+        font-size: 1.5rem;
+        -webkit-text-fill-color: #1e3c72;
+    }
+    .info-siswa {
+        background: #f0fbff !important;
+        padding: 10px;
+        margin-bottom: 15px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .nilai-table {
+        font-size: 0.85rem;
+        margin-bottom: 15px;
+        border: 2px solid #000000 !important;
+        border-radius: 8px !important; /* Radius lebih kecil untuk print */
+        overflow: hidden;
+        background-color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .nilai-table th,
+    .nilai-table td {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        padding: 8px 6px;
+        font-size: 0.85rem;
+        border: 1px solid #000000 !important; /* Konsisten 1px untuk semua sel */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .section-title {
+        font-size: 1rem;
+        margin: 15px 0 10px 0;
+        padding-bottom: 5px;
+        border-color: #4facfe !important;
+    }
+    .rapor-content {
+        page-break-inside: avoid;
+    }
+    .row {
+        margin-bottom: 10px;
+    }
+}
         
         /* Mobile responsive */
         @media (max-width: 768px) {
