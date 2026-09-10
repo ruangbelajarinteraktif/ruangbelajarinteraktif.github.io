@@ -402,40 +402,49 @@
         let dataSiswa = null;
 
         function cariSiswa(event) {
-            event.preventDefault();
-            const nis = document.getElementById('nisInput').value.trim();
+    event.preventDefault();
+    const nis = document.getElementById('nisInput').value.trim();
+    
+    console.log('Mencari NIS:', nis);
+    console.log('URL:', APPS_SCRIPT_URL);
+    
+    if (!nis) {
+        showError('Silakan masukkan NIS!');
+        return;
+    }
+
+    document.getElementById('searchSection').style.opacity = '0.5';
+    document.getElementById('loadingSection').style.display = 'block';
+    document.getElementById('errorSection').style.display = 'none';
+    document.getElementById('subjectChoice').style.display = 'none';
+
+    const url = APPS_SCRIPT_URL + '?action=getRaporSiswa&nis=' + encodeURIComponent(nis);
+    console.log('Full URL:', url);
+
+    fetch(url)
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Data received:', data);
+            document.getElementById('loadingSection').style.display = 'none';
+            document.getElementById('searchSection').style.opacity = '1';
             
-            if (!nis) {
-                showError('Silakan masukkan NIS!');
-                return;
+            if (data.success) {
+                dataSiswa = data;
+                tampilkanPilihanMataPelajaran();
+            } else {
+                showError(data.message || 'NIS tidak ditemukan');
             }
-
-            document.getElementById('searchSection').style.opacity = '0.5';
-            document.getElementById('loadingSection').style.display = 'block';
-            document.getElementById('errorSection').style.display = 'none';
-            document.getElementById('subjectChoice').style.display = 'none';
-
-            fetch(APPS_SCRIPT_URL + '?action=getRaporSiswa&nis=' + encodeURIComponent(nis))
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('loadingSection').style.display = 'none';
-                    document.getElementById('searchSection').style.opacity = '1';
-                    
-                    if (data.success) {
-                        dataSiswa = data;
-                        tampilkanPilihanMataPelajaran();
-                    } else {
-                        showError(data.message || 'NIS tidak ditemukan');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showError('Terjadi kesalahan saat memuat data');
-                    document.getElementById('loadingSection').style.display = 'none';
-                    document.getElementById('searchSection').style.opacity = '1';
-                });
-        }
-
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showError('Terjadi kesalahan saat memuat data');
+            document.getElementById('loadingSection').style.display = 'none';
+            document.getElementById('searchSection').style.opacity = '1';
+        });
+}
         function tampilkanPilihanMataPelajaran() {
             // Sembunyikan loading dan error
             document.getElementById('loadingSection').style.display = 'none';
