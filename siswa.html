@@ -128,15 +128,61 @@
             margin: 30px auto;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             display: none;
+            max-width: 900px;
+        }
+        .rapor-header {
+            text-align: center;
+            border-bottom: 3px solid #1e3c72;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .rapor-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e3c72;
+            margin: 0;
+        }
+        .rapor-subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .info-siswa {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .info-siswa .row > div {
+            margin-bottom: 5px;
+        }
+        .nilai-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        .nilai-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .nilai-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .nilai-table tr:last-child td {
+            border-bottom: none;
         }
         .nilai-box {
             background: #f8f9fa;
             border-radius: 8px;
-            padding: 15px;
-            margin: 10px 0;
+            padding: 12px;
+            margin: 8px 0;
         }
         .nilai-akhir {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
         }
         .nilai-akhir.informatika { color: #667eea; }
@@ -152,6 +198,21 @@
         .predikat.baik { background: #4facfe; color: white; }
         .predikat.cukup { background: #fee140; color: #333; }
         .predikat.perlu-bimbingan { background: #fa709a; color: white; }
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 20px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .section-title.informatika {
+            color: #667eea;
+            border-color: #667eea;
+        }
+        .section-title.matematika {
+            color: #11998e;
+            border-color: #11998e;
+        }
         .loading {
             display: none;
             text-align: center;
@@ -161,33 +222,118 @@
             display: none;
             margin-top: 20px;
         }
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            z-index: 1000;
+        .back-btn, .print-btn {
+            margin: 5px;
         }
-        .back-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        .no-print {
+            /* Default: visible */
         }
+        
+        /* PRINT STYLES - Optimize for 1 page */
         @media print {
-            .back-btn, .search-card, .subject-choice, .no-print { display: none !important; }
-            .rapor-card { display: block !important; box-shadow: none; }
+            @page {
+                size: A4;
+                margin: 1cm;
+            }
+            
+            body {
+                background: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .navbar-custom, .search-card, .subject-choice, .no-print, footer {
+                display: none !important;
+            }
+            
+            .rapor-card {
+                display: block !important;
+                box-shadow: none;
+                margin: 0;
+                padding: 15px;
+                max-width: 100%;
+            }
+            
+            .rapor-header {
+                border-bottom: 2px solid #1e3c72;
+                padding-bottom: 10px;
+                margin-bottom: 15px;
+            }
+            
+            .rapor-title {
+                font-size: 1.5rem;
+            }
+            
+            .info-siswa {
+                background: #f8f9fa;
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+            
+            .nilai-table {
+                font-size: 0.85rem;
+                margin-bottom: 15px;
+            }
+            
+            .nilai-table th {
+                padding: 6px 8px;
+                font-size: 0.85rem;
+            }
+            
+            .nilai-table td {
+                padding: 5px 8px;
+            }
+            
+            .section-title {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+                padding-bottom: 5px;
+            }
+            
+            .nilai-box {
+                padding: 8px;
+                margin: 5px 0;
+            }
+            
+            .nilai-akhir {
+                font-size: 1.5rem;
+            }
+            
+            .predikat {
+                padding: 5px 15px;
+                font-size: 0.9rem;
+            }
+            
+            /* Force content to fit 1 page */
+            .rapor-content {
+                page-break-inside: avoid;
+            }
+            
+            .row {
+                margin-bottom: 10px;
+            }
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .rapor-card {
+                padding: 20px;
+                margin: 20px 10px;
+            }
+            
+            .nilai-table {
+                font-size: 0.85rem;
+            }
+            
+            .nilai-table th, .nilai-table td {
+                padding: 6px 8px;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-custom navbar-dark">
+    <nav class="navbar navbar-custom navbar-dark no-print">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#">
                 <svg width="35" height="35" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" class="me-2">
@@ -195,8 +341,8 @@
                     <linearGradient id="bL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0755C9"/><stop offset="100%" stop-color="#123A9A"/></linearGradient>
                     <linearGradient id="bR" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#19B8F2"/><stop offset="100%" stop-color="#087FD1"/></linearGradient>
                   </defs>
-                  <path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="(#bL)"/>
-                  <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="(#bR)"/>
+                  <path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="url(#bL)"/>
+                  <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR)"/>
                   <path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
                   <text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
                   <path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
@@ -210,7 +356,7 @@
 
     <div class="container">
         <!-- Search Section -->
-        <div class="search-card" id="searchSection">
+        <div class="search-card no-print" id="searchSection">
             <div class="graduation-icon">
                 <i class="fas fa-graduation-cap"></i>
             </div>
@@ -263,130 +409,99 @@
 
         <!-- Rapor Section -->
         <div class="rapor-card" id="raporSection">
-            <div class="text-center mb-4 no-print">
-                <button class="btn btn-secondary" onclick="kembaliKePilihan()">
-                    <i class="fas fa-arrow-left me-2"></i>Kembali ke Pilihan
-                </button>
-                <button class="btn btn-primary ms-2" onclick="window.print()">
-                    <i class="fas fa-print me-2"></i>Cetak Rapor
-                </button>
-            </div>
-
-            <div class="text-center mb-4">
-                <h2 class="mb-1" id="raporTitle">Rapor Digital</h2>
-                <p class="text-muted">Ruang Belajar Interaktif</p>
+            <div class="rapor-header">
+                <h1 class="rapor-title" id="raporTitle">Rapor Digital</h1>
+                <p class="rapor-subtitle">Ruang Belajar Interaktif</p>
             </div>
 
             <!-- Info Siswa -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4 mb-2">
-                            <strong>NIS:</strong> <span id="infoNIS">-</span>
-                        </div>
-                        <div class="col-md-4 mb-2">
-                            <strong>Nama:</strong> <span id="infoNama">-</span>
-                        </div>
-                        <div class="col-md-4 mb-2">
-                            <strong>Kelas:</strong> <span id="infoKelas">-</span>
-                        </div>
-                    </div>
+            <div class="info-siswa">
+                <div class="row">
+                    <div class="col-md-4"><strong>NIS:</strong> <span id="infoNIS">-</span></div>
+                    <div class="col-md-4"><strong>Nama:</strong> <span id="infoNama">-</span></div>
+                    <div class="col-md-4"><strong>Kelas:</strong> <span id="infoKelas">-</span></div>
                 </div>
             </div>
 
-            <!-- Nilai Informatika -->
-            <div id="cardInformatika" style="display: none;">
-                <div class="card border-primary mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0"><i class="fas fa-laptop-code me-2"></i>Nilai Informatika</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h6 class="fw-bold text-primary">Asesmen Kognitif</h6>
-                                <div class="nilai-box">
-                                    <div class="row">
-                                        <div class="col-4">Tugas 1: <strong id="infTugas1">0</strong></div>
-                                        <div class="col-4">Tugas 2: <strong id="infTugas2">0</strong></div>
-                                        <div class="col-4">Tugas 3: <strong id="infTugas3">0</strong></div>
-                                    </div>
-                                    <div class="mt-2">Rata-rata: <strong class="text-primary" id="infRataKognitif">0</strong></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <h6 class="fw-bold text-success">Asesmen Afektif</h6>
-                                <div class="nilai-box">
-                                    <div class="row">
-                                        <div class="col-6">Sikap: <strong id="infSikap">0</strong></div>
-                                        <div class="col-6">Keaktifan: <strong id="infAktif">0</strong></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <div class="nilai-box">
-                                    <strong>Proyek:</strong> <span id="infProyek" class="text-info">0</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <div class="nilai-box">
-                                    <div class="mb-1">Nilai Akhir</div>
-                                    <div class="nilai-akhir informatika" id="infNilaiAkhir">0</div>
-                                    <div class="predikat" id="infPredikat">-</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="rapor-content">
+                <!-- Nilai Informatika -->
+                <div id="cardInformatika" style="display: none;">
+                    <h3 class="section-title informatika"><i class="fas fa-laptop-code me-2"></i>Nilai Informatika</h3>
+                    <table class="nilai-table">
+                        <thead>
+                            <tr>
+                                <th colspan="3">Asesmen Kognitif</th>
+                                <th colspan="2">Asesmen Afektif</th>
+                                <th rowspan="2">Proyek</th>
+                                <th rowspan="2">Nilai Akhir</th>
+                                <th rowspan="2">Predikat</th>
+                            </tr>
+                            <tr>
+                                <th>Tugas 1</th>
+                                <th>Tugas 2</th>
+                                <th>Tugas 3</th>
+                                <th>Sikap</th>
+                                <th>Keaktifan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="infTugas1">0</td>
+                                <td id="infTugas2">0</td>
+                                <td id="infTugas3">0</td>
+                                <td id="infSikap">0</td>
+                                <td id="infAktif">0</td>
+                                <td id="infProyek">0</td>
+                                <td><div class="nilai-akhir informatika" id="infNilaiAkhir">0</div></td>
+                                <td><span class="predikat" id="infPredikat">-</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Nilai Matematika -->
+                <div id="cardMatematika" style="display: none;">
+                    <h3 class="section-title matematika"><i class="fas fa-calculator me-2"></i>Nilai Matematika</h3>
+                    <table class="nilai-table">
+                        <thead>
+                            <tr>
+                                <th colspan="3">Asesmen Kognitif (UH)</th>
+                                <th colspan="2">Asesmen Afektif</th>
+                                <th rowspan="2">Problem Solving</th>
+                                <th rowspan="2">Nilai Akhir</th>
+                                <th rowspan="2">Predikat</th>
+                            </tr>
+                            <tr>
+                                <th>UH 1</th>
+                                <th>UH 2</th>
+                                <th>UH 3</th>
+                                <th>Sikap</th>
+                                <th>Partisipasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="matUH1">0</td>
+                                <td id="matUH2">0</td>
+                                <td id="matUH3">0</td>
+                                <td id="matSikap">0</td>
+                                <td id="matPartisipasi">0</td>
+                                <td id="matProblemSolving">0</td>
+                                <td><div class="nilai-akhir matematika" id="matNilaiAkhir">0</div></td>
+                                <td><span class="predikat" id="matPredikat">-</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <!-- Nilai Matematika -->
-            <div id="cardMatematika" style="display: none;">
-                <div class="card border-success mb-4">
-                    <div class="card-header bg-success text-white">
-                        <h4 class="mb-0"><i class="fas fa-calculator me-2"></i>Nilai Matematika</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h6 class="fw-bold text-primary">Asesmen Kognitif (UH)</h6>
-                                <div class="nilai-box">
-                                    <div class="row">
-                                        <div class="col-4">UH 1: <strong id="matUH1">0</strong></div>
-                                        <div class="col-4">UH 2: <strong id="matUH2">0</strong></div>
-                                        <div class="col-4">UH 3: <strong id="matUH3">0</strong></div>
-                                    </div>
-                                    <div class="mt-2">Rata-rata: <strong class="text-primary" id="matRataKognitif">0</strong></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <h6 class="fw-bold text-success">Asesmen Afektif</h6>
-                                <div class="nilai-box">
-                                    <div class="row">
-                                        <div class="col-6">Sikap: <strong id="matSikap">0</strong></div>
-                                        <div class="col-6">Partisipasi: <strong id="matPartisipasi">0</strong></div>
-                                    </div>
-                                    <div class="mt-2">Rata-rata: <strong class="text-success" id="matRataAfektif">0</strong></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <div class="nilai-box">
-                                    <strong>Problem Solving:</strong> <span id="matProblemSolving" class="text-info">0</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <div class="nilai-box">
-                                    <div class="mb-1">Nilai Akhir</div>
-                                    <div class="nilai-akhir matematika" id="matNilaiAkhir">0</div>
-                                    <div class="predikat" id="matPredikat">-</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="text-center mt-4 no-print">
+                <button class="btn btn-secondary back-btn" onclick="kembaliKePilihan()">
+                    <i class="fas fa-arrow-left me-2"></i>Kembali ke Pilihan
+                </button>
+                <button class="btn btn-primary print-btn" onclick="window.print()">
+                    <i class="fas fa-print me-2"></i>Cetak Rapor
+                </button>
             </div>
         </div>
     </div>
@@ -402,62 +517,50 @@
         let dataSiswa = null;
 
         function cariSiswa(event) {
-    event.preventDefault();
-    const nis = document.getElementById('nisInput').value.trim();
-    
-    console.log('Mencari NIS:', nis);
-    console.log('URL:', APPS_SCRIPT_URL);
-    
-    if (!nis) {
-        showError('Silakan masukkan NIS!');
-        return;
-    }
-
-    document.getElementById('searchSection').style.opacity = '0.5';
-    document.getElementById('loadingSection').style.display = 'block';
-    document.getElementById('errorSection').style.display = 'none';
-    document.getElementById('subjectChoice').style.display = 'none';
-
-    const url = APPS_SCRIPT_URL + '?action=getRaporSiswa&nis=' + encodeURIComponent(nis);
-    console.log('Full URL:', url);
-
-    fetch(url)
-        .then(response => {
-            console.log('Response status:', response.status);
-            return response.json();
-        })
-        .then(data => {
-            console.log('Data received:', data);
-            document.getElementById('loadingSection').style.display = 'none';
-            document.getElementById('searchSection').style.opacity = '1';
+            event.preventDefault();
+            const nis = document.getElementById('nisInput').value.trim();
             
-            if (data.success) {
-                dataSiswa = data;
-                tampilkanPilihanMataPelajaran();
-            } else {
-                showError(data.message || 'NIS tidak ditemukan');
+            if (!nis) {
+                showError('Silakan masukkan NIS!');
+                return;
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showError('Terjadi kesalahan saat memuat data');
-            document.getElementById('loadingSection').style.display = 'none';
-            document.getElementById('searchSection').style.opacity = '1';
-        });
-}
+
+            document.getElementById('searchSection').style.opacity = '0.5';
+            document.getElementById('loadingSection').style.display = 'block';
+            document.getElementById('errorSection').style.display = 'none';
+            document.getElementById('subjectChoice').style.display = 'none';
+
+            fetch(APPS_SCRIPT_URL + '?action=getRaporSiswa&nis=' + encodeURIComponent(nis))
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('loadingSection').style.display = 'none';
+                    document.getElementById('searchSection').style.opacity = '1';
+                    
+                    if (data.success) {
+                        dataSiswa = data;
+                        tampilkanPilihanMataPelajaran();
+                    } else {
+                        showError(data.message || 'NIS tidak ditemukan');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showError('Terjadi kesalahan saat memuat data');
+                    document.getElementById('loadingSection').style.display = 'none';
+                    document.getElementById('searchSection').style.opacity = '1';
+                });
+        }
+
         function tampilkanPilihanMataPelajaran() {
-            // Sembunyikan loading dan error
             document.getElementById('loadingSection').style.display = 'none';
             document.getElementById('errorSection').style.display = 'none';
             
-            // Tampilkan pilihan mata pelajaran
             const hasInformatika = dataSiswa.informatika !== null;
             const hasMatematika = dataSiswa.matematika !== null;
             
             const choiceDiv = document.getElementById('subjectChoice');
             choiceDiv.style.display = 'block';
             
-            // Update tombol berdasarkan ketersediaan data
             const btnInf = choiceDiv.querySelector('.subject-btn.informatika');
             const btnMat = choiceDiv.querySelector('.subject-btn.matematika');
             
@@ -479,7 +582,6 @@
                 btnMat.style.cursor = 'pointer';
             }
             
-            // Update info siswa
             document.getElementById('infoNIS').textContent = dataSiswa.siswa.nis || '-';
             document.getElementById('infoNama').textContent = dataSiswa.siswa.nama || '-';
             document.getElementById('infoKelas').textContent = dataSiswa.siswa.kelas || '-';
@@ -488,7 +590,6 @@
         function tampilkanRapor(mapel) {
             if (!dataSiswa) return;
             
-            // Cek apakah data tersedia
             if (mapel === 'informatika' && !dataSiswa.informatika) {
                 alert('Maaf, nilai Informatika belum tersedia.');
                 return;
@@ -498,15 +599,12 @@
                 return;
             }
 
-            // Sembunyikan section pencarian, tampilkan rapor
             document.getElementById('searchSection').style.display = 'none';
             document.getElementById('raporSection').style.display = 'block';
             
-            // Hide semua card dulu
             document.getElementById('cardInformatika').style.display = 'none';
             document.getElementById('cardMatematika').style.display = 'none';
             
-            // Update title
             const mapelName = mapel === 'informatika' ? 'Informatika' : 'Matematika';
             document.getElementById('raporTitle').textContent = 'Rapor Digital - ' + mapelName;
             
@@ -517,7 +615,6 @@
                 document.getElementById('infTugas1').textContent = inf.tugas1 || '0';
                 document.getElementById('infTugas2').textContent = inf.tugas2 || '0';
                 document.getElementById('infTugas3').textContent = inf.tugas3 || '0';
-                document.getElementById('infRataKognitif').textContent = inf.rataKognitif || '0';
                 document.getElementById('infSikap').textContent = inf.sikap || '0';
                 document.getElementById('infAktif').textContent = inf.aktif || '0';
                 document.getElementById('infProyek').textContent = inf.proyek || '0';
@@ -535,10 +632,8 @@
                 document.getElementById('matUH1').textContent = mat.uh1 || '0';
                 document.getElementById('matUH2').textContent = mat.uh2 || '0';
                 document.getElementById('matUH3').textContent = mat.uh3 || '0';
-                document.getElementById('matRataKognitif').textContent = mat.rataKognitif || '0';
                 document.getElementById('matSikap').textContent = mat.sikap || '0';
                 document.getElementById('matPartisipasi').textContent = mat.partisipasi || '0';
-                document.getElementById('matRataAfektif').textContent = mat.rataAfektif || '0';
                 document.getElementById('matProblemSolving').textContent = mat.problemSolving || '0';
                 document.getElementById('matNilaiAkhir').textContent = mat.nilaiAkhir || '0';
                 
