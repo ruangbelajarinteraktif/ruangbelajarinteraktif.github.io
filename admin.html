@@ -182,25 +182,45 @@
         }
 
         function processRawData(data) {
-            return data.filter(row => row['Nama'] && row['Nama'].trim() !== '').map((row, index) => {
-                const t1 = parseFloat(row['Tugas 1'] || row['Tugas1']) || 0;
-                const t2 = parseFloat(row['Tugas 2'] || row['Tugas2']) || 0;
-                const t3 = parseFloat(row['Tugas 3'] || row['Tugas3']) || 0;
-                const sikap = parseFloat(row['Sikap']) || 0;
-                const aktif = parseFloat(row['Keaktifan'] || row['Aktif']) || 0;
-                const proyek = parseFloat(row['Proyek']) || 0;
+    console.log("Raw data received:", data);
+    console.log("First row (headers):", data[0]);
+    
+    return data.filter(row => {
+        // Cek berbagai kemungkinan kolom Nama
+        const nama = row['Nama'] || row['nama'] || row['NAMA'] || 
+                     row['Nama Siswa'] || row['nama siswa'] || '';
+        
+        return nama && nama.trim() !== '';
+    }).map((row, index) => {
+        // Ambil nilai dengan berbagai kemungkinan nama kolom
+        const nama = row['Nama'] || row['nama'] || row['NAMA'] || row['Nama Siswa'] || '';
+        const kelas = row['Kelas'] || row['kelas'] || row['KELAS'] || '';
+        
+        const t1 = parseFloat(row['Tugas 1'] || row['Tugas1'] || row['tugas 1'] || 
+                             row['T1'] || row['t1'] || row['Tugas 1'] || 0) || 0;
+        const t2 = parseFloat(row['Tugas 2'] || row['Tugas2'] || row['tugas 2'] || 
+                             row['T2'] || row['t2'] || row['Tugas 2'] || 0) || 0;
+        const t3 = parseFloat(row['Tugas 3'] || row['Tugas3'] || row['tugas 3'] || 
+                             row['T3'] || row['t3'] || row['Tugas 3'] || 0) || 0;
+        
+        const sikap = parseFloat(row['Sikap'] || row['sikap'] || row['SIKAP'] || 0) || 0;
+        const aktif = parseFloat(row['Keaktifan'] || row['keaktifan'] || row['KEAKTIFAN'] || 
+                                row['Aktif'] || row['aktif'] || row['AKTIF'] || 0) || 0;
+        const proyek = parseFloat(row['Proyek'] || row['proyek'] || row['PROYEK'] || 0) || 0;
 
-                const rataKognitif = ((t1 + t2 + t3) / 3).toFixed(1);
-                const nilaiAkhir = ((rataKognitif * 0.5) + (((sikap + aktif)/2) * 0.2) + (proyek * 0.3)).toFixed(1);
-                
-                let predikat = 'Perlu Bimbingan', badgeClass = 'bg-danger';
-                if (nilaiAkhir >= 81) { predikat = 'Sangat Baik'; badgeClass = 'bg-success'; } 
-                else if (nilaiAkhir >= 71) { predikat = 'Baik'; badgeClass = 'bg-primary'; } 
-                else if (nilaiAkhir >= 61) { predikat = 'Cukup'; badgeClass = 'bg-warning text-dark'; }
+        const rataKognitif = ((t1 + t2 + t3) / 3).toFixed(1);
+        const nilaiAkhir = ((rataKognitif * 0.5) + (((sikap + aktif)/2) * 0.2) + (proyek * 0.3)).toFixed(1);
+        
+        let predikat = 'Perlu Bimbingan', badgeClass = 'bg-danger';
+        if (nilaiAkhir >= 81) { predikat = 'Sangat Baik'; badgeClass = 'bg-success'; } 
+        else if (nilaiAkhir >= 71) { predikat = 'Baik'; badgeClass = 'bg-primary'; } 
+        else if (nilaiAkhir >= 61) { predikat = 'Cukup'; badgeClass = 'bg-warning text-dark'; }
 
-                return { nama: row['Nama'], kelas: (row['Kelas'] || '').toUpperCase().trim(), t1, t2, t3, rataKognitif, sikap, aktif, proyek, nilaiAkhir, predikat, badgeClass };
-            });
-        }
+        console.log(`Row ${index}: Nama=${nama}, Kelas=${kelas}, T1=${t1}, T2=${t2}, T3=${t3}`);
+
+        return { nama, kelas: kelas.toUpperCase().trim(), t1, t2, t3, rataKognitif, sikap, aktif, proyek, nilaiAkhir, predikat, badgeClass };
+    });
+}
 
         function filterData() {
             const kelasFilter = document.getElementById('filterKelas').value;
