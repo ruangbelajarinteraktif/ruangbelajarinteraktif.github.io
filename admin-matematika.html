@@ -236,61 +236,116 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // ⚠️ PENTING: Pastikan URL ini sesuai dengan deployment Apps Script Anda yang TERBARU
+        // URL Web App Apps Script yang aktif.
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwuHdXuh8eAaLP3j2wIPAwK-wNU0aa3gYt_jHOjp-kmKbb0bFXMlFvFbR3dwBzBJYIG/exec';
-        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1YvsYGvJpwBapzBiJKOt2yoS73HPWL7BQ0pD21kjcAMc/gviz/tq?tqx=out:csv';
+
+        // Nilai manual ada di Sheet1, sedangkan beberapa input Apps Script tersimpan
+        // di DataNilaiMatematika. Dashboard membaca dan menyatukan kedua tab ini.
+        const SHEET_NAMES = ['Sheet1', 'DataNilaiMatematika'];
+        const SHEET_CSV_URL = (sheetName) =>
+            'https://docs.google.com/spreadsheets/d/1YvsYGvJpwBapzBiJKOt2yoS73HPWL7BQ0pD21kjcAMc/gviz/tq?tqx=out:csv&sheet=' + encodeURIComponent(sheetName);
         
         let allData = [];
 
-        function fetchData() {
+        async function fetchData() {
             document.getElementById('loading').style.display = 'flex';
-            Papa.parse(SHEET_CSV_URL, {
-                download: true, header: true,
-                complete: function(results) {
-                    allData = processRawData(results.data);
-                    filterData();
-                    document.getElementById('loading').style.display = 'none';
-                },
-                error: function(err) {
-                    console.error("CSV Error:", err);
-                    alert("Gagal memuat data CSV. Pastikan Sheet sudah di-Publish to Web.");
-                    document.getElementById('loading').style.display = 'none';
-                }
+            try {
+                const results = await Promise.all(SHEET_NAMES.map(loadSheetData));
+                const readable = results.filter(result => !result.error);
+                if (!readable.length) throw new Error('Tidak ada tab nilai yang dapat dibaca.');
+
+                const rows = readable.flatMap(result => result.data || []);
+                allData = mergeStudentData(processRawData(rows));
+                filterData();
+            } catch (err) {
+                console.error('CSV Error:', err);
+                alert('Gagal memuat data nilai. Pastikan spreadsheet sudah di-Publish to web.');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function loadSheetData(sheetName) {
+            return new Promise(resolve => {
+                Papa.parse(SHEET_CSV_URL(sheetName) + '&cacheBust=' + Date.now(), {
+                    download: true,
+                    header: true,
+                    skipEmptyLines: true,
+                    // Papa Parse kadang mengembalikan peringatan kecil meskipun baris
+                    // CSV valid; data yang berhasil dibaca tetap dipakai.
+                    complete: results => resolve({ sheetName, data: results.data || [], error: null }),
+                    error: error => resolve({ sheetName, data: [], error })
+                });
             });
         }
 
+        function normaliseHeader(value) {
+            return String(value || '')
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase().replace(/[^a-z0-9]/g, '');
+        }
+
+        // Kompatibel dengan variasi header lama pada Google Sheet.
+        function readValue(row, aliases) {
+            const headers = Object.keys(row);
+            for (const alias of aliases) {
+                const header = headers.find(key => normaliseHeader(key) === normaliseHeader(alias));
+                if (header !== undefined && String(row[header] ?? '').trim() !== '') return row[header];
+            }
+            return '';
+        }
+
+        function readNumber(row, aliases) {
+            const value = String(readValue(row, aliases)).trim().replace(',', '.');
+            const number = Number(value);
+            return Number.isFinite(number) ? number : 0;
+        }
+
         function processRawData(data) {
-            return data.filter(row => row['Nama'] && row['Nama'].trim() !== '').map((row, index) => {
-                const uh1 = parseFloat(row['UH1'] || row['Tugas 1']) || 0;
-                const uh2 = parseFloat(row['UH2'] || row['Tugas 2']) || 0;
-                const uh3 = parseFloat(row['UH3'] || row['Tugas 3']) || 0;
-                const sikap = parseFloat(row['Sikap']) || 0;
-                const partisipasi = parseFloat(row['Partisipasi'] || row['Keaktifan']) || 0;
-                const problemSolving = parseFloat(row['Problem Solving'] || row['Proyek']) || 0;
+            return data
+                .filter(row => String(readValue(row, ['Nama', 'Nama Siswa'])).trim() !== '')
+                .map(row => calculateStudent({
+                    nis: String(readValue(row, ['NIS', 'Nomor Induk Siswa'])).trim(),
+                    nama: String(readValue(row, ['Nama', 'Nama Siswa'])).trim(),
+                    kelas: String(readValue(row, ['Kelas'])).toUpperCase().trim(),
+                    uh1: readNumber(row, ['UH1', 'UH 1', 'Tugas 1']),
+                    uh2: readNumber(row, ['UH2', 'UH 2', 'Tugas 2']),
+                    uh3: readNumber(row, ['UH3', 'UH 3', 'Tugas 3']),
+                    sikap: readNumber(row, ['Sikap']),
+                    partisipasi: readNumber(row, ['Partisipasi', 'Pertisipasi', 'Keaktifan']),
+                    problemSolving: readNumber(row, ['Problem Solving', 'ProblemSolving', 'PS', 'Proyek'])
+                }));
+        }
 
-                const rataKognitif = ((uh1 + uh2 + uh3) / 3).toFixed(1);
-                const rataAfektif = ((sikap + partisipasi) / 2).toFixed(1);
-                const nilaiAkhir = ((rataKognitif * 0.5) + (rataAfektif * 0.2) + (problemSolving * 0.3)).toFixed(1);
-                
-                let predikat = 'Perlu Bimbingan', badgeClass = 'bg-danger';
-                if (nilaiAkhir >= 81) { predikat = 'Sangat Baik'; badgeClass = 'bg-success'; } 
-                else if (nilaiAkhir >= 71) { predikat = 'Baik'; badgeClass = 'bg-primary'; } 
-                else if (nilaiAkhir >= 61) { predikat = 'Cukup'; badgeClass = 'bg-warning text-dark'; }
+        function calculateStudent(student) {
+            const rataKognitif = ((student.uh1 + student.uh2 + student.uh3) / 3).toFixed(1);
+            const rataAfektif = ((student.sikap + student.partisipasi) / 2).toFixed(1);
+            const nilaiAkhir = ((rataKognitif * 0.5) + (rataAfektif * 0.2) + (student.problemSolving * 0.3)).toFixed(1);
+            let predikat = 'Perlu Bimbingan', badgeClass = 'bg-danger';
+            if (nilaiAkhir >= 81) { predikat = 'Sangat Baik'; badgeClass = 'bg-success'; }
+            else if (nilaiAkhir >= 71) { predikat = 'Baik'; badgeClass = 'bg-primary'; }
+            else if (nilaiAkhir >= 61) { predikat = 'Cukup'; badgeClass = 'bg-warning text-dark'; }
+            return { ...student, rataKognitif, rataAfektif, nilaiAkhir, predikat, badgeClass };
+        }
 
-                return { 
-                    nama: row['Nama'], 
-                    kelas: (row['Kelas'] || '').toUpperCase().trim(), 
-                    uh1, uh2, uh3, 
-                    rataKognitif, 
-                    sikap, 
-                    partisipasi, 
-                    rataAfektif,
-                    problemSolving, 
-                    nilaiAkhir, 
-                    predikat, 
-                    badgeClass 
-                };
+        // Jika siswa ada pada dua tab, satukan menjadi satu baris. Nilai yang sudah
+        // terisi tidak akan tertimpa oleh nol/kolom kosong dari tab yang lain.
+        function mergeStudentData(students) {
+            const fields = ['uh1', 'uh2', 'uh3', 'sikap', 'partisipasi', 'problemSolving'];
+            const merged = new Map();
+            students.forEach(student => {
+                const key = student.nis ? `nis:${student.nis}` : `nama:${student.nama.toUpperCase()}|${student.kelas}`;
+                const current = merged.get(key);
+                if (!current) {
+                    merged.set(key, { ...student });
+                    return;
+                }
+                fields.forEach(field => {
+                    if (student[field] !== 0 || current[field] === 0) current[field] = student[field];
+                });
+                if (!current.nis && student.nis) current.nis = student.nis;
             });
+            return [...merged.values()].map(calculateStudent);
         }
 
         function filterData() {
@@ -394,9 +449,12 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(dataPayload)
-            }).then(response => {
-                console.log('Response status:', response.status);
-                alert("✅ Data berhasil dikirim! Silakan klik Refresh Data.");
+            }).then(async response => {
+                const result = await response.json().catch(() => null);
+                if (!response.ok || (result && result.success === false)) {
+                    throw new Error((result && result.message) || 'Server menolak penyimpanan nilai.');
+                }
+                alert('✅ Nilai berhasil disimpan. Dashboard akan dimuat ulang.');
                 document.getElementById('formInputNilai').reset();
                 document.getElementById('infoSiswa').innerHTML = '';
                 
@@ -407,7 +465,7 @@
                 btn.innerHTML = teksAsli;
                 btn.disabled = false;
                 
-                setTimeout(() => fetchData(), 1500);
+                setTimeout(fetchData, 800);
             }).catch(err => {
                 console.error('Error:', err);
                 alert("❌ Gagal menyimpan data: " + err.message);
@@ -417,12 +475,13 @@
         }
 
         function cekDataSiswa() {
+    const nis = document.getElementById('nisSiswa').value.trim();
     const nama = document.getElementById('namaSiswa').value.trim().toUpperCase();
     const kelas = document.getElementById('kelasSiswa').value;
     const infoDiv = document.getElementById('infoSiswa');
     const loadingDiv = document.getElementById('loadingData');
     
-    if (nama === '' || kelas === '') { 
+    if ((!nis && nama === '') || kelas === '') { 
         infoDiv.innerHTML = ''; 
         return; 
     }
@@ -430,7 +489,7 @@
     loadingDiv.classList.remove('d-none');
     infoDiv.innerHTML = '';
     
-    fetch(APPS_SCRIPT_URL + '?action=cariSiswa&nama=' + encodeURIComponent(nama) + '&kelas=' + encodeURIComponent(kelas))
+    fetch(APPS_SCRIPT_URL + '?action=cariSiswa&nis=' + encodeURIComponent(nis) + '&nama=' + encodeURIComponent(nama) + '&kelas=' + encodeURIComponent(kelas))
     .then(response => response.json())
     .then(data => {
         loadingDiv.classList.add('d-none');
@@ -512,13 +571,14 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const namaInput = document.getElementById('namaSiswa');
+            const nisInput = document.getElementById('nisSiswa');
             let timeoutId;
-            if (namaInput) {
-                namaInput.addEventListener('input', function() {
+            [namaInput, nisInput].filter(Boolean).forEach(function(input) {
+                input.addEventListener('input', function() {
                     clearTimeout(timeoutId);
                     timeoutId = setTimeout(cekDataSiswa, 1000);
                 });
-            }
+            });
             showAdminName();
             fetchData();
         });
