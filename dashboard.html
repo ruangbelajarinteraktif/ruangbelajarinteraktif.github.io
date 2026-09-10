@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Ruang Belajar Interaktif</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='66' font-family='Montserrat,Arial,sans-serif' font-size='42' font-weight='800' fill='%23ffffff' text-anchor='middle' letter-spacing='-1'%3ERBI%3C/text%3E%3C/svg%3E">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar-custom {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .rbi-logo-svg {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        .page-title {
+            color: white;
+            font-weight: 600;
+        }
+        .main-container {
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .welcome-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .subject-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+        .subject-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .subject-card.informatika:hover {
+            border-color: #667eea;
+        }
+        .subject-card.matematika:hover {
+            border-color: #11998e;
+        }
+        .subject-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+        .subject-card.informatika .subject-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .subject-card.matematika .subject-icon {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+        .subject-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .subject-card.informatika .subject-title {
+            color: #667eea;
+        }
+        .subject-card.matematika .subject-title {
+            color: #11998e;
+        }
+        .subject-desc {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .btn-enter {
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s;
+        }
+        .subject-card.informatika .btn-enter {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .subject-card.matematika .btn-enter {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+        .btn-enter:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover {
+            background: white;
+            color: #1e3c72;
+        }
+        @media (max-width: 768px) {
+            .subject-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-custom navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <svg width="40" height="40" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" class="me-2 rbi-logo-svg">
+                  <defs>
+                    <linearGradient id="bL-nav" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0755C9"/><stop offset="100%" stop-color="#123A9A"/></linearGradient>
+                    <linearGradient id="bR-nav" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#19B8F2"/><stop offset="100%" stop-color="#087FD1"/></linearGradient>
+                  </defs>
+                  <path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="url(#bL-nav)"/>
+                  <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR-nav)"/>
+                  <path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
+                  <text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
+                  <path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
+                  <path d="M335 335 Q295 338 256 360 L256 400 Q295 376 335 373 Z" fill="#102D68"/>
+                  <path d="M250 358 L250 404" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+                </svg>
+                <span class="text-white fw-bold">Ruang Belajar Interaktif</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-white d-none d-md-block">
+                    <i class="fas fa-user-shield me-1"></i>
+                    <span id="usernameDisplay">Admin</span>
+                </span>
+                <button class="btn logout-btn btn-sm" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-1"></i> L o g o u t
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="welcome-card text-center">
+            <h1 class="mb-3">Selamat Datang, <span id="welcomeName">Admin</span>! 👋</h1>
+            <p class="text-muted mb-0">Pilih mata pelajaran yang ingin Anda kelola penilaiannya</p>
+        </div>
+
+        <div class="subject-grid">
+            <!-- Card Informatika -->
+            <div class="subject-card informatika" onclick="goToSubject('informatika')">
+                <div class="subject-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3 class="subject-title">Informatika</h3>
+                <p class="subject-desc">Kelola penilaian untuk mata pelajaran Informatika Kelas 8</p>
+                <button class="btn btn-enter">
+                    <i class="fas fa-arrow-right me-2"></i>Masuk Dashboard
+                </button>
+            </div>
+
+            <!-- Card Matematika -->
+            <div class="subject-card matematika" onclick="goToSubject('matematika')">
+                <div class="subject-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h3 class="subject-title">Matematika</h3>
+                <p class="subject-desc">Kelola penilaian untuk mata pelajaran Matematika Kelas 8</p>
+                <button class="btn btn-enter">
+                    <i class="fas fa-arrow-right me-2"></i>Masuk Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cek authentication
+        if (localStorage.getItem('rbi_logged_in') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        // Tampilkan username
+        const username = localStorage.getItem('rbi_username') || 'Admin';
+        document.getElementById('usernameDisplay').textContent = username;
+        document.getElementById('welcomeName').textContent = username;
+
+        function goToSubject(subject) {
+            if (subject === 'informatika') {
+                window.location.href = 'admin.html';
+            } else if (subject === 'matematika') {
+                window.location.href = 'admin-matematika.html';
+            }
+        }
+
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                localStorage.removeItem('rbi_logged_in');
+                localStorage.removeItem('rbi_username');
+                localStorage.removeItem('rbi_login_time');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
