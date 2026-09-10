@@ -50,10 +50,10 @@
         <p class="text-muted small">Ruang Belajar Interaktif</p>
     </div>
 
-    <!-- Script Proteksi Login -->
+    <!-- Script Proteksi Login (DISESUAIKAN DENGAN SISTEM TERPUSAT) -->
     <script>
-        if (localStorage.getItem('rbi_admin_logged_in') !== 'true') {
-            window.location.href = 'login.html';
+        if (localStorage.getItem('rbi_logged_in') !== 'true') {
+            window.location.href = 'index.html';
         }
     </script>
 
@@ -76,19 +76,18 @@
                 </svg>
                 Ruang Belajar Interaktif
             </a>
-            <span class="navbar-text text-white d-none d-md-block">DASHBOARD PENILAIAN INFORMATIKA KELAS 8</span>
-            <div class="d-flex gap-2">
-                <!-- PERBAIKAN 1: data-bs-target disesuaikan dengan ID modal yang benar -->
+            <span class="navbar-text text-white d-none d-md-block ms-3">DASHBOARD PENILAIAN INFORMATIKA KELAS 8</span>
+            <div class="d-flex gap-2 align-items-center ms-auto">
                 <button class="btn btn-outline-light btn-sm" onclick="backToDashboard()">
                     <i class="fas fa-arrow-left me-1"></i> Dashboard
                 </button>
-				<button class="btn btn-light btn-sm fw-bold text-primary" data-bs-toggle="modal" data-bs-target="#modalInputNilai">
+                <button class="btn btn-light btn-sm fw-bold text-primary" data-bs-toggle="modal" data-bs-target="#modalInputNilai">
                     <i class="fas fa-plus-circle me-1"></i> Tambah Nilai
                 </button>
                 <button class="btn btn-danger btn-sm fw-bold text-white" onclick="logout()">
                     <i class="fas fa-sign-out-alt me-1"></i> Logout
                 </button>
-                <span class="text-white small ms-2 d-none d-md-inline align-self-center">
+                <span class="text-white small ms-2 d-none d-md-inline align-self-center bg-white bg-opacity-25 px-2 py-1 rounded">
                     <i class="fas fa-user-shield me-1"></i>
                     <span id="adminName">Admin</span>
                 </span>                
@@ -140,10 +139,10 @@
                 <thead class="table-dark text-center">
                     <tr>
                         <th rowspan="2" class="align-middle">No</th><th rowspan="2" class="align-middle">Nama Siswa</th><th rowspan="2" class="align-middle">Kelas</th>
-                        <th colspan="4">Asesmen Kognitif (3 Tugas)</th><th colspan="2">Asesmen Afektif</th>
+                        <th colspan="4">Asesmen Kognitif</th><th colspan="2">Asesmen Afektif</th>
                         <th rowspan="2" class="align-middle">Proyek</th><th rowspan="2" class="align-middle">Nilai Akhir</th><th rowspan="2" class="align-middle">Predikat</th>
                     </tr>
-                    <tr><th>T1</th><th>T2</th><th>T3</th><th>Rata</th><th>Sikap</th><th>Aktif</th></tr>
+                    <tr><th>Tugas 1</th><th>Tugas 2</th><th>Tugas 3</th><th>Rata</th><th>Sikap</th><th>Keaktifan</th></tr>
                 </thead>
                 <tbody id="tableBody" class="text-center"></tbody>
             </table>
@@ -160,18 +159,22 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Input Nilai</h5>
+                    <h5 class="modal-title">Input Nilai Informatika</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="formInputNilai">
                         <div class="row mb-3">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">NIS</label>
+                                <input type="text" class="form-control" id="nisSiswa" placeholder="Nomor Induk Siswa">
+                            </div>
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label fw-bold">Nama Siswa</label>
                                 <input type="text" class="form-control" id="namaSiswa" placeholder="Masukkan nama lengkap" required>
                                 <div id="infoSiswa" class="form-text text-primary mt-1"></div>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label fw-bold">Kelas</label>
                                 <select class="form-control" id="kelasSiswa" required onchange="cekDataSiswa()">
                                     <option value="">Pilih Kelas</option>
@@ -208,7 +211,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <!-- PERBAIKAN 2: Memanggil fungsi simpanNilai() yang sudah diperbaiki -->
                     <button type="button" class="btn btn-primary" onclick="simpanNilai()">
                         <i class="fas fa-save me-1"></i>Simpan ke Database
                     </button>
@@ -225,25 +227,28 @@
         // URL Web App Apps Script yang aktif.
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwuHdXuh8eAaLP3j2wIPAwK-wNU0aa3gYt_jHOjp-kmKbb0bFXMlFvFbR3dwBzBJYIG/exec';
 
-        // Nilai manual ada di Sheet1, sedangkan beberapa input Apps Script tersimpan
-        // di DataNilaiMatematika. Dashboard membaca dan menyatukan kedua tab ini.
-        const SHEET_NAMES = ['Informatika'];
-        const SHEET_CSV_URL = (sheetName) =>
-            'https://docs.google.com/spreadsheets/d/1YvsYGvJpwBapzBiJKOt2yoS73HPWL7BQ0pD21kjcAMc/gviz/tq?tqx=out:csv&gid=1697555729';
+        // PERBAIKAN KRITIS: SHEET_CSV_URL sekarang adalah STRING, bukan fungsi.
+        // GID 1697555729 adalah ID sheet "Informatika"
+        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1YvsYGvJpwBapzBiJKOt2yoS73HPWL7BQ0pD21kjcAMc/gviz/tq?tqx=out:csv&gid=1697555729';
         
         let allData = [];
 
         function fetchData() {
             document.getElementById('loading').style.display = 'flex';
+            
+            // Papa.parse sekarang menerima string URL yang valid
             Papa.parse(SHEET_CSV_URL, {
-                download: true, header: true,
+                download: true, 
+                header: true,
                 complete: function(results) {
+                    console.log("Data loaded:", results.data.length, "rows");
                     allData = processRawData(results.data);
                     filterData();
                     document.getElementById('loading').style.display = 'none';
                 },
                 error: function(err) {
-                    alert("Gagal memuat data CSV.");
+                    console.error("CSV Error:", err);
+                    alert("Gagal memuat data CSV. Pastikan Sheet sudah di-Publish to Web.");
                     document.getElementById('loading').style.display = 'none';
                 }
             });
@@ -251,11 +256,11 @@
 
         function processRawData(data) {
             return data.filter(row => row['Nama'] && row['Nama'].trim() !== '').map((row, index) => {
-                const t1 = parseFloat(row['Tugas 1']) || 0;
-                const t2 = parseFloat(row['Tugas 2']) || 0;
-                const t3 = parseFloat(row['Tugas 3']) || 0;
+                const t1 = parseFloat(row['Tugas 1'] || row['Tugas1']) || 0;
+                const t2 = parseFloat(row['Tugas 2'] || row['Tugas2']) || 0;
+                const t3 = parseFloat(row['Tugas 3'] || row['Tugas3']) || 0;
                 const sikap = parseFloat(row['Sikap']) || 0;
-                const aktif = parseFloat(row['Keaktifan']) || 0;
+                const aktif = parseFloat(row['Keaktifan'] || row['Aktif']) || 0;
                 const proyek = parseFloat(row['Proyek']) || 0;
 
                 const rataKognitif = ((t1 + t2 + t3) / 3).toFixed(1);
@@ -323,92 +328,105 @@
             }
         }
 
-        // ==========================================
-        // PERBAIKAN 3: Fungsi simpanNilai yang disatukan dan diperbaiki ID-nya
-        // ==========================================
         function simpanNilai() {
+            const nis = document.getElementById('nisSiswa').value.trim();
             const nama = document.getElementById('namaSiswa').value.trim();
             const kelas = document.getElementById('kelasSiswa').value;
             
-            // Jika kosong, jadikan 0 (mencegah error "lengkapi semua data")
-            const t1 = document.getElementById('tugas1').value === "" ? 0 : Number(document.getElementById('tugas1').value);
-            const t2 = document.getElementById('tugas2').value === "" ? 0 : Number(document.getElementById('tugas2').value);
-            const t3 = document.getElementById('tugas3').value === "" ? 0 : Number(document.getElementById('tugas3').value);
-            const sikap = document.getElementById('sikap').value === "" ? 0 : Number(document.getElementById('sikap').value);
-            const aktif = document.getElementById('aktif').value === "" ? 0 : Number(document.getElementById('aktif').value);
-            const proyek = document.getElementById('proyek').value === "" ? 0 : Number(document.getElementById('proyek').value);
+            const t1 = document.getElementById('tugas1').value === "" ? null : Number(document.getElementById('tugas1').value);
+            const t2 = document.getElementById('tugas2').value === "" ? null : Number(document.getElementById('tugas2').value);
+            const t3 = document.getElementById('tugas3').value === "" ? null : Number(document.getElementById('tugas3').value);
+            const sikap = document.getElementById('sikap').value === "" ? null : Number(document.getElementById('sikap').value);
+            const aktif = document.getElementById('aktif').value === "" ? null : Number(document.getElementById('aktif').value);
+            const proyek = document.getElementById('proyek').value === "" ? null : Number(document.getElementById('proyek').value);
 
             if (nama === "" || kelas === "") {
                 alert("⚠️ Nama dan Kelas wajib diisi!");
                 return;
             }
 
-            let konfirmasi = true;
-            if (t1 === 0 && t2 === 0 && t3 === 0) {
-                konfirmasi = confirm("⚠️ Semua nilai kognitif (Tugas 1, 2, 3) kosong dan akan disimpan sebagai 0. Yakin ingin melanjutkan?");
+            if (t1 === null && t2 === null && t3 === null && sikap === null && aktif === null && proyek === null) {
+                alert("⚠️ Minimal isi 1 nilai sebelum menyimpan!");
+                return;
             }
 
-            if (konfirmasi) {
-                const btn = document.querySelector('#modalInputNilai .btn-primary');
-                const teksAsli = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Menyimpan...';
-                btn.disabled = true;
+            const btn = document.querySelector('#modalInputNilai .btn-primary');
+            const teksAsli = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Menyimpan...';
+            btn.disabled = true;
 
-                const dataPayload = { nama: nama, kelas: kelas, tugas1: t1, tugas2: t2, tugas3: t3, sikap: sikap, aktif: aktif, proyek: proyek };
+            // PERBAIKAN: Mapping nama field agar sesuai dengan alias di Apps Script
+            const dataPayload = { nama: nama, kelas: kelas };
+            if (nis) dataPayload.nis = nis;
+            if (t1 !== null) dataPayload.uh1 = t1;       // Apps Script membaca 'uh1' sebagai alias Tugas 1
+            if (t2 !== null) dataPayload.uh2 = t2;       // Apps Script membaca 'uh2' sebagai alias Tugas 2
+            if (t3 !== null) dataPayload.uh3 = t3;       // Apps Script membaca 'uh3' sebagai alias Tugas 3
+            if (sikap !== null) dataPayload.sikap = sikap;
+            if (aktif !== null) dataPayload.partisipasi = aktif; // Apps Script membaca 'partisipasi' sebagai alias Keaktifan
+            if (proyek !== null) dataPayload.problemSolving = proyek; // Apps Script membaca 'problemSolving' sebagai alias Proyek
 
-                fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dataPayload)
-                }).then(() => {
-                    alert("✅ Data berhasil dikirim ke Database! Silakan klik Refresh Data.");
-                    document.getElementById('formInputNilai').reset();
-                    document.getElementById('infoSiswa').innerHTML = '';
-                    
-                    const modalEl = document.getElementById('modalInputNilai');
-                    const modal = bootstrap.Modal.getInstance(modalEl);
-                    if (modal) modal.hide();
-                    
-                    btn.innerHTML = teksAsli;
-                    btn.disabled = false;
-                }).catch(err => {
-                    alert("❌ Gagal menyimpan data.");
-                    btn.innerHTML = teksAsli;
-                    btn.disabled = false;
-                });
-            }
+            fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(dataPayload)
+            }).then(() => {
+                alert("✅ Data berhasil dikirim! Silakan klik Refresh Data.");
+                document.getElementById('formInputNilai').reset();
+                document.getElementById('infoSiswa').innerHTML = '';
+                
+                const modalEl = document.getElementById('modalInputNilai');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) modal.hide();
+                
+                btn.innerHTML = teksAsli;
+                btn.disabled = false;
+                
+                setTimeout(() => fetchData(), 1000);
+            }).catch(err => {
+                console.error(err);
+                alert("❌ Gagal menyimpan data.");
+                btn.innerHTML = teksAsli;
+                btn.disabled = false;
+            });
         }
 
-        // Fungsi Auto-Load Data Siswa
         function cekDataSiswa() {
-            const nama = document.getElementById('namaSiswa').value.trim();
+            const nama = document.getElementById('namaSiswa').value.trim().toUpperCase();
             const kelas = document.getElementById('kelasSiswa').value;
             const infoDiv = document.getElementById('infoSiswa');
             const loadingDiv = document.getElementById('loadingData');
             
-            if (nama === '' || kelas === '') { infoDiv.innerHTML = ''; return; }
+            if (nama === '' || kelas === '') { 
+                infoDiv.innerHTML = ''; 
+                return; 
+            }
             
             loadingDiv.classList.remove('d-none');
             infoDiv.innerHTML = '';
             
-            fetch(APPS_SCRIPT_URL + '?action=getDataSiswa&nama=' + encodeURIComponent(nama) + '&kelas=' + encodeURIComponent(kelas), { method: 'GET' })
+            fetch(APPS_SCRIPT_URL + '?action=cariSiswa&nama=' + encodeURIComponent(nama) + '&kelas=' + encodeURIComponent(kelas))
             .then(response => response.json())
             .then(data => {
                 loadingDiv.classList.add('d-none');
+                
                 if (data.found) {
-                    infoDiv.innerHTML = `<div class="alert alert-success py-2 mb-0"><i class="fas fa-check-circle me-1"></i> Siswa ditemukan! Nilai yang sudah ada akan otomatis terisi.<br><small>Nilai Akhir: <strong>${data.nilaiAkhir}</strong> (${data.predikat})</small></div>`;
-                    if (data.tugas1 > 0) document.getElementById('tugas1').value = data.tugas1;
-                    if (data.tugas2 > 0) document.getElementById('tugas2').value = data.tugas2;
-                    if (data.tugas3 > 0) document.getElementById('tugas3').value = data.tugas3;
+                    const namaLengkap = data.namaLengkap || data.nama;
+                    if (data.nis) document.getElementById('nisSiswa').value = data.nis;
+                    document.getElementById('namaSiswa').value = namaLengkap;
+                    
+                    infoDiv.innerHTML = `<div class="alert alert-success py-2 mb-0"><i class="fas fa-check-circle me-1"></i> Siswa ditemukan: <strong>${namaLengkap}</strong><br><small>Nilai Akhir: <strong>${data.nilaiAkhir}</strong> (${data.predikat})</small></div>`;
+                    
+                    if (data.uh1 > 0) document.getElementById('tugas1').value = data.uh1;
+                    if (data.uh2 > 0) document.getElementById('tugas2').value = data.uh2;
+                    if (data.uh3 > 0) document.getElementById('tugas3').value = data.uh3;
                     if (data.sikap > 0) document.getElementById('sikap').value = data.sikap;
-                    if (data.aktif > 0) document.getElementById('aktif').value = data.aktif;
-                    if (data.proyek > 0) document.getElementById('proyek').value = data.proyek;
+                    if (data.partisipasi > 0) document.getElementById('aktif').value = data.partisipasi;
+                    if (data.problemSolving > 0) document.getElementById('proyek').value = data.problemSolving;
+                } else if (data.matches && data.matches.length > 0) {
+                    let matchList = data.matches.map(m => `<li>${m.nama}</li>`).join('');
+                    infoDiv.innerHTML = `<div class="alert alert-warning py-2 mb-0"><i class="fas fa-exclamation-triangle me-1"></i> Ditemukan ${data.matches.length} siswa mirip:<ul class="mb-0 mt-1">${matchList}</ul><small>Ketik nama lebih lengkap.</small></div>`;
                 } else {
                     infoDiv.innerHTML = `<div class="alert alert-info py-2 mb-0"><i class="fas fa-info-circle me-1"></i> Siswa baru - Data akan ditambahkan ke database</div>`;
-                    document.getElementById('formInputNilai').reset();
-                    document.getElementById('namaSiswa').value = nama;
-                    document.getElementById('kelasSiswa').value = kelas;
                 }
             })
             .catch(error => {
@@ -430,18 +448,24 @@
             fetchData();
         });
 
+        function backToDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+
         function logout() {
             if (confirm('Apakah Anda yakin ingin logout?')) {
-                localStorage.removeItem('rbi_admin_logged_in');
-                localStorage.removeItem('rbi_admin_username');
-                window.location.href = 'login.html';
+                localStorage.removeItem('rbi_logged_in');
+                localStorage.removeItem('rbi_username');
+                window.location.href = 'index.html';
             }
         }
 
         function showAdminName() {
-            const username = localStorage.getItem('rbi_admin_username');
+            const username = localStorage.getItem('rbi_username');
             const adminNameElement = document.getElementById('adminName');
-            if (username && adminNameElement) adminNameElement.innerText = username;
+            if (username && adminNameElement) {
+                adminNameElement.innerText = username;
+            }
         }
     </script>
 </body>
