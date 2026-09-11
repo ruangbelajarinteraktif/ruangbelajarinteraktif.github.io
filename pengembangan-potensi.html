@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="PDF Viewer Ruang Belajar Interaktif">
+
+    <title>PDF Viewer | Ruang Belajar Interaktif</title>
+
+
+    <!-- =====================================================
+         FAVICON RBI
+    ====================================================== -->
+
+    <link
+        rel="icon"
+        type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='66' font-family='Montserrat,Arial,sans-serif' font-size='42' font-weight='800' fill='%23ffffff' text-anchor='middle' letter-spacing='-1'%3ERBI%3C/text%3E%3C/svg%3E">
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #eef2f7;
+
+            color: #1f2937;
+
+        }
+
+
+        /* =====================================================
+           APLIKASI
+        ===================================================== */
+
+        .pdf-app {
+
+            width: 100%;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .pdf-header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #123b68,
+                    #0d5ca8
+                );
+
+            color: white;
+
+            padding: 18px 24px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,.15);
+
+            z-index: 10;
+
+        }
+
+
+        .header-content {
+
+            width: 100%;
+
+            max-width: 1500px;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+        }
+
+
+        .document-info {
+
+            flex: 1;
+
+            min-width: 0;
+
+        }
+
+
+        .document-title {
+
+            font-size: 23px;
+
+            font-weight: 700;
+
+            line-height: 1.3;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .document-description {
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            opacity: .9;
+
+        }
+
+
+        /* =====================================================
+           TOOLBAR
+        ===================================================== */
+
+        .toolbar {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .toolbar-button {
+
+            border: none;
+
+            outline: none;
+
+            background:
+                rgba(255,255,255,.15);
+
+            color: white;
+
+            padding:
+                10px 14px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition:
+                .2s ease;
+
+        }
+
+
+        .toolbar-button:hover {
+
+            background:
+                rgba(255,255,255,.28);
+
+        }
+
+
+        .toolbar-button:active {
+
+            transform:
+                scale(.97);
+
+        }
+
+
+        /* =====================================================
+           VIEWER WRAPPER
+        ===================================================== */
+
+        .viewer-wrapper {
+
+            flex: 1;
+
+            width: 100%;
+
+            max-width: 1500px;
+
+            margin: auto;
+
+            padding: 15px;
+
+        }
+
+
+        /* =====================================================
+           PDF CONTAINER
+        ===================================================== */
+
+        .pdf-container {
+
+            position: relative;
+
+            width: 100%;
+
+            height:
+                calc(100vh - 155px);
+
+            min-height: 500px;
+
+            background: white;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 4px 20px
+                rgba(0,0,0,.12);
+
+        }
+
+
+        /* =====================================================
+           IFRAME PDF
+        ===================================================== */
+
+        .pdf-frame {
+
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            border: none;
+
+            display: block;
+
+            background: white;
+
+        }
+
+
+        /* =====================================================
+           LOADING
+        ===================================================== */
+
+        .loading {
+
+            position: absolute;
+
+            inset: 0;
+
+            z-index: 5;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: white;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            text-align: center;
+
+            padding: 20px;
+
+        }
+
+
+        .loading.hidden {
+
+            display: none;
+
+        }
+
+
+        .spinner {
+
+            width: 38px;
+
+            height: 38px;
+
+            border:
+                4px solid #e2e8f0;
+
+            border-top-color:
+                #2563eb;
+
+            border-radius: 50%;
+
+            animation:
+                spin .8s linear infinite;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        /* =====================================================
+           ERROR
+        ===================================================== */
+
+        .error-message {
+
+            display: none;
+
+            position: absolute;
+
+            inset: 0;
+
+            z-index: 6;
+
+            background: white;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-direction: column;
+
+            text-align: center;
+
+            padding: 30px;
+
+        }
+
+
+        .error-message.show {
+
+            display: flex;
+
+        }
+
+
+        .error-icon {
+
+            font-size: 42px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .error-message h2 {
+
+            color: #b91c1c;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .error-message p {
+
+            max-width: 600px;
+
+            color: #64748b;
+
+            line-height: 1.6;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .error-button {
+
+            display: inline-block;
+
+            padding: 10px 18px;
+
+            background: #2563eb;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 7px;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .pdf-footer {
+
+            text-align: center;
+
+            padding: 7px;
+
+            font-size: 11px;
+
+            color: #64748b;
+
+        }
+
+
+        /* =====================================================
+           FULLSCREEN
+        ===================================================== */
+
+        .pdf-container:fullscreen {
+
+            width: 100vw;
+
+            height: 100vh;
+
+            border-radius: 0;
+
+        }
+
+
+        .pdf-container:-webkit-full-screen {
+
+            width: 100vw;
+
+            height: 100vh;
+
+            border-radius: 0;
+
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .header-content {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+            }
+
+
+            .toolbar {
+
+                justify-content: flex-start;
+
+            }
+
+
+            .pdf-container {
+
+                height:
+                    calc(100vh - 220px);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           HP
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .pdf-header {
+
+                padding: 14px;
+
+            }
+
+
+            .document-title {
+
+                font-size: 18px;
+
+            }
+
+
+            .document-description {
+
+                font-size: 12px;
+
+            }
+
+
+            .toolbar {
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                width: 100%;
+
+                gap: 6px;
+
+            }
+
+
+            .toolbar-button {
+
+                width: 100%;
+
+                padding: 9px 5px;
+
+                font-size: 11px;
+
+            }
+
+
+            .viewer-wrapper {
+
+                padding: 5px;
+
+            }
+
+
+            .pdf-container {
+
+                height:
+                    calc(100vh - 230px);
+
+                min-height: 450px;
+
+                border-radius: 6px;
+
+            }
+
+
+            .pdf-footer {
+
+                display: none;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="pdf-app">
+
+
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+    <header class="pdf-header">
+
+        <div class="header-content">
+
+
+            <div class="document-info">
+
+                <div
+                    class="document-title"
+                    id="documentTitle">
+
+                    Dokumen Pembelajaran
+
+                </div>
+
+
+                <div
+                    class="document-description"
+                    id="documentDescription">
+
+                    Dokumen PDF pembelajaran.
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 TOOLBAR
+            ================================================== -->
+
+            <div class="toolbar">
+
+
+                <button
+                    class="toolbar-button"
+                    id="downloadButton"
+                    onclick="downloadPDF()">
+
+                    ⬇️ Download
+
+                </button>
+
+
+                <button
+                    class="toolbar-button"
+                    onclick="openGoogleDrive()">
+
+                    🔗 Google Drive
+
+                </button>
+
+
+                <button
+                    class="toolbar-button"
+                    onclick="toggleFullscreen()">
+
+                    🖥️ Fullscreen
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         PDF VIEWER
+    ===================================================== -->
+
+    <main class="viewer-wrapper">
+
+        <div
+            class="pdf-container"
+            id="pdfContainer">
+
+
+            <!-- LOADING -->
+
+            <div
+                class="loading"
+                id="loading">
+
+                <div class="spinner"></div>
+
+                <div>
+                    Memuat dokumen PDF...
+                </div>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <div
+                class="error-message"
+                id="errorMessage">
+
+                <div class="error-icon">
+                    ⚠️
+                </div>
+
+                <h2>
+                    PDF tidak dapat dimuat
+                </h2>
+
+                <p>
+                    File mungkin belum diberikan akses
+                    "Siapa saja yang memiliki link".
+                    Silakan periksa pengaturan berbagi
+                    Google Drive.
+                </p>
+
+
+                <a
+                    class="error-button"
+                    id="errorLink"
+                    href="#"
+                    target="_blank">
+
+                    Buka PDF di Google Drive
+
+                </a>
+
+            </div>
+
+
+            <!-- GOOGLE DRIVE PDF -->
+
+            <iframe
+                id="pdfFrame"
+                class="pdf-frame"
+                title="PDF Viewer"
+                allow="autoplay; fullscreen"
+                allowfullscreen>
+            </iframe>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer class="pdf-footer">
+
+        PDF Viewer • Ruang Belajar Interaktif
+
+    </footer>
+
+
+</div>
+
+
+
+<script>
+
+
+    /* =====================================================
+       KONFIGURASI
+    ===================================================== */
+
+
+    /*
+       ID FILE GOOGLE DRIVE
+
+       File Anda:
+       1s3GVNn-zQK5d-o-SVyUZZogNEjc0VhgJ
+    */
+
+    const GOOGLE_DRIVE_FILE_ID =
+        "1s3GVNn-zQK5d-o-SVyUZZogNEjc0VhgJ";
+
+
+    /*
+       JUDUL DOKUMEN
+    */
+
+    const DOCUMENT_TITLE =
+        "Dokumen Pembelajaran";
+
+
+    /*
+       DESKRIPSI DOKUMEN
+    */
+
+    const DOCUMENT_DESCRIPTION =
+        "Dokumen PDF pembelajaran yang dapat dibaca secara langsung melalui browser.";
+
+
+    /*
+       TOMBOL DOWNLOAD
+
+       true
+       = tombol download ditampilkan
+
+       false
+       = tombol download disembunyikan
+    */
+
+    const SHOW_DOWNLOAD_BUTTON = true;
+
+
+
+    /* =====================================================
+       URL GOOGLE DRIVE
+    ===================================================== */
+
+
+    const GOOGLE_DRIVE_VIEW_URL =
+        "https://drive.google.com/file/d/"
+        + GOOGLE_DRIVE_FILE_ID
+        + "/view";
+
+
+    const GOOGLE_DRIVE_PREVIEW_URL =
+        "https://drive.google.com/file/d/"
+        + GOOGLE_DRIVE_FILE_ID
+        + "/preview";
+
+
+    const GOOGLE_DRIVE_DOWNLOAD_URL =
+        "https://drive.google.com/uc?export=download&id="
+        + GOOGLE_DRIVE_FILE_ID;
+
+
+
+    /* =====================================================
+       LOAD
+    ===================================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+
+            /*
+               Judul
+            */
+
+            document.getElementById(
+                "documentTitle"
+            ).textContent =
+                DOCUMENT_TITLE;
+
+
+            /*
+               Deskripsi
+            */
+
+            document.getElementById(
+                "documentDescription"
+            ).textContent =
+                DOCUMENT_DESCRIPTION;
+
+
+            /*
+               Atur tombol download
+            */
+
+            if (!SHOW_DOWNLOAD_BUTTON) {
+
+                document.getElementById(
+                    "downloadButton"
+                ).style.display =
+                    "none";
+
+            }
+
+
+            /*
+               Link error
+            */
+
+            document.getElementById(
+                "errorLink"
+            ).href =
+                GOOGLE_DRIVE_VIEW_URL;
+
+
+            /*
+               IFRAME PDF
+            */
+
+            const frame =
+                document.getElementById(
+                    "pdfFrame"
+                );
+
+
+            frame.src =
+                GOOGLE_DRIVE_PREVIEW_URL;
+
+
+            /*
+               PDF berhasil dimuat
+            */
+
+            frame.onload = function () {
+
+                setTimeout(
+                    function () {
+
+                        document
+                            .getElementById(
+                                "loading"
+                            )
+                            .classList
+                            .add("hidden");
+
+                    },
+                    700
+                );
+
+            };
+
+
+            /*
+               Pengaman loading.
+
+               Loading otomatis dihilangkan
+               maksimal setelah 8 detik.
+            */
+
+            setTimeout(
+                function () {
+
+                    document
+                        .getElementById(
+                            "loading"
+                        )
+                        .classList
+                        .add("hidden");
+
+                },
+                8000
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       OPEN GOOGLE DRIVE
+    ===================================================== */
+
+    function openGoogleDrive() {
+
+        window.open(
+            GOOGLE_DRIVE_VIEW_URL,
+            "_blank"
+        );
+
+    }
+
+
+
+    /* =====================================================
+       DOWNLOAD
+    ===================================================== */
+
+    function downloadPDF() {
+
+        window.open(
+            GOOGLE_DRIVE_DOWNLOAD_URL,
+            "_blank"
+        );
+
+    }
+
+
+
+    /* =====================================================
+       FULLSCREEN
+    ===================================================== */
+
+    function toggleFullscreen() {
+
+        const container =
+            document.getElementById(
+                "pdfContainer"
+            );
+
+
+        /*
+           Masuk fullscreen
+        */
+
+        if (!document.fullscreenElement) {
+
+
+            if (
+                container.requestFullscreen
+            ) {
+
+                container.requestFullscreen();
+
+            }
+
+            else if (
+                container.webkitRequestFullscreen
+            ) {
+
+                container.webkitRequestFullscreen();
+
+            }
+
+        }
+
+
+        /*
+           Keluar fullscreen
+        */
+
+        else {
+
+
+            if (
+                document.exitFullscreen
+            ) {
+
+                document.exitFullscreen();
+
+            }
+
+            else if (
+                document.webkitExitFullscreen
+            ) {
+
+                document.webkitExitFullscreen();
+
+            }
+
+        }
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>
