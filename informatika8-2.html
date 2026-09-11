@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kuis Interaktif Informatika Kelas VIII: Analisis Data dan Pengolahan Data dengan Spreadsheet">
+    <meta name="keywords" content="informatika kelas 8, spreadsheet, excel, analisis data, kuis online">
+    <title>Kuis Informatika Kelas VIII: Analisis Data & Spreadsheet</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='66' font-family='Montserrat,Arial,sans-serif' font-size='42' font-weight='800' fill='%23ffffff' text-anchor='middle' letter-spacing='-1'%3ERBI%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --accent: #f59e0b;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --border: #cbd5e1; /* Warna border tabel yang lebih tegas */
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --container-max: 1200px;
+            --container-padding: 1rem;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; overflow-x: hidden; }
+        
+        h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.2; margin-bottom: var(--space-sm); background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; }
+        h2 { font-size: clamp(1.3rem, 3vw, 1.8rem); line-height: 1.3; margin-top: 1.5rem; color: var(--text); }
+        h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.5rem; }
+        
+        .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 var(--container-padding); }
+        a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        a:hover { color: var(--primary-dark); }
+        
+        nav { position: sticky; top: 0; background: var(--white); box-shadow: var(--shadow-sm); z-index: 1000; padding: var(--space-sm) 0; }
+        .nav-container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--container-padding); display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.3rem; color: var(--primary); letter-spacing: 1px; }
+        .logo svg { width: 45px; height: 45px; flex-shrink: 0; }
+        .back-btn { background: var(--primary); color: var(--white); padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem; transition: var(--transition); display: inline-flex; align-items: center; gap: 0.5rem; border: none; cursor: pointer; }
+        .back-btn:hover { background: var(--primary-dark); color: var(--white); }
+        .back-btn svg { width: 18px; height: 18px; fill: currentColor; }
+        
+        .hero { background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%); padding: var(--space-xl) var(--container-padding); text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L40 20L20 40L0 20L20 0z' fill='%23ffffff' fill-opacity='0.4'/%3E%3C/svg%3E"); background-size: 40px 40px; opacity: 0.6; z-index: 1; }
+        .hero::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%); opacity: 0.8; z-index: 0; }
+        .hero-content { max-width: 800px; margin: 0 auto; z-index: 2; position: relative; text-align: center; }
+        .hero p { color: var(--text-light); max-width: 600px; margin: 0 auto; font-size: clamp(1rem, 2vw, 1.2rem); text-align: center; }
+        
+        .content-section { padding: var(--space-xl) 0; }
+        .content-card { background: var(--white); padding: 2rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 1.5rem; }
+        .content-card p { margin-bottom: 1rem; color: var(--text); }
+        
+        .warning-box { background: #fee2e2; padding: 1rem; border-radius: var(--radius-sm); margin: 1rem 0; border-left: 4px solid #ef4444; }
+        .success-box { background: #d1fae5; padding: 1rem; border-radius: var(--radius-sm); margin: 1rem 0; border-left: 4px solid #10b981; }
+        .info-box { background: #eff6ff; padding: 1rem; border-radius: var(--radius-sm); margin: 1rem 0; border-left: 4px solid var(--primary); }
+        
+        .question-block { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+        .question-block:last-child { border-bottom: none; }
+        .question-text { font-weight: 600; margin-bottom: 1rem; font-size: 1.05rem; }
+        .options label { display: block; padding: 0.75rem; margin-bottom: 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+        .options label:hover { background: #e0f2fe; border-color: var(--primary); }
+        .options input[type="radio"] { margin-right: 0.75rem; accent-color: var(--primary); }
+        .options input[type="radio"]:disabled + span { color: var(--text-light); }
+        
+        .correct-answer { background: #d1fae5 !important; border-color: #10b981 !important; }
+        .wrong-answer { background: #fee2e2 !important; border-color: #ef4444 !important; }
+        
+        .btn-submit { background: var(--primary); color: var(--white); padding: 1rem 2rem; border: none; border-radius: var(--radius-sm); font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: var(--transition); width: 100%; margin-top: 1rem; }
+        .btn-submit:hover { background: var(--primary-dark); }
+        .btn-submit:disabled { background: var(--text-light); cursor: not-allowed; }
+        
+        .score-display { text-align: center; padding: 2rem; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border-radius: var(--radius-md); margin-bottom: 2rem; display: none; }
+        .score-display h2 { color: white; font-size: 3rem; margin: 0; }
+        .score-display p { color: rgba(255,255,255,0.9); font-size: 1.2rem; }
+        
+        .locked-message { text-align: center; padding: 3rem; display: none; }
+        .locked-message h2 { color: var(--primary); }
+        
+        /* --- TABEL BERGARIS YANG DIPERBAIKI --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            border: 2px solid var(--primary); /* Garis luar tabel lebih tegas */
+            background: var(--white);
+        }
+        table th, table td {
+            border: 1px solid var(--border); /* Garis antar sel yang jelas */
+            padding: 0.85rem;
+            text-align: left;
+        }
+        table th {
+            background: #eff6ff;
+            color: var(--primary-dark);
+            font-weight: 700;
+            border-bottom: 2px solid var(--primary);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        table tr:hover {
+            background: #f1f5f9;
+        }
+        /* -------------------------------------- */
+        
+        footer { background: var(--text); color: var(--white); text-align: center; padding: var(--space-md); margin-top: var(--space-xl); }
+        footer p { margin: 0; opacity: 0.9; font-size: 0.95rem; }
+
+        @media (max-width: 768px) {
+            .hero { padding: var(--space-lg) var(--container-padding); }
+            .content-card { padding: 1.5rem; }
+            table { font-size: 0.9rem; }
+            table th, table td { padding: 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-label="RBI Logo">
+                    <defs>
+                        <linearGradient id="bL" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0755C9"/>
+                            <stop offset="100%" stop-color="#123A9A"/>
+                        </linearGradient>
+                        <linearGradient id="bR" x1="100%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#19B8F2"/>
+                            <stop offset="100%" stop-color="#087FD1"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="url(#bL)"/>
+                    <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR)"/>
+                    <path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
+                    <text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
+                    <path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
+                    <path d="M335 335 Q295 338 256 360 L256 400 Q295 376 335 373 Z" fill="#102D68"/>
+                    <path d="M250 358 L250 404" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+                </svg>
+                <span>RUANG BELAJAR</span>
+            </a>
+            <a href="index.html" class="back-btn">
+                <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                Kembali
+            </a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Kuis Informatika Kelas VIII</h1>
+            <p>Analisis Data dan Pengolahan Data dengan Spreadsheet</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="warning-box" id="warningBox">
+                <strong>⚠️ PERINGATAN PENTING:</strong> Kuis ini hanya dapat dikerjakan <strong>1 kali (satu kali buka)</strong>. Setelah Anda menekan tombol "Kirim Jawaban", Anda tidak dapat mengubah jawaban atau mengerjakan ulang. Pastikan semua jawaban telah terisi sebelum mengirim.
+            </div>
+
+            <div class="locked-message" id="lockedMessage">
+                <h2>🔒 Kuis Telah Selesai</h2>
+                <p>Anda telah mengerjakan kuis ini sebelumnya. Sistem mencatat bahwa Anda hanya diperbolehkan mengerjakan 1 kali.</p>
+                <div class="info-box" style="margin-top: 1.5rem;">
+                    <h3>Nilai Akhir Anda:</h3>
+                    <h2 id="lockedScore" style="color: var(--primary); font-size: 3rem; margin: 1rem 0;">0</h2>
+                    <p id="lockedDate"></p>
+                </div>
+                <a href="index.html" class="back-btn" style="margin-top: 1.5rem; display: inline-flex;">Kembali ke Beranda</a>
+            </div>
+
+            <div id="quizContainer">
+                <form id="quizForm">
+                    <!-- Soal 1-5: Tabel 1 -->
+                    <div class="content-card">
+                        <h2>Bagian 1: Data Penjualan Kantin</h2>
+                        <div class="info-box">
+                            <strong>Tabel 1 – Data Penjualan Kantin</strong>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Hari</th>
+                                    <th>Menu</th>
+                                    <th>Jumlah Terjual</th>
+                                    <th>Harga</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td>Senin</td><td>Nasi Goreng</td><td>10</td><td>Rp10.000</td></tr>
+                                <tr><td>2</td><td>Senin</td><td>Es Teh</td><td>15</td><td>Rp4.000</td></tr>
+                                <tr><td>3</td><td>Selasa</td><td>Mie Goreng</td><td>8</td><td>Rp8.000</td></tr>
+                                <tr><td>4</td><td>Selasa</td><td>Es Teh</td><td>12</td><td>Rp4.000</td></tr>
+                                <tr><td>5</td><td>Rabu</td><td>Nasi Goreng</td><td>7</td><td>Rp10.000</td></tr>
+                                <tr><td>6</td><td>Rabu</td><td>Mie Goreng</td><td>10</td><td>Rp8.000</td></tr>
+                            </tbody>
+                        </table>
+
+                        <div class="question-block" data-correct="B">
+                            <p class="question-text">1. Apa yang dimaksud dengan data berdasarkan tabel tersebut?</p>
+                            <div class="options">
+                                <label><input type="radio" name="q1" value="A" required> <span>A. Pendapat siswa tentang makanan yang enak</span></label>
+                                <label><input type="radio" name="q1" value="B"> <span>B. Catatan jumlah makanan dan minuman yang terjual</span></label>
+                                <label><input type="radio" name="q1" value="C"> <span>C. Kesimpulan bahwa kantin memperoleh keuntungan besar</span></label>
+                                <label><input type="radio" name="q1" value="D"> <span>D. Saran untuk menambah menu makanan</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="B">
+                            <p class="question-text">2. Pada tabel tersebut, "Es Teh" merupakan data yang termasuk dalam kolom....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q2" value="A" required> <span>A. Hari</span></label>
+                                <label><input type="radio" name="q2" value="B"> <span>B. Menu</span></label>
+                                <label><input type="radio" name="q2" value="C"> <span>C. Jumlah Terjual</span></label>
+                                <label><input type="radio" name="q2" value="D"> <span>D. Harga</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="C">
+                            <p class="question-text">3. Jika tabel tersebut dibuat di Excel, data "15" pada baris nomor 2 berada pada kolom....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q3" value="A" required> <span>A. Hari</span></label>
+                                <label><input type="radio" name="q3" value="B"> <span>B. Menu</span></label>
+                                <label><input type="radio" name="q3" value="C"> <span>C. Jumlah Terjual</span></label>
+                                <label><input type="radio" name="q3" value="D"> <span>D. Harga</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="C">
+                            <p class="question-text">4. Berdasarkan tabel, berapa jumlah seluruh makanan dan minuman yang terjual?</p>
+                            <div class="options">
+                                <label><input type="radio" name="q4" value="A" required> <span>A. 52</span></label>
+                                <label><input type="radio" name="q4" value="B"> <span>B. 60</span></label>
+                                <label><input type="radio" name="q4" value="C"> <span>C. 62</span></label>
+                                <label><input type="radio" name="q4" value="D"> <span>D. 72</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="B">
+                            <p class="question-text">5. Rumus Excel yang tepat untuk menghitung seluruh jumlah barang terjual pada sel D2 sampai D7 adalah....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q5" value="A" required> <span>A. =AVERAGE(D2:D7)</span></label>
+                                <label><input type="radio" name="q5" value="B"> <span>B. =SUM(D2:D7)</span></label>
+                                <label><input type="radio" name="q5" value="C"> <span>C. =COUNT(D2:D7)</span></label>
+                                <label><input type="radio" name="q5" value="D"> <span>D. =SUMIF(D2:D7)</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Soal 6-9: Tabel 2 -->
+                    <div class="content-card">
+                        <h2>Bagian 2: Nilai Ulangan Siswa</h2>
+                        <div class="info-box">
+                            <strong>Tabel 2 – Nilai Ulangan Siswa</strong>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Informatika</th>
+                                    <th>Matematika</th>
+                                    <th>IPA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td>Andi</td><td>80</td><td>75</td><td>85</td></tr>
+                                <tr><td>2</td><td>Budi</td><td>70</td><td>80</td><td>75</td></tr>
+                                <tr><td>3</td><td>Citra</td><td>90</td><td>85</td><td>95</td></tr>
+                                <tr><td>4</td><td>Dinda</td><td>85</td><td>90</td><td>80</td></tr>
+                                <tr><td>5</td><td>Eko</td><td>75</td><td>70</td><td>80</td></tr>
+                            </tbody>
+                        </table>
+
+                        <div class="question-block" data-correct="B">
+                            <p class="question-text">6. Jika ingin mengetahui nilai rata-rata Informatika, fungsi yang paling tepat adalah....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q6" value="A" required> <span>A. SUM</span></label>
+                                <label><input type="radio" name="q6" value="B"> <span>B. AVERAGE</span></label>
+                                <label><input type="radio" name="q6" value="C"> <span>C. MATCH</span></label>
+                                <label><input type="radio" name="q6" value="D"> <span>D. CHOOSE</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="B">
+                            <p class="question-text">7. Rumus yang tepat untuk menghitung rata-rata nilai Informatika dari C2 sampai C6 adalah....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q7" value="A" required> <span>A. =SUM(C2:C6)</span></label>
+                                <label><input type="radio" name="q7" value="B"> <span>B. =AVERAGE(C2:C6)</span></label>
+                                <label><input type="radio" name="q7" value="C"> <span>C. =MATCH(C2:C6)</span></label>
+                                <label><input type="radio" name="q7" value="D"> <span>D. =INDEX(C2:C6)</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="C">
+                            <p class="question-text">8. Berdasarkan tabel, siapakah siswa dengan nilai Informatika tertinggi?</p>
+                            <div class="options">
+                                <label><input type="radio" name="q8" value="A" required> <span>A. Andi</span></label>
+                                <label><input type="radio" name="q8" value="B"> <span>B. Budi</span></label>
+                                <label><input type="radio" name="q8" value="C"> <span>C. Citra</span></label>
+                                <label><input type="radio" name="q8" value="D"> <span>D. Eko</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="A">
+                            <p class="question-text">9. Dalam spreadsheet, C4 berarti....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q9" value="A" required> <span>A. Kolom C, baris 4</span></label>
+                                <label><input type="radio" name="q9" value="B"> <span>B. Baris C, kolom 4</span></label>
+                                <label><input type="radio" name="q9" value="C"> <span>C. Kolom 4, baris C</span></label>
+                                <label><input type="radio" name="q9" value="D"> <span>D. Cell ke-4 pada kolom C</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Soal 10-14: Tabel 3 & 4 -->
+                    <div class="content-card">
+                        <h2>Bagian 3: Fungsi INDEX, MATCH, dan CHOOSE</h2>
+                        <div class="info-box">
+                            <strong>Tabel 3 – Daftar Barang</strong>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Barang</th>
+                                    <th>Harga</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td>Buku</td><td>8.000</td></tr>
+                                <tr><td>2</td><td>Pensil</td><td>3.000</td></tr>
+                                <tr><td>3</td><td>Penghapus</td><td>2.000</td></tr>
+                                <tr><td>4</td><td>Penggaris</td><td>5.000</td></tr>
+                                <tr><td>5</td><td>Spidol</td><td>7.000</td></tr>
+                            </tbody>
+                        </table>
+
+                        <div class="question-block" data-correct="C">
+                            <p class="question-text">10. Jika menggunakan rumus <code>=INDEX(B2:B6,3)</code>, hasil yang diperoleh adalah....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q10" value="A" required> <span>A. Buku</span></label>
+                                <label><input type="radio" name="q10" value="B"> <span>B. Pensil</span></label>
+                                <label><input type="radio" name="q10" value="C"> <span>C. Penghapus</span></label>
+                                <label><input type="radio" name="q10" value="D"> <span>D. Penggaris</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="C">
+                            <p class="question-text">11. Fungsi MATCH digunakan untuk....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q11" value="A" required> <span>A. Menjumlahkan data</span></label>
+                                <label><input type="radio" name="q11" value="B"> <span>B. Menghitung rata-rata data</span></label>
+                                <label><input type="radio" name="q11" value="C"> <span>C. Mencari posisi suatu data dalam suatu range</span></label>
+                                <label><input type="radio" name="q11" value="D"> <span>D. Menggabungkan beberapa tabel</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="C">
+                            <p class="question-text">12. Jika digunakan rumus <code>=MATCH("Penggaris",B2:B6,0)</code>, hasilnya adalah....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q12" value="A" required> <span>A. 2</span></label>
+                                <label><input type="radio" name="q12" value="B"> <span>B. 3</span></label>
+                                <label><input type="radio" name="q12" value="C"> <span>C. 4</span></label>
+                                <label><input type="radio" name="q12" value="D"> <span>D. 5</span></label>
+                            </div>
+                        </div>
+
+                        <div class="info-box" style="margin-top: 1.5rem;">
+                            <strong>Tabel 4 – Pilihan Kegiatan</strong>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kegiatan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td>Membaca</td></tr>
+                                <tr><td>2</td><td>Olahraga</td></tr>
+                                <tr><td>3</td><td>Bermain Musik</td></tr>
+                            </tbody>
+                        </table>
+
+                        <div class="question-block" data-correct="B">
+                            <p class="question-text">13. Apa hasil dari rumus berikut? <code>=CHOOSE(2,"Membaca","Olahraga","Bermain Musik")</code></p>
+                            <div class="options">
+                                <label><input type="radio" name="q13" value="A" required> <span>A. Membaca</span></label>
+                                <label><input type="radio" name="q13" value="B"> <span>B. Olahraga</span></label>
+                                <label><input type="radio" name="q13" value="C"> <span>C. Bermain Musik</span></label>
+                                <label><input type="radio" name="q13" value="D"> <span>D. 2</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="A">
+                            <p class="question-text">14. Fungsi CHOOSE pada contoh tersebut digunakan untuk....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q14" value="A" required> <span>A. Memilih salah satu nilai berdasarkan nomor indeks</span></label>
+                                <label><input type="radio" name="q14" value="B"> <span>B. Menjumlahkan seluruh kegiatan</span></label>
+                                <label><input type="radio" name="q14" value="C"> <span>C. Mencari posisi sebuah data</span></label>
+                                <label><input type="radio" name="q14" value="D"> <span>D. Menghitung jumlah siswa</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Soal 15-20: Tabel 5 & 6 -->
+                    <div class="content-card">
+                        <h2>Bagian 4: COUNTIFS, SUMIFS, dan Pivot Table</h2>
+                        <div class="info-box">
+                            <strong>Tabel 5 – Data Penjualan Toko Buku</strong>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Tanggal</th>
+                                    <th>Kategori</th>
+                                    <th>Produk</th>
+                                    <th>Jumlah</th>
+                                    <th>Total Penjualan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td>02/09/2026</td><td>Buku</td><td>Informatika</td><td>5</td><td>Rp50.000</td></tr>
+                                <tr><td>2</td><td>02/09/2026</td><td>Alat Tulis</td><td>Pensil</td><td>10</td><td>Rp30.000</td></tr>
+                                <tr><td>3</td><td>03/09/2026</td><td>Buku</td><td>Matematika</td><td>4</td><td>Rp40.000</td></tr>
+                                <tr><td>4</td><td>03/09/2026</td><td>Alat Tulis</td><td>Pulpen</td><td>8</td><td>Rp24.000</td></tr>
+                                <tr><td>5</td><td>04/09/2026</td><td>Buku</td><td>IPA</td><td>6</td><td>Rp60.000</td></tr>
+                                <tr><td>6</td><td>04/09/2026</td><td>Alat Tulis</td><td>Penghapus</td><td>5</td><td>Rp10.000</td></tr>
+                                <tr><td>7</td><td>05/09/2026</td><td>Buku</td><td>Bahasa Inggris</td><td>3</td><td>Rp30.000</td></tr>
+                                <tr><td>8</td><td>05/09/2026</td><td>Alat Tulis</td><td>Penggaris</td><td>4</td><td>Rp20.000</td></tr>
+                            </tbody>
+                        </table>
+
+                        <div class="question-block" data-correct="C">
+                            <p class="question-text">15. Jika ingin menghitung jumlah transaksi kategori Buku, fungsi yang paling tepat adalah....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q15" value="A" required> <span>A. SUM</span></label>
+                                <label><input type="radio" name="q15" value="B"> <span>B. AVERAGE</span></label>
+                                <label><input type="radio" name="q15" value="C"> <span>C. COUNTIFS</span></label>
+                                <label><input type="radio" name="q15" value="D"> <span>D. INDEX</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="B">
+                            <p class="question-text">16. Berapa jumlah transaksi dengan kategori Buku berdasarkan tabel?</p>
+                            <div class="options">
+                                <label><input type="radio" name="q16" value="A" required> <span>A. 3</span></label>
+                                <label><input type="radio" name="q16" value="B"> <span>B. 4</span></label>
+                                <label><input type="radio" name="q16" value="C"> <span>C. 5</span></label>
+                                <label><input type="radio" name="q16" value="D"> <span>D. 6</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="A">
+                            <p class="question-text">17. Jika ingin menghitung total penjualan kategori Buku, fungsi yang tepat adalah....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q17" value="A" required> <span>A. SUMIFS</span></label>
+                                <label><input type="radio" name="q17" value="B"> <span>B. COUNTIFS</span></label>
+                                <label><input type="radio" name="q17" value="C"> <span>C. MATCH</span></label>
+                                <label><input type="radio" name="q17" value="D"> <span>D. CHOOSE</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="C">
+                            <p class="question-text">18. Berapakah total penjualan untuk kategori Buku?</p>
+                            <div class="options">
+                                <label><input type="radio" name="q18" value="A" required> <span>A. Rp120.000</span></label>
+                                <label><input type="radio" name="q18" value="B"> <span>B. Rp150.000</span></label>
+                                <label><input type="radio" name="q18" value="C"> <span>C. Rp180.000</span></label>
+                                <label><input type="radio" name="q18" value="D"> <span>D. Rp210.000</span></label>
+                            </div>
+                        </div>
+
+                        <div class="info-box" style="margin-top: 1.5rem;">
+                            <strong>Tabel 6 – Ringkasan Data untuk Pivot Table</strong>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Kategori</th>
+                                    <th>Sum of Total Penjualan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Alat Tulis</td><td>Rp84.000</td></tr>
+                                <tr><td>Buku</td><td>Rp180.000</td></tr>
+                                <tr style="font-weight: bold; background: #eff6ff;"><td>Grand Total</td><td>Rp264.000</td></tr>
+                            </tbody>
+                        </table>
+
+                        <div class="question-block" data-correct="C">
+                            <p class="question-text">19. Jika dibuat Pivot Table dengan Kategori sebagai Rows dan Total Penjualan sebagai Values (Sum), hasil untuk kategori Buku adalah....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q19" value="A" required> <span>A. Rp120.000</span></label>
+                                <label><input type="radio" name="q19" value="B"> <span>B. Rp150.000</span></label>
+                                <label><input type="radio" name="q19" value="C"> <span>C. Rp180.000</span></label>
+                                <label><input type="radio" name="q19" value="D"> <span>D. Rp204.000</span></label>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-correct="B">
+                            <p class="question-text">20. Kesimpulan yang paling tepat berdasarkan Pivot Table tersebut adalah....</p>
+                            <div class="options">
+                                <label><input type="radio" name="q20" value="A" required> <span>A. Penjualan Alat Tulis lebih besar daripada Buku</span></label>
+                                <label><input type="radio" name="q20" value="B"> <span>B. Penjualan Buku lebih besar daripada Alat Tulis</span></label>
+                                <label><input type="radio" name="q20" value="C"> <span>C. Penjualan Buku dan Alat Tulis sama</span></label>
+                                <label><input type="radio" name="q20" value="D"> <span>D. Tidak dapat diketahui kategori yang paling banyak terjual</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">Kirim Jawaban & Lihat Nilai</button>
+                </form>
+            </div>
+
+            <div class="score-display" id="scoreDisplay">
+                <p>Nilai Akhir Anda</p>
+                <h2 id="finalScore">0</h2>
+                <p id="scoreMessage"></p>
+                <a href="index.html" class="back-btn" style="background: white; color: var(--primary); margin-top: 1rem;">Kembali ke Beranda</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>@2026 Ruang Belajar Interaktif · Platform pembelajaran Bermakna</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const quizKey = 'quiz_informatika_kelas8_completed';
+            const quizData = localStorage.getItem(quizKey);
+            
+            // Cek apakah siswa sudah mengerjakan
+            if (quizData) {
+                const data = JSON.parse(quizData);
+                document.getElementById('quizContainer').style.display = 'none';
+                document.getElementById('warningBox').style.display = 'none';
+                document.getElementById('lockedMessage').style.display = 'block';
+                document.getElementById('lockedScore').textContent = data.score;
+                document.getElementById('lockedDate').textContent = 'Dikerjakan pada: ' + new Date(data.timestamp).toLocaleString('id-ID');
+                return;
+            }
+
+            const form = document.getElementById('quizForm');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!confirm('Apakah Anda yakin ingin mengirim jawaban? Anda TIDAK DAPAT mengerjakan ulang kuis ini setelah dikirim.')) {
+                    return;
+                }
+                
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Memproses Jawaban...';
+                
+                let score = 0;
+                const totalQuestions = 20;
+                const pointsPerQuestion = 5;
+                const correctAnswers = {
+                    q1: 'B', q2: 'B', q3: 'C', q4: 'C', q5: 'B',
+                    q6: 'B', q7: 'B', q8: 'C', q9: 'A', q10: 'C',
+                    q11: 'C', q12: 'C', q13: 'B', q14: 'A', q15: 'C',
+                    q16: 'B', q17: 'A', q18: 'C', q19: 'C', q20: 'B'
+                };
+                
+                // Hitung nilai dan tampilkan review
+                for (let i = 1; i <= totalQuestions; i++) {
+                    const qName = 'q' + i;
+                    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+                    const questionBlock = document.querySelector(`.question-block[data-correct="${correctAnswers[qName]}"]`);
+                    const correctLabel = questionBlock.querySelector(`input[value="${correctAnswers[qName]}"]`).parentElement;
+                    
+                    if (selected) {
+                        if (selected.value === correctAnswers[qName]) {
+                            score += pointsPerQuestion;
+                            correctLabel.classList.add('correct-answer');
+                        } else {
+                            selected.parentElement.classList.add('wrong-answer');
+                            correctLabel.classList.add('correct-answer');
+                        }
+                    }
+                    
+                    // Disable semua input setelah submit
+                    const inputs = document.querySelectorAll(`input[name="${qName}"]`);
+                    inputs.forEach(input => input.disabled = true);
+                }
+                
+                // Simpan ke localStorage agar tidak bisa dikerjakan ulang
+                const resultData = {
+                    score: score,
+                    timestamp: new Date().toISOString()
+                };
+                localStorage.setItem(quizKey, JSON.stringify(resultData));
+                
+                // Tampilkan hasil
+                document.getElementById('finalScore').textContent = score;
+                let message = '';
+                if (score >= 90) message = 'Luar Biasa! Penguasaan materi Anda sangat baik! 🌟';
+                else if (score >= 75) message = 'Bagus! Anda memahami sebagian besar konsep. 👍';
+                else if (score >= 60) message = 'Cukup baik, namun perlu belajar lagi tentang fungsi spreadsheet. 📚';
+                else message = 'Jangan menyerah! Pelajari kembali materi Analisis Data dan coba pahami fungsinya. 💪';
+                
+                document.getElementById('scoreMessage').textContent = message;
+                document.getElementById('scoreDisplay').style.display = 'block';
+                submitBtn.style.display = 'none';
+                
+                // Scroll ke hasil
+                document.getElementById('scoreDisplay').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+    </script>
+</body>
+</html>
