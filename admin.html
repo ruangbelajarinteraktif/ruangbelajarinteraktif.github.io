@@ -182,31 +182,22 @@
         }
 
         function processRawData(data) {
-    console.log("Raw data received:", data);
-    console.log("First row (headers):", data[0]);
-    
+    // DEBUG: Lihat header asli yang dibaca dari CSV
+    console.log("HEADER ASLI DARI CSV:", Object.keys(data[0]));
+    console.log("CONTOH DATA BARIS 1:", data[1]);
+
     return data.filter(row => {
-        // Cek berbagai kemungkinan kolom Nama
-        const nama = row['Nama'] || row['nama'] || row['NAMA'] || 
-                     row['Nama Siswa'] || row['nama siswa'] || '';
-        
+        const nama = row['Nama'] || row['nama'] || '';
         return nama && nama.trim() !== '';
     }).map((row, index) => {
-        // Ambil nilai dengan berbagai kemungkinan nama kolom
-        const nama = row['Nama'] || row['nama'] || row['NAMA'] || row['Nama Siswa'] || '';
-        const kelas = row['Kelas'] || row['kelas'] || row['KELAS'] || '';
+        // Ambil nilai dengan fallback yang lebih fleksibel
+        const t1 = parseFloat(row['Tugas 1'] || row['Tugas1'] || row['tugas 1'] || 0) || 0;
+        const t2 = parseFloat(row['Tugas 2'] || row['Tugas2'] || row['tugas 2'] || 0) || 0; // ← Fokus di sini
+        const t3 = parseFloat(row['Tugas 3'] || row['Tugas3'] || row['tugas 3'] || 0) || 0;
         
-        const t1 = parseFloat(row['Tugas 1'] || row['Tugas1'] || row['tugas 1'] || 
-                             row['T1'] || row['t1'] || row['Tugas 1'] || 0) || 0;
-        const t2 = parseFloat(row['Tugas 2'] || row['Tugas2'] || row['tugas 2'] || 
-                             row['T2'] || row['t2'] || row['Tugas 2'] || 0) || 0;
-        const t3 = parseFloat(row['Tugas 3'] || row['Tugas3'] || row['tugas 3'] || 
-                             row['T3'] || row['t3'] || row['Tugas 3'] || 0) || 0;
-        
-        const sikap = parseFloat(row['Sikap'] || row['sikap'] || row['SIKAP'] || 0) || 0;
-        const aktif = parseFloat(row['Keaktifan'] || row['keaktifan'] || row['KEAKTIFAN'] || 
-                                row['Aktif'] || row['aktif'] || row['AKTIF'] || 0) || 0;
-        const proyek = parseFloat(row['Proyek'] || row['proyek'] || row['PROYEK'] || 0) || 0;
+        const sikap = parseFloat(row['Sikap'] || row['sikap'] || 0) || 0;
+        const aktif = parseFloat(row['Keaktifan'] || row['aktif'] || row['Aktif'] || 0) || 0;
+        const proyek = parseFloat(row['Proyek'] || row['proyek'] || 0) || 0;
 
         const rataKognitif = ((t1 + t2 + t3) / 3).toFixed(1);
         const nilaiAkhir = ((rataKognitif * 0.5) + (((sikap + aktif)/2) * 0.2) + (proyek * 0.3)).toFixed(1);
@@ -216,9 +207,11 @@
         else if (nilaiAkhir >= 71) { predikat = 'Baik'; badgeClass = 'bg-primary'; } 
         else if (nilaiAkhir >= 61) { predikat = 'Cukup'; badgeClass = 'bg-warning text-dark'; }
 
-        console.log(`Row ${index}: Nama=${nama}, Kelas=${kelas}, T1=${t1}, T2=${t2}, T3=${t3}`);
-
-        return { nama, kelas: kelas.toUpperCase().trim(), t1, t2, t3, rataKognitif, sikap, aktif, proyek, nilaiAkhir, predikat, badgeClass };
+        return { 
+            nama: row['Nama'] || row['nama'], 
+            kelas: (row['Kelas'] || row['kelas'] || '').toUpperCase().trim(), 
+            t1, t2, t3, rataKognitif, sikap, aktif, proyek, nilaiAkhir, predikat, badgeClass 
+        };
     });
 }
 
