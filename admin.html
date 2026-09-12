@@ -135,11 +135,24 @@
             <table class="table table-hover table-bordered align-middle" id="dataTable">
                 <thead class="table-dark text-center">
                     <tr>
-                        <th rowspan="2" class="align-middle">No</th><th rowspan="2" class="align-middle">Nama Siswa</th><th rowspan="2" class="align-middle">Kelas</th>
-                        <th colspan="4">Asesmen Kognitif</th><th colspan="2">Asesmen Afektif</th>
-                        <th rowspan="2" class="align-middle">Proyek</th><th rowspan="2" class="align-middle">Nilai Akhir</th><th rowspan="2" class="align-middle">Predikat</th>
+                        <th rowspan="2" class="align-middle">No</th>
+                        <th rowspan="2" class="align-middle">Nama Siswa</th>
+                        <th rowspan="2" class="align-middle">Kelas</th>
+                        <th colspan="4">Asesmen Kognitif</th>
+                        <th colspan="3">Asesmen Afektif</th>
+                        <th rowspan="2" class="align-middle">Proyek</th>
+                        <th rowspan="2" class="align-middle">Nilai Akhir</th>
+                        <th rowspan="2" class="align-middle">Predikat</th>
                     </tr>
-                    <tr><th>Tugas 1</th><th>Tugas 2</th><th>Tugas 3</th><th>Rata</th><th>Sikap</th><th>Keaktifan</th></tr>
+                    <tr>
+                        <th>Tugas 1</th>
+                        <th>Tugas 2</th>
+                        <th>Tugas 3</th>
+                        <th>Rata</th>
+                        <th>Sikap</th>
+                        <th>Keaktifan</th>
+                        <th>Rata</th>
+                    </tr>
                 </thead>
                 <tbody id="tableBody" class="text-center"></tbody>
             </table>
@@ -156,64 +169,111 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // URL CSV Sheet Informatika (Read-Only)
-        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1YvsYGvJpwBapzBiJKOt2yoS73HPWL7BQ0pD21kjcAMc/gviz/tq?tqx=out:csv&gid=1697555729';
+        // ⚠️ PENTING: Ganti 'informatika_8_bab1' dengan NAMA TAB PERSIS di Google Sheet Anda 
+        // (misalnya: 'Informatika' atau 'informatika_8_bab1')
+        const SHEET_NAMES = ['informatika_8_bab1'];
+        
+        // Menggunakan parameter &sheet=NamaTab lebih aman daripada &gid=...
+        const SHEET_CSV_URL = (sheetName) =>
+            `https://docs.google.com/spreadsheets/d/1YvsYGvJpwBapzBiJKOt2yoS73HPWL7BQ0pD21kjcAMc/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
         
         let allData = [];
 
-        function fetchData() {
+        async function fetchData() {
             document.getElementById('loading').style.display = 'flex';
-            
-            Papa.parse(SHEET_CSV_URL, {
-                download: true, 
-                header: true,
-                complete: function(results) {
-                    console.log("Data loaded:", results.data.length, "rows");
-                    allData = processRawData(results.data);
-                    filterData();
-                    document.getElementById('loading').style.display = 'none';
-                },
-                error: function(err) {
-                    console.error("CSV Error:", err);
-                    alert("Gagal memuat data CSV. Pastikan Sheet sudah di-Publish to Web.");
-                    document.getElementById('loading').style.display = 'none';
-                }
+            try {
+                const results = await Promise.all(SHEET_NAMES.map(loadSheetData));
+                const readable = results.filter(result => !result.error);
+                if (!readable.length) throw new Error('Tidak ada tab nilai yang dapat dibaca.');
+
+                const rows = readable.flatMap(result => result.data || []);
+                allData = mergeStudentData(processRawData(rows));
+                filterData();
+            } catch (err) {
+                console.error('CSV Error:', err);
+                alert('Gagal memuat data nilai. Pastikan:\n1. Nama sheet di kode SAMA PERSIS dengan nama tab di Google Sheet\n2. Spreadsheet sudah di-Publish to web.');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function loadSheetData(sheetName) {
+            return new Promise(resolve => {
+                Papa.parse(SHEET_CSV_URL(sheetName) + '&cacheBust=' + Date.now(), {
+                    download: true,
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: results => resolve({ sheetName, data: results.data || [], error: null }),
+                    error: error => resolve({ sheetName, data: [], error })
+                });
             });
         }
 
+        function normaliseHeader(value) {
+            return String(value || '')
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase().replace(/[^a-z0-9]/g, '');
+        }
+
+        function readValue(row, aliases) {
+            const headers = Object.keys(row);
+            for (const alias of aliases) {
+                const header = headers.find(key => normaliseHeader(key) === normaliseHeader(alias));
+                if (header !== undefined && String(row[header] ?? '').trim() !== '') return row[header];
+            }
+            return '';
+        }
+
+        function readNumber(row, aliases) {
+            const value = String(readValue(row, aliases)).trim().replace(',', '.');
+            const number = Number(value);
+            return Number.isFinite(number) ? number : 0;
+        }
+
         function processRawData(data) {
-    // DEBUG: Lihat header asli yang dibaca dari CSV
-    console.log("HEADER ASLI DARI CSV:", Object.keys(data[0]));
-    console.log("CONTOH DATA BARIS 1:", data[1]);
+            return data
+                .filter(row => String(readValue(row, ['Nama', 'Nama Siswa'])).trim() !== '')
+                .map(row => calculateStudent({
+                    nis: String(readValue(row, ['NIS', 'Nomor Induk Siswa'])).trim(),
+                    nama: String(readValue(row, ['Nama', 'Nama Siswa'])).trim(),
+                    kelas: String(readValue(row, ['Kelas'])).toUpperCase().trim(),
+                    tugas1: readNumber(row, ['Tugas 1', 'Tugas1', 'tugas 1']),
+                    tugas2: readNumber(row, ['Tugas 2', 'Tugas2', 'tugas 2']),
+                    tugas3: readNumber(row, ['Tugas 3', 'Tugas3', 'tugas 3']),
+                    sikap: readNumber(row, ['Sikap']),
+                    aktif: readNumber(row, ['Keaktifan', 'Aktif', 'Partisipasi']),
+                    proyek: readNumber(row, ['Proyek', 'Problem Solving', 'PS'])
+                }));
+        }
 
-    return data.filter(row => {
-        const nama = row['Nama'] || row['nama'] || '';
-        return nama && nama.trim() !== '';
-    }).map((row, index) => {
-        // Ambil nilai dengan fallback yang lebih fleksibel
-        const t1 = parseFloat(row['Tugas 1'] || row['Tugas1'] || row['tugas 1'] || 0) || 0;
-        const t2 = parseFloat(row['Tugas 2'] || row['Tugas2'] || row['tugas 2'] || 0) || 0; // ← Fokus di sini
-        const t3 = parseFloat(row['Tugas 3'] || row['Tugas3'] || row['tugas 3'] || 0) || 0;
-        
-        const sikap = parseFloat(row['Sikap'] || row['sikap'] || 0) || 0;
-        const aktif = parseFloat(row['Keaktifan'] || row['aktif'] || row['Aktif'] || 0) || 0;
-        const proyek = parseFloat(row['Proyek'] || row['proyek'] || 0) || 0;
+        function calculateStudent(student) {
+            const rataKognitif = ((student.tugas1 + student.tugas2 + student.tugas3) / 3).toFixed(1);
+            const rataAfektif = ((student.sikap + student.aktif) / 2).toFixed(1);
+            const nilaiAkhir = ((rataKognitif * 0.5) + (rataAfektif * 0.2) + (student.proyek * 0.3)).toFixed(1);
+            let predikat = 'Perlu Bimbingan', badgeClass = 'bg-danger';
+            if (nilaiAkhir >= 81) { predikat = 'Sangat Baik'; badgeClass = 'bg-success'; }
+            else if (nilaiAkhir >= 71) { predikat = 'Baik'; badgeClass = 'bg-primary'; }
+            else if (nilaiAkhir >= 61) { predikat = 'Cukup'; badgeClass = 'bg-warning text-dark'; }
+            return { ...student, rataKognitif, rataAfektif, nilaiAkhir, predikat, badgeClass };
+        }
 
-        const rataKognitif = ((t1 + t2 + t3) / 3).toFixed(1);
-        const nilaiAkhir = ((rataKognitif * 0.5) + (((sikap + aktif)/2) * 0.2) + (proyek * 0.3)).toFixed(1);
-        
-        let predikat = 'Perlu Bimbingan', badgeClass = 'bg-danger';
-        if (nilaiAkhir >= 81) { predikat = 'Sangat Baik'; badgeClass = 'bg-success'; } 
-        else if (nilaiAkhir >= 71) { predikat = 'Baik'; badgeClass = 'bg-primary'; } 
-        else if (nilaiAkhir >= 61) { predikat = 'Cukup'; badgeClass = 'bg-warning text-dark'; }
-
-        return { 
-            nama: row['Nama'] || row['nama'], 
-            kelas: (row['Kelas'] || row['kelas'] || '').toUpperCase().trim(), 
-            t1, t2, t3, rataKognitif, sikap, aktif, proyek, nilaiAkhir, predikat, badgeClass 
-        };
-    });
-}
+        function mergeStudentData(students) {
+            const fields = ['tugas1', 'tugas2', 'tugas3', 'sikap', 'aktif', 'proyek'];
+            const merged = new Map();
+            students.forEach(student => {
+                const key = student.nis ? `nis:${student.nis}` : `nama:${student.nama.toUpperCase()}|${student.kelas}`;
+                const current = merged.get(key);
+                if (!current) {
+                    merged.set(key, { ...student });
+                    return;
+                }
+                fields.forEach(field => {
+                    if (student[field] !== 0 || current[field] === 0) current[field] = student[field];
+                });
+                if (!current.nis && student.nis) current.nis = student.nis;
+            });
+            return [...merged.values()].map(calculateStudent);
+        }
 
         function filterData() {
             const kelasFilter = document.getElementById('filterKelas').value;
@@ -243,9 +303,13 @@
                     <td>${index + 1}</td>
                     <td class="text-start fw-semibold">${item.nama}</td>
                     <td><span class="badge bg-secondary">${item.kelas}</span></td>
-                    <td>${item.t1}</td><td>${item.t2}</td><td>${item.t3}</td>
+                    <td>${item.tugas1}</td>
+                    <td>${item.tugas2}</td>
+                    <td>${item.tugas3}</td>
                     <td class="fw-bold text-primary">${item.rataKognitif}</td>
-                    <td>${item.sikap}</td><td>${item.aktif}</td>
+                    <td>${item.sikap}</td>
+                    <td>${item.aktif}</td>
+                    <td class="fw-bold text-success">${item.rataAfektif}</td>
                     <td class="fw-bold text-info">${item.proyek}</td>
                     <td class="fw-bold fs-5">${item.nilaiAkhir}</td>
                     <td><span class="badge ${item.badgeClass} badge-na">${item.predikat}</span></td>
