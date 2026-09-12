@@ -99,9 +99,15 @@
                 <label class="form-label text-muted small fw-bold">FILTER KELAS</label>
                 <select id="filterKelas" class="form-select form-select-lg shadow-sm" onchange="filterData()">
                     <option value="all">Semua Kelas (8A - 8I)</option>
-                    <option value="8A">Kelas 8A</option><option value="8B">Kelas 8B</option><option value="8C">Kelas 8C</option>
-                    <option value="8D">Kelas 8D</option><option value="8E">Kelas 8E</option><option value="8F">Kelas 8F</option>
-                    <option value="8G">Kelas 8G</option><option value="8H">Kelas 8H</option><option value="8I">Kelas 8I</option>
+                    <option value="8A">Kelas 8A</option>
+                    <option value="8B">Kelas 8B</option>
+                    <option value="8C">Kelas 8C</option>
+                    <option value="8D">Kelas 8D</option>
+                    <option value="8E">Kelas 8E</option>
+                    <option value="8F">Kelas 8F</option>
+                    <option value="8G">Kelas 8G</option>
+                    <option value="8H">Kelas 8H</option>
+                    <option value="8I">Kelas 8I</option>
                 </select>
             </div>
             <div class="col-md-6">
@@ -169,11 +175,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // ⚠️ PENTING: Ganti 'informatika_8_bab1' dengan NAMA TAB PERSIS di Google Sheet Anda 
-        // (misalnya: 'Informatika' atau 'informatika_8_bab1')
-        const SHEET_NAMES = ['informatika_8_bab1'];
+        // ⚠️ PENTING: Ganti dengan NAMA TAB yang benar di Google Sheet Anda
+        // Cek nama tab di bagian bawah spreadsheet (misalnya: 'Informatika' atau 'informatika_8_bab1')
+        const SHEET_NAMES = ['Informatika', 'informatika_8_bab1']; // Coba beberapa kemungkinan nama
         
-        // Menggunakan parameter &sheet=NamaTab lebih aman daripada &gid=...
         const SHEET_CSV_URL = (sheetName) =>
             `https://docs.google.com/spreadsheets/d/1YvsYGvJpwBapzBiJKOt2yoS73HPWL7BQ0pD21kjcAMc/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
         
@@ -181,17 +186,40 @@
 
         async function fetchData() {
             document.getElementById('loading').style.display = 'flex';
+            console.log("🔄 Mulai mengambil data dari sheet:", SHEET_NAMES);
+            
             try {
                 const results = await Promise.all(SHEET_NAMES.map(loadSheetData));
-                const readable = results.filter(result => !result.error);
-                if (!readable.length) throw new Error('Tidak ada tab nilai yang dapat dibaca.');
+                const readable = results.filter(result => {
+                    if (result.error) {
+                        console.warn(`⚠️ Sheet "${result.sheetName}" tidak dapat dibaca:`, result.error);
+                    } else {
+                        console.log(`✅ Sheet "${result.sheetName}" berhasil dibaca: ${result.data.length} baris`);
+                    }
+                    return !result.error;
+                });
+                
+                if (!readable.length) {
+                    throw new Error('Tidak ada sheet yang dapat dibaca. Pastikan nama sheet benar dan spreadsheet sudah di-Publish to web.');
+                }
 
-                const rows = readable.flatMap(result => result.data || []);
+                const rows = readable.flatMap(result => {
+                    console.log(` Data dari sheet "${result.sheetName}":`, result.data.length, 'baris');
+                    if (result.data.length > 0) {
+                        console.log('Header:', Object.keys(result.data[0]));
+                        console.log('Contoh data:', result.data[0]);
+                    }
+                    return result.data || [];
+                });
+                
+                console.log(`📈 Total data mentah: ${rows.length} baris`);
                 allData = mergeStudentData(processRawData(rows));
+                console.log(`✅ Total siswa setelah diproses: ${allData.length}`);
+                
                 filterData();
             } catch (err) {
-                console.error('CSV Error:', err);
-                alert('Gagal memuat data nilai. Pastikan:\n1. Nama sheet di kode SAMA PERSIS dengan nama tab di Google Sheet\n2. Spreadsheet sudah di-Publish to web.');
+                console.error(' CSV Error:', err);
+                alert('Gagal memuat data nilai.\n\nPastikan:\n1. Nama sheet di kode SAMA PERSIS dengan nama tab di Google Sheet\n2. Spreadsheet sudah di-Publish to web (File → Share → Publish to web)\n3. Error: ' + err.message);
             } finally {
                 document.getElementById('loading').style.display = 'none';
             }
@@ -231,18 +259,23 @@
         }
 
         function processRawData(data) {
+            console.log(`🔍 Memproses ${data.length} baris data...`);
+            
             return data
-                .filter(row => String(readValue(row, ['Nama', 'Nama Siswa'])).trim() !== '')
+                .filter(row => {
+                    const nama = String(readValue(row, ['Nama', 'Nama Siswa'])).trim();
+                    return nama !== '';
+                })
                 .map(row => calculateStudent({
-                    nis: String(readValue(row, ['NIS', 'Nomor Induk Siswa'])).trim(),
-                    nama: String(readValue(row, ['Nama', 'Nama Siswa'])).trim(),
-                    kelas: String(readValue(row, ['Kelas'])).toUpperCase().trim(),
-                    tugas1: readNumber(row, ['Tugas 1', 'Tugas1', 'tugas 1']),
-                    tugas2: readNumber(row, ['Tugas 2', 'Tugas2', 'tugas 2']),
-                    tugas3: readNumber(row, ['Tugas 3', 'Tugas3', 'tugas 3']),
-                    sikap: readNumber(row, ['Sikap']),
-                    aktif: readNumber(row, ['Keaktifan', 'Aktif', 'Partisipasi']),
-                    proyek: readNumber(row, ['Proyek', 'Problem Solving', 'PS'])
+                    nis: String(readValue(row, ['NIS', 'Nomor Induk Siswa', 'nis'])).trim(),
+                    nama: String(readValue(row, ['Nama', 'Nama Siswa', 'nama'])).trim(),
+                    kelas: String(readValue(row, ['Kelas', 'kelas'])).toUpperCase().trim(),
+                    tugas1: readNumber(row, ['Tugas 1', 'Tugas1', 'tugas 1', 'TUGAS 1']),
+                    tugas2: readNumber(row, ['Tugas 2', 'Tugas2', 'tugas 2', 'TUGAS 2']),
+                    tugas3: readNumber(row, ['Tugas 3', 'Tugas3', 'tugas 3', 'TUGAS 3']),
+                    sikap: readNumber(row, ['Sikap', 'sikap', 'SIKAP']),
+                    aktif: readNumber(row, ['Keaktifan', 'Aktif', 'Partisipasi', 'keaktifan', 'aktif']),
+                    proyek: readNumber(row, ['Proyek', 'Problem Solving', 'PS', 'proyek', 'PROYEK'])
                 }));
         }
 
