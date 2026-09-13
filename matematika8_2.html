@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Matematika Kelas 8 - Garis, Sudut, Segitiga & Pythagoras | RBI</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='66' font-family='Montserrat,Arial,sans-serif' font-size='42' font-weight='800' fill='%23ffffff' text-anchor='middle' letter-spacing='-1'%3ERBI%3C/text%3E%3C/svg%3E">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar-custom {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .rbi-logo-svg {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        .main-container {
+            padding: 30px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .card-custom {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .header-soal {
+            text-align: center;
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(135deg, #1e3c72 0%, #4facfe 100%) 1;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .header-soal h2 {
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+        .header-soal .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .info-peserta {
+            background: linear-gradient(135deg, #f0fbff 0%, #f0fff4 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #e0f2fe;
+        }
+        .info-peserta .row > div {
+            margin-bottom: 5px;
+        }
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            color: #1e3c72;
+            border-bottom: 3px solid #4facfe;
+            display: inline-block;
+        }
+        .soal-item {
+            background: #fafbfc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4facfe;
+        }
+        .soal-item .nomor-soal {
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+        .soal-item .pertanyaan {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        .pilihan {
+            display: block;
+            padding: 10px 15px;
+            margin: 6px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pilihan:hover {
+            border-color: #4facfe;
+            background: #f0fbff;
+        }
+        .pilihan input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .pilihan.selected {
+            border-color: #4facfe;
+            background: #e0f2fe;
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #1e3c72 0%, #4facfe 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 14px 40px;
+            font-weight: 600;
+            color: white;
+            transition: transform 0.2s;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.4);
+            color: white;
+        }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .hasil-box {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #f0fbff 0%, #f0fff4 100%);
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+        .nilai-akhir {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e3c72 0%, #4facfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+        }
+        .predikat-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: white;
+            margin-top: 10px;
+        }
+        .sangat-baik { background: #38ef7d; }
+        .baik { background: #4facfe; }
+        .cukup { background: #fde047; color: #333; }
+        .perlu-bimbingan { background: #f87171; }
+        .review-item {
+            padding: 12px;
+            border-radius: 10px;
+            margin: 8px 0;
+            border-left: 4px solid #dee2e6;
+        }
+        .review-item.benar {
+            background: #f0fff4;
+            border-left-color: #38ef7d;
+        }
+        .review-item.salah {
+            background: #fff5f5;
+            border-left-color: #f87171;
+        }
+        .form-control-lg {
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+        }
+        .form-control-lg:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 0 0.2rem rgba(79, 172, 254, 0.25);
+        }
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffe69c;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+        @media print {
+            .navbar-custom, .no-print {
+                display: none !important;
+            }
+            body {
+                background: white;
+            }
+            .card-custom {
+                box-shadow: none;
+            }
+        }
+        @media (max-width: 768px) {
+            .nilai-akhir {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-custom navbar-dark">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <svg width="35" height="35" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" class="me-2 rbi-logo-svg">
+                  <defs>
+                    <linearGradient id="bL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0755C9"/><stop offset="100%" stop-color="#123A9A"/></linearGradient>
+                    <linearGradient id="bR" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#19B8F2"/><stop offset="100%" stop-color="#087FD1"/></linearGradient>
+                  </defs>
+                  <path d="M85 90 Q85 78 97 84 L246 162 L246 190 L130 242 L130 370 L246 420 Q255 424 246 431 L97 414 Q85 412 85 400 Z" fill="url(#bL)"/>
+                  <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR)"/>
+                  <path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
+                  <text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
+                  <path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
+                  <path d="M335 335 Q295 338 256 360 L256 400 Q295 376 335 373 Z" fill="#102D68"/>
+                  <path d="M250 358 L250 404" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
+                </svg>
+                <span class="fw-bold">Ruang Belajar Interaktif</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container main-container">
+        
+        <!-- HALAMAN 1: FORM IDENTITAS -->
+        <div id="halamanIdentitas" class="card-custom">
+            <div class="header-soal">
+                <h2><i class="fas fa-calculator me-2"></i>ULANGAN MATEMATIKA</h2>
+                <p class="subtitle">Garis dan Sudut, Segitiga dan Segiempat, Teorema Pythagoras</p>
+            </div>
+
+            <div class="warning-box">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Perhatian!</strong> Ulangan ini hanya dapat dikerjakan <strong>satu kali</strong>. Pastikan data diri Anda benar sebelum memulai.
+            </div>
+
+            <h5 class="mb-3 text-center">Identitas Peserta</h5>
+            <form id="formIdentitas" onsubmit="mulaiUlangan(event)">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Nama Lengkap</label>
+                    <input type="text" class="form-control form-control-lg" id="inputNama" placeholder="Masukkan nama lengkap" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Kelas</label>
+                    <select class="form-control form-control-lg" id="inputKelas" required>
+                        <option value="">-- Pilih Kelas --</option>
+                        <option value="8A">Kelas 8A</option>
+                        <option value="8B">Kelas 8B</option>
+                        <option value="8C">Kelas 8C</option>
+                        <option value="8D">Kelas 8D</option>
+                        <option value="8E">Kelas 8E</option>
+                        <option value="8F">Kelas 8F</option>
+                        <option value="8G">Kelas 8G</option>
+                        <option value="8H">Kelas 8H</option>
+                        <option value="8I">Kelas 8I</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-submit w-100 btn-lg">
+                    <i class="fas fa-play-circle me-2"></i>Mulai Mengerjakan
+                </button>
+            </form>
+        </div>
+
+        <!-- HALAMAN 2: SOAL -->
+        <div id="halamanSoal" class="card-custom" style="display: none;">
+            <div class="header-soal">
+                <h2><i class="fas fa-calculator me-2"></i>ULANGAN MATEMATIKA</h2>
+                <p class="subtitle">Garis dan Sudut, Segitiga dan Segiempat, Teorema Pythagoras</p>
+            </div>
+
+            <div class="info-peserta">
+                <div class="row">
+                    <div class="col-md-6"><strong>Nama:</strong> <span id="displayNama">-</span></div>
+                    <div class="col-md-6"><strong>Kelas:</strong> <span id="displayKelas">-</span></div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <i class="fas fa-info-circle me-2"></i>
+                Pilihlah satu jawaban yang paling tepat dengan memberi tanda pada pilihan A, B, C, atau D!
+            </div>
+
+            <form id="formSoal">
+                <div id="containerSoal"></div>
+
+                <div class="text-center mt-4">
+                    <button type="button" class="btn btn-submit btn-lg" onclick="submitUlangan()">
+                        <i class="fas fa-paper-plane me-2"></i>Kumpulkan Jawaban
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- HALAMAN 3: HASIL -->
+        <div id="halamanHasil" class="card-custom" style="display: none;">
+            <div class="header-soal">
+                <h2><i class="fas fa-trophy me-2"></i>HASIL ULANGAN</h2>
+                <p class="subtitle">Ruang Belajar Interaktif</p>
+            </div>
+
+            <div class="info-peserta">
+                <div class="row">
+                    <div class="col-md-4"><strong>Nama:</strong> <span id="hasilNama">-</span></div>
+                    <div class="col-md-4"><strong>Kelas:</strong> <span id="hasilKelas">-</span></div>
+                    <div class="col-md-4"><strong>Tanggal:</strong> <span id="hasilTanggal">-</span></div>
+                </div>
+            </div>
+
+            <div class="hasil-box">
+                <h5 class="mb-2">Nilai Akhir Anda</h5>
+                <div class="nilai-akhir" id="nilaiAkhir">0</div>
+                <div id="predikatBadge" class="predikat-badge">-</div>
+                <p class="mt-3 mb-0">
+                    <strong>Benar:</strong> <span id="jumlahBenar">0</span> dari <strong>20</strong> soal
+                </p>
+            </div>
+
+            <div class="no-print text-center mb-4">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-camera me-2"></i>Screenshot / Cetak Nilai
+                </button>
+                <button class="btn btn-secondary ms-2" onclick="kembaliKeAwal()">
+                    <i class="fas fa-arrow-left me-2"></i>Kembali
+                </button>
+            </div>
+
+            <h5 class="section-title"><i class="fas fa-clipboard-check me-2"></i>Review Jawaban</h5>
+            <div id="containerReview"></div>
+        </div>
+
+        <!-- HALAMAN 4: SUDAH MENGERJAKAN -->
+        <div id="halamanSudahMengerjakan" class="card-custom" style="display: none;">
+            <div class="text-center py-5">
+                <i class="fas fa-check-circle text-success" style="font-size: 5rem;"></i>
+                <h3 class="mt-3">Anda Sudah Mengerjakan Ulangan Ini</h3>
+                <p class="text-muted">Ulangan matematika hanya dapat dikerjakan satu kali.</p>
+                <div class="info-peserta mt-4">
+                    <div class="row">
+                        <div class="col-md-6"><strong>Nama:</strong> <span id="sudahNama">-</span></div>
+                        <div class="col-md-6"><strong>Kelas:</strong> <span id="sudahKelas">-</span></div>
+                        <div class="col-md-6"><strong>Nilai:</strong> <span id="sudahNilai">-</span></div>
+                        <div class="col-md-6"><strong>Predikat:</strong> <span id="sudahPredikat">-</span></div>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-3" onclick="tampilkanHasilLama()">
+                    <i class="fas fa-eye me-2"></i>Lihat Hasil Lagi
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="text-center text-muted py-4">
+        <small>&copy; 2026 Ruang Belajar Interaktif · Platform Pembelajaran Bermakna</small>
+    </footer>
+
+    <script>
+        // ============ DATA SOAL ============
+        const dataSoal = [
+            // A. GARIS DAN SUDUT
+            {
+                kategori: 'A. GARIS DAN SUDUT',
+                soal: [
+                    {
+                        nomor: 1,
+                        pertanyaan: 'Garis adalah ....',
+                        pilihan: {
+                            A: 'kumpulan titik yang membentuk bidang',
+                            B: 'kumpulan titik yang memanjang tanpa batas ke kedua arah',
+                            C: 'bagian bidang yang memiliki panjang dan lebar',
+                            D: 'bangun datar yang memiliki tiga sisi'
+                        },
+                        jawaban: 'B'
+                    },
+                    {
+                        nomor: 2,
+                        pertanyaan: 'Sudut adalah ....',
+                        pilihan: {
+                            A: 'daerah yang dibatasi oleh dua garis yang berpotongan pada satu titik',
+                            B: 'garis yang tidak memiliki ujung',
+                            C: 'kumpulan titik yang membentuk lingkaran',
+                            D: 'bangun datar yang memiliki empat sisi'
+                        },
+                        jawaban: 'A'
+                    },
+                    {
+                        nomor: 3,
+                        pertanyaan: 'Sudut yang besarnya kurang dari 90° disebut ....',
+                        pilihan: {
+                            A: 'sudut siku-siku',
+                            B: 'sudut tumpul',
+                            C: 'sudut lancip',
+                            D: 'sudut lurus'
+                        },
+                        jawaban: 'C'
+                    },
+                    {
+                        nomor: 4,
+                        pertanyaan: 'Sudut yang besarnya tepat 90° disebut ....',
+                        pilihan: {
+                            A: 'sudut lancip',
+                            B: 'sudut siku-siku',
+                            C: 'sudut tumpul',
+                            D: 'sudut lurus'
+                        },
+                        jawaban: 'B'
+                    },
+                    {
+                        nomor: 5,
+                        pertanyaan: 'Perhatikan besar sudut berikut!<br><br><strong>120°</strong><br><br>Sudut tersebut termasuk ....',
+                        pilihan: {
+                            A: 'sudut lancip',
+                            B: 'sudut siku-siku',
+                            C: 'sudut tumpul',
+                            D: 'sudut lurus'
+                        },
+                        jawaban: 'C'
+                    },
+                    {
+                        nomor: 6,
+                        pertanyaan: 'Jarum jam menunjukkan pukul 03.00. Sudut terkecil yang terbentuk antara jarum pendek dan jarum panjang adalah ....',
+                        pilihan: {
+                            A: '30°',
+                            B: '60°',
+                            C: '90°',
+                            D: '180°'
+                        },
+                        jawaban: 'C'
+                    },
+                    {
+                        nomor: 7,
+                        pertanyaan: 'Sebuah pintu dibuka sehingga membentuk sudut 45° terhadap posisi tertutup. Jenis sudut yang terbentuk adalah ....',
+                        pilihan: {
+                            A: 'sudut lancip',
+                            B: 'sudut siku-siku',
+                            C: 'sudut tumpul',
+                            D: 'sudut lurus'
+                        },
+                        jawaban: 'A'
+                    }
+                ]
+            },
+            // B. SEGITIGA DAN SEGIEMPAT
+            {
+                kategori: 'B. SEGITIGA DAN SEGIEMPAT',
+                soal: [
+                    {
+                        nomor: 8,
+                        pertanyaan: 'Segitiga adalah bangun datar yang memiliki ....',
+                        pilihan: {
+                            A: '2 sisi dan 3 titik sudut',
+                            B: '3 sisi dan 3 titik sudut',
+                            C: '4 sisi dan 4 titik sudut',
+                            D: '4 sisi dan 3 titik sudut'
+                        },
+                        jawaban: 'B'
+                    },
+                    {
+                        nomor: 9,
+                        pertanyaan: 'Segiempat adalah bangun datar yang memiliki ....',
+                        pilihan: {
+                            A: '3 sisi dan 3 titik sudut',
+                            B: '4 sisi dan 4 titik sudut',
+                            C: '5 sisi dan 5 titik sudut',
+                            D: '6 sisi dan 6 titik sudut'
+                        },
+                        jawaban: 'B'
+                    },
+                    {
+                        nomor: 10,
+                        pertanyaan: 'Segitiga yang memiliki tiga sisi sama panjang disebut ....',
+                        pilihan: {
+                            A: 'segitiga siku-siku',
+                            B: 'segitiga sama kaki',
+                            C: 'segitiga sama sisi',
+                            D: 'segitiga sembarang'
+                        },
+                        jawaban: 'C'
+                    },
+                    {
+                        nomor: 11,
+                        pertanyaan: 'Sebuah persegi memiliki panjang sisi 8 cm. Keliling persegi tersebut adalah ....',
+                        pilihan: {
+                            A: '16 cm',
+                            B: '24 cm',
+                            C: '32 cm',
+                            D: '64 cm'
+                        },
+                        jawaban: 'C'
+                    },
+                    {
+                        nomor: 12,
+                        pertanyaan: 'Sebuah taman berbentuk persegi panjang memiliki panjang 12 m dan lebar 8 m. Luas taman tersebut adalah ....',
+                        pilihan: {
+                            A: '20 m²',
+                            B: '40 m²',
+                            C: '80 m²',
+                            D: '96 m²'
+                        },
+                        jawaban: 'D'
+                    },
+                    {
+                        nomor: 13,
+                        pertanyaan: 'Sebuah papan berbentuk segitiga memiliki alas 10 cm dan tinggi 6 cm. Luas papan tersebut adalah ....',
+                        pilihan: {
+                            A: '16 cm²',
+                            B: '30 cm²',
+                            C: '60 cm²',
+                            D: '80 cm²'
+                        },
+                        jawaban: 'B'
+                    }
+                ]
+            },
+            // C. TEOREMA PYTHAGORAS
+            {
+                kategori: 'C. TEOREMA PYTHAGORAS',
+                soal: [
+                    {
+                        nomor: 14,
+                        pertanyaan: 'Teorema Pythagoras digunakan pada ....',
+                        pilihan: {
+                            A: 'semua jenis segitiga',
+                            B: 'segitiga sama sisi',
+                            C: 'segitiga sama kaki',
+                            D: 'segitiga siku-siku'
+                        },
+                        jawaban: 'D'
+                    },
+                    {
+                        nomor: 15,
+                        pertanyaan: 'Pada segitiga siku-siku, sisi yang berada di depan sudut siku-siku disebut ....',
+                        pilihan: {
+                            A: 'sisi alas',
+                            B: 'sisi tegak',
+                            C: 'sisi miring',
+                            D: 'sisi pendek'
+                        },
+                        jawaban: 'C'
+                    },
+                    {
+                        nomor: 16,
+                        pertanyaan: 'Pernyataan Teorema Pythagoras yang benar adalah ....',
+                        pilihan: {
+                            A: 'kuadrat sisi terpendek = jumlah kuadrat dua sisi lainnya',
+                            B: 'kuadrat sisi miring = jumlah kuadrat kedua sisi lainnya',
+                            C: 'sisi miring = jumlah kedua sisi lainnya',
+                            D: 'jumlah semua sisi = 180°'
+                        },
+                        jawaban: 'B'
+                    },
+                    {
+                        nomor: 17,
+                        pertanyaan: 'Sebuah tangga disandarkan pada dinding. Jarak kaki tangga ke dinding adalah 6 m dan tinggi dinding yang dicapai tangga adalah 8 m. Panjang tangga tersebut adalah ....',
+                        pilihan: {
+                            A: '10 m',
+                            B: '12 m',
+                            C: '14 m',
+                            D: '16 m'
+                        },
+                        jawaban: 'A'
+                    },
+                    {
+                        nomor: 18,
+                        pertanyaan: 'Sebuah lapangan berbentuk persegi panjang memiliki panjang 12 m dan lebar 5 m. Jarak dari satu sudut lapangan ke sudut yang berseberangan adalah ....',
+                        pilihan: {
+                            A: '13 m',
+                            B: '15 m',
+                            C: '17 m',
+                            D: '20 m'
+                        },
+                        jawaban: 'A'
+                    },
+                    {
+                        nomor: 19,
+                        pertanyaan: 'Rina berjalan 9 meter ke arah timur, kemudian 12 meter ke arah utara. Jarak terpendek Rina dari titik awal adalah ....',
+                        pilihan: {
+                            A: '13 m',
+                            B: '15 m',
+                            C: '18 m',
+                            D: '21 m'
+                        },
+                        jawaban: 'B'
+                    },
+                    {
+                        nomor: 20,
+                        pertanyaan: 'Sebuah tiang setinggi 15 m ditopang oleh kawat yang dipasang dari puncak tiang ke tanah. Jika titik pemasangan kawat di tanah berjarak 8 m dari kaki tiang, panjang kawat yang diperlukan adalah ....',
+                        pilihan: {
+                            A: '16 m',
+                            B: '17 m',
+                            C: '18 m',
+                            D: '20 m'
+                        },
+                        jawaban: 'B'
+                    }
+                ]
+            }
+        ];
+
+        // ============ LOGIKA APLIKASI ============
+        const STORAGE_KEY = 'rbi_matematika8_2_selesai';
+        let dataPeserta = null;
+
+        // Cek saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', function() {
+            const dataLama = localStorage.getItem(STORAGE_KEY);
+            if (dataLama) {
+                const parsed = JSON.parse(dataLama);
+                document.getElementById('halamanIdentitas').style.display = 'none';
+                document.getElementById('halamanSoal').style.display = 'none';
+                document.getElementById('halamanHasil').style.display = 'none';
+                document.getElementById('halamanSudahMengerjakan').style.display = 'block';
+                document.getElementById('sudahNama').textContent = parsed.nama;
+                document.getElementById('sudahKelas').textContent = parsed.kelas;
+                document.getElementById('sudahNilai').textContent = parsed.nilai;
+                document.getElementById('sudahPredikat').textContent = parsed.predikat;
+            }
+        });
+
+        function mulaiUlangan(e) {
+            e.preventDefault();
+            const nama = document.getElementById('inputNama').value.trim();
+            const kelas = document.getElementById('inputKelas').value;
+
+            if (!nama || !kelas) {
+                alert('Nama dan Kelas wajib diisi!');
+                return;
+            }
+
+            if (!confirm('Apakah data diri Anda sudah benar? Ulangan ini hanya dapat dikerjakan satu kali.')) {
+                return;
+            }
+
+            dataPeserta = { nama, kelas };
+            document.getElementById('displayNama').textContent = nama;
+            document.getElementById('displayKelas').textContent = kelas;
+
+            document.getElementById('halamanIdentitas').style.display = 'none';
+            document.getElementById('halamanSoal').style.display = 'block';
+            renderSoal();
+            window.scrollTo(0, 0);
+        }
+
+        function renderSoal() {
+            const container = document.getElementById('containerSoal');
+            container.innerHTML = '';
+
+            dataSoal.forEach(kategori => {
+                const judul = document.createElement('h4');
+                judul.className = 'section-title';
+                judul.innerHTML = `<i class="fas fa-book me-2"></i>${kategori.kategori}`;
+                container.appendChild(judul);
+
+                kategori.soal.forEach(soal => {
+                    const item = document.createElement('div');
+                    item.className = 'soal-item';
+                    item.innerHTML = `
+                        <div class="nomor-soal">Soal ${soal.nomor}</div>
+                        <div class="pertanyaan">${soal.pertanyaan}</div>
+                        <div>
+                            ${Object.keys(soal.pilihan).map(huruf => `
+                                <label class="pilihan">
+                                    <input type="radio" name="soal${soal.nomor}" value="${huruf}" required>
+                                    <strong>${huruf}.</strong> ${soal.pilihan[huruf]}
+                                </label>
+                            `).join('')}
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            });
+
+            // Tambahkan efek selected saat radio dipilih
+            document.querySelectorAll('.pilihan input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const parent = this.closest('.soal-item');
+                    parent.querySelectorAll('.pilihan').forEach(p => p.classList.remove('selected'));
+                    this.closest('.pilihan').classList.add('selected');
+                });
+            });
+        }
+
+        function submitUlangan() {
+            // Cek apakah semua soal sudah dijawab
+            let semuaTerjawab = true;
+            let nomorBelum = [];
+            for (let i = 1; i <= 20; i++) {
+                const jawaban = document.querySelector(`input[name="soal${i}"]:checked`);
+                if (!jawaban) {
+                    semuaTerjawab = false;
+                    nomorBelum.push(i);
+                }
+            }
+
+            if (!semuaTerjawab) {
+                if (!confirm(`Masih ada soal yang belum dijawab (nomor: ${nomorBelum.join(', ')}). Yakin ingin mengumpulkan?`)) {
+                    return;
+                }
+            } else {
+                if (!confirm('Yakin ingin mengumpulkan jawaban? Jawaban tidak dapat diubah setelah dikumpulkan.')) {
+                    return;
+                }
+            }
+
+            // Hitung nilai
+            let benar = 0;
+            const detailJawaban = [];
+
+            dataSoal.forEach(kategori => {
+                kategori.soal.forEach(soal => {
+                    const jawabanUser = document.querySelector(`input[name="soal${soal.nomor}"]:checked`);
+                    const jawabanDipilih = jawabanUser ? jawabanUser.value : '-';
+                    const isBenar = jawabanDipilih === soal.jawaban;
+                    if (isBenar) benar++;
+                    detailJawaban.push({
+                        nomor: soal.nomor,
+                        pertanyaan: soal.pertanyaan,
+                        jawabanUser: jawabanDipilih,
+                        jawabanBenar: soal.jawaban,
+                        isBenar: isBenar
+                    });
+                });
+            });
+
+            const nilai = (benar / 20) * 100;
+            let predikat = 'Perlu Bimbingan', badgeClass = 'perlu-bimbingan';
+            if (nilai >= 81) { predikat = 'Sangat Baik'; badgeClass = 'sangat-baik'; }
+            else if (nilai >= 71) { predikat = 'Baik'; badgeClass = 'baik'; }
+            else if (nilai >= 61) { predikat = 'Cukup'; badgeClass = 'cukup'; }
+
+            // Simpan ke localStorage
+            const dataSimpan = {
+                nama: dataPeserta.nama,
+                kelas: dataPeserta.kelas,
+                nilai: nilai.toFixed(1),
+                predikat: predikat,
+                benar: benar,
+                tanggal: new Date().toLocaleString('id-ID'),
+                detail: detailJawaban
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dataSimpan));
+
+            // Tampilkan hasil
+            tampilkanHasil(dataSimpan);
+        }
+
+        function tampilkanHasil(data) {
+            document.getElementById('halamanSoal').style.display = 'none';
+            document.getElementById('halamanHasil').style.display = 'block';
+
+            document.getElementById('hasilNama').textContent = data.nama;
+            document.getElementById('hasilKelas').textContent = data.kelas;
+            document.getElementById('hasilTanggal').textContent = data.tanggal;
+            document.getElementById('nilaiAkhir').textContent = data.nilai;
+            document.getElementById('jumlahBenar').textContent = data.benar;
+
+            const badge = document.getElementById('predikatBadge');
+            badge.textContent = data.predikat;
+            badge.className = 'predikat-badge ' + getBadgeClass(data.predikat);
+
+            // Render review
+            const container = document.getElementById('containerReview');
+            container.innerHTML = '';
+            data.detail.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'review-item ' + (item.isBenar ? 'benar' : 'salah');
+                div.innerHTML = `
+                    <strong>Soal ${item.nomor}:</strong> ${item.pertanyaan}<br>
+                    <small>
+                        Jawaban Anda: <strong>${item.jawabanUser}</strong> 
+                        ${item.isBenar ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i> (Benar: <strong>' + item.jawabanBenar + '</strong>)'}
+                    </small>
+                `;
+                container.appendChild(div);
+            });
+
+            window.scrollTo(0, 0);
+        }
+
+        function getBadgeClass(predikat) {
+            if (predikat === 'Sangat Baik') return 'sangat-baik';
+            if (predikat === 'Baik') return 'baik';
+            if (predikat === 'Cukup') return 'cukup';
+            return 'perlu-bimbingan';
+        }
+
+        function tampilkanHasilLama() {
+            const dataLama = JSON.parse(localStorage.getItem(STORAGE_KEY));
+            if (dataLama) {
+                document.getElementById('halamanSudahMengerjakan').style.display = 'none';
+                tampilkanHasil(dataLama);
+            }
+        }
+
+        function kembaliKeAwal() {
+            document.getElementById('halamanHasil').style.display = 'none';
+            document.getElementById('halamanSudahMengerjakan').style.display = 'block';
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
