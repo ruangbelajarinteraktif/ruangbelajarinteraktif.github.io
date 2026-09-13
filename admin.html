@@ -183,9 +183,9 @@
 
         function processRawData(data) {
             return data.filter(row => row['Nama'] && row['Nama'].trim() !== '').map((row, index) => {
-                const t1 = parseFloat(row['Tugas 1'] || row['Tugas1']) || 0;
-                const t2 = parseFloat(row['Tugas 2'] || row['Tugas2']) || 0;
-                const t3 = parseFloat(row['Tugas 3'] || row['Tugas3']) || 0;
+                const t1 = parseFloat(row['T1'] || row['T1']) || 0;
+                const t2 = parseFloat(row['T2'] || row['T2']) || 0;
+                const t3 = parseFloat(row['T3'] || row['T3']) || 0;
                 const sikap = parseFloat(row['Sikap']) || 0;
                 const aktif = parseFloat(row['Keaktifan'] || row['Aktif']) || 0;
                 const proyek = parseFloat(row['Proyek']) || 0;
