@@ -5,497 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pemilihan Ketua OSIS - SMP N 1 Kandeman</title>
     <style>
+        /* ... (CSS SAMA PERSIS SEPERTI SEBELUMNYA, TIDAK DIUBAH) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --primary: #1a237e;
-            --primary-light: #3949ab;
-            --secondary: #ff6f00;
-            --accent: #00c853;
-            --danger: #d32f2f;
-            --bg: #f5f5f5;
-            --text: #212121;
-            --text-light: #757575;
-            --shadow: 0 4px 20px rgba(0,0,0,0.1);
-            --shadow-hover: 0 8px 30px rgba(0,0,0,0.15);
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .bg-animation {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #1a237e 0%, #283593 25%, #3949ab 50%, #1565c0 75%, #0d47a1 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .bg-animation::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        }
-
-        .header {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            padding: 12px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
+        :root { --primary: #1a237e; --primary-light: #3949ab; --secondary: #ff6f00; --accent: #00c853; --danger: #d32f2f; --bg: #f5f5f5; --text: #212121; --text-light: #757575; --shadow: 0 4px 20px rgba(0,0,0,0.1); --shadow-hover: 0 8px 30px rgba(0,0,0,0.15); }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(135deg, #1a237e 0%, #283593 25%, #3949ab 50%, #1565c0 75%, #0d47a1 100%); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .bg-animation::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+        .header { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 12px 25px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 20px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
         .header-left { display: flex; align-items: center; gap: 12px; }
-
-        /* PERUBAHAN: Logo Header diganti menjadi gambar bulat */
-        .header-logo {
-            width: 45px;
-            height: 45px;
-            object-fit: contain;
-            border-radius: 50%;
-            background: white;
-            padding: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
+        .header-logo { width: 45px; height: 45px; object-fit: contain; border-radius: 50%; background: white; padding: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .header-title h1 { font-size: 1.1rem; color: var(--primary); }
         .header-title p { font-size: 0.75rem; color: var(--text-light); }
-
         .header-right { display: flex; align-items: center; gap: 12px; }
-
-        .timer-badge {
-            background: var(--danger);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .user-badge {
-            background: var(--primary-light);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-        }
-
+        .timer-badge { background: var(--danger); color: white; padding: 6px 12px; border-radius: 15px; font-weight: bold; font-size: 0.85rem; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .user-badge { background: var(--primary-light); color: white; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; }
         .page { display: none; animation: fadeIn 0.5s ease; }
         .page.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .login-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: calc(100vh - 70px);
-            padding: 15px;
-        }
-
-        .login-card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px 30px 20px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: var(--shadow-hover);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .login-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
-        }
-
-        .spensaka-logo-container {
-            margin-bottom: 8px;
-            animation: logoFloat 3s ease-in-out infinite;
-        }
-
-        .spensaka-logo-container img {
-            width: 70px; height: 70px;
-            object-fit: contain;
-            filter: drop-shadow(0 3px 10px rgba(26, 35, 126, 0.25));
-        }
-
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .school-name {
-            font-size: 0.75rem;
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 12px;
-            letter-spacing: 0.5px;
-        }
-
-        .login-card h2 {
-            color: var(--primary);
-            margin-bottom: 5px;
-            font-size: 1.4rem;
-        }
-
-        .login-card > p {
-            color: var(--text-light);
-            margin-bottom: 15px;
-            font-size: 0.8rem;
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 12px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 15px 12px 40px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .input-group input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
-        }
-
-        .input-group .input-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            box-shadow: 0 3px 12px rgba(26, 35, 126, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(26, 35, 126, 0.4);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #2e7d32, #43a047);
-            color: white;
-            box-shadow: 0 3px 12px rgba(46, 125, 50, 0.3);
-        }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.4);
-        }
-
-        .error-msg {
-            color: var(--danger);
-            font-size: 0.75rem;
-            margin-top: 8px;
-            display: none;
-        }
-
-        .error-msg.show {
-            display: block;
-            animation: shake 0.5s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .election-info {
-            margin: 10px 0;
-            padding: 8px 0;
-            border-top: 1px dashed #eee;
-            border-bottom: 1px dashed #eee;
-        }
-
-        .election-info p {
-            font-size: 0.7rem;
-            color: #888;
-            line-height: 1.4;
-        }
-
-        .election-info strong {
-            color: var(--primary);
-            font-size: 0.75rem;
-        }
-
-        .sponsor-section {
-            margin-top: 12px;
-            padding-top: 10px;
-        }
-
-        .sponsor-divider {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
-
-        .sponsor-divider::before,
-        .sponsor-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #ddd, transparent);
-        }
-
-        .sponsor-divider span {
-            font-size: 0.6rem;
-            color: #aaa;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            white-space: nowrap;
-        }
-
-        .sponsor-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .sponsor-text {
-            font-size: 0.65rem;
-            color: #999;
-            line-height: 1.3;
-        }
-
-        .sponsor-text strong {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .sponsor-logo-container {
-            width: 120px;
-            height: 120px;
-            padding: 8px;
-            border-radius: 50%;
-            background: transparent;
-            border: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            animation: logoFloat 3s ease-in-out infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .sponsor-logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 3px 8px rgba(0,0,0,0.15));
-            border-radius: 50%;
-        }
-
-        .sponsor-logo-container:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .sponsor-tagline {
-            font-size: 0.6rem;
-            color: #bbb;
-            font-style: italic;
-        }
-
-        .voting-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px 15px;
-        }
-
-        .voting-header {
-            text-align: center;
-            margin-bottom: 20px;
-            color: white;
-        }
-
-        .voting-header h2 {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .login-container { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 70px); padding: 15px; }
+        .login-card { background: white; border-radius: 20px; padding: 25px 30px 20px; width: 100%; max-width: 400px; box-shadow: var(--shadow-hover); text-align: center; position: relative; overflow: hidden; }
+        .login-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); }
+        .spensaka-logo-container { margin-bottom: 8px; animation: logoFloat 3s ease-in-out infinite; }
+        .spensaka-logo-container img { width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 3px 10px rgba(26, 35, 126, 0.25)); }
+        @keyframes logoFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .school-name { font-size: 0.75rem; color: var(--primary); font-weight: 600; margin-bottom: 12px; letter-spacing: 0.5px; }
+        .login-card h2 { color: var(--primary); margin-bottom: 5px; font-size: 1.4rem; }
+        .login-card > p { color: var(--text-light); margin-bottom: 15px; font-size: 0.8rem; }
+        .input-group { position: relative; margin-bottom: 12px; }
+        .input-group input { width: 100%; padding: 12px 15px 12px 40px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 0.9rem; transition: all 0.3s ease; outline: none; }
+        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1); }
+        .input-group .input-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 0.9rem; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; box-shadow: 0 3px 12px rgba(26, 35, 126, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26, 35, 126, 0.4); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-success { background: linear-gradient(135deg, #2e7d32, #43a047); color: white; box-shadow: 0 3px 12px rgba(46, 125, 50, 0.3); }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(46, 125, 50, 0.4); }
+        .error-msg { color: var(--danger); font-size: 0.75rem; margin-top: 8px; display: none; }
+        .error-msg.show { display: block; animation: shake 0.5s ease; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        .election-info { margin: 10px 0; padding: 8px 0; border-top: 1px dashed #eee; border-bottom: 1px dashed #eee; }
+        .election-info p { font-size: 0.7rem; color: #888; line-height: 1.4; }
+        .election-info strong { color: var(--primary); font-size: 0.75rem; }
+        .sponsor-section { margin-top: 12px; padding-top: 10px; }
+        .sponsor-divider { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .sponsor-divider::before, .sponsor-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #ddd, transparent); }
+        .sponsor-divider span { font-size: 0.6rem; color: #aaa; text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap; }
+        .sponsor-content { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .sponsor-text { font-size: 0.65rem; color: #999; line-height: 1.3; }
+        .sponsor-text strong { color: var(--primary); font-weight: 600; }
+        .sponsor-logo-container { width: 120px; height: 120px; padding: 8px; border-radius: 50%; background: transparent; border: none; transition: all 0.3s ease; cursor: pointer; animation: logoFloat 3s ease-in-out infinite; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .sponsor-logo-container img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.15)); border-radius: 50%; }
+        .sponsor-logo-container:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .sponsor-tagline { font-size: 0.6rem; color: #bbb; font-style: italic; }
+        .voting-container { max-width: 1100px; margin: 0 auto; padding: 20px 15px; }
+        .voting-header { text-align: center; margin-bottom: 20px; color: white; }
+        .voting-header h2 { font-size: 1.5rem; margin-bottom: 8px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         .voting-header p { opacity: 0.9; font-size: 0.9rem; }
-
-        .time-warning {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 12px;
-            padding: 10px 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: white;
-        }
-
+        .time-warning { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 10px 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; }
         .time-warning .time-icon { font-size: 1.2rem; }
-
-        .time-warning .time-display {
-            font-size: 1.2rem;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-        }
-
-        .time-warning.warning {
-            background: rgba(211, 47, 47, 0.3);
-            border-color: rgba(211, 47, 47, 0.5);
-            animation: pulse 1s infinite;
-        }
-
-        .candidates-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .candidate-card {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .candidate-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .candidate-card.selected {
-            border: 3px solid var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 200, 83, 0.3);
-        }
-
-        .candidate-card.selected .logo-badge {
-            position: absolute;
-            top: 10px; right: 10px;
-            width: 45px; height: 45px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
-            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 10;
-            padding: 5px;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
-
-        .candidate-card.selected .logo-badge img {
-            width: 100%; height: 100%;
-            object-fit: contain;
-        }
-
-        .candidate-photo {
-            width: 100%; height: 200px;
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .candidate-photo img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-        }
-
-        .candidate-number {
-            position: absolute;
-            top: 12px; left: 12px;
-            width: 38px; height: 38px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            font-weight: bold;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-        }
-
+        .time-warning .time-display { font-size: 1.2rem; font-weight: bold; font-family: 'Courier New', monospace; }
+        .time-warning.warning { background: rgba(211, 47, 47, 0.3); border-color: rgba(211, 47, 47, 0.5); animation: pulse 1s infinite; }
+        .candidates-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .candidate-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s ease; cursor: pointer; position: relative; }
+        .candidate-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+        .candidate-card.selected { border: 3px solid var(--accent); transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0, 200, 83, 0.3); }
+        .candidate-card.selected .logo-badge { position: absolute; top: 10px; right: 10px; width: 45px; height: 45px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2); animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 10; padding: 5px; }
+        @keyframes popIn { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+        .candidate-card.selected .logo-badge img { width: 100%; height: 100%; object-fit: contain; }
+        .candidate-photo { width: 100%; height: 200px; background: linear-gradient(135deg, #e3f2fd, #bbdefb); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .candidate-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .candidate-number { position: absolute; top: 12px; left: 12px; width: 38px; height: 38px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: bold; box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
         .candidate-info { padding: 18px; }
         .candidate-info h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 4px; }
         .candidate-info .class-info { color: var(--text-light); font-size: 0.75rem; margin-bottom: 10px; }
@@ -503,229 +85,38 @@
         .candidate-info .visi-misi h4 { color: var(--secondary); margin-bottom: 4px; font-size: 0.8rem; }
         .candidate-info .visi-misi ul { padding-left: 16px; margin-top: 4px; }
         .candidate-info .visi-misi li { margin-bottom: 2px; }
-
         .vote-action { text-align: center; padding: 15px; }
         .vote-action .btn { max-width: 280px; margin: 0 auto; }
-
-        .results-container { max-width: 800px; margin: 0 auto; padding: 20px 15px; }
-        .results-header { text-align: center; color: white; margin-bottom: 20px; }
-        .results-header h2 { font-size: 1.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-
-        .results-card {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: var(--shadow-hover);
-        }
-
-        .results-summary {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .result-item {
-            text-align: center;
-            padding: 15px;
-            border-radius: 12px;
-            background: #f8f9fa;
-            transition: all 0.3s ease;
-        }
-
-        .result-item:hover { transform: scale(1.02); }
-        .result-item .result-number { font-size: 2rem; font-weight: bold; color: var(--primary); }
-        .result-item .result-name { font-size: 0.8rem; color: var(--text-light); margin-top: 4px; }
-        .result-item .result-votes { font-size: 1.3rem; font-weight: bold; color: var(--secondary); margin-top: 8px; }
-        .result-item .result-percent { font-size: 0.75rem; color: var(--text-light); }
-
-        .progress-section { margin-top: 20px; }
-        .progress-bar-container { margin-bottom: 15px; }
-
-        .progress-bar-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-            font-size: 0.8rem;
-        }
-
-        .progress-bar-label span:first-child { font-weight: 600; color: var(--text); }
-        .progress-bar-label span:last-child { color: var(--text-light); }
-
-        .progress-bar {
-            height: 10px;
-            background: #e0e0e0;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            border-radius: 5px;
-            transition: width 1s ease;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light));
-        }
-
-        .progress-bar-fill.candidate-1 { background: linear-gradient(90deg, #1565c0, #42a5f5); }
-        .progress-bar-fill.candidate-2 { background: linear-gradient(90deg, #e65100, #ff9800); }
-        .progress-bar-fill.candidate-3 { background: linear-gradient(90deg, #2e7d32, #66bb6a); }
-
-        .total-voters {
-            text-align: center;
-            margin-top: 18px;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .total-voters span { font-size: 0.95rem; color: var(--text-light); }
-        .total-voters strong { color: var(--primary); font-size: 1.1rem; }
-
-        .refresh-info {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 0.7rem;
-            color: var(--text-light);
-        }
-
-        .success-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: calc(100vh - 70px);
-            padding: 15px;
-        }
-
-        .success-card {
-            background: white;
-            border-radius: 20px;
-            padding: 35px 30px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: var(--shadow-hover);
-            text-align: center;
-        }
-
-        .success-icon {
-            width: 80px; height: 80px;
-            background: linear-gradient(135deg, #2e7d32, #43a047);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 18px;
-            animation: bounceIn 0.6s ease;
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
+        .success-container { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 70px); padding: 15px; }
+        .success-card { background: white; border-radius: 20px; padding: 35px 30px; width: 100%; max-width: 400px; box-shadow: var(--shadow-hover); text-align: center; }
+        .success-icon { width: 80px; height: 80px; background: linear-gradient(135deg, #2e7d32, #43a047); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; animation: bounceIn 0.6s ease; }
+        @keyframes bounceIn { 0% { transform: scale(0); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
         .success-icon svg { width: 40px; height: 40px; fill: white; }
         .success-card h2 { color: #2e7d32; margin-bottom: 10px; font-size: 1.3rem; }
         .success-card p { color: var(--text-light); line-height: 1.5; font-size: 0.85rem; }
-
-        .disqualified-card {
-            background: white;
-            border-radius: 20px;
-            padding: 35px 30px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: var(--shadow-hover);
-            text-align: center;
-        }
-
-        .disqualified-icon {
-            width: 80px; height: 80px;
-            background: linear-gradient(135deg, #c62828, #e53935);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 18px;
-        }
-
+        .disqualified-card { background: white; border-radius: 20px; padding: 35px 30px; width: 100%; max-width: 400px; box-shadow: var(--shadow-hover); text-align: center; }
+        .disqualified-icon { width: 80px; height: 80px; background: linear-gradient(135deg, #c62828, #e53935); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
         .disqualified-icon svg { width: 40px; height: 40px; fill: white; }
         .disqualified-card h2 { color: var(--danger); margin-bottom: 10px; font-size: 1.3rem; }
         .disqualified-card p { color: var(--text-light); line-height: 1.5; font-size: 0.85rem; }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 9999; }
         .loading-overlay.show { display: flex; }
-
-        .spinner {
-            width: 45px; height: 45px;
-            border: 4px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
+        .spinner { width: 45px; height: 45px; border: 4px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        .toast {
-            position: fixed;
-            bottom: 20px; right: 20px;
-            background: #323232;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            z-index: 10000;
-            display: none;
-            animation: slideUp 0.3s ease;
-            font-size: 0.85rem;
-        }
-
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #323232; color: white; padding: 12px 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10000; display: none; animation: slideUp 0.3s ease; font-size: 0.85rem; }
         .toast.show { display: block; }
-
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @media (max-width: 768px) {
-            .header { padding: 10px 12px; }
-            .header-title h1 { font-size: 0.95rem; }
-            .candidates-grid { grid-template-columns: 1fr; }
-            .results-summary { grid-template-columns: 1fr; }
-            .login-card { padding: 20px 25px 15px; max-width: 350px; }
-            .spensaka-logo-container img { width: 60px; height: 60px; }
-            .sponsor-logo-container { width: 100px; height: 100px; }
-            .time-warning { flex-direction: column; gap: 4px; padding: 8px 15px; }
-            .candidate-card.selected .logo-badge { width: 40px; height: 40px; top: 8px; right: 8px; }
-        }
-
-        .footer {
-            text-align: center;
-            padding: 15px;
-            color: rgba(255,255,255,0.7);
-            font-size: 0.75rem;
-        }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @media (max-width: 768px) { .header { padding: 10px 12px; } .header-title h1 { font-size: 0.95rem; } .candidates-grid { grid-template-columns: 1fr; } .login-card { padding: 20px 25px 15px; max-width: 350px; } .spensaka-logo-container img { width: 60px; height: 60px; } .sponsor-logo-container { width: 100px; height: 100px; } .time-warning { flex-direction: column; gap: 4px; padding: 8px 15px; } .candidate-card.selected .logo-badge { width: 40px; height: 40px; top: 8px; right: 8px; } }
+        .footer { text-align: center; padding: 15px; color: rgba(255,255,255,0.7); font-size: 0.75rem; }
     </style>
 </head>
 <body>
     <div class="bg-animation"></div>
-
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="spinner"></div>
-    </div>
-
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
     <div class="toast" id="toast"></div>
 
     <div class="header" id="mainHeader" style="display:none;">
         <div class="header-left">
-            <!-- PERUBAHAN: Logo OSIS diganti dengan Logo SPENSAKA -->
             <img src="" alt="Logo SPENSAKA" class="header-logo" id="headerSpensakaLogo">
             <div class="header-title">
                 <h1>Pemilihan Ketua OSIS</h1>
@@ -742,45 +133,24 @@
     <div class="page active" id="loginPage">
         <div class="login-container">
             <div class="login-card">
-                <div class="spensaka-logo-container">
-                    <img src="" alt="Logo SMP Negeri 1 Kandeman" id="spensakaLogo">
-                </div>
+                <div class="spensaka-logo-container"><img src="" alt="Logo SMP Negeri 1 Kandeman" id="spensakaLogo"></div>
                 <p class="school-name">SMP NEGERI 1 KANDEMAN</p>
-
                 <h2>Selamat Datang!</h2>
                 <p>Masukkan NIS (Nomor Induk Siswa) Anda untuk menggunakan hak pilih</p>
-                
                 <div class="input-group">
                     <span class="input-icon">🔑</span>
                     <input type="text" id="nisInput" placeholder="Masukkan NIS Anda" maxlength="20" autocomplete="off">
                 </div>
-
-                <button class="btn btn-primary" id="loginBtn" onclick="handleLogin()">
-                    Masuk & Gunakan Hak Pilih
-                </button>
-
+                <button class="btn btn-primary" id="loginBtn" onclick="handleLogin()">Masuk & Gunakan Hak Pilih</button>
                 <p class="error-msg" id="loginError"></p>
-
                 <div class="election-info">
-                    <p>
-                         <strong>Mode Testing Aktif</strong><br>
-                        Pemilihan dapat dilakukan kapan saja<br>
-                        <em>(Waktu normal: Jumat, 18 September 2026, 08:00 - 12:00 WIB)</em>
-                    </p>
+                    <p><strong>Waktu Memilih: 2 Menit</strong><br><em>Pastikan Anda telah menentukan pilihan sebelum waktu habis.</em></p>
                 </div>
-
                 <div class="sponsor-section">
-                    <div class="sponsor-divider">
-                        <span>Supported by</span>
-                    </div>
+                    <div class="sponsor-divider"><span>Supported by</span></div>
                     <div class="sponsor-content">
-                        <p class="sponsor-text">
-                            Web ini sepenuhnya didukung oleh<br>
-                            <strong>VisiMedia Advertising</strong>
-                        </p>
-                        <div class="sponsor-logo-container">
-                            <img src="" alt="VisiMedia Advertising Logo" id="visimediaLogo">
-                        </div>
+                        <p class="sponsor-text">Web ini sepenuhnya didukung oleh<br><strong>VisiMedia Advertising</strong></p>
+                        <div class="sponsor-logo-container"><img src="" alt="VisiMedia Advertising Logo" id="visimediaLogo"></div>
                         <p class="sponsor-tagline">Visi Anda. Media Kami. Hasil Maksimal</p>
                     </div>
                 </div>
@@ -795,379 +165,172 @@
                 <h2>🗳️ Pilih Kandidat Ketua OSIS</h2>
                 <p>Pilih salah satu kandidat di bawah ini dengan bijak</p>
             </div>
-
             <div class="time-warning" id="timeWarning">
                 <span class="time-icon">⏱️</span>
                 <span>Waktu tersisa untuk memilih:</span>
-                <span class="time-display" id="voteTimer">05:00</span>
+                <span class="time-display" id="voteTimer">02:00</span> <!-- DIUBAH JADI 02:00 -->
             </div>
-
             <div class="candidates-grid">
+                <!-- Kandidat 1 -->
                 <div class="candidate-card" id="candidate1" onclick="selectCandidate(1)">
-                    <div class="logo-badge" style="display:none;">
-                        <img src="" alt="SPENSAKA" class="badge-logo">
-                    </div>
-                    <div class="candidate-photo">
-                        <div class="candidate-number">1</div>
-                    </div>
+                    <div class="logo-badge" style="display:none;"><img src="" alt="SPENSAKA" class="badge-logo"></div>
+                    <div class="candidate-photo"><div class="candidate-number">1</div></div>
                     <div class="candidate-info">
                         <h3>Nama Kandidat 1</h3>
                         <p class="class-info">Kelas 9A</p>
                         <div class="visi-misi">
-                            <h4>📌 Visi:</h4>
-                            <p>Mewujudkan OSIS yang kreatif, inovatif, dan berprestasi.</p>
+                            <h4>📌 Visi:</h4><p>Mewujudkan OSIS yang kreatif, inovatif, dan berprestasi.</p>
                             <h4 style="margin-top:8px;">🎯 Misi:</h4>
-                            <ul>
-                                <li>Meningkatkan kualitas akademik siswa</li>
-                                <li>Mengadakan kegiatan ekstrakurikuler yang beragam</li>
-                                <li>Membangun solidaritas antar siswa</li>
-                            </ul>
+                            <ul><li>Meningkatkan kualitas akademik siswa</li><li>Mengadakan kegiatan ekstrakurikuler yang beragam</li><li>Membangun solidaritas antar siswa</li></ul>
                         </div>
                     </div>
                 </div>
-
+                <!-- Kandidat 2 -->
                 <div class="candidate-card" id="candidate2" onclick="selectCandidate(2)">
-                    <div class="logo-badge" style="display:none;">
-                        <img src="" alt="SPENSAKA" class="badge-logo">
-                    </div>
-                    <div class="candidate-photo">
-                        <div class="candidate-number">2</div>
-                    </div>
+                    <div class="logo-badge" style="display:none;"><img src="" alt="SPENSAKA" class="badge-logo"></div>
+                    <div class="candidate-photo"><div class="candidate-number">2</div></div>
                     <div class="candidate-info">
                         <h3>Nama Kandidat 2</h3>
                         <p class="class-info">Kelas 9B</p>
                         <div class="visi-misi">
-                            <h4>📌 Visi:</h4>
-                            <p>Menciptakan lingkungan sekolah yang bersih, nyaman, dan berbudaya.</p>
-                            <h4 style="margin-top:8px;"> Misi:</h4>
-                            <ul>
-                                <li>Program green school dan penghijauan</li>
-                                <li>Festival budaya dan seni tahunan</li>
-                                <li>Program literasi dan pojok baca</li>
-                            </ul>
+                            <h4>📌 Visi:</h4><p>Menciptakan lingkungan sekolah yang bersih, nyaman, dan berbudaya.</p>
+                            <h4 style="margin-top:8px;">🎯 Misi:</h4>
+                            <ul><li>Program green school dan penghijauan</li><li>Festival budaya dan seni tahunan</li><li>Program literasi dan pojok baca</li></ul>
                         </div>
                     </div>
                 </div>
-
+                <!-- Kandidat 3 -->
                 <div class="candidate-card" id="candidate3" onclick="selectCandidate(3)">
-                    <div class="logo-badge" style="display:none;">
-                        <img src="" alt="SPENSAKA" class="badge-logo">
-                    </div>
-                    <div class="candidate-photo">
-                        <div class="candidate-number">3</div>
-                    </div>
+                    <div class="logo-badge" style="display:none;"><img src="" alt="SPENSAKA" class="badge-logo"></div>
+                    <div class="candidate-photo"><div class="candidate-number">3</div></div>
                     <div class="candidate-info">
                         <h3>Nama Kandidat 3</h3>
                         <p class="class-info">Kelas 9C</p>
                         <div class="visi-misi">
-                            <h4>📌 Visi:</h4>
-                            <p>OSIS yang transparan, aspiratif, dan dekat dengan seluruh siswa.</p>
+                            <h4>📌 Visi:</h4><p>OSIS yang transparan, aspiratif, dan dekat dengan seluruh siswa.</p>
                             <h4 style="margin-top:8px;">🎯 Misi:</h4>
-                            <ul>
-                                <li>Kotak saran digital untuk aspirasi siswa</li>
-                                <li>Program mentoring kakak-adik</li>
-                                <li>Turnamen olahraga antar kelas</li>
-                            </ul>
+                            <ul><li>Kotak saran digital untuk aspirasi siswa</li><li>Program mentoring kakak-adik</li><li>Turnamen olahraga antar kelas</li></ul>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="vote-action">
-                <button class="btn btn-success" id="submitVoteBtn" onclick="submitVote()" disabled>
-                    ✓ Konfirmasi Pilihan Saya
-                </button>
-                <p style="margin-top: 8px; font-size: 0.75rem; color: rgba(255,255,255,0.7);">
-                    Pilihan Anda bersifat rahasia dan tidak dapat diubah
-                </p>
+                <button class="btn btn-success" id="submitVoteBtn" onclick="submitVote()" disabled>✓ Konfirmasi Pilihan Saya</button>
+                <p style="margin-top: 8px; font-size: 0.75rem; color: rgba(255,255,255,0.7);">Pilihan Anda bersifat rahasia dan tidak dapat diubah</p>
             </div>
         </div>
     </div>
 
-    <!-- SUCCESS PAGE -->
+    <!-- SUCCESS PAGE (TOMBOL HASIL DIHAPUS) -->
     <div class="page" id="successPage">
         <div class="success-container">
             <div class="success-card">
-                <div class="success-icon">
-                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                </div>
+                <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
                 <h2>Terima Kasih!</h2>
                 <p>Suara Anda telah berhasil dicatat.<br>Terima kasih telah berpartisipasi dalam Pemilihan Ketua OSIS SMP Negeri 1 Kandeman.</p>
-                <div style="margin-top: 20px;">
-                    <button class="btn btn-primary" onclick="showResults()" style="max-width: 220px; margin: 0 auto;">
-                        📊 Lihat Perolehan Suara
-                    </button>
+                <div style="margin-top: 25px; padding: 15px; background: #e8f5e9; border-radius: 10px; color: #2e7d32; font-weight: bold;">
+                    ✅ Silakan tinggalkan bilik suara dengan tertib.
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- DISQUALIFIED PAGE -->
+    <!-- DISQUALIFIED PAGE (TOMBOL HASIL DIHAPUS) -->
     <div class="page" id="disqualifiedPage">
         <div class="login-container">
             <div class="disqualified-card">
-                <div class="disqualified-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>
-                </div>
+                <div class="disqualified-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg></div>
                 <h2>Diskualifikasi</h2>
-                <p>Maaf, waktu Anda untuk memilih telah habis. Suara Anda tidak dapat diproses karena melebihi batas waktu yang ditentukan.</p>
-                <div style="margin-top: 20px;">
-                    <button class="btn btn-primary" onclick="showResults()" style="max-width: 220px; margin: 0 auto;">
-                        📊 Lihat Perolehan Suara
-                    </button>
+                <p>Maaf, waktu Anda untuk memilih telah habis (melebihi 2 menit). Suara Anda tidak dapat diproses.</p>
+                <div style="margin-top: 25px; padding: 15px; background: #ffebee; border-radius: 10px; color: #c62828; font-weight: bold;">
+                    ⚠️ Silakan tinggalkan bilik suara dan hubungi panitia.
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- RESULTS PAGE -->
-    <div class="page" id="resultsPage">
-        <div class="results-container">
-            <div class="results-header">
-                <h2>📊 Perolehan Suara Realtime</h2>
-                <p style="opacity: 0.9; margin-top: 6px;">Pemilihan Ketua OSIS SMP Negeri 1 Kandeman</p>
-            </div>
-
-            <div class="results-card">
-                <div class="results-summary">
-                    <div class="result-item">
-                        <div class="result-number">01</div>
-                        <div class="result-name" id="resultName1">Kandidat 1</div>
-                        <div class="result-votes" id="resultVotes1">0</div>
-                        <div class="result-percent" id="resultPercent1">0%</div>
-                    </div>
-                    <div class="result-item">
-                        <div class="result-number">02</div>
-                        <div class="result-name" id="resultName2">Kandidat 2</div>
-                        <div class="result-votes" id="resultVotes2">0</div>
-                        <div class="result-percent" id="resultPercent2">0%</div>
-                    </div>
-                    <div class="result-item">
-                        <div class="result-number">03</div>
-                        <div class="result-name" id="resultName3">Kandidat 3</div>
-                        <div class="result-votes" id="resultVotes3">0</div>
-                        <div class="result-percent" id="resultPercent3">0%</div>
-                    </div>
-                </div>
-
-                <div class="progress-section">
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-label">
-                            <span>Kandidat 1</span>
-                            <span id="progressLabel1">0 suara</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-bar-fill candidate-1" id="progressBar1" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-label">
-                            <span>Kandidat 2</span>
-                            <span id="progressLabel2">0 suara</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-bar-fill candidate-2" id="progressBar2" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-label">
-                            <span>Kandidat 3</span>
-                            <span id="progressLabel3">0 suara</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-bar-fill candidate-3" id="progressBar3" style="width: 0%"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="total-voters">
-                    <span>Total Pemilih: <strong id="totalVoters">0</strong> siswa</span>
-                </div>
-
-                <div class="refresh-info"> Data diperbarui otomatis setiap 5 detik</div>
-            </div>
-
-            <div style="text-align: center; margin-top: 15px;">
-                <button class="btn btn-primary" onclick="backToLogin()" style="max-width: 220px; margin: 0 auto; display: inline-block;">
-                    🏠 Kembali ke Beranda
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer" id="mainFooter">
-        <p>© 2026 SMP Negeri 1 Kandeman - Sistem Pemilihan Ketua OSIS</p>
-    </div>
+    <div class="footer" id="mainFooter"><p>© 2026 SMP Negeri 1 Kandeman - Sistem Pemilihan Ketua OSIS</p></div>
 
     <script>
-        // ============================================
-        // KONFIGURASI URL LOGO - SUDAH DIISI
-        // ============================================
         const LOGO_SPENSAKA_URL = 'images/spensaka.png';
         const LOGO_VISIMEDIA_URL = 'images/visimed.png';
-            
-        // ⚠️ URL DEPLOYMENT APPS SCRIPT ANDA
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCxap2pcN11uFWJDfgfR_kAeob3r99SIDq7gRCPipmiNopgAx5L7ufuhATtUVWw-qZ_g/exec';
         
-        // ============================================
-        // KONFIGURASI WAKTU PEMILIHAN - MODE TESTING
-        // ============================================
-        const ELECTION_START = '2024-01-01T00:00:00+07:00';
-        const ELECTION_END = '2099-12-31T23:59:59+07:00';
-        const MAX_VOTING_TIME = 300;
+        // DIUBAH: Waktu menjadi 2 menit (120 detik)
+        const MAX_VOTING_TIME = 120; 
 
-        // ============================================
-        // STATE
-        // ============================================
-        let currentNIS = '';
-        let selectedCandidate = null;
-        let voteTimer = null;
-        let timeRemaining = MAX_VOTING_TIME;
-        let resultsInterval = null;
+        let currentNIS = '', selectedCandidate = null, voteTimer = null, timeRemaining = MAX_VOTING_TIME;
 
-        // ============================================
-        // INISIALISASI LOGO SAAT HALAMAN DIMUAT
-        // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            // Set logo SPENSAKA di SEMUA tempat (termasuk header yang baru)
-            const spensakaUrl = LOGO_SPENSAKA_URL;
-            document.getElementById('spensakaLogo').src = spensakaUrl;
-            document.getElementById('headerSpensakaLogo').src = spensakaUrl; // <-- Tambahan untuk header
-            document.querySelectorAll('.badge-logo').forEach(img => {
-                img.src = spensakaUrl;
-            });
-            
-            // Set logo VisiMedia
+            document.getElementById('spensakaLogo').src = LOGO_SPENSAKA_URL;
+            document.getElementById('headerSpensakaLogo').src = LOGO_SPENSAKA_URL;
+            document.querySelectorAll('.badge-logo').forEach(img => { img.src = LOGO_SPENSAKA_URL; });
             document.getElementById('visimediaLogo').src = LOGO_VISIMEDIA_URL;
         });
 
-        // ============================================
-        // UTILITY FUNCTIONS
-        // ============================================
-        function showLoading() {
-            document.getElementById('loadingOverlay').classList.add('show');
-        }
-
-        function hideLoading() {
-            document.getElementById('loadingOverlay').classList.remove('show');
-        }
-
+        function showLoading() { document.getElementById('loadingOverlay').classList.add('show'); }
+        function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
         function showToast(message, duration = 3000) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
+            toast.textContent = message; toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), duration);
         }
-
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
-
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
             const secs = seconds % 60;
             return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
         }
 
-        function isElectionTime() {
-            const now = new Date();
-            const start = new Date(ELECTION_START);
-            const end = new Date(ELECTION_END);
-            return now >= start && now <= end;
-        }
-
-        // ============================================
-        // API CALLS
-        // ============================================
         async function callAPI(action, data = {}) {
             try {
                 const formData = new FormData();
                 formData.append('action', action);
-                for (let key in data) {
-                    formData.append(key, data[key]);
-                }
-
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-                return result;
+                for (let key in data) formData.append(key, data[key]);
+                const response = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: formData });
+                return await response.json();
             } catch (error) {
                 console.error('API Error:', error);
                 return { success: false, message: 'Koneksi gagal: ' + error.message };
             }
         }
 
-        // ============================================
-        // LOGIN
-        // ============================================
         async function handleLogin() {
             const nis = document.getElementById('nisInput').value.trim();
             const errorEl = document.getElementById('loginError');
+            if (!nis) { errorEl.textContent = 'Silakan masukkan NIS Anda!'; errorEl.classList.add('show'); return; }
 
-            if (!nis) {
-                errorEl.textContent = 'Silakan masukkan NIS Anda!';
-                errorEl.classList.add('show');
-                return;
-            }
-
-            if (!isElectionTime()) {
-                errorEl.textContent = 'Pemilihan tidak berlangsung saat ini.';
-                errorEl.classList.add('show');
-                return;
-            }
-
-            showLoading();
-            errorEl.classList.remove('show');
-
+            showLoading(); errorEl.classList.remove('show');
             const result = await callAPI('validateVoter', { nis: nis });
-
             hideLoading();
 
             if (result.success) {
-                if (result.alreadyVoted) {
-                    errorEl.textContent = 'Anda sudah menggunakan hak pilih. Suara tidak dapat digunakan lagi.';
-                    errorEl.classList.add('show');
-                    return;
-                }
-
+                if (result.alreadyVoted) { errorEl.textContent = 'Anda sudah menggunakan hak pilih.'; errorEl.classList.add('show'); return; }
                 currentNIS = nis;
                 document.getElementById('mainHeader').style.display = 'flex';
                 document.getElementById('userBadge').style.display = 'block';
                 document.getElementById('userBadge').textContent = `NIS: ${nis}`;
                 document.getElementById('headerTimer').style.display = 'block';
-
                 startVotingTimer();
                 showPage('votingPage');
                 showToast('Selamat datang! Silakan pilih kandidat.');
             } else {
-                errorEl.textContent = result.message || 'NIS tidak valid atau tidak terdaftar!';
+                errorEl.textContent = result.message || 'NIS tidak valid!';
                 errorEl.classList.add('show');
             }
         }
 
-        // ============================================
-        // VOTING TIMER
-        // ============================================
         function startVotingTimer() {
             timeRemaining = MAX_VOTING_TIME;
             updateTimerDisplay();
-
             voteTimer = setInterval(() => {
                 timeRemaining--;
                 updateTimerDisplay();
-
-                if (timeRemaining <= 60) {
-                    document.getElementById('timeWarning').classList.add('warning');
-                }
-
-                if (timeRemaining <= 0) {
-                    clearInterval(voteTimer);
-                    handleDisqualified();
-                }
+                if (timeRemaining <= 30) document.getElementById('timeWarning').classList.add('warning');
+                if (timeRemaining <= 0) { clearInterval(voteTimer); handleDisqualified(); }
             }, 1000);
         }
 
@@ -1183,140 +346,42 @@
             showToast('Waktu habis! Anda telah didiskualifikasi.');
         }
 
-        // ============================================
-        // CANDIDATE SELECTION
-        // ============================================
         function selectCandidate(num) {
             selectedCandidate = num;
-            
             document.querySelectorAll('.candidate-card').forEach(card => {
                 card.classList.remove('selected');
                 const badge = card.querySelector('.logo-badge');
                 if (badge) badge.style.display = 'none';
             });
-            
             const selectedCard = document.getElementById(`candidate${num}`);
             selectedCard.classList.add('selected');
             const badge = selectedCard.querySelector('.logo-badge');
-            if (badge) {
-                badge.style.display = 'flex';
-            }
-            
+            if (badge) badge.style.display = 'flex';
             document.getElementById('submitVoteBtn').disabled = false;
             showToast(`Kandidat ${num} dipilih`);
         }
 
-        // ============================================
-        // SUBMIT VOTE
-        // ============================================
         async function submitVote() {
-            if (!selectedCandidate) {
-                showToast('Pilih salah satu kandidat terlebih dahulu!');
-                return;
-            }
-
-            if (!confirm('Apakah Anda yakin dengan pilihan Anda?\nPilihan tidak dapat diubah setelah dikonfirmasi.')) {
-                return;
-            }
+            if (!selectedCandidate) { showToast('Pilih kandidat terlebih dahulu!'); return; }
+            if (!confirm('Apakah Anda yakin? Pilihan tidak dapat diubah.')) return;
 
             clearInterval(voteTimer);
             showLoading();
-
             const timeSpent = MAX_VOTING_TIME - timeRemaining;
-
-            const result = await callAPI('submitVote', {
-                nis: currentNIS,
-                candidate: selectedCandidate,
-                timeSpent: timeSpent,
-                timestamp: new Date().toISOString()
-            });
-
+            const result = await callAPI('submitVote', { nis: currentNIS, candidate: selectedCandidate, timeSpent: timeSpent, timestamp: new Date().toISOString() });
             hideLoading();
 
             if (result.success) {
                 showPage('successPage');
                 showToast('Suara berhasil dicatat!');
             } else {
-                if (result.disqualified) {
-                    handleDisqualified();
-                } else {
-                    showToast(result.message || 'Gagal mencatat suara. Silakan coba lagi.');
-                    startVotingTimer();
-                }
+                if (result.disqualified) handleDisqualified();
+                else { showToast(result.message || 'Gagal mencatat suara.'); startVotingTimer(); }
             }
-        }
-
-        // ============================================
-        // RESULTS
-        // ============================================
-        function showResults() {
-            showPage('resultsPage');
-            fetchResults();
-            if (resultsInterval) clearInterval(resultsInterval);
-            resultsInterval = setInterval(fetchResults, 5000);
-        }
-
-        async function fetchResults() {
-            const result = await callAPI('getResults');
-
-            if (result.success) {
-                updateResultsDisplay(result.data);
-            }
-        }
-
-        function updateResultsDisplay(data) {
-            const total = (data.candidate1 || 0) + (data.candidate2 || 0) + (data.candidate3 || 0);
-
-            document.getElementById('resultVotes1').textContent = data.candidate1 || 0;
-            document.getElementById('resultVotes2').textContent = data.candidate2 || 0;
-            document.getElementById('resultVotes3').textContent = data.candidate3 || 0;
-
-            const pct1 = total > 0 ? ((data.candidate1 / total) * 100).toFixed(1) : 0;
-            const pct2 = total > 0 ? ((data.candidate2 / total) * 100).toFixed(1) : 0;
-            const pct3 = total > 0 ? ((data.candidate3 / total) * 100).toFixed(1) : 0;
-
-            document.getElementById('resultPercent1').textContent = `${pct1}%`;
-            document.getElementById('resultPercent2').textContent = `${pct2}%`;
-            document.getElementById('resultPercent3').textContent = `${pct3}%`;
-
-            document.getElementById('progressBar1').style.width = `${pct1}%`;
-            document.getElementById('progressBar2').style.width = `${pct2}%`;
-            document.getElementById('progressBar3').style.width = `${pct3}%`;
-
-            document.getElementById('progressLabel1').textContent = `${data.candidate1 || 0} suara`;
-            document.getElementById('progressLabel2').textContent = `${data.candidate2 || 0} suara`;
-            document.getElementById('progressLabel3').textContent = `${data.candidate3 || 0} suara`;
-
-            document.getElementById('totalVoters').textContent = total;
-
-            if (data.names) {
-                document.getElementById('resultName1').textContent = data.names[1] || 'Kandidat 1';
-                document.getElementById('resultName2').textContent = data.names[2] || 'Kandidat 2';
-                document.getElementById('resultName3').textContent = data.names[3] || 'Kandidat 3';
-            }
-        }
-
-        function backToLogin() {
-            if (resultsInterval) clearInterval(resultsInterval);
-            if (voteTimer) clearInterval(voteTimer);
-            currentNIS = '';
-            selectedCandidate = null;
-            document.getElementById('mainHeader').style.display = 'none';
-            document.getElementById('nisInput').value = '';
-            document.querySelectorAll('.candidate-card').forEach(c => {
-                c.classList.remove('selected');
-                const badge = c.querySelector('.logo-badge');
-                if (badge) badge.style.display = 'none';
-            });
-            document.getElementById('submitVoteBtn').disabled = true;
-            document.getElementById('timeWarning').classList.remove('warning');
-            showPage('loginPage');
         }
 
         document.getElementById('nisInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                handleLogin();
-            }
+            if (e.key === 'Enter') handleLogin();
         });
     </script>
 </body>
