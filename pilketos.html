@@ -134,7 +134,6 @@
     <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
     <div class="toast" id="toast"></div>
 
-    <!-- HEADER SEMENTARA (HANYA MUNCUL SETELAH LOGIN) -->
     <div class="header" id="mainHeader" style="display:none;">
         <div class="header-left">
             <img src="" alt="Logo SPENSAKA" class="header-logo" id="headerSpensakaLogo">
@@ -149,7 +148,7 @@
         </div>
     </div>
 
-    <!-- HALAMAN LOGIN -->
+    <!-- LOGIN PAGE -->
     <div class="page active" id="loginPage">
         <div class="login-container">
             <div class="login-card">
@@ -178,7 +177,7 @@
         </div>
     </div>
 
-    <!-- HALAMAN VOTING -->
+    <!-- VOTING PAGE -->
     <div class="page" id="votingPage">
         <div class="voting-container">
             <div class="voting-header">
@@ -191,7 +190,6 @@
                 <span class="time-display" id="voteTimer">02:00</span>
             </div>
             <div class="candidates-grid">
-                <!-- KANDIDAT 1 -->
                 <div class="candidate-card" id="candidate1" onclick="selectCandidate(1)">
                     <div class="logo-badge" style="display:none;"><img src="" alt="SPENSAKA" class="badge-logo"></div>
                     <div class="candidate-photo"><div class="candidate-number">1</div></div>
@@ -205,7 +203,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- KANDIDAT 2 -->
                 <div class="candidate-card" id="candidate2" onclick="selectCandidate(2)">
                     <div class="logo-badge" style="display:none;"><img src="" alt="SPENSAKA" class="badge-logo"></div>
                     <div class="candidate-photo"><div class="candidate-number">2</div></div>
@@ -219,7 +216,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- KANDIDAT 3 -->
                 <div class="candidate-card" id="candidate3" onclick="selectCandidate(3)">
                     <div class="logo-badge" style="display:none;"><img src="" alt="SPENSAKA" class="badge-logo"></div>
                     <div class="candidate-photo"><div class="candidate-number">3</div></div>
@@ -241,30 +237,38 @@
         </div>
     </div>
 
-    <!-- HALAMAN SUKSES -->
+    <!-- SUCCESS PAGE -->
     <div class="page" id="successPage">
         <div class="success-container">
             <div class="success-card">
                 <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
                 <h2>Terima Kasih!</h2>
                 <p>Suara Anda telah berhasil dicatat.<br>Terima kasih telah berpartisipasi dalam Pemilihan Ketua OSIS SMP Negeri 1 Kandeman.</p>
-                <div style="margin-top: 25px; padding: 15px; background: #e8f5e9; border-radius: 10px; color: #2e7d32; font-weight: bold;">
+                <div style="margin-top: 20px; padding: 12px; background: #e8f5e9; border-radius: 10px; color: #2e7d32; font-weight: bold; font-size: 0.85rem;">
                     ✅ Silakan tinggalkan bilik suara dengan tertib.
                 </div>
+                <!-- TOMBOL KEMBALI KE LOGIN UNTUK PEMILIH NEXT -->
+                <button class="btn btn-primary" onclick="resetToLogin()" style="margin-top: 20px;">
+                    🔄 Selesai & Pemilih Berikutnya
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- HALAMAN DISKUALIFIKASI -->
+    <!-- DISQUALIFIED PAGE -->
     <div class="page" id="disqualifiedPage">
         <div class="login-container">
             <div class="disqualified-card">
                 <div class="disqualified-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg></div>
                 <h2>Diskualifikasi</h2>
                 <p>Maaf, waktu Anda untuk memilih telah habis (melebihi 2 menit). Suara Anda tidak dapat diproses.</p>
-                <div style="margin-top: 25px; padding: 15px; background: #ffebee; border-radius: 10px; color: #c62828; font-weight: bold;">
+                <div style="margin-top: 20px; padding: 12px; background: #ffebee; border-radius: 10px; color: #c62828; font-weight: bold; font-size: 0.85rem;">
                     ⚠️ Silakan tinggalkan bilik suara dan hubungi panitia.
                 </div>
+                <!-- TOMBOL KEMBALI KE LOGIN SAMA DI HALAMAN DISKUALIFIKASI -->
+                <button class="btn btn-primary" onclick="resetToLogin()" style="margin-top: 20px;">
+                    🔄 Selesai & Pemilih Berikutnya
+                </button>
             </div>
         </div>
     </div>
@@ -278,10 +282,9 @@
         const LOGO_SPENSAKA_URL = 'images/spensaka.png';
         const LOGO_VISIMEDIA_URL = 'images/visimed.png';
         
-        // URL Web App dari Google Apps Script
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCxap2pcN11uFWJDfgfR_kAeob3r99SIDq7gRCPipmiNopgAx5L7ufuhATtUVWw-qZ_g/exec';
         
-        const MAX_VOTING_TIME = 120; // Waktu memilih dalam detik (2 menit)
+        const MAX_VOTING_TIME = 120; // 2 menit
 
         let currentNIS = '', selectedCandidate = null, voteTimer = null, timeRemaining = MAX_VOTING_TIME;
 
@@ -320,7 +323,45 @@
         }
 
         // ============================================
-        // API CALLS (Sudah Diperbaiki)
+        // RESET STATE KE HALAMAN UTAMA (UNTUK PEMILIH NEXT)
+        // ============================================
+        function resetToLogin() {
+            if (voteTimer) clearInterval(voteTimer);
+            
+            // 1. Bersihkan variabel
+            currentNIS = '';
+            selectedCandidate = null;
+            timeRemaining = MAX_VOTING_TIME;
+
+            // 2. Bersihkan input NIS & Pesan Error
+            const nisInput = document.getElementById('nisInput');
+            nisInput.value = '';
+            const errorEl = document.getElementById('loginError');
+            errorEl.textContent = '';
+            errorEl.classList.remove('show');
+
+            // 3. Reset seleksi kandidat
+            document.querySelectorAll('.candidate-card').forEach(card => {
+                card.classList.remove('selected');
+                const badge = card.querySelector('.logo-badge');
+                if (badge) badge.style.display = 'none';
+            });
+
+            // 4. Reset tombol konfirmasi pilihan
+            document.getElementById('submitVoteBtn').disabled = true;
+
+            // 5. Sembunyikan Header Informasi Pemilih
+            document.getElementById('mainHeader').style.display = 'none';
+            document.getElementById('userBadge').style.display = 'none';
+            document.getElementById('headerTimer').style.display = 'none';
+
+            // 6. Tampilkan kembali halaman Login
+            showPage('loginPage');
+            nisInput.focus();
+        }
+
+        // ============================================
+        // API CALLS
         // ============================================
         async function callAPI(action, data = {}) {
             try {
@@ -330,7 +371,6 @@
                     formData.append(key, data[key]);
                 }
 
-                // Melakukan permintaan HTTP POST ke Google Apps Script
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     body: formData
@@ -362,7 +402,7 @@
         }
 
         // ============================================
-        // PROSES LOGIN & VALIDASI NIS
+        // LOGIN
         // ============================================
         async function handleLogin() {
             const nis = document.getElementById('nisInput').value.trim();
@@ -403,7 +443,7 @@
         }
 
         // ============================================
-        // TIMER PEMUNGUTAN SUARA
+        // VOTING TIMER
         // ============================================
         function startVotingTimer() {
             timeRemaining = MAX_VOTING_TIME;
@@ -437,7 +477,7 @@
         }
 
         // ============================================
-        // PEMILIHAN KANDIDAT
+        // CANDIDATE SELECTION
         // ============================================
         function selectCandidate(num) {
             selectedCandidate = num;
@@ -458,7 +498,7 @@
         }
 
         // ============================================
-        // KIRIM SUARA (SUBMIT VOTE)
+        // SUBMIT VOTE
         // ============================================
         async function submitVote() {
             if (!selectedCandidate) { 
