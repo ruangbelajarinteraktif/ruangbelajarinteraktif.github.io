@@ -203,7 +203,7 @@
                         <h3>Nama Kandidat 3</h3>
                         <p class="class-info">Kelas 9C</p>
                         <div class="visi-misi">
-                            <h4> Visi:</h4><p>OSIS yang transparan, aspiratif, dan dekat dengan seluruh siswa.</p>
+                            <h4>📌 Visi:</h4><p>OSIS yang transparan, aspiratif, dan dekat dengan seluruh siswa.</p>
                             <h4 style="margin-top:8px;">🎯 Misi:</h4>
                             <ul><li>Kotak saran digital untuk aspirasi siswa</li><li>Program mentoring kakak-adik</li><li>Turnamen olahraga antar kelas</li></ul>
                         </div>
@@ -249,18 +249,22 @@
 
     <script>
         // ============================================
-        // KONFIGURASI URL LOGO - SUDAH DIISI DENGAN URL YANG BEKERJA
+        // KONFIGURASI
         // ============================================
+        // Catatan: Pastikan folder 'images' ada di lokasi yang sama dengan file ini, 
+        // atau ganti dengan URL absolut (misal: https://i.imgur.com/xxx.png)
         const LOGO_SPENSAKA_URL = 'images/spensaka.png';
         const LOGO_VISIMEDIA_URL = 'images/visimed.png';
         
-        // ⚠️ GANTI DENGAN URL DEPLOYMENT APPS SCRIPT ANDA YANG BENAR
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCxap2pcN11uFWJDfgfR_kAeob3r99SIDq7gRCPipmiNopgAx5L7ufuhATtUVWw-qZ_g/exec';
         
         const MAX_VOTING_TIME = 120; // 2 menit
 
         let currentNIS = '', selectedCandidate = null, voteTimer = null, timeRemaining = MAX_VOTING_TIME;
 
+        // ============================================
+        // INISIALISASI
+        // ============================================
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('spensakaLogo').src = LOGO_SPENSAKA_URL;
             document.getElementById('headerSpensakaLogo').src = LOGO_SPENSAKA_URL;
@@ -268,65 +272,105 @@
             document.getElementById('visimediaLogo').src = LOGO_VISIMEDIA_URL;
         });
 
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
         function showLoading() { document.getElementById('loadingOverlay').classList.add('show'); }
         function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
+        
         function showToast(message, duration = 3000) {
             const toast = document.getElementById('toast');
-            toast.textContent = message; toast.classList.add('show');
+            toast.textContent = message; 
+            toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), duration);
         }
+        
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
+        
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
             const secs = seconds % 60;
             return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
         }
 
+        // ============================================
+        // API CALLS (DIPERBAIKI: Hapus no-cors agar bisa baca JSON)
+        // ============================================
         async function callAPI(action, data = {}) {
             try {
                 const formData = new FormData();
                 formData.append('action', action);
-                for (let key in data) formData.append(key, data[key]);
-                
-                const response = await fetch(APPS_SCRIPT_URL, { 
-                    method: 'POST', 
-                    body: formData,
-                    mode: 'no-cors' // Tambahkan ini untuk menghindari CORS error
+                for (let key in data) {
+                    formData.append(key, data[key]);
+                }
+
+                // PENTING: Jangan gunakan mode: 'no-cors' untuk Google Apps Script
+                // karena akan membuat response tidak bisa dibaca (opaque).
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
                 });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const text = await response.text();
                 
-                // Karena mode: 'no-cors', response akan opaque
-                // Kita perlu menggunakan pendekatan berbeda
-                const result = await response.json().catch(() => {
-                    // Jika parsing JSON gagal, kembalikan error
-                    return { success: false, message: 'Gagal memproses respons server. Pastikan URL Apps Script benar.' };
-                });
-                
-                return result;
+                try {
+                    const result = JSON.parse(text);
+                    return result;
+                } catch (e) {
+                    console.error('Failed to parse JSON. Raw response:', text);
+                    return { 
+                        success: false, 
+                        message: 'Respons server tidak valid. Pastikan Apps Script di-deploy sebagai "Anyone" (Siapa saja).' 
+                    };
+                }
             } catch (error) {
                 console.error('API Error:', error);
-                return { success: false, message: 'Koneksi gagal: ' + error.message };
+                return { 
+                    success: false, 
+                    message: 'Koneksi ke server gagal. Periksa koneksi internet atau URL Apps Script.' 
+                };
             }
         }
 
+        // ============================================
+        // LOGIN
+        // ============================================
         async function handleLogin() {
             const nis = document.getElementById('nisInput').value.trim();
             const errorEl = document.getElementById('loginError');
-            if (!nis) { errorEl.textContent = 'Silakan masukkan NIS Anda!'; errorEl.classList.add('show'); return; }
+            
+            if (!nis) { 
+                errorEl.textContent = 'Silakan masukkan NIS Anda!'; 
+                errorEl.classList.add('show'); 
+                return; 
+            }
 
-            showLoading(); errorEl.classList.remove('show');
+            showLoading(); 
+            errorEl.classList.remove('show');
+            
             const result = await callAPI('validateVoter', { nis: nis });
             hideLoading();
 
             if (result.success) {
-                if (result.alreadyVoted) { errorEl.textContent = 'Anda sudah menggunakan hak pilih.'; errorEl.classList.add('show'); return; }
+                if (result.alreadyVoted) { 
+                    errorEl.textContent = 'Anda sudah menggunakan hak pilih.'; 
+                    errorEl.classList.add('show'); 
+                    return; 
+                }
+                
                 currentNIS = nis;
                 document.getElementById('mainHeader').style.display = 'flex';
                 document.getElementById('userBadge').style.display = 'block';
                 document.getElementById('userBadge').textContent = `NIS: ${nis}`;
                 document.getElementById('headerTimer').style.display = 'block';
+                
                 startVotingTimer();
                 showPage('votingPage');
                 showToast('Selamat datang! Silakan pilih kandidat.');
@@ -336,21 +380,32 @@
             }
         }
 
+        // ============================================
+        // VOTING TIMER
+        // ============================================
         function startVotingTimer() {
             timeRemaining = MAX_VOTING_TIME;
             updateTimerDisplay();
+            
             voteTimer = setInterval(() => {
                 timeRemaining--;
                 updateTimerDisplay();
-                if (timeRemaining <= 30) document.getElementById('timeWarning').classList.add('warning');
-                if (timeRemaining <= 0) { clearInterval(voteTimer); handleDisqualified(); }
+                
+                if (timeRemaining <= 30) {
+                    document.getElementById('timeWarning').classList.add('warning');
+                }
+                
+                if (timeRemaining <= 0) { 
+                    clearInterval(voteTimer); 
+                    handleDisqualified(); 
+                }
             }, 1000);
         }
 
         function updateTimerDisplay() {
             const timeStr = formatTime(timeRemaining);
             document.getElementById('voteTimer').textContent = timeStr;
-            document.getElementById('headerTimer').textContent = ` ${timeStr}`;
+            document.getElementById('headerTimer').textContent = `⏱ ${timeStr}`;
         }
 
         function handleDisqualified() {
@@ -359,40 +414,67 @@
             showToast('Waktu habis! Anda telah didiskualifikasi.');
         }
 
+        // ============================================
+        // CANDIDATE SELECTION
+        // ============================================
         function selectCandidate(num) {
             selectedCandidate = num;
+            
             document.querySelectorAll('.candidate-card').forEach(card => {
                 card.classList.remove('selected');
                 const badge = card.querySelector('.logo-badge');
                 if (badge) badge.style.display = 'none';
             });
+            
             const selectedCard = document.getElementById(`candidate${num}`);
             selectedCard.classList.add('selected');
             const badge = selectedCard.querySelector('.logo-badge');
             if (badge) badge.style.display = 'flex';
+            
             document.getElementById('submitVoteBtn').disabled = false;
             showToast(`Kandidat ${num} dipilih`);
         }
 
+        // ============================================
+        // SUBMIT VOTE
+        // ============================================
         async function submitVote() {
-            if (!selectedCandidate) { showToast('Pilih kandidat terlebih dahulu!'); return; }
+            if (!selectedCandidate) { 
+                showToast('Pilih kandidat terlebih dahulu!'); 
+                return; 
+            }
+            
             if (!confirm('Apakah Anda yakin? Pilihan tidak dapat diubah.')) return;
 
             clearInterval(voteTimer);
             showLoading();
+            
             const timeSpent = MAX_VOTING_TIME - timeRemaining;
-            const result = await callAPI('submitVote', { nis: currentNIS, candidate: selectedCandidate, timeSpent: timeSpent, timestamp: new Date().toISOString() });
+            const result = await callAPI('submitVote', { 
+                nis: currentNIS, 
+                candidate: selectedCandidate, 
+                timeSpent: timeSpent, 
+                timestamp: new Date().toISOString() 
+            });
+            
             hideLoading();
 
             if (result.success) {
                 showPage('successPage');
                 showToast('Suara berhasil dicatat!');
             } else {
-                if (result.disqualified) handleDisqualified();
-                else { showToast(result.message || 'Gagal mencatat suara.'); startVotingTimer(); }
+                if (result.disqualified) {
+                    handleDisqualified();
+                } else { 
+                    showToast(result.message || 'Gagal mencatat suara.'); 
+                    startVotingTimer(); 
+                }
             }
         }
 
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
         document.getElementById('nisInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') handleLogin();
         });
