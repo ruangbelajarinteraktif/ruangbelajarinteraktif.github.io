@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Pilketos</title>
+<style>
+  :root{
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --text:#172033;
+    --muted:#6b7280;
+    --line:#e5e7eb;
+    --primary:#1d4ed8;
+    --success:#15803d;
+    --danger:#b91c1c;
+    --warning:#b45309;
+    --shadow:0 12px 35px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+  }
+  .container{max-width:1180px;margin:auto;padding:24px}
+  .hidden{display:none!important}
+  .login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+  .login-card,.card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+  }
+  .login-card{width:min(430px,100%);padding:32px}
+  h1,h2,h3{margin-top:0}
+  .brand{text-align:center;margin-bottom:25px}
+  .brand .logo{
+    width:74px;height:74px;object-fit:contain;
+    border-radius:16px;margin-bottom:10px;
+  }
+  label{display:block;font-weight:600;margin:14px 0 7px}
+  input{
+    width:100%;padding:13px 14px;border:1px solid #d1d5db;
+    border-radius:10px;font-size:15px;outline:none;
+  }
+  input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(29,78,216,.12)}
+  button{
+    border:0;border-radius:10px;padding:12px 16px;font-weight:700;
+    cursor:pointer;font-size:14px;
+  }
+  .btn-primary{background:var(--primary);color:#fff}
+  .btn-success{background:var(--success);color:#fff}
+  .btn-danger{background:var(--danger);color:#fff}
+  .btn-light{background:#eef2f7;color:#263246}
+  .btn-warning{background:#f59e0b;color:#111827}
+  .actions{display:flex;gap:10px;flex-wrap:wrap}
+  .header{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:15px;margin-bottom:20px;
+  }
+  .header p{margin:5px 0;color:var(--muted)}
+  .status{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:8px 12px;border-radius:999px;font-size:13px;font-weight:800;
+  }
+  .status::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+  .status.active{color:var(--success);background:#dcfce7}
+  .status.preparing{color:var(--warning);background:#fef3c7}
+  .status.ended{color:var(--danger);background:#fee2e2}
+  .grid-stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:18px;
+  }
+  .stat{padding:20px}
+  .stat .label{font-size:13px;color:var(--muted);font-weight:700}
+  .stat .value{font-size:32px;font-weight:900;margin:8px 0 0}
+  .progress-card{padding:22px;margin-bottom:18px}
+  .progress-top{display:flex;justify-content:space-between;align-items:end;gap:15px}
+  .progress-value{font-size:28px;font-weight:900}
+  .bar{height:18px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin-top:13px}
+  .bar > div{height:100%;width:0%;transition:width .4s ease}
+  .candidate-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:15px;
+  }
+  .candidate{padding:20px}
+  .candidate-head{display:flex;align-items:center;gap:13px}
+  .candidate img{
+    width:72px;height:72px;object-fit:cover;border-radius:50%;
+    border:3px solid #e5e7eb;background:#f3f4f6;
+  }
+  .candidate-name{font-weight:900;font-size:17px}
+  .candidate-votes{font-size:30px;font-weight:900;margin:18px 0 3px}
+  .candidate-pct{color:var(--muted);font-weight:700}
+  .candidate-bar{height:10px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin-top:13px}
+  .candidate-bar div{height:100%;width:0%;transition:width .4s}
+  .section{padding:22px;margin-top:18px}
+  .table-wrap{overflow:auto}
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{font-size:12px;text-transform:uppercase;color:var(--muted)}
+  .notice{padding:12px 14px;border-radius:10px;background:#eff6ff;color:#1e40af;margin:15px 0}
+  .error{padding:12px 14px;border-radius:10px;background:#fee2e2;color:#991b1b;margin-top:12px}
+  .footer{color:var(--muted);font-size:12px;margin-top:18px}
+  @media(max-width:850px){
+    .grid-stats{grid-template-columns:repeat(2,1fr)}
+    .candidate-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:520px){
+    .container{padding:14px}
+    .grid-stats{grid-template-columns:1fr 1fr}
+    .stat .value{font-size:25px}
+    .header{align-items:flex-start;flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+<section id="loginScreen" class="login-wrap">
+  <div class="login-card">
+    <div class="brand">
+      <h1>Admin Pilketos</h1>
+      <p>Dashboard Monitoring Pemilihan Ketua OSIS</p>
+    </div>
+
+    <label>Username</label>
+    <input id="username" autocomplete="username" value="admin">
+
+    <label>Password</label>
+    <input id="password" type="password" autocomplete="current-password">
+
+    <div class="actions" style="margin-top:18px">
+      <button class="btn-primary" style="width:100%" onclick="login()">Masuk ke Dashboard</button>
+    </div>
+    <div id="loginError"></div>
+  </div>
+</section>
+
+<section id="dashboardScreen" class="hidden">
+  <div class="container">
+    <header class="header">
+      <div>
+        <h1>Dashboard Pemilihan Ketua OSIS</h1>
+        <p>Monitoring progres dan perolehan suara secara realtime.</p>
+      </div>
+      <div>
+        <span id="statusBadge" class="status preparing">BELUM DIMULAI</span>
+      </div>
+    </header>
+
+    <div class="card section" style="margin-top:0">
+      <div class="actions">
+        <button id="startBtn" class="btn-success" onclick="startElection()">▶ Mulai Pemilihan</button>
+        <button id="endBtn" class="btn-danger" onclick="endElection()">■ Akhiri Pemilihan</button>
+        <button class="btn-light" onclick="refreshDashboard()">↻ Refresh</button>
+        <button class="btn-light" onclick="printRecap()">🖨 Cetak Rekap</button>
+        <button class="btn-primary" onclick="downloadCSV()">⬇ Rekap CSV</button>
+        <button class="btn-light" onclick="logout()">Keluar</button>
+      </div>
+      <div id="controlMessage" class="notice">Memuat status...</div>
+    </div>
+
+    <div class="grid-stats" style="margin-top:18px">
+      <div class="card stat">
+        <div class="label">TOTAL PEMILIH</div>
+        <div id="totalVoters" class="value">0</div>
+      </div>
+      <div class="card stat">
+        <div class="label">SUDAH MEMILIH</div>
+        <div id="voted" class="value">0</div>
+      </div>
+      <div class="card stat">
+        <div class="label">BELUM MEMILIH</div>
+        <div id="notVoted" class="value">0</div>
+      </div>
+      <div class="card stat">
+        <div class="label">TOTAL SUARA</div>
+        <div id="totalVotes" class="value">0</div>
+      </div>
+    </div>
+
+    <div class="card progress-card">
+      <div class="progress-top">
+        <div>
+          <h2 style="margin-bottom:5px">Partisipasi Pemilih</h2>
+          <div style="color:var(--muted)">Persentase pemilih yang sudah menggunakan hak suara.</div>
+        </div>
+        <div id="participation" class="progress-value">0%</div>
+      </div>
+      <div class="bar"><div id="participationBar"></div></div>
+    </div>
+
+    <div class="candidate-grid" id="candidateGrid"></div>
+
+    <div class="card section">
+      <h2>Rekap Hasil Sementara</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Calon</th>
+              <th>Suara</th>
+              <th>Persentase</th>
+            </tr>
+          </thead>
+          <tbody id="recapBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card section">
+      <h2>Informasi Sistem</h2>
+      <div id="systemInfo"></div>
+      <div class="footer">
+        Dashboard memperbarui data otomatis setiap 5 detik.
+        Hasil sementara hanya tersedia melalui dashboard admin.
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/*
+  GANTI URL DI BAWAH DENGAN URL WEB APP GOOGLE APPS SCRIPT.
+  Contoh:
+  https://script.google.com/macros/s/XXXXXXXXXXXX/exec
+*/
+const API_URL = 'https://script.google.com/macros/s/AKfycbzCxap2pcN11uFWJDfgfR_kAeob3r99SIDq7gRCPipmiNopgAx5L7ufuhATtUVWw-qZ_g/exec';
+
+let adminToken = sessionStorage.getItem('pilketosAdminToken') || '';
+let latestDashboard = null;
+let refreshTimer = null;
+
+function escapeHtml(value){
+  return String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+  }[c]));
+}
+
+async function api(action, data = {}) {
+  const params = new URLSearchParams();
+  params.set('action', action);
+
+  Object.keys(data).forEach(key => {
+    params.set(key, data[key] ?? '');
+  });
+
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    body: params
+  });
+
+  if (!response.ok) throw new Error('HTTP ' + response.status);
+
+  return await response.json();
+}
+
+async function login(){
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+
+  document.getElementById('loginError').innerHTML = '';
+
+  try{
+    const result = await api('adminLogin', {username, password});
+
+    if(!result.success){
+      throw new Error(result.message || 'Login gagal.');
+    }
+
+    adminToken = result.token;
+    sessionStorage.setItem('pilketosAdminToken', adminToken);
+
+    showDashboard();
+    await refreshDashboard();
+    startAutoRefresh();
+  }catch(error){
+    document.getElementById('loginError').innerHTML =
+      '<div class="error">' + escapeHtml(error.message) + '</div>';
+  }
+}
+
+function showDashboard(){
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('dashboardScreen').classList.remove('hidden');
+}
+
+function logout(){
+  stopAutoRefresh();
+  adminToken = '';
+  sessionStorage.removeItem('pilketosAdminToken');
+  document.getElementById('dashboardScreen').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+}
+
+async function refreshDashboard(){
+  if(!adminToken) return;
+
+  try{
+    const result = await api('getAdminDashboard', {
+      token: adminToken
+    });
+
+    if(!result.success){
+      if(result.authRequired){
+        logout();
+        alert(result.message || 'Sesi admin berakhir.');
+        return;
+      }
+      throw new Error(result.message || 'Gagal mengambil data.');
+    }
+
+    latestDashboard = result;
+    renderDashboard(result);
+  }catch(error){
+    document.getElementById('controlMessage').textContent =
+      'Gagal memperbarui data: ' + error.message;
+  }
+}
+
+function renderDashboard(data){
+  const s = data.statistics;
+  const e = data.election;
+
+  document.getElementById('totalVoters').textContent = s.totalVoters;
+  document.getElementById('voted').textContent = s.voted;
+  document.getElementById('notVoted').textContent = s.notVoted;
+  document.getElementById('totalVotes').textContent = s.totalVotes;
+  document.getElementById('participation').textContent = s.participation + '%';
+  document.getElementById('participationBar').style.width =
+    Math.min(100, Math.max(0, s.participation)) + '%';
+
+  const badge = document.getElementById('statusBadge');
+  badge.className = 'status ' + e.status.toLowerCase();
+
+  if(e.status === 'ACTIVE'){
+    badge.textContent = 'SEDANG BERLANGSUNG';
+  }else if(e.status === 'ENDED'){
+    badge.textContent = 'SUDAH BERAKHIR';
+  }else{
+    badge.textContent = 'BELUM DIMULAI';
+  }
+
+  document.getElementById('startBtn').disabled = e.status === 'ACTIVE';
+  document.getElementById('endBtn').disabled = e.status !== 'ACTIVE';
+
+  let msg = 'Status: ' + badge.textContent + '.';
+  if(e.startedAt){
+    msg += ' Dimulai: ' + formatDate(e.startedAt) + '.';
+  }
+  if(e.endedAt){
+    msg += ' Diakhiri: ' + formatDate(e.endedAt) + '.';
+  }
+  document.getElementById('controlMessage').textContent = msg;
+
+  renderCandidates(data);
+  renderRecap(data);
+
+  document.getElementById('systemInfo').innerHTML =
+    '<p><strong>Update terakhir:</strong> ' + formatDate(data.updatedAt) + '</p>' +
+    '<p><strong>Status API:</strong> <span style="color:var(--success);font-weight:800">● TERHUBUNG</span></p>';
+}
+
+function renderCandidates(data){
+  const total = data.statistics.totalVotes;
+  const grid = document.getElementById('candidateGrid');
+
+  grid.innerHTML = [1,2,3].map(id => {
+    const c = data.candidates[id];
+    const votes = data.votes[id] || 0;
+    const pct = total ? ((votes / total) * 100) : 0;
+
+    const photo = c.photo
+      ? escapeHtml(c.photo)
+      : '';
+
+    return `
+      <div class="card candidate">
+        <div class="candidate-head">
+          ${photo
+            ? `<img src="${photo}" alt="Foto ${escapeHtml(c.name)}" onerror="this.style.display='none'">`
+            : `<div style="width:72px;height:72px;border-radius:50%;background:#eef2f7;display:grid;place-items:center;font-weight:900">#${id}</div>`
+          }
+          <div>
+            <div style="font-size:12px;color:var(--muted);font-weight:800">KANDIDAT ${id}</div>
+            <div class="candidate-name">${escapeHtml(c.name)}</div>
+          </div>
+        </div>
+        <div class="candidate-votes">${votes}</div>
+        <div class="candidate-pct">${pct.toFixed(1)}% dari total suara</div>
+        <div class="candidate-bar"><div style="width:${Math.min(100,pct)}%"></div></div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderRecap(data){
+  const total = data.statistics.totalVotes;
+  document.getElementById('recapBody').innerHTML = [1,2,3].map(id => {
+    const c = data.candidates[id];
+    const votes = data.votes[id] || 0;
+    const pct = total ? ((votes / total) * 100) : 0;
+
+    return `
+      <tr>
+        <td>${id}</td>
+        <td>${escapeHtml(c.name)}</td>
+        <td><strong>${votes}</strong></td>
+        <td>${pct.toFixed(1)}%</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function startElection(){
+  if(!confirm('Mulai pemilihan sekarang? Setelah dimulai, siswa dapat melakukan voting.')) return;
+
+  try{
+    const result = await api('startElection', {token:adminToken});
+    if(!result.success) throw new Error(result.message);
+    await refreshDashboard();
+  }catch(error){
+    alert(error.message);
+  }
+}
+
+async function endElection(){
+  if(!confirm('Akhiri pemilihan sekarang? Siswa tidak akan dapat memberikan suara lagi.')) return;
+
+  try{
+    const result = await api('endElection', {token:adminToken});
+    if(!result.success) throw new Error(result.message);
+    await refreshDashboard();
+  }catch(error){
+    alert(error.message);
+  }
+}
+
+function startAutoRefresh(){
+  stopAutoRefresh();
+  refreshTimer = setInterval(refreshDashboard, 5000);
+}
+
+function stopAutoRefresh(){
+  if(refreshTimer){
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+}
+
+function formatDate(iso){
+  if(!iso) return '-';
+  try{
+    return new Date(iso).toLocaleString('id-ID', {
+      dateStyle:'short',
+      timeStyle:'medium'
+    });
+  }catch(e){
+    return iso;
+  }
+}
+
+function printRecap(){
+  window.print();
+}
+
+function csvEscape(value){
+  const text = String(value ?? '');
+  return '"' + text.replace(/"/g, '""') + '"';
+}
+
+function downloadCSV(){
+  if(!latestDashboard) return;
+
+  const d = latestDashboard;
+  const total = d.statistics.totalVotes;
+
+  const rows = [
+    ['REKAP PEMILIHAN KETUA OSIS'],
+    ['Waktu', formatDate(d.updatedAt)],
+    ['Status', d.election.status],
+    [],
+    ['Kandidat','Nama','Suara','Persentase']
+  ];
+
+  [1,2,3].forEach(id => {
+    const votes = d.votes[id] || 0;
+    const pct = total ? ((votes / total) * 100).toFixed(1) + '%' : '0.0%';
+    rows.push([id,d.candidates[id].name,votes,pct]);
+  });
+
+  rows.push([]);
+  rows.push(['Total Pemilih', d.statistics.totalVoters]);
+  rows.push(['Sudah Memilih', d.statistics.voted]);
+  rows.push(['Belum Memilih', d.statistics.notVoted]);
+  rows.push(['Partisipasi', d.statistics.participation + '%']);
+
+  const csv = rows.map(row => row.map(csvEscape).join(',')).join('\r\n');
+  const blob = new Blob(["\uFEFF" + csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+
+  a.href = url;
+  a.download = 'rekap-pilketos-' +
+    new Date().toISOString().slice(0,10) + '.csv';
+
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// Jika token masih ada, coba buka dashboard.
+if(adminToken){
+  showDashboard();
+  refreshDashboard().then(startAutoRefresh);
+}
+</script>
+</body>
+</html>
