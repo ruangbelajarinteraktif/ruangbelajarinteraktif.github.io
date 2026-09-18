@@ -6,7 +6,18 @@
     <title>Pemilihan Ketua OSIS - SMP N 1 Kandeman</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --primary: #1a237e; --primary-light: #3949ab; --secondary: #ff6f00; --accent: #00c853; --danger: #d32f2f; --bg: #f5f5f5; --text: #212121; --text-light: #757575; --shadow: 0 4px 20px rgba(0,0,0,0.1); --shadow-hover: 0 8px 30px rgba(0,0,0,0.15); }
+        :root { 
+            --primary: #1a237e; 
+            --primary-light: #3949ab; 
+            --secondary: #ff6f00; 
+            --accent: #00c853; 
+            --danger: #d32f2f; 
+            --bg: #f5f5f5; 
+            --text: #212121; 
+            --text-light: #757575; 
+            --shadow: 0 4px 20px rgba(0,0,0,0.1); 
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.15); 
+        }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
         .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(135deg, #1a237e 0%, #283593 25%, #3949ab 50%, #1565c0 75%, #0d47a1 100%); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -105,7 +116,16 @@
         .toast { position: fixed; bottom: 20px; right: 20px; background: #323232; color: white; padding: 12px 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10000; display: none; animation: slideUp 0.3s ease; font-size: 0.85rem; }
         .toast.show { display: block; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @media (max-width: 768px) { .header { padding: 10px 12px; } .header-title h1 { font-size: 0.95rem; } .candidates-grid { grid-template-columns: 1fr; } .login-card { padding: 20px 25px 15px; max-width: 350px; } .spensaka-logo-container img { width: 60px; height: 60px; } .sponsor-logo-container { width: 100px; height: 100px; } .time-warning { flex-direction: column; gap: 4px; padding: 8px 15px; } .candidate-card.selected .logo-badge { width: 40px; height: 40px; top: 8px; right: 8px; } }
+        @media (max-width: 768px) { 
+            .header { padding: 10px 12px; } 
+            .header-title h1 { font-size: 0.95rem; } 
+            .candidates-grid { grid-template-columns: 1fr; } 
+            .login-card { padding: 20px 25px 15px; max-width: 350px; } 
+            .spensaka-logo-container img { width: 60px; height: 60px; } 
+            .sponsor-logo-container { width: 100px; height: 100px; } 
+            .time-warning { flex-direction: column; gap: 4px; padding: 8px 15px; } 
+            .candidate-card.selected .logo-badge { width: 40px; height: 40px; top: 8px; right: 8px; } 
+        }
         .footer { text-align: center; padding: 15px; color: rgba(255,255,255,0.7); font-size: 0.75rem; }
     </style>
 </head>
@@ -114,6 +134,7 @@
     <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
     <div class="toast" id="toast"></div>
 
+    <!-- HEADER SEMENTARA (HANYA MUNCUL SETELAH LOGIN) -->
     <div class="header" id="mainHeader" style="display:none;">
         <div class="header-left">
             <img src="" alt="Logo SPENSAKA" class="header-logo" id="headerSpensakaLogo">
@@ -128,7 +149,7 @@
         </div>
     </div>
 
-    <!-- LOGIN PAGE -->
+    <!-- HALAMAN LOGIN -->
     <div class="page active" id="loginPage">
         <div class="login-container">
             <div class="login-card">
@@ -157,7 +178,7 @@
         </div>
     </div>
 
-    <!-- VOTING PAGE -->
+    <!-- HALAMAN VOTING -->
     <div class="page" id="votingPage">
         <div class="voting-container">
             <div class="voting-header">
@@ -170,6 +191,7 @@
                 <span class="time-display" id="voteTimer">02:00</span>
             </div>
             <div class="candidates-grid">
+                <!-- KANDIDAT 1 -->
                 <div class="candidate-card" id="candidate1" onclick="selectCandidate(1)">
                     <div class="logo-badge" style="display:none;"><img src="" alt="SPENSAKA" class="badge-logo"></div>
                     <div class="candidate-photo"><div class="candidate-number">1</div></div>
@@ -183,6 +205,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- KANDIDAT 2 -->
                 <div class="candidate-card" id="candidate2" onclick="selectCandidate(2)">
                     <div class="logo-badge" style="display:none;"><img src="" alt="SPENSAKA" class="badge-logo"></div>
                     <div class="candidate-photo"><div class="candidate-number">2</div></div>
@@ -196,6 +219,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- KANDIDAT 3 -->
                 <div class="candidate-card" id="candidate3" onclick="selectCandidate(3)">
                     <div class="logo-badge" style="display:none;"><img src="" alt="SPENSAKA" class="badge-logo"></div>
                     <div class="candidate-photo"><div class="candidate-number">3</div></div>
@@ -217,7 +241,7 @@
         </div>
     </div>
 
-    <!-- SUCCESS PAGE -->
+    <!-- HALAMAN SUKSES -->
     <div class="page" id="successPage">
         <div class="success-container">
             <div class="success-card">
@@ -231,7 +255,7 @@
         </div>
     </div>
 
-    <!-- DISQUALIFIED PAGE -->
+    <!-- HALAMAN DISKUALIFIKASI -->
     <div class="page" id="disqualifiedPage">
         <div class="login-container">
             <div class="disqualified-card">
@@ -251,14 +275,13 @@
         // ============================================
         // KONFIGURASI
         // ============================================
-        // Catatan: Pastikan folder 'images' ada di lokasi yang sama dengan file ini, 
-        // atau ganti dengan URL absolut (misal: https://i.imgur.com/xxx.png)
         const LOGO_SPENSAKA_URL = 'images/spensaka.png';
         const LOGO_VISIMEDIA_URL = 'images/visimed.png';
         
+        // URL Web App dari Google Apps Script
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCxap2pcN11uFWJDfgfR_kAeob3r99SIDq7gRCPipmiNopgAx5L7ufuhATtUVWw-qZ_g/exec';
         
-        const MAX_VOTING_TIME = 120; // 2 menit
+        const MAX_VOTING_TIME = 120; // Waktu memilih dalam detik (2 menit)
 
         let currentNIS = '', selectedCandidate = null, voteTimer = null, timeRemaining = MAX_VOTING_TIME;
 
@@ -297,7 +320,7 @@
         }
 
         // ============================================
-        // API CALLS (DIPERBAIKI: Hapus no-cors agar bisa baca JSON)
+        // API CALLS (Sudah Diperbaiki)
         // ============================================
         async function callAPI(action, data = {}) {
             try {
@@ -307,8 +330,7 @@
                     formData.append(key, data[key]);
                 }
 
-                // PENTING: Jangan gunakan mode: 'no-cors' untuk Google Apps Script
-                // karena akan membuat response tidak bisa dibaca (opaque).
+                // Melakukan permintaan HTTP POST ke Google Apps Script
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     body: formData
@@ -340,7 +362,7 @@
         }
 
         // ============================================
-        // LOGIN
+        // PROSES LOGIN & VALIDASI NIS
         // ============================================
         async function handleLogin() {
             const nis = document.getElementById('nisInput').value.trim();
@@ -381,7 +403,7 @@
         }
 
         // ============================================
-        // VOTING TIMER
+        // TIMER PEMUNGUTAN SUARA
         // ============================================
         function startVotingTimer() {
             timeRemaining = MAX_VOTING_TIME;
@@ -415,7 +437,7 @@
         }
 
         // ============================================
-        // CANDIDATE SELECTION
+        // PEMILIHAN KANDIDAT
         // ============================================
         function selectCandidate(num) {
             selectedCandidate = num;
@@ -436,7 +458,7 @@
         }
 
         // ============================================
-        // SUBMIT VOTE
+        // KIRIM SUARA (SUBMIT VOTE)
         // ============================================
         async function submitVote() {
             if (!selectedCandidate) { 
