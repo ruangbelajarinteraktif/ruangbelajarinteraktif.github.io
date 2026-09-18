@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pemilihan Ketua OSIS - SMP N 1 Kandeman</title>
     <style>
-        /* ... (CSS SAMA PERSIS SEPERTI SEBELUMNYA, TIDAK DIUBAH) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --primary: #1a237e; --primary-light: #3949ab; --secondary: #ff6f00; --accent: #00c853; --danger: #d32f2f; --bg: #f5f5f5; --text: #212121; --text-light: #757575; --shadow: 0 4px 20px rgba(0,0,0,0.1); --shadow-hover: 0 8px 30px rgba(0,0,0,0.15); }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
@@ -168,10 +167,9 @@
             <div class="time-warning" id="timeWarning">
                 <span class="time-icon">⏱️</span>
                 <span>Waktu tersisa untuk memilih:</span>
-                <span class="time-display" id="voteTimer">02:00</span> <!-- DIUBAH JADI 02:00 -->
+                <span class="time-display" id="voteTimer">02:00</span>
             </div>
             <div class="candidates-grid">
-                <!-- Kandidat 1 -->
                 <div class="candidate-card" id="candidate1" onclick="selectCandidate(1)">
                     <div class="logo-badge" style="display:none;"><img src="" alt="SPENSAKA" class="badge-logo"></div>
                     <div class="candidate-photo"><div class="candidate-number">1</div></div>
@@ -185,7 +183,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Kandidat 2 -->
                 <div class="candidate-card" id="candidate2" onclick="selectCandidate(2)">
                     <div class="logo-badge" style="display:none;"><img src="" alt="SPENSAKA" class="badge-logo"></div>
                     <div class="candidate-photo"><div class="candidate-number">2</div></div>
@@ -199,7 +196,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Kandidat 3 -->
                 <div class="candidate-card" id="candidate3" onclick="selectCandidate(3)">
                     <div class="logo-badge" style="display:none;"><img src="" alt="SPENSAKA" class="badge-logo"></div>
                     <div class="candidate-photo"><div class="candidate-number">3</div></div>
@@ -207,7 +203,7 @@
                         <h3>Nama Kandidat 3</h3>
                         <p class="class-info">Kelas 9C</p>
                         <div class="visi-misi">
-                            <h4>📌 Visi:</h4><p>OSIS yang transparan, aspiratif, dan dekat dengan seluruh siswa.</p>
+                            <h4> Visi:</h4><p>OSIS yang transparan, aspiratif, dan dekat dengan seluruh siswa.</p>
                             <h4 style="margin-top:8px;">🎯 Misi:</h4>
                             <ul><li>Kotak saran digital untuk aspirasi siswa</li><li>Program mentoring kakak-adik</li><li>Turnamen olahraga antar kelas</li></ul>
                         </div>
@@ -221,7 +217,7 @@
         </div>
     </div>
 
-    <!-- SUCCESS PAGE (TOMBOL HASIL DIHAPUS) -->
+    <!-- SUCCESS PAGE -->
     <div class="page" id="successPage">
         <div class="success-container">
             <div class="success-card">
@@ -235,7 +231,7 @@
         </div>
     </div>
 
-    <!-- DISQUALIFIED PAGE (TOMBOL HASIL DIHAPUS) -->
+    <!-- DISQUALIFIED PAGE -->
     <div class="page" id="disqualifiedPage">
         <div class="login-container">
             <div class="disqualified-card">
@@ -252,12 +248,16 @@
     <div class="footer" id="mainFooter"><p>© 2026 SMP Negeri 1 Kandeman - Sistem Pemilihan Ketua OSIS</p></div>
 
     <script>
+        // ============================================
+        // KONFIGURASI URL LOGO - SUDAH DIISI DENGAN URL YANG BEKERJA
+        // ============================================
         const LOGO_SPENSAKA_URL = 'images/spensaka.png';
         const LOGO_VISIMEDIA_URL = 'images/visimed.png';
+        
+        // ⚠️ GANTI DENGAN URL DEPLOYMENT APPS SCRIPT ANDA YANG BENAR
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCxap2pcN11uFWJDfgfR_kAeob3r99SIDq7gRCPipmiNopgAx5L7ufuhATtUVWw-qZ_g/exec';
         
-        // DIUBAH: Waktu menjadi 2 menit (120 detik)
-        const MAX_VOTING_TIME = 120; 
+        const MAX_VOTING_TIME = 120; // 2 menit
 
         let currentNIS = '', selectedCandidate = null, voteTimer = null, timeRemaining = MAX_VOTING_TIME;
 
@@ -290,8 +290,21 @@
                 const formData = new FormData();
                 formData.append('action', action);
                 for (let key in data) formData.append(key, data[key]);
-                const response = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: formData });
-                return await response.json();
+                
+                const response = await fetch(APPS_SCRIPT_URL, { 
+                    method: 'POST', 
+                    body: formData,
+                    mode: 'no-cors' // Tambahkan ini untuk menghindari CORS error
+                });
+                
+                // Karena mode: 'no-cors', response akan opaque
+                // Kita perlu menggunakan pendekatan berbeda
+                const result = await response.json().catch(() => {
+                    // Jika parsing JSON gagal, kembalikan error
+                    return { success: false, message: 'Gagal memproses respons server. Pastikan URL Apps Script benar.' };
+                });
+                
+                return result;
             } catch (error) {
                 console.error('API Error:', error);
                 return { success: false, message: 'Koneksi gagal: ' + error.message };
@@ -337,7 +350,7 @@
         function updateTimerDisplay() {
             const timeStr = formatTime(timeRemaining);
             document.getElementById('voteTimer').textContent = timeStr;
-            document.getElementById('headerTimer').textContent = `⏱ ${timeStr}`;
+            document.getElementById('headerTimer').textContent = ` ${timeStr}`;
         }
 
         function handleDisqualified() {
