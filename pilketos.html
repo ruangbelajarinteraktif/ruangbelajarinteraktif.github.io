@@ -7,15 +7,9 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { 
-            --primary: #1a237e; 
-            --primary-light: #3949ab; 
-            --secondary: #ff6f00; 
-            --accent: #00c853; 
-            --danger: #d32f2f; 
-            --bg: #f5f5f5; 
-            --text: #212121; 
-            --text-light: #757575; 
-            --shadow: 0 4px 20px rgba(0,0,0,0.1); 
+            --primary: #1a237e; --primary-light: #3949ab; --secondary: #ff6f00; 
+            --accent: #00c853; --danger: #d32f2f; --bg: #f5f5f5; --text: #212121; 
+            --text-light: #757575; --shadow: 0 4px 20px rgba(0,0,0,0.1); 
             --shadow-hover: 0 8px 30px rgba(0,0,0,0.15); 
         }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
@@ -247,7 +241,6 @@
                 <div style="margin-top: 20px; padding: 12px; background: #e8f5e9; border-radius: 10px; color: #2e7d32; font-weight: bold; font-size: 0.85rem;">
                     ✅ Silakan tinggalkan bilik suara dengan tertib.
                 </div>
-                <!-- TOMBOL KEMBALI KE LOGIN UNTUK PEMILIH NEXT -->
                 <button class="btn btn-primary" onclick="resetToLogin()" style="margin-top: 20px;">
                     🔄 Selesai & Pemilih Berikutnya
                 </button>
@@ -265,7 +258,6 @@
                 <div style="margin-top: 20px; padding: 12px; background: #ffebee; border-radius: 10px; color: #c62828; font-weight: bold; font-size: 0.85rem;">
                     ⚠️ Silakan tinggalkan bilik suara dan hubungi panitia.
                 </div>
-                <!-- TOMBOL KEMBALI KE LOGIN SAMA DI HALAMAN DISKUALIFIKASI -->
                 <button class="btn btn-primary" onclick="resetToLogin()" style="margin-top: 20px;">
                     🔄 Selesai & Pemilih Berikutnya
                 </button>
@@ -278,15 +270,17 @@
     <script>
         // ============================================
         // KONFIGURASI
+        // ⚠️ PENTING: Ganti URL di bawah ini dengan URL DEPLOYMENT BARU Anda!
         // ============================================
         const LOGO_SPENSAKA_URL = 'images/spensaka.png';
         const LOGO_VISIMEDIA_URL = 'images/visimed.png';
         
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCxap2pcN11uFWJDfgfR_kAeob3r99SIDq7gRCPipmiNopgAx5L7ufuhATtUVWw-qZ_g/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/GANTI_DENGAN_URL_DEPLOYMENT_BARU_ANDA/exec';
         
         const MAX_VOTING_TIME = 120; // 2 menit
 
         let currentNIS = '', selectedCandidate = null, voteTimer = null, timeRemaining = MAX_VOTING_TIME;
+        let isProcessing = false; // Mencegah klik ganda
 
         // ============================================
         // INISIALISASI
@@ -328,10 +322,11 @@
         function resetToLogin() {
             if (voteTimer) clearInterval(voteTimer);
             
-            // 1. Bersihkan variabel
+            // 1. Bersihkan variabel & flag
             currentNIS = '';
             selectedCandidate = null;
             timeRemaining = MAX_VOTING_TIME;
+            isProcessing = false;
 
             // 2. Bersihkan input NIS & Pesan Error
             const nisInput = document.getElementById('nisInput');
@@ -348,12 +343,15 @@
             });
 
             // 4. Reset tombol konfirmasi pilihan
-            document.getElementById('submitVoteBtn').disabled = true;
+            const submitBtn = document.getElementById('submitVoteBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '✓ Konfirmasi Pilihan Saya';
 
-            // 5. Sembunyikan Header Informasi Pemilih
+            // 5. Sembunyikan Header Informasi Pemilih & Reset Warning
             document.getElementById('mainHeader').style.display = 'none';
             document.getElementById('userBadge').style.display = 'none';
             document.getElementById('headerTimer').style.display = 'none';
+            document.getElementById('timeWarning').classList.remove('warning');
 
             // 6. Tampilkan kembali halaman Login
             showPage('loginPage');
@@ -361,7 +359,7 @@
         }
 
         // ============================================
-        // API CALLS
+        // API CALLS (Robust dengan error handling)
         // ============================================
         async function callAPI(action, data = {}) {
             try {
@@ -386,10 +384,10 @@
                     const result = JSON.parse(text);
                     return result;
                 } catch (e) {
-                    console.error('Failed to parse JSON. Raw response:', text);
+                    console.error('Failed to parse JSON. Raw response:', text.substring(0, 200));
                     return { 
                         success: false, 
-                        message: 'Respons server tidak valid. Pastikan Apps Script di-deploy sebagai "Anyone" (Siapa saja).' 
+                        message: 'Respons server tidak valid. Pastikan Apps Script di-deploy sebagai "Anyone".' 
                     };
                 }
             } catch (error) {
@@ -405,6 +403,8 @@
         // LOGIN
         // ============================================
         async function handleLogin() {
+            if (isProcessing) return;
+            
             const nis = document.getElementById('nisInput').value.trim();
             const errorEl = document.getElementById('loginError');
             
@@ -414,11 +414,13 @@
                 return; 
             }
 
+            isProcessing = true;
             showLoading(); 
             errorEl.classList.remove('show');
             
             const result = await callAPI('validateVoter', { nis: nis });
             hideLoading();
+            isProcessing = false;
 
             if (result.success) {
                 if (result.alreadyVoted) { 
@@ -501,16 +503,22 @@
         // SUBMIT VOTE
         // ============================================
         async function submitVote() {
-            if (!selectedCandidate) { 
-                showToast('Pilih kandidat terlebih dahulu!'); 
+            if (isProcessing || !selectedCandidate) { 
+                if(!selectedCandidate) showToast('Pilih kandidat terlebih dahulu!');
                 return; 
             }
             
             if (!confirm('Apakah Anda yakin? Pilihan tidak dapat diubah.')) return;
 
             clearInterval(voteTimer);
+            isProcessing = true;
             showLoading();
             
+            const btn = document.getElementById('submitVoteBtn');
+            const originalText = btn.textContent;
+            btn.textContent = '⏳ Menyimpan Suara...';
+            btn.disabled = true;
+
             const timeSpent = MAX_VOTING_TIME - timeRemaining;
             const result = await callAPI('submitVote', { 
                 nis: currentNIS, 
@@ -520,6 +528,8 @@
             });
             
             hideLoading();
+            isProcessing = false;
+            btn.textContent = originalText;
 
             if (result.success) {
                 showPage('successPage');
@@ -528,8 +538,9 @@
                 if (result.disqualified) {
                     handleDisqualified();
                 } else { 
-                    showToast(result.message || 'Gagal mencatat suara.'); 
-                    startVotingTimer(); 
+                    showToast(result.message || 'Gagal mencatat suara. Coba lagi.'); 
+                    startVotingTimer();
+                    btn.disabled = false;
                 }
             }
         }
