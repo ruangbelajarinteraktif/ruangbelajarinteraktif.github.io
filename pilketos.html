@@ -359,46 +359,61 @@
         }
 
         // ============================================
-        // API CALLS (Robust dengan error handling)
-        // ============================================
-        async function callAPI(action, data = {}) {
+// API CALLS (DENGAN AUTO-RETRY ANTRIAN)
+// ============================================
+async function callAPI(action, data = {}, maxRetries = 3, retryDelay = 1500) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            const formData = new FormData();
+            formData.append('action', action);
+            for (let key in data) {
+                formData.append(key, data[key]);
+            }
+
+            const response = await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const text = await response.text();
+            
+            let result;
             try {
-                const formData = new FormData();
-                formData.append('action', action);
-                for (let key in data) {
-                    formData.append(key, data[key]);
-                }
-
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const text = await response.text();
-                
-                try {
-                    const result = JSON.parse(text);
-                    return result;
-                } catch (e) {
-                    console.error('Failed to parse JSON. Raw response:', text.substring(0, 200));
-                    return { 
-                        success: false, 
-                        message: 'Respons server tidak valid. Pastikan Apps Script di-deploy sebagai "Anyone".' 
-                    };
-                }
-            } catch (error) {
-                console.error('API Error:', error);
+                result = JSON.parse(text);
+            } catch (e) {
+                console.error('Failed to parse JSON:', text);
                 return { 
                     success: false, 
-                    message: 'Koneksi ke server gagal. Periksa koneksi internet atau URL Apps Script.' 
+                    message: 'Respons server tidak valid. Pastikan Apps Script di-deploy sebagai "Anyone".' 
+                };
+            }
+
+            // Jika server sibuk karena Lock, otomatis retry di latar belakang tanpa mengganggu pemilih
+            if (!result.success && result.message === 'SERVER_BUSY' && attempt < maxRetries) {
+                console.warn(`Antrean padat. Percobaan ${attempt} gagal, mencoba lagi dalam ${retryDelay}ms...`);
+                await new Promise(resolve => setTimeout(resolve, retryDelay));
+                continue; // Coba lagi
+            }
+
+            return result;
+
+        } catch (error) {
+            console.error(`Attempt ${attempt} failed:`, error);
+            if (attempt < maxRetries) {
+                await new Promise(resolve => setTimeout(resolve, retryDelay));
+            } else {
+                return { 
+                    success: false, 
+                    message: 'Koneksi ke server gagal. Pastikan bilik terhubung ke internet.' 
                 };
             }
         }
-
+    }
+}
         // ============================================
         // LOGIN
         // ============================================
