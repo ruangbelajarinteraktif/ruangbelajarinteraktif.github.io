@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prediksi Soal ASLIM Informatika Kelas 8 SMP BAB 1</title>
+  <style>
+    :root {
+      --primary: #107c41; /* Warna hijau khas Excel */
+      --primary-dark: #0b582e;
+      --bg: #f3f2f1;
+      --card-bg: #ffffff;
+      --text: #323130;
+      --border: #e1dfdd;
+      --correct: #107c41;
+      --incorrect: #a80000;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    header {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      color: var(--primary);
+      margin: 0 0 10px 0;
+      font-size: 26px;
+    }
+
+    .instructions {
+      background-color: #eff6fc;
+      border-left: 4px solid #0078d4;
+      padding: 12px 15px;
+      font-size: 14px;
+      margin-bottom: 25px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .section-title {
+      background: var(--primary);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 4px;
+      margin-top: 30px;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    .question-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      background: #faf9f8;
+      transition: all 0.3s ease;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .option-label:hover {
+      background-color: #f3f2f1;
+    }
+
+    .option-label input {
+      margin-right: 12px;
+    }
+
+    /* Styles untuk Menjodohkan */
+    .matching-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      align-items: center;
+    }
+
+    select.matching-select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      background: #fff;
+    }
+
+    /* Style untuk Uraian */
+    textarea.essay-input {
+      width: 100%;
+      height: 90px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 14px;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+
+    /* Kotak Hasil & Pembahasan (Awalnya Tersembunyi) */
+    .feedback-box {
+      display: none;
+      margin-top: 15px;
+      padding: 12px 15px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .feedback-box.show {
+      display: block;
+    }
+
+    .feedback-box.correct {
+      background-color: #dff6dd;
+      border: 1px solid #107c41;
+      color: #107c41;
+    }
+
+    .feedback-box.incorrect {
+      background-color: #fde7e9;
+      border: 1px solid #a80000;
+      color: #a80000;
+    }
+
+    .explanation-text {
+      margin-top: 8px;
+      color: #323130;
+      font-size: 13px;
+      border-top: 1px dashed #ccc;
+      padding-top: 5px;
+    }
+
+    /* Tombol Aksi */
+    .action-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 30px;
+      transition: background 0.2s;
+    }
+
+    .action-btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* Dashboard Hasil */
+    #result-dashboard {
+      display: none;
+      background: #ffffff;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      padding: 25px;
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .score-badge {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 10px 0;
+    }
+
+    .achievement-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .matching-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Prediksi Soal ASLIM Gasal Mapel Informatika Kelas 8 SMP BAB 1 Tahun 2026/2027</h1>
+    <p style="margin: 0; color: #605e5c;">Materi: VLOOKUP, INDEX, MATCH, CHOOSE, SUMIF, SUMIFS, COUNTIF, Chart, & Pivot Table</p>
+  </header>
+
+  <div class="instructions">
+    <strong>Petunjuk Pengerjaan:</strong>
+    <ul>
+      <li>Soal terdiri dari 35 nomor (15 PG, 5 Benar/Salah, 5 Menjodohkan, dan 10 Uraian).</li>
+      <li>Jawab seluruh soal terlebih dahulu. Kunci jawaban dan pembahasan akan **tersembunyi** hingga Anda menekan tombol "Submit / Periksa Jawaban".</li>
+      <li>Di akhir pemeriksaan, Anda akan melihat skor total beserta kategori nilai pencapaian Anda.</li>
+    </ul>
+  </div>
+
+  <form id="quizForm">
+
+    <!-- I. PILIHAN GANDA -->
+    <div class="section-title">I. Pilihan Ganda (15 Soal)</div>
+    <div id="pg-container"></div>
+
+    <!-- II. BENAR / SALAH -->
+    <div class="section-title">II. Benar / Salah (5 Soal)</div>
+    <div id="bs-container"></div>
+
+    <!-- III. MENJODOHKAN -->
+    <div class="section-title">III. Menjodohkan (5 Soal)</div>
+    <div id="matching-container"></div>
+
+    <!-- IV. URAIAN -->
+    <div class="section-title">IV. Uraian (10 Soal)</div>
+    <div id="essay-container"></div>
+
+    <button type="button" class="action-btn" onclick="submitQuiz()">Submit / Periksa Jawaban</button>
+  </form>
+
+  <!-- DASBOARD HASIL DAN PENCAPAIAN -->
+  <div id="result-dashboard">
+    <h2>Hasil Ujian Anda</h2>
+    <div class="score-badge" id="final-score">0</div>
+    <div class="achievement-title" id="achievement-label">-</div>
+    <p id="score-summary" style="font-size: 15px; color: #605e5c;"></p>
+    <button type="button" class="action-btn" style="width: auto; padding: 10px 20px;" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Kembali ke Atas & Tinjau Jawaban</button>
+  </div>
+</div>
+
+<script>
+// DATA SOAL (Kunci Jawaban & Pembahasan Disimpan Tersembunyi di JS Ini)
+const pgQuestions = [
+  {
+    q: "Apa kegunaan utama fungsi/alamat absolut ($) pada rumus VLOOKUP di Microsoft Excel?",
+    options: [
+      "Mengunci referensi tabel acuan (table_array) agar posisinya tidak bergeser saat rumus disalin/didrag ke sel lain.",
+      "Mengubah nilai teks menjadi angka secara otomatis.",
+      "Membatasi jumlah baris yang dibaca oleh rumus.",
+      "Menghapus data duplikat pada tabel acuan."
+    ],
+    ans: 0,
+    exp: "Tanda absolut ($) digunakan untuk mengunci referensi sel atau rentang sel (seperti table_array) agar alamat sel tersebut tetap konsisten (statis) saat rumus dicopy ke posisi sel lainnya."
+  },
+  {
+    q: "Fungsi yang digunakan untuk mencari data yang disusun secara vertikal (kolom) pada suatu tabel acuan adalah...",
+    options: ["HLOOKUP", "VLOOKUP", "INDEX", "MATCH"],
+    ans: 1,
+    exp: "VLOOKUP singkatan dari Vertical Lookup, digunakan untuk mencari nilai di kolom paling kiri suatu tabel dan mengembalikan nilai dari baris yang sama di kolom yang ditentukan."
+  },
+  {
+    q: "Penulisan sintaks rumus VLOOKUP yang benar adalah...",
+    options: [
+      "=VLOOKUP(table_array, lookup_value, col_index_num, [range_lookup])",
+      "=VLOOKUP(lookup_value, col_index_num, table_array, [range_lookup])",
+      "=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])",
+      "=VLOOKUP(col_index_num, lookup_value, table_array, [range_lookup])"
+    ],
+    ans: 2,
+    exp: "Sintaks resmi VLOOKUP adalah: =VLOOKUP(nilai_yang_dicari, tabel_acuan, nomor_kolom, [persamaan_pencarian])."
+  },
+  {
+    q: "Penggunaan argumen range_lookup bernilai FALSE atau 0 pada fungsi VLOOKUP bertujuan untuk...",
+    options: [
+      "Mencari nilai yang mendekati/terdekat pada tabel.",
+      "Mencari nilai pencarian yang sama persis (exact match).",
+      "Mengabaikan sel yang kosong pada rentang data.",
+      "Menjumlahkan data yang cocok secara otomatis."
+    ],
+    ans: 1,
+    exp: "Argumen FALSE atau 0 menginstruksikan VLOOKUP untuk melakukan Exact Match, yakni hanya mengembalikan hasil apabila nilai acuan persis sama dengan yang ada pada tabel."
+  },
+  {
+    q: "Apa fungsi utama dari rumus MATCH pada Microsoft Excel?",
+    options: [
+      "Mencari dan mengembalikan nilai dari suatu sel.",
+      "Mencari dan mengembalikan posisi relatif suatu nilai dalam suatu rentang baris atau kolom.",
+      "Menghitung jumlah sel yang terisi dalam suatu rentang.",
+      "Menggabungkan dua tabel data berdasarkan kunci yang sama."
+    ],
+    ans: 1,
+    exp: "Fungsi MATCH mengembalikan angka posisi relatif (nomor urut baris atau kolom) dari suatu nilai yang dicari di dalam array."
+  },
+  {
+    q: "Fungsi yang digunakan untuk menampilkan nilai berdasarkan posisi nomor baris dan kolom tertentu dinamakan...",
+    options: ["INDEX", "MATCH", "VLOOKUP", "CHOOSE"],
+    ans: 0,
+    exp: "Fungsi INDEX mengambil dan mengembalikan nilai data dari sel yang terletak pada persilangan nomor baris dan kolom yang ditentukan."
+  },
+  {
+    q: "Sintaks umum dari fungsi INDEX adalah...",
+    options: [
+      "=INDEX(row_num, column_num, array)",
+      "=INDEX(array, row_num, [column_num])",
+      "=INDEX(lookup_value, array, row_num)",
+      "=INDEX(array, lookup_value, [row_num])"
+    ],
+    ans: 1,
+    exp: "Sintaks standar INDEX bentuk matriks adalah =INDEX(array, row_num, [column_num])."
+  },
+  {
+    q: "Kelebihan utama kombinasi fungsi INDEX dan MATCH dibandingkan dengan VLOOKUP adalah...",
+    options: [
+      "Dapat melakukan pencarian data secara fleksibel (pencarian ke arah kiri maupun kanan kolom kunci).",
+      "Proses perhitungannya selalu lebih lambat.",
+      "Hanya bisa digunakan pada data berformat angka.",
+      "Tidak membutuhkan referensi sel acuan."
+    ],
+    ans: 0,
+    exp: "VLOOKUP hanya dapat melihat nilai ke sebelah kanan dari kolom pencarian. Sementara INDEX & MATCH fleksibel dapat mencari nilai di kolom sebelah kiri maupun kanan."
+  },
+  {
+    q: "Fungsi CHOOSE pada Microsoft Excel berfungsi untuk...",
+    options: [
+      "Menghitung rata-rata dari daftar pilihan.",
+      "Memilih dan menampilkan nilai dari daftar argumen berdasarkan nomor indeks tertentu.",
+      "Menjumlahkan data berdasarkan satu syarat.",
+      "Membuat tabel dinamis otomatis."
+    ],
+    ans: 1,
+    exp: "Fungsi CHOOSE memilih satu dari hingga 254 nilai argumen berdasarkan nilai angka indeks yang ditentukan (contoh: CHOOSE(2; 'A'; 'B'; 'C') akan menghasilkan 'B')."
+  },
+  {
+    q: "Perbedaan mendasar antara fungsi SUMIF dan SUMIFS adalah...",
+    options: [
+      "SUMIF digunakan untuk menghitung sel, sedangkan SUMIFS untuk menjumlahkan angka.",
+      "SUMIF digunakan untuk menjumlahkan data dengan 1 kriteria, sedangkan SUMIFS digunakan untuk lebih dari 1 kriteria.",
+      "SUMIF membutuhkan tabel acuan terpisah, sedangkan SUMIFS tidak.",
+      "SUMIF hanya bekerja pada teks, sedangkan SUMIFS pada angka."
+    ],
+    ans: 1,
+    exp: "SUMIF memproses 1 kriteria tunggal. SUMIFS dirancang untuk mengevaluasi banyak kriteria (2 atau lebih) sekaligus secara simultan."
+  },
+  {
+    q: "Fungsi Excel yang tepat digunakan untuk menjumlahkan nilai angka berdasarkan satu kriteria tertentu adalah...",
+    options: ["COUNTIF", "SUMIF", "AVERAGEIF", "SUMIFS"],
+    ans: 1,
+    exp: "Fungsi SUMIF menambahkan semua angka dalam rentang sel tertentu yang memenuhi satu syarat/kriteria spesifik."
+  },
+  {
+    q: "Urutan langkah-langkah yang tepat untuk membuat Column Chart pada Microsoft Excel adalah...",
+    options: [
+      "Klik tab Insert → Pilih jenis Column Chart → Blok rentang data.",
+      "Blok rentang data → Klik tab Insert → Pilih kelompok Charts → Pilih jenis Column Chart.",
+      "Klik tab Home → Pilih Charts → Blok rentang data → Pilih Column Chart.",
+      "Blok rentang data → Klik tab Data → Pilih PivotChart → Column Chart."
+    ],
+    ans: 1,
+    exp: "Langkah standar pembuatan grafik: Seleksi/blok data terlebih dahulu → Buka ribbon Insert → Pilih grup ikon Charts → Klik jenis grafik Column yang diinginkan."
+  },
+  {
+    q: "Fungsi yang digunakan untuk menghitung banyaknya sel/data yang memenuhi kriteria tertentu adalah...",
+    options: ["SUMIF", "COUNTIF", "COUNTA", "COUNTBLANK"],
+    ans: 1,
+    exp: "COUNTIF menghitung jumlah sel (banyaknya data/frekuensi) yang sesuai dengan kriteria yang dipersyaratkan."
+  },
+  {
+    q: "Jenis grafik yang paling tepat digunakan untuk menampilkan tren perkembangan data dari waktu ke waktu adalah...",
+    options: ["Pie Chart", "Bar Chart", "Line Chart (Grafik Garis)", "Doughnut Chart"],
+    ans: 2,
+    exp: "Line Chart (Grafik Garis) adalah visualisasi terbaik untuk memperlihatkan fluktuasi, pola kontinu, atau tren perubahan data sepanjang periode waktu tertentu."
+  },
+  {
+    q: "Kegunaan utama dari fitur Pivot Table pada Microsoft Excel adalah...",
+    options: [
+      "Meringkas, menganalisis, mengeksplorasi, dan mengelompokkan data berukuran besar secara cepat dan dinamis.",
+      "Membuat rumus matematika otomatis tanpa input manual.",
+      "Mengunci sel agar tidak dapat diubah oleh pengguna lain.",
+      "Mengubah tampilan desain tema warna lembar kerja."
+    ],
+    ans: 0,
+    exp: "Pivot Table adalah fitur interaktif tingkat lanjut yang memungkinkan pengolahan, penyimpulan, dan analisis ribuan baris data kompleks dengan drag-and-drop secara cepat."
+  }
+];
+
+const bsQuestions = [
+  {
+    q: "Fungsi SUMIF digunakan untuk menjumlahkan nilai sel yang memenuhi syarat/kriteria tertentu.",
+    ans: true,
+    exp: "BENAR. SUMIF ditujukan khusus untuk menjumlahkan angka berdasarkan 1 kriteria tertentu."
+  },
+  {
+    q: "Fungsi COUNTIF dapat digunakan langsung untuk menghitung data berdasarkan lima kriteria sekaligus.",
+    ans: false,
+    exp: "SALAH. COUNTIF hanya dapat memproses 1 kriteria. Untuk memproses 5 kriteria sekaligus, harus menggunakan fungsi COUNTIFS."
+  },
+  {
+    q: "Pie Chart adalah jenis grafik terbaik untuk menampilkan tren kenaikan penjualan dari bulan Januari hingga Desember.",
+    ans: false,
+    exp: "SALAH. Pie Chart digunakan untuk melihat proporsi/persentase bagian dari keseluruhan. Untuk tren waktu dari Januari hingga Desember, jenis grafik yang tepat adalah Line Chart."
+  },
+  {
+    q: "Rumus =COUNTIF(range, criteria) akan menghasilkan total penjumlahan angka dalam sel.",
+    ans: false,
+    exp: "SALAH. COUNTIF menghitung banyaknya sel (jumlah frekuensi data), bukan total nilai nominal angka di dalamnya (total nominal menggunakan SUMIF)."
+  },
+  {
+    q: "Pivot Table dapat mengolah ribuan baris data tanpa mengubah data asli pada lembar kerja.",
+    ans: true,
+    exp: "BENAR. Pivot Table bekerja pada cache data ringkasan terpisah sehingga data sumber asli tetap aman dan tidak mengalami perubahan."
+  }
+];
+
+const matchingData = [
+  {
+    premise: "1. Fungsi untuk mencari posisi urutan baris atau kolom dari suatu nilai acuan",
+    target: "MATCH",
+    exp: "MATCH mengembalikan nomor indeks posisi relatif suatu data."
+  },
+  {
+    premise: "2. Fungsi untuk menjumlahkan data angka yang memenuhi satu kondisi tertentu",
+    target: "SUMIF",
+    exp: "SUMIF menyeleksi dan menjumlahkan angka berdasarkan 1 syarat."
+  },
+  {
+    premise: "3. Fungsi pencarian data pada tabel acuan yang tersusun secara vertikal",
+    target: "VLOOKUP",
+    exp: "VLOOKUP membaca tabel sumber data dari atas ke bawah (kolom)."
+  },
+  {
+    premise: "4. Jenis grafik berbentuk lingkaran untuk menunjukkan persentase kontribusi",
+    target: "Pie Chart",
+    exp: "Pie Chart membagi lingkaran menjadi potongan-potongan proporsi persen."
+  },
+  {
+    premise: "5. Fungsi untuk mengambil nilai dari daftar pilihan berdasarkan nomor urut indeks",
+    target: "CHOOSE",
+    exp: "CHOOSE menentukan keluaran berdasarkan posisi angka indeks."
+  }
+];
+
+const essayQuestions = [
+  {
+    q: "Tuliskan rumus VLOOKUP untuk mencari Nama Barang dari tabel $A$2:$C$10 berdasar Kode di sel E2 (Nama Barang di kolom ke-2)!",
+    key: ["=VLOOKUP(E2, $A$2:$C$10, 2, FALSE)", "=VLOOKUP(E2,$A$2:$C$10,2,FALSE)", "=VLOOKUP(E2, $A$2:$C$10, 2, 0)"],
+    keywords: ["VLOOKUP", "E2", "$A$2:$C$10", "2"],
+    sampleAns: "=VLOOKUP(E2, $A$2:$C$10, 2, FALSE) atau =VLOOKUP(E2, $A$2:$C$10, 2, 0)",
+    exp: "Struktur sintaks: =VLOOKUP(nilai_kunci; tabel_absolut; nomor_kolom; [exact_match])."
+  },
+  {
+    q: "Jelaskan perbedaan antara fungsi VLOOKUP dan HLOOKUP!",
+    keywords: ["vlookup", "hlookup", "vertikal", "horizontal", "kolom", "baris"],
+    sampleAns: "VLOOKUP (Vertical Lookup) digunakan untuk mengambil data dari tabel acuan yang tersusun secara vertikal (per kolom). Sedangkan HLOOKUP (Horizontal Lookup) digunakan untuk mengambil data dari tabel acuan yang tersusun secara horizontal (per baris).",
+    exp: "Arah pembacaan VLOOKUP adalah bergerak ke bawah (kolom), sedangkan HLOOKUP bergerak ke kanan (baris)."
+  },
+  {
+    q: "Sebutkan 4 jenis grafik pada Microsoft Excel beserta fungsinya!",
+    keywords: ["column", "line", "pie", "bar", "scatter", "area", "kategori", "tren", "proporsi", "persentase"],
+    sampleAns: "1. Column/Bar Chart: Membandingkan nilai antar kategori.<br>2. Line Chart: Menampilkan tren data dari waktu ke waktu.<br>3. Pie Chart: Memperlihatkan proporsi persentase bagian dari keseluruhan.<br>4. Scatter/Area Chart: Menunjukkan sebaran atau akumulasi data.",
+    exp: "Empat grafik populer Excel ini memiliki fungsi visualisasi yang berbeda-beda sesuai struktur data."
+  },
+  {
+    q: "Jelaskan kegunaan fungsi MATCH, INDEX, dan CHOOSE pada Excel!",
+    keywords: ["match", "index", "choose", "posisi", "persilangan", "indeks", "daftar"],
+    sampleAns: "• MATCH: Mencari posisi indeks baris/kolom suatu nilai.<br>• INDEX: Mengambil nilai pada sel persilangan baris & kolom tertentu.<br>• CHOOSE: Memilih satu nilai dari daftar pilihan berdasarkan nomor urut.",
+    exp: "Ketiganya merupakan fungsi referensi pencarian tingkat menengah-lanjut pada Excel."
+  },
+  {
+    q: "Jelaskan pengertian Pivot Table dan mengapa fitur ini sangat penting dalam pengolahan data!",
+    keywords: ["pivot", "table", "merangkum", "menganalisis", "cepat", "dinamis", "besar"],
+    sampleAns: "Pivot Table adalah fitur interaktif Excel untuk merangkum, menganalisis, dan menyajikan data berukuran besar secara cepat. Penting karena memudahkan pengelompokan data tanpa penulisan rumus manual yang rumit.",
+    exp: "Pivot Table memangkas waktu pengerjaan laporan eksekutif dan analisis data masif."
+  },
+  {
+    q: "Tuliskan rumus SUMIF untuk menjumlahkan Total Penjualan pada rentang D2:D20 jika Wilayah pada rentang C2:C20 adalah 'Jakarta'!",
+    keywords: ["SUMIF", "C2:C20", "Jakarta", "D2:D20"],
+    sampleAns: "=SUMIF(C2:C20, \"Jakarta\", D2:D20)",
+    exp: "Sintaks SUMIF: =SUMIF(range_kriteria, kriteria, range_jumlah)."
+  },
+  {
+    q: "Apa fungsi dari rumus COUNTIF dan tuliskan sintaks dasarnya?",
+    keywords: ["countif", "menghitung", "banyak", "jumlah", "sel", "range", "criteria"],
+    sampleAns: "Fungsi COUNTIF digunakan untuk menghitung jumlah sel yang memenuhi kriteria tertentu. Sintaks dasar: =COUNTIF(range, criteria).",
+    exp: "COUNTIF menghitung frekuensi kejadian data berdasarkan syarat."
+  },
+  {
+    q: "Mengapa kombinasi INDEX dan MATCH lebih disukai oleh analis data dibandingkan VLOOKUP? Berikan 2 alasannya!",
+    keywords: ["kiri", "fleksibel", "performa", "ringan", "kolom", "berubah"],
+    sampleAns: "1. Mampu melakukan pencarian data ke arah kiri (kolom sebelum kunci).<br>2. Lebih fleksibel dan tidak rusak saat ada penambahan/pengurangan kolom di tabel sumber.",
+    exp: "INDEX-MATCH tidak tergantung pada posisi relatif indeks nomor kolom statis VLOOKUP."
+  },
+  {
+    q: "Apa yang dimaksud dengan argumen range_lookup pada VLOOKUP, dan apa perbedaan TRUE dan FALSE?",
+    keywords: ["range_lookup", "true", "false", "exact", "approximate", "persis", "mendekati"],
+    sampleAns: "Range_lookup menentukan tingkat presisi pencarian. TRUE/1 digunakan untuk mencari nilai mendekati (approximate match), sedangkan FALSE/0 untuk mencari nilai yang persis sama (exact match).",
+    exp: "Bila bernilai TRUE, tabel acuan wajib diurutkan secara ascending."
+  },
+  {
+    q: "Bagaimana cara mengubah desain atau layout dari Pivot Table yang sudah dibuat di Microsoft Excel?",
+    keywords: ["design", "analyze", "field", "drag", "layout", "tab"],
+    sampleAns: "Klik pada area Pivot Table → Buka tab PivotTable Analyze / Design pada ribbon → Atur Field List (pindahkan field ke Filter, Column, Row, atau Values) atau ubah Report Layout pada tab Design.",
+    exp: "Layout Pivot Table diatur melalui PivotTable Fields panel dan tab konteks Design."
+  }
+];
+
+// GENERATE SOAL KE HTML
+function renderQuiz() {
+  // Render PG
+  const pgContainer = document.getElementById('pg-container');
+  pgQuestions.forEach((q, idx) => {
+    let optionsHtml = '';
+    q.options.forEach((opt, oIdx) => {
+      optionsHtml += `
+        <label class="option-label">
+          <input type="radio" name="pg_${idx}" value="${oIdx}">
+          ${String.fromCharCode(65 + oIdx)}. ${opt}
+        </label>
+      `;
+    });
+
+    pgContainer.innerHTML += `
+      <div class="question-card" id="card_pg_${idx}">
+        <div class="question-title">${idx + 1}. ${q.q}</div>
+        <div class="options-group">${optionsHtml}</div>
+        <div class="feedback-box" id="fb_pg_${idx}"></div>
+      </div>
+    `;
+  });
+
+  // Render Benar / Salah
+  const bsContainer = document.getElementById('bs-container');
+  bsQuestions.forEach((q, idx) => {
+    bsContainer.innerHTML += `
+      <div class="question-card" id="card_bs_${idx}">
+        <div class="question-title">${idx + 16}. ${q.q}</div>
+        <div class="options-group">
+          <label class="option-label">
+            <input type="radio" name="bs_${idx}" value="true"> Benar
+          </label>
+          <label class="option-label">
+            <input type="radio" name="bs_${idx}" value="false"> Salah
+          </label>
+        </div>
+        <div class="feedback-box" id="fb_bs_${idx}"></div>
+      </div>
+    `;
+  });
+
+  // Render Menjodohkan
+  const matchingContainer = document.getElementById('matching-container');
+  // Opsi Dropdown
+  const targets = ["VLOOKUP", "MATCH", "INDEX", "CHOOSE", "SUMIF", "Pie Chart", "Line Chart"];
+  
+  matchingData.forEach((m, idx) => {
+    let selectOptions = '<option value="">-- Pilih Pasangan --</option>';
+    targets.forEach(t => {
+      selectOptions += `<option value="${t}">${t}</option>`;
+    });
+
+    matchingContainer.innerHTML += `
+      <div class="question-card" id="card_match_${idx}">
+        <div class="matching-grid">
+          <div><strong>${idx + 21}.</strong> ${m.premise}</div>
+          <div>
+            <select class="matching-select" id="match_select_${idx}">
+              ${selectOptions}
+            </select>
+          </div>
+        </div>
+        <div class="feedback-box" id="fb_match_${idx}"></div>
+      </div>
+    `;
+  });
+
+  // Render Uraian
+  const essayContainer = document.getElementById('essay-container');
+  essayQuestions.forEach((e, idx) => {
+    essayContainer.innerHTML += `
+      <div class="question-card" id="card_essay_${idx}">
+        <div class="question-title">${idx + 26}. ${e.q}</div>
+        <textarea class="essay-input" id="essay_input_${idx}" placeholder="Tuliskan jawaban Anda secara rinci di sini..."></textarea>
+        <div class="feedback-box" id="fb_essay_${idx}"></div>
+      </div>
+    `;
+  });
+}
+
+// PROSES SUBMIT & EVALUASI
+function submitQuiz() {
+  let totalScore = 0;
+  let maxScore = 100;
+  
+  // Bobot Soal: PG (15x2 = 30), BS (5x2 = 10), Match (5x2 = 10), Uraian (10x5 = 50). Total = 100.
+
+  // 1. Evaluasi PG
+  pgQuestions.forEach((q, idx) => {
+    const selected = document.querySelector(`input[name="pg_${idx}"]:checked`);
+    const fbBox = document.getElementById(`fb_pg_${idx}`);
+    
+    let isCorrect = false;
+    let userAnsText = "Tidak dijawab";
+
+    if (selected) {
+      const userVal = parseInt(selected.value);
+      userAnsText = String.fromCharCode(65 + userVal) + ". " + q.options[userVal];
+      if (userVal === q.ans) {
+        isCorrect = true;
+        totalScore += 2;
+      }
+    }
+
+    fbBox.className = `feedback-box show ${isCorrect ? 'correct' : 'incorrect'}`;
+    fbBox.innerHTML = `
+      <strong>Status:</strong> ${isCorrect ? 'BENAR (+2)' : 'SALAH (+0)'}<br>
+      <strong>Kunci Jawaban:</strong> ${String.fromCharCode(65 + q.ans)}. ${q.options[q.ans]}<br>
+      <div class="explanation-text"><strong>Pembahasan:</strong> ${q.exp}</div>
+    `;
+  });
+
+  // 2. Evaluasi Benar/Salah
+  bsQuestions.forEach((q, idx) => {
+    const selected = document.querySelector(`input[name="bs_${idx}"]:checked`);
+    const fbBox = document.getElementById(`fb_bs_${idx}`);
+    
+    let isCorrect = false;
+
+    if (selected) {
+      const userVal = selected.value === 'true';
+      if (userVal === q.ans) {
+        isCorrect = true;
+        totalScore += 2;
+      }
+    }
+
+    fbBox.className = `feedback-box show ${isCorrect ? 'correct' : 'incorrect'}`;
+    fbBox.innerHTML = `
+      <strong>Status:</strong> ${isCorrect ? 'BENAR (+2)' : 'SALAH (+0)'}<br>
+      <strong>Kunci Jawaban:</strong> ${q.ans ? 'BENAR' : 'SALAH'}<br>
+      <div class="explanation-text"><strong>Pembahasan:</strong> ${q.exp}</div>
+    `;
+  });
+
+  // 3. Evaluasi Menjodohkan
+  matchingData.forEach((m, idx) => {
+    const select = document.getElementById(`match_select_${idx}`);
+    const fbBox = document.getElementById(`fb_match_${idx}`);
+    const userVal = select.value;
+    
+    let isCorrect = (userVal === m.target);
+    if (isCorrect) totalScore += 2;
+
+    fbBox.className = `feedback-box show ${isCorrect ? 'correct' : 'incorrect'}`;
+    fbBox.innerHTML = `
+      <strong>Status:</strong> ${isCorrect ? 'BENAR (+2)' : 'SALAH (+0)'}<br>
+      <strong>Pasangan Tepat:</strong> ${m.target}<br>
+      <div class="explanation-text"><strong>Pembahasan:</strong> ${m.exp}</div>
+    `;
+  });
+
+  // 4. Evaluasi Uraian
+  essayQuestions.forEach((e, idx) => {
+    const inputVal = document.getElementById(`essay_input_${idx}`).value.trim().toLowerCase();
+    const fbBox = document.getElementById(`fb_essay_${idx}`);
+    
+    let scoreGained = 0;
+    
+    if (inputVal.length > 0) {
+      // Hitung kata kunci yang cocok
+      let matchCount = 0;
+      e.keywords.forEach(kw => {
+        if (inputVal.includes(kw.toLowerCase())) {
+          matchCount++;
+        }
+      });
+
+      // Proporsi skor max 5
+      let ratio = matchCount / e.keywords.length;
+      if (ratio > 0.7) scoreGained = 5;
+      else if (ratio > 0.4) scoreGained = 3;
+      else if (ratio > 0) scoreGained = 1.5;
+      else scoreGained = 0.5; // Apresiasi menulis
+    }
+
+    totalScore += scoreGained;
+
+    fbBox.className = `feedback-box show ${scoreGained >= 3 ? 'correct' : 'incorrect'}`;
+    fbBox.innerHTML = `
+      <strong>Estimasi Skor Uraian:</strong> ${scoreGained} / 5<br>
+      <strong>Kunci Jawaban / Acuan Jawaban:</strong><br>${e.sampleAns}<br>
+      <div class="explanation-text"><strong>Pembahasan:</strong> ${e.exp}</div>
+    `;
+  });
+
+  // TAMPILKAN DASHBOARD HASIL & PENCAPAIAN
+  const dashboard = document.getElementById('result-dashboard');
+  const finalScoreEl = document.getElementById('final-score');
+  const achievementLabelEl = document.getElementById('achievement-label');
+  const summaryEl = document.getElementById('score-summary');
+
+  // Bulatkan Total Skor
+  const finalScore = Math.round(totalScore);
+  finalScoreEl.innerText = finalScore;
+
+  // Predikat Pencapaian
+  let achievement = "";
+  let color = "";
+
+  if (finalScore >= 88) {
+    achievement = "Sangat Baik (Mastery)";
+    color = "#107c41";
+  } else if (finalScore >= 75) {
+    achievement = "Baik (Competent)";
+    color = "#0078d4";
+  } else if (finalScore >= 60) {
+    achievement = "Cukup (Sufficient)";
+    color = "#d13438";
+  } else {
+    achievement = "Perlu Bimbingan / Belajar Lagi";
+    color = "#a80000";
+  }
+
+  achievementLabelEl.innerText = `Predikat: ${achievement}`;
+  achievementLabelEl.style.color = color;
+  summaryEl.innerText = `Anda telah menyelesaikan seluruh 35 soal ujian. Silakan gulir ke atas untuk meninjau detail jawaban dan pembahasan pada setiap nomor.`;
+
+  dashboard.style.display = 'block';
+  dashboard.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Inisialisasi saat halaman dimuat
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
