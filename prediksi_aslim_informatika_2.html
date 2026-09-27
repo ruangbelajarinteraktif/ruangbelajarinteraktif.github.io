@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prediksi Soal ASLIM Informatika Kelas 8 SMP BAB 1 (Paket Variasi 2)</title>
+  <style>
+    :root {
+      --primary: #107c41; /* Warna hijau khas Excel */
+      --primary-dark: #0b582e;
+      --bg: #f3f2f1;
+      --card-bg: #ffffff;
+      --text: #323130;
+      --border: #e1dfdd;
+      --correct: #107c41;
+      --incorrect: #a80000;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    header {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      color: var(--primary);
+      margin: 0 0 10px 0;
+      font-size: 24px;
+    }
+
+    .instructions {
+      background-color: #eff6fc;
+      border-left: 4px solid #0078d4;
+      padding: 12px 15px;
+      font-size: 14px;
+      margin-bottom: 25px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .section-title {
+      background: var(--primary);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 4px;
+      margin-top: 30px;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    .question-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      background: #faf9f8;
+      transition: all 0.3s ease;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .option-label:hover {
+      background-color: #f3f2f1;
+    }
+
+    .option-label input {
+      margin-right: 12px;
+    }
+
+    /* Styles untuk Menjodohkan */
+    .matching-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      align-items: center;
+    }
+
+    select.matching-select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      background: #fff;
+    }
+
+    /* Style untuk Uraian */
+    textarea.essay-input {
+      width: 100%;
+      height: 90px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 14px;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+
+    /* Kotak Hasil & Pembahasan (Awalnya Tersembunyi) */
+    .feedback-box {
+      display: none;
+      margin-top: 15px;
+      padding: 12px 15px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .feedback-box.show {
+      display: block;
+    }
+
+    .feedback-box.correct {
+      background-color: #dff6dd;
+      border: 1px solid #107c41;
+      color: #107c41;
+    }
+
+    .feedback-box.incorrect {
+      background-color: #fde7e9;
+      border: 1px solid #a80000;
+      color: #a80000;
+    }
+
+    .explanation-text {
+      margin-top: 8px;
+      color: #323130;
+      font-size: 13px;
+      border-top: 1px dashed #ccc;
+      padding-top: 5px;
+    }
+
+    /* Tombol Aksi */
+    .action-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 30px;
+      transition: background 0.2s;
+    }
+
+    .action-btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* Dashboard Hasil */
+    #result-dashboard {
+      display: none;
+      background: #ffffff;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      padding: 25px;
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .score-badge {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 10px 0;
+    }
+
+    .achievement-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .matching-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Prediksi Soal ASLIM Informatika Kelas 8 SMP BAB 1 (Variasi Paket B)</h1>
+    <p style="margin: 0; color: #605e5c;">Materi: HLOOKUP, VLOOKUP, INDEX, MATCH, CHOOSE, SUMIF, SUMIFS, COUNTIF, COUNTIFS, Chart, & Pivot Table</p>
+  </header>
+
+  <div class="instructions">
+    <strong>Petunjuk Pengerjaan:</strong>
+    <ul>
+      <li>Soal terdiri dari 35 nomor (15 PG, 5 Benar/Salah, 5 Menjodohkan, dan 10 Uraian).</li>
+      <li>Pilih dan isi jawaban untuk setiap nomor. Kunci jawaban dan pembahasan terperinci akan **tersembunyi** sampai Anda menekan tombol "Submit / Periksa Jawaban".</li>
+      <li>Di akhir pemeriksaan, skor total dan predikat pencapaian Anda akan ditampilkan secara otomatis.</li>
+    </ul>
+  </div>
+
+  <form id="quizForm">
+
+    <!-- I. PILIHAN GANDA -->
+    <div class="section-title">I. Pilihan Ganda (15 Soal)</div>
+    <div id="pg-container"></div>
+
+    <!-- II. BENAR / SALAH -->
+    <div class="section-title">II. Benar / Salah (5 Soal)</div>
+    <div id="bs-container"></div>
+
+    <!-- III. MENJODOHKAN -->
+    <div class="section-title">III. Menjodohkan (5 Soal)</div>
+    <div id="matching-container"></div>
+
+    <!-- IV. URAIAN -->
+    <div class="section-title">IV. Uraian (10 Soal)</div>
+    <div id="essay-container"></div>
+
+    <button type="button" class="action-btn" onclick="submitQuiz()">Submit / Periksa Jawaban</button>
+  </form>
+
+  <!-- DASHBOARD HASIL DAN PENCAPAIAN -->
+  <div id="result-dashboard">
+    <h2>Hasil Ujian Anda</h2>
+    <div class="score-badge" id="final-score">0</div>
+    <div class="achievement-title" id="achievement-label">-</div>
+    <p id="score-summary" style="font-size: 15px; color: #605e5c;"></p>
+    <button type="button" class="action-btn" style="width: auto; padding: 10px 20px;" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Kembali ke Atas & Tinjau Jawaban</button>
+  </div>
+</div>
+
+<script>
+// DATA SOAL VARIASI BARU (Paket B)
+const pgQuestions = [
+  {
+    q: "Fungsi pada Microsoft Excel yang digunakan untuk mencari data pada tabel acuan yang tersusun secara mendatar (baris/horizontal) adalah...",
+    options: ["VLOOKUP", "HLOOKUP", "INDEX", "MATCH"],
+    ans: 1,
+    exp: "HLOOKUP (Horizontal Lookup) membaca data dari baris teratas tabel acuan ke arah horizontal (mendatar) dan mengembalikan nilai pada baris tertentu."
+  },
+  {
+    q: "Perhatikan rumus berikut: <code>=SUMIFS(D2:D10, B2:B10, \"L\", C2:C10, \">75\")</code>. Fungsi dari bagian <code>D2:D10</code> pada rumus tersebut adalah...",
+    options: [
+      "Rentang sel yang berisi kriteria pertama.",
+      "Rentang sel angka yang akan dijumlahkan nilainya (sum_range).",
+      "Rentang sel yang dihitung frekuensi jumlah datanya.",
+      "Rentang sel kunci untuk pencarian data acuan."
+    ],
+    ans: 1,
+    exp: "Pada fungsi SUMIFS, rentang sel angka yang hendak dijumlahkan (sum_range) diletakkan di urutan paling awal sebelum pasangan kriteria."
+  },
+  {
+    q: "Apabila rumus VLOOKUP menghasilkan pesan kesalahan (error) <code>#N/A</code>, penyebab yang paling mungkin adalah...",
+    options: [
+      "Tabel acuan mengandung angka negatif.",
+      "Nilai acuan (lookup_value) tidak ditemukan pada kolom pertama tabel acuan.",
+      "Format angka pada sel tujuan diubah menjadi persentase.",
+      "Jumlah baris tabel acuan melebihi 100 baris."
+    ],
+    ans: 1,
+    exp: "Pesan kesalahan #N/A (Not Available) muncul saat VLOOKUP tidak berhasil menemukan nilai pencarian (lookup_value) di kolom paling kiri tabel acuan."
+  },
+  {
+    q: "Tombol pintas (shortcut key) pada keyboard yang digunakan untuk mengubah referensi sel biasa menjadi alamat absolut ($) secara otomatis di Excel adalah...",
+    options: ["F2", "F4", "F8", "F12"],
+    ans: 1,
+    exp: "Menekan tombol F4 saat kursor berada pada referensi sel dalam rumus akan menambahkan tanda dolar ($) secara otomatis (misal: A1 menjadi $A$1)."
+  },
+  {
+    q: "Jika Anda ingin mengetahui banyaknya siswa laki-laki yang memiliki nilai di atas 80 menggunakan satu rumus Excel, fungsi yang paling tepat adalah...",
+    options: ["COUNTIF", "COUNTIFS", "SUMIFS", "AVERAGEIF"],
+    ans: 1,
+    exp: "COUNTIFS digunakan untuk menghitung banyaknya sel (frekuensi) yang memenuhi lebih dari satu kriteria (Kriteria 1: Laki-laki, Kriteria 2: Nilai > 80)."
+  },
+  {
+    q: "Diberikan rumus Excel: <code>=CHOOSE(3, \"Senin\", \"Selasa\", \"Rabu\", \"Kamis\", \"Jumat\")</code>. Hasil keluaran yang dihasilkan rumus tersebut adalah...",
+    options: ["Senin", "Selasa", "Rabu", "Kamis"],
+    ans: 2,
+    exp: "Fungsi CHOOSE mengembalikan pilihan berdasarkan nomor indeks. Karena nomor indeks bernilai 3, pilihan ke-3 adalah 'Rabu'."
+  },
+  {
+    q: "Mengapa kombinasi rumus <code>=INDEX(A2:A10, MATCH(E2, B2:B10, 0))</code> bisa mencari data ke arah kiri, sedangkan VLOOKUP tidak bisa?",
+    options: [
+      "Karena MATCH menentukan nomor baris secara dinamis tanpa bergantung posisi kolom kunci.",
+      "Karena INDEX otomatis membalikkan urutan kolom pada tabel acuan.",
+      "Karena VLOOKUP hanya bisa membaca data berupa angka.",
+      "Karena MATCH membatasi jumlah data yang dicari."
+    ],
+    ans: 0,
+    exp: "MATCH mencari posisi baris dari nilai kunci di kolom mana saja (termasuk kanan), lalu INDEX mengambil nilai dari kolom tujuan (termasuk kiri) berdasarkan nomor baris tersebut."
+  },
+  {
+    q: "Nilai argumen <code>match_type = 0</code> pada rumus <code>MATCH(lookup_value, lookup_array, [match_type])</code> berfungsi untuk...",
+    options: [
+      "Mencari nilai terkecil pada array.",
+      "Mencari posisi data yang persis sama (exact match).",
+      "Mengurutkan data secara otomatis dari A ke Z.",
+      "Menghapus sel kosong dalam pencarian."
+    ],
+    ans: 1,
+    exp: "Angka 0 pada argumen match_type menginstruksikan fungsi MATCH untuk mencari nilai yang tepat sama persis (exact match)."
+  },
+  {
+    q: "Visualisasi data berupa grafik lingkaran (Pie Chart) sangat cocok digunakan untuk...",
+    options: [
+      "Menampilkan perubahan tren harga saham dari tahun ke tahun.",
+      "Membandingkan proporsi atau persentase kontribusi tiap bagian terhadap keseluruhan (100%).",
+      "Menunjukkan hubungan sebab-akibat antara dua variabel angka.",
+      "Menampilkan urutan langkah-langkah kerja suatu prosedur."
+    ],
+    ans: 1,
+    exp: "Pie Chart dirancang khusus untuk memperlihatkan pembagian porsi/persentase komponen terhadap total keseluruhan (misal: persentase pangsa pasar)."
+  },
+  {
+    q: "Perbedaan utama antara Column Chart dan Bar Chart terletak pada...",
+    options: [
+      "Column Chart berbentuk lingkaran, sedangkan Bar Chart berbentuk garis.",
+      "Column Chart menampilkan batang secara vertikal, sedangkan Bar Chart menampilkan batang secara horizontal.",
+      "Column Chart hanya untuk data teks, sedangkan Bar Chart hanya untuk angka.",
+      "Column Chart tidak memerlukan legenda, sedangkan Bar Chart wajib memakai legenda."
+    ],
+    ans: 1,
+    exp: "Column Chart menyajikan batang kategorikal dalam arah berdiri (vertikal), sedangkan Bar Chart menyajikan batang dalam arah mendatar (horizontal)."
+  },
+  {
+    q: "Fitur interaktif pada Pivot Table yang berupa tombol-tombol visual untuk menyaring (filter) data secara cepat dan mudah dinamakan...",
+    options: ["Slicer", "Calculated Field", "Chart Area", "Data Validation"],
+    ans: 0,
+    exp: "Slicer adalah tombol penyaring visual interaktif pada Pivot Table yang memudahkan pengguna memfilter data hanya dengan mengklik tombol."
+  },
+  {
+    q: "Area pada Pivot Table Field tempat kita menyeret (drag) kolom berisi angka nominal (seperti Total Penjualan atau Nilai) agar dihitung penjumlahannya adalah...",
+    options: ["Filters", "Columns", "Rows", "Values"],
+    ans: 3,
+    exp: "Area 'Values' berfungsi untuk menampung field numerik yang akan dihitung hasilnya (secara default menggunakan fungsi SUM atau COUNT)."
+  },
+  {
+    q: "Sintaks penulisan rumus HLOOKUP yang benar di Microsoft Excel adalah...",
+    options: [
+      "=HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup])",
+      "=HLOOKUP(table_array, lookup_value, row_index_num, [range_lookup])",
+      "=HLOOKUP(lookup_value, row_index_num, table_array, [range_lookup])",
+      "=HLOOKUP(row_index_num, lookup_value, table_array, [range_lookup])"
+    ],
+    ans: 0,
+    exp: "Sintaks resmi HLOOKUP adalah: =HLOOKUP(nilai_kunci, tabel_acuan, nomor_baris, [exact_match])."
+  },
+  {
+    q: "Pesan kesalahan <code>#REF!</code> pada Microsoft Excel muncul ketika...",
+    options: [
+      "Rumus membagi suatu angka dengan nol.",
+      "Referensi sel yang digunakan dalam rumus telah terhapus atau tidak valid.",
+      "Nama fungsi/rumus salah ketik.",
+      "Panjang teks melebihi kapasitas lebar kolom."
+    ],
+    ans: 1,
+    exp: "Pesan #REF! (Invalid Cell Reference) terjadi saat rumus merujuk ke sel yang baris atau kolomnya sudah dihapus dari lembar kerja."
+  },
+  {
+    q: "Fungsi yang digunakan untuk menjumlahkan nilai sel dengan syarat tunggal (1 kriteria) adalah...",
+    options: ["COUNTIF", "SUMIF", "SUMIFS", "AVERAGEIF"],
+    ans: 1,
+    exp: "SUMIF digunakan untuk menambahkan angka-angka pada rentang sel yang memenuhi satu kriteria tertentu."
+  }
+];
+
+const bsQuestions = [
+  {
+    q: "Fungsi HLOOKUP membaca tabel acuan dari atas ke bawah berdasarkan urutan kolom.",
+    ans: false,
+    exp: "SALAH. HLOOKUP membaca tabel acuan secara mendatar (horizontal) dari kiri ke kanan berdasarkan urutan baris."
+  },
+  {
+    q: "Pada rumus SUMIFS, posisi rentang penjumlahan (sum_range) berada di bagian paling awal sebelum rentang kriteria.",
+    ans: true,
+    exp: "BENAR. Perbedaan utama SUMIFS dengan SUMIF adalah SUMIFS meletakkan sum_range di posisi pertama sintaks."
+  },
+  {
+    q: "Fungsi MATCH mengembalikan nilai nominal di dalam sel, bukan posisi nomor urutnya.",
+    ans: false,
+    exp: "SALAH. MATCH mengembalikan nomor posisi relatif (nomor indeks baris/kolom) dari suatu data, bukan isi nilai nominalnya."
+  },
+  {
+    q: "Secara default, ketika kita memasukkan field berjenis angka ke area 'Values' pada Pivot Table, Excel akan menghitung total penjumlahannya (SUM).",
+    ans: true,
+    exp: "BENAR. Excel secara otomatis menerapkan kalkulasi SUM untuk tipe data angka yang diletakkan di area Values."
+  },
+  {
+    q: "Grafik tipe Line Chart (Grafik Garis) adalah jenis grafik yang paling efektif untuk memperlihatkan tren fluktuasi data dari waktu ke waktu.",
+    ans: true,
+    exp: "BENAR. Line Chart sangat tepat untuk menggambarkan pola pergerakan kontinu atau tren temporal (harian, bulanan, tahunan)."
+  }
+];
+
+const matchingData = [
+  {
+    premise: "1. Fungsi untuk mencari data pada tabel acuan yang tersusun secara horizontal (baris)",
+    target: "HLOOKUP",
+    exp: "HLOOKUP membaca baris pertama tabel secara horizontal."
+  },
+  {
+    premise: "2. Fungsi untuk menghitung banyaknya sel yang memenuhi lebih dari satu kriteria",
+    target: "COUNTIFS",
+    exp: "COUNTIFS digunakan untuk menghitung frekuensi sel dengan banyak syarat."
+  },
+  {
+    premise: "3. Tombol keyboard untuk mengubah alamat sel menjadi alamat absolut ($)",
+    target: "Tombol F4",
+    exp: "F4 digunakan untuk mengunci sel ($A$1)."
+  },
+  {
+    premise: "4. Fitur visual berupa tombol-tombol interaktif untuk menyaring data Pivot Table",
+    target: "Slicer",
+    exp: "Slicer memfilter data Pivot Table secara cepat melalui tombol visual."
+  },
+  {
+    premise: "5. Pesan kesalahan ketika nilai yang dicari VLOOKUP tidak ditemukan pada tabel acuan",
+    target: "#N/A",
+    exp: "#N/A artinya Not Available / data tidak ditemukan."
+  }
+];
+
+const essayQuestions = [
+  {
+    q: "Tuliskan rumus HLOOKUP untuk mencari Tarif Sewa dari tabel acuan $A$1:$E$3 berdasarkan Kode di sel B2 (Tarif Sewa terletak pada baris ke-3)! ",
+    keywords: ["hlookup", "b2", "$a$1:$e$3", "3"],
+    sampleAns: "=HLOOKUP(B2, $A$1:$E$3, 3, FALSE) atau =HLOOKUP(B2, $A$1:$E$3, 3, 0)",
+    exp: "Sintaks: =HLOOKUP(nilai_kunci, tabel_absolut, nomor_baris, [exact_match])."
+  },
+  {
+    q: "Jelaskan perbedaan letak argumen rentang penjumlahan (sum_range) pada fungsi SUMIF dan SUMIFS!",
+    keywords: ["sumif", "sumifs", "awal", "akhir", "sum_range"],
+    sampleAns: "Pada fungsi SUMIF, sum_range diletakkan di bagian akhir rumus: =SUMIF(range, criteria, [sum_range]). Sedangkan pada SUMIFS, sum_range diletakkan di bagian awal rumus sebelum kriteria: =SUMIFS(sum_range, criteria_range1, criteria1, ...).",
+    exp: "Perbedaan letak sum_range ini sangat penting agar rumus tidak mengalami error."
+  },
+  {
+    q: "Sebutkan 2 penyebab utama munculnya pesan kesalahan #N/A saat menggunakan rumus VLOOKUP!",
+    keywords: ["tidak ditemukan", "kolom pertama", "kiri", "spasi", "salah ketik"],
+    sampleAns: "1. Nilai pencarian (lookup_value) tidak ada dalam tabel acuan.<br>2. Nilai pencarian tidak terletak di kolom paling kiri (kolom pertama) pada rentang tabel acuan.",
+    exp: "VLOOKUP wajib memiliki nilai kunci di kolom paling kiri dari table_array."
+  },
+  {
+    q: "Diketahui rumus Excel: =CHOOSE(2, \"Juara 1\", \"Juara 2\", \"Juara 3\"). Tuliskan hasil keluaran dari rumus tersebut beserta alasannya!",
+    keywords: ["juara 2", "indeks", "posisi", "kedua"],
+    sampleAns: "Hasilnya adalah \"Juara 2\". Alasannya karena angka indeks yang dipilih adalah 2, sehingga fungsi CHOOSE mengambil nilai pilihan pada urutan ke-2.",
+    exp: "CHOOSE mengambil nilai berdasarkan nomor indeks urutan argumen."
+  },
+  {
+    q: "Tuliskan kombinasi rumus INDEX dan MATCH untuk mengambil data Nama di rentang A2:A10 berdasarkan ID di sel E2 yang dihitung posisi barisnya pada B2:B10!",
+    keywords: ["INDEX", "A2:A10", "MATCH", "E2", "B2:B10"],
+    sampleAns: "=INDEX(A2:A10, MATCH(E2, B2:B10, 0))",
+    exp: "Sintaks: =INDEX(kolom_hasil, MATCH(nilai_kunci, kolom_kunci, exact_match))."
+  },
+  {
+    q: "Jelaskan perbedaan bentuk tampilan antara Column Chart dan Bar Chart pada Microsoft Excel!",
+    keywords: ["column", "bar", "vertikal", "horizontal", "tegak", "mendatar"],
+    sampleAns: "Column Chart menampilkan data dalam bentuk batang tegak lurus (vertikal), sedangkan Bar Chart menampilkan data dalam bentuk batang mendatar (horizontal).",
+    exp: "Perbedaannya terletak pada orientasi sumbu posisi batang diagram."
+  },
+  {
+    q: "Tuliskan rumus COUNTIFS untuk menghitung jumlah sel pada data siswa kelas \"8A\" (rentang B2:B30) yang memiliki nilai matematika lebih dari 80 (rentang C2:C30)!",
+    keywords: ["COUNTIFS", "B2:B30", "8A", "C2:C30", ">80"],
+    sampleAns: "=COUNTIFS(B2:B30, \"8A\", C2:C30, \">80\")",
+    exp: "Sintaks COUNTIFS: =COUNTIFS(range1, criteria1, range2, criteria2)."
+  },
+  {
+    q: "Apa fungsi dari fitur Slicer pada Pivot Table di Microsoft Excel?",
+    keywords: ["slicer", "filter", "menyaring", "tombol", "visual", "interaktif"],
+    sampleAns: "Slicer berfungsi sebagai alat penyaring (filter) visual interaktif berformat tombol yang memudahkan pengguna menyaring data Pivot Table dengan sekali klik.",
+    exp: "Slicer membuat interaksi laporan Pivot Table menjadi lebih dinamis dan mudah digunakan."
+  },
+  {
+    q: "Mengapa kita perlu mengunci referensi tabel acuan dengan tanda dolar ($) saat membuat rumus VLOOKUP?",
+    keywords: ["absolut", "mengunci", "bergeser", "copy", "drag", "statis"],
+    sampleAns: "Agar posisi rentang tabel acuan tetap terkunci (statis) dan tidak bergeser turun ke bawah saat rumus disalin/didrag ke baris-baris di bawahnya.",
+    exp: "Jika tidak dikunci ($), alamat sel akan berubah secara relatif saat rumus disalin."
+  },
+  {
+    q: "Sebutkan 4 area utama yang terdapat pada panel PivotTable Fields beserta fungsinya!",
+    keywords: ["filters", "columns", "rows", "values", "penyaring", "baris", "kolom", "nilai"],
+    sampleAns: "1. Filters: Menyaring tampilan seluruh laporan.<br>2. Columns: Menampilkan variabel data sebagai header kolom.<br>3. Rows: Menampilkan variabel data sebagai baris (ke bawah).<br>4. Values: Menampung data angka yang dihitung nilai total/jumlahnya.",
+    exp: "Keempat area ini merupakan struktur utama penyusun tata letak Pivot Table."
+  }
+];
+
+// GENERATE SOAL KE HTML
+function renderQuiz() {
+  // Render PG
+  const pgContainer = document.getElementById('pg-container');
+  pgQuestions.forEach((q, idx) => {
+    let optionsHtml = '';
+    q.options.forEach((opt, oIdx) => {
+      optionsHtml += `
+        <label class="option-label">
+          <input type="radio" name="pg_${idx}" value="${oIdx}">
+          ${String.fromCharCode(65 + oIdx)}. ${opt}
+        </label>
+      `;
+    });
+
+    pgContainer.innerHTML += `
+      <div class="question-card" id="card_pg_${idx}">
+        <div class="question-title">${idx + 1}. ${q.q}</div>
+        <div class="options-group">${optionsHtml}</div>
+        <div class="feedback-box" id="fb_pg_${idx}"></div>
+      </div>
+    `;
+  });
+
+  // Render Benar / Salah
+  const bsContainer = document.getElementById('bs-container');
+  bsQuestions.forEach((q, idx) => {
+    bsContainer.innerHTML += `
+      <div class="question-card" id="card_bs_${idx}">
+        <div class="question-title">${idx + 16}. ${q.q}</div>
+        <div class="options-group">
+          <label class="option-label">
+            <input type="radio" name="bs_${idx}" value="true"> Benar
+          </label>
+          <label class="option-label">
+            <input type="radio" name="bs_${idx}" value="false"> Salah
+          </label>
+        </div>
+        <div class="feedback-box" id="fb_bs_${idx}"></div>
+      </div>
+    `;
+  });
+
+  // Render Menjodohkan
+  const matchingContainer = document.getElementById('matching-container');
+  const targets = ["HLOOKUP", "COUNTIFS", "Tombol F4", "Slicer", "#N/A", "VLOOKUP", "SUMIF"];
+  
+  matchingData.forEach((m, idx) => {
+    let selectOptions = '<option value="">-- Pilih Pasangan --</option>';
+    targets.forEach(t => {
+      selectOptions += `<option value="${t}">${t}</option>`;
+    });
+
+    matchingContainer.innerHTML += `
+      <div class="question-card" id="card_match_${idx}">
+        <div class="matching-grid">
+          <div><strong>${idx + 21}.</strong> ${m.premise}</div>
+          <div>
+            <select class="matching-select" id="match_select_${idx}">
+              ${selectOptions}
+            </select>
+          </div>
+        </div>
+        <div class="feedback-box" id="fb_match_${idx}"></div>
+      </div>
+    `;
+  });
+
+  // Render Uraian
+  const essayContainer = document.getElementById('essay-container');
+  essayQuestions.forEach((e, idx) => {
+    essayContainer.innerHTML += `
+      <div class="question-card" id="card_essay_${idx}">
+        <div class="question-title">${idx + 26}. ${e.q}</div>
+        <textarea class="essay-input" id="essay_input_${idx}" placeholder="Tuliskan jawaban Anda secara rinci di sini..."></textarea>
+        <div class="feedback-box" id="fb_essay_${idx}"></div>
+      </div>
+    `;
+  });
+}
+
+// PROSES SUBMIT & EVALUASI
+function submitQuiz() {
+  let totalScore = 0;
+
+  // 1. Evaluasi PG (15 Soal x 2 Poin = 30 Poin)
+  pgQuestions.forEach((q, idx) => {
+    const selected = document.querySelector(`input[name="pg_${idx}"]:checked`);
+    const fbBox = document.getElementById(`fb_pg_${idx}`);
+    
+    let isCorrect = false;
+
+    if (selected) {
+      const userVal = parseInt(selected.value);
+      if (userVal === q.ans) {
+        isCorrect = true;
+        totalScore += 2;
+      }
+    }
+
+    fbBox.className = `feedback-box show ${isCorrect ? 'correct' : 'incorrect'}`;
+    fbBox.innerHTML = `
+      <strong>Status:</strong> ${isCorrect ? 'BENAR (+2)' : 'SALAH (+0)'}<br>
+      <strong>Kunci Jawaban:</strong> ${String.fromCharCode(65 + q.ans)}. ${q.options[q.ans]}<br>
+      <div class="explanation-text"><strong>Pembahasan:</strong> ${q.exp}</div>
+    `;
+  });
+
+  // 2. Evaluasi Benar/Salah (5 Soal x 2 Poin = 10 Poin)
+  bsQuestions.forEach((q, idx) => {
+    const selected = document.querySelector(`input[name="bs_${idx}"]:checked`);
+    const fbBox = document.getElementById(`fb_bs_${idx}`);
+    
+    let isCorrect = false;
+
+    if (selected) {
+      const userVal = selected.value === 'true';
+      if (userVal === q.ans) {
+        isCorrect = true;
+        totalScore += 2;
+      }
+    }
+
+    fbBox.className = `feedback-box show ${isCorrect ? 'correct' : 'incorrect'}`;
+    fbBox.innerHTML = `
+      <strong>Status:</strong> ${isCorrect ? 'BENAR (+2)' : 'SALAH (+0)'}<br>
+      <strong>Kunci Jawaban:</strong> ${q.ans ? 'BENAR' : 'SALAH'}<br>
+      <div class="explanation-text"><strong>Pembahasan:</strong> ${q.exp}</div>
+    `;
+  });
+
+  // 3. Evaluasi Menjodohkan (5 Soal x 2 Poin = 10 Poin)
+  matchingData.forEach((m, idx) => {
+    const select = document.getElementById(`match_select_${idx}`);
+    const fbBox = document.getElementById(`fb_match_${idx}`);
+    const userVal = select.value;
+    
+    let isCorrect = (userVal === m.target);
+    if (isCorrect) totalScore += 2;
+
+    fbBox.className = `feedback-box show ${isCorrect ? 'correct' : 'incorrect'}`;
+    fbBox.innerHTML = `
+      <strong>Status:</strong> ${isCorrect ? 'BENAR (+2)' : 'SALAH (+0)'}<br>
+      <strong>Pasangan Tepat:</strong> ${m.target}<br>
+      <div class="explanation-text"><strong>Pembahasan:</strong> ${m.exp}</div>
+    `;
+  });
+
+  // 4. Evaluasi Uraian (10 Soal x Max 5 Poin = 50 Poin)
+  essayQuestions.forEach((e, idx) => {
+    const inputVal = document.getElementById(`essay_input_${idx}`).value.trim().toLowerCase();
+    const fbBox = document.getElementById(`fb_essay_${idx}`);
+    
+    let scoreGained = 0;
+    
+    if (inputVal.length > 0) {
+      let matchCount = 0;
+      e.keywords.forEach(kw => {
+        if (inputVal.includes(kw.toLowerCase())) {
+          matchCount++;
+        }
+      });
+
+      let ratio = matchCount / e.keywords.length;
+      if (ratio > 0.7) scoreGained = 5;
+      else if (ratio > 0.4) scoreGained = 3;
+      else if (ratio > 0) scoreGained = 1.5;
+      else scoreGained = 0.5;
+    }
+
+    totalScore += scoreGained;
+
+    fbBox.className = `feedback-box show ${scoreGained >= 3 ? 'correct' : 'incorrect'}`;
+    fbBox.innerHTML = `
+      <strong>Estimasi Skor Uraian:</strong> ${scoreGained} / 5<br>
+      <strong>Kunci Jawaban / Acuan Jawaban:</strong><br>${e.sampleAns}<br>
+      <div class="explanation-text"><strong>Pembahasan:</strong> ${e.exp}</div>
+    `;
+  });
+
+  // DASHBOARD HASIL & PENCAPAIAN
+  const dashboard = document.getElementById('result-dashboard');
+  const finalScoreEl = document.getElementById('final-score');
+  const achievementLabelEl = document.getElementById('achievement-label');
+  const summaryEl = document.getElementById('score-summary');
+
+  const finalScore = Math.round(totalScore);
+  finalScoreEl.innerText = finalScore;
+
+  let achievement = "";
+  let color = "";
+
+  if (finalScore >= 88) {
+    achievement = "Sangat Baik (Mastery)";
+    color = "#107c41";
+  } else if (finalScore >= 75) {
+    achievement = "Baik (Competent)";
+    color = "#0078d4";
+  } else if (finalScore >= 60) {
+    achievement = "Cukup (Sufficient)";
+    color = "#d13438";
+  } else {
+    achievement = "Perlu Bimbingan / Belajar Lagi";
+    color = "#a80000";
+  }
+
+  achievementLabelEl.innerText = `Predikat: ${achievement}`;
+  achievementLabelEl.style.color = color;
+  summaryEl.innerText = `Anda telah menyelesaikan seluruh 35 soal ujian. Silakan gulir ke atas untuk meninjau detail jawaban dan pembahasan pada setiap nomor.`;
+
+  dashboard.style.display = 'block';
+  dashboard.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Inisialisasi saat halaman dimuat
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
