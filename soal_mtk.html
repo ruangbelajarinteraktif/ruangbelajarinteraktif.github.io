@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prediksi Soal ASLIM Matematika Kelas 8 SMP</title>
+  <style>
+    :root {
+      --primary: #0078d4; /* Warna biru khas Matematika */
+      --primary-dark: #004e8c;
+      --bg: #f3f2f1;
+      --card-bg: #ffffff;
+      --text: #323130;
+      --border: #e1dfdd;
+      --correct: #107c41;
+      --incorrect: #a80000;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    header {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      color: var(--primary);
+      margin: 0 0 10px 0;
+      font-size: 26px;
+    }
+
+    .instructions {
+      background-color: #eff6fc;
+      border-left: 4px solid #0078d4;
+      padding: 12px 15px;
+      font-size: 14px;
+      margin-bottom: 25px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .section-title {
+      background: var(--primary);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 4px;
+      margin-top: 30px;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    .question-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      background: #faf9f8;
+      transition: all 0.3s ease;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .option-label:hover {
+      background-color: #f3f2f1;
+    }
+
+    .option-label input {
+      margin-right: 12px;
+    }
+
+    /* Styles untuk Menjodohkan */
+    .matching-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      align-items: center;
+    }
+
+    select.matching-select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      background: #fff;
+    }
+
+    /* Style untuk Uraian */
+    textarea.essay-input {
+      width: 100%;
+      height: 90px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 14px;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+
+    /* Kotak Hasil & Pembahasan */
+    .feedback-box {
+      display: none;
+      margin-top: 15px;
+      padding: 12px 15px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .feedback-box.show {
+      display: block;
+    }
+
+    .feedback-box.correct {
+      background-color: #dff6dd;
+      border: 1px solid #107c41;
+      color: #107c41;
+    }
+
+    .feedback-box.incorrect {
+      background-color: #fde7e9;
+      border: 1px solid #a80000;
+      color: #a80000;
+    }
+
+    .explanation-text {
+      margin-top: 8px;
+      color: #323130;
+      font-size: 13px;
+      border-top: 1px dashed #ccc;
+      padding-top: 5px;
+    }
+
+    /* Tombol Aksi */
+    .action-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 30px;
+      transition: background 0.2s;
+    }
+
+    .action-btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* Dashboard Hasil */
+    #result-dashboard {
+      display: none;
+      background: #ffffff;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      padding: 25px;
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .score-badge {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 10px 0;
+    }
+
+    .achievement-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .matching-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Prediksi Soal ASLIM Gasal Matematika Kelas 8 SMP Tahun 2026/2027</h1>
+    <p style="margin: 0; color: #605e5c;">Materi: Garis & Sudut, Teorema Pythagoras, Segitiga & Segiempat</p>
+  </header>
+
+  <div class="instructions">
+    <strong>Petunjuk Pengerjaan:</strong>
+    <ul>
+      <li>Soal terdiri dari 35 nomor (15 PG, 5 Benar/Salah, 5 Menjodohkan, dan 10 Uraian).</li>
+      <li>Jawab seluruh soal terlebih dahulu. Kunci jawaban dan pembahasan lengkap akan muncul setelah Anda menekan tombol "Submit / Periksa Jawaban".</li>
+      <li>Di akhir tes, Anda akan melihat total skor dan predikat pencapaian Anda.</li>
+    </ul>
+  </div>
+
+  <form id="quizForm">
+
+    <!-- I. PILIHAN GANDA -->
+    <div class="section-title">I. Pilihan Ganda (15 Soal)</div>
+    <div id="pg-container"></div>
+
+    <!-- II. BENAR / SALAH -->
+    <div class="section-title">II. Benar / Salah (5 Soal)</div>
+    <div id="bs-container"></div>
+
+    <!-- III. MENJODOHKAN -->
+    <div class="section-title">III. Menjodohkan (5 Soal)</div>
+    <div id="matching-container"></div>
+
+    <!-- IV. URAIAN -->
+    <div class="section-title">IV. Uraian (10 Soal)</div>
+    <div id="essay-container"></div>
+
+    <button type="button" class="action-btn" onclick="submitQuiz()">Submit / Periksa Jawaban</button>
+  </form>
+
+  <!-- DASHBOARD HASIL -->
+  <div id="result-dashboard">
+    <h2>Hasil Ujian Anda</h2>
+    <div class="score-badge" id="final-score">0</div>
+    <div class="achievement-title" id="achievement-label">-</div>
+    <p id="score-summary" style="font-size: 15px; color: #605e5c;"></p>
+    <button type="button" class="action-btn" style="width: auto; padding: 10px 20px;" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Kembali ke Atas & Tinjau Jawaban</button>
+  </div>
+</div>
+
+<script>
+// DATA SOAL MATEMATIKA KELAS 8 SMP
+const pgQuestions = [
+  {
+    q: "Pada kubus ABCD.EFGH, kedudukan garis AB dan garis CG adalah...",
+    options: ["Sejajar", "Berpotongan", "Bersilangan", "Berhimpit"],
+    ans: 2,
+    exp: "Garis AB dan CG bersilangan karena kedua garis tidak terletak pada satu bidang datar yang sama dan tidak saling memotong meski diperpanjang."
+  },
+  {
+    q: "Dua garis sejajar dipotong oleh sebuah garis transversal. Jika sepasang sudut dalam berseberangan masing-masing besarnya (3x + 10)° dan (5x - 30)°, maka nilai x adalah...",
+    options: ["10", "15", "20", "25"],
+    ans: 2,
+    exp: "Sudut dalam berseberangan besarnya sama: 3x + 10 = 5x - 30 => 2x = 40 => x = 20."
+  },
+  {
+    q: "Dua sudut saling berpelurus. Jika besar sudut pertama adalah (4x + 15)° dan sudut kedua adalah (2x + 45)°, maka besar sudut pertama adalah...",
+    options: ["85°", "95°", "105°", "115°"],
+    ans: 1,
+    exp: "Sudut berpelurus jumlahnya 180°: (4x + 15) + (2x + 45) = 180 => 6x + 60 = 180 => 6x = 120 => x = 20. Besar sudut pertama = 4(20) + 15 = 95°."
+  },
+  {
+    q: "Dua garis berpotongan membentuk sepasang sudut bertolak belakang (2x + 20)° dan (x + 50)°. Besar sudut berpelurus dari sudut tersebut adalah...",
+    options: ["80°", "90°", "100°", "110°"],
+    ans: 2,
+    exp: "Sudut bertolak belakang besarnya sama: 2x + 20 = x + 50 => x = 30. Besar sudut = 2(30) + 20 = 80°. Pelurusnya = 180° - 80° = 100°."
+  },
+  {
+    q: "Di antara kelompok tiga bilangan berikut:\n(I) 6, 8, 10\n(II) 8, 15, 17\n(III) 9, 12, 16\n(IV) 7, 24, 25\nYang merupakan Tripel Pythagoras adalah...",
+    options: ["(I), (II), dan (III)", "(I), (II), dan (IV)", "(I), (III), dan (IV)", "(II), (III), dan (IV)"],
+    ans: 1,
+    exp: "Tripel Pythagoras memenuhi a² + b² = c²:\n(I) 6² + 8² = 36 + 64 = 100 = 10² (Ya)\n(II) 8² + 15² = 64 + 225 = 289 = 17² (Ya)\n(III) 9² + 12² = 225 != 256 (Bukan)\n(IV) 7² + 24² = 49 + 576 = 625 = 25² (Ya)."
+  },
+  {
+    q: "Sebuah segitiga siku-siku memiliki panjang hipotenusa (sisi miring) 25 cm dan panjang salah satu sisi siku-sikunya 7 cm. Panjang sisi siku-siku lainnya adalah...",
+    options: ["20 cm", "21 cm", "23 cm", "24 cm"],
+    ans: 3,
+    exp: "Sisi siku-siku lain = √(25² - 7²) = √(625 - 49) = √576 = 24 cm."
+  },
+  {
+    q: "Sebuah kapal berlayar dari pelabuhan A ke arah Timur sejauh 120 km, kemudian berbelok ke arah Utara sejauh 90 km menuju pelabuhan B. Jarak terdekat pelabuhan A ke pelabuhan B adalah...",
+    options: ["130 km", "140 km", "150 km", "160 km"],
+    ans: 2,
+    exp: "Jarak terdekat = √(120² + 90²) = √(14400 + 8100) = √22500 = 150 km."
+  },
+  {
+    q: "Perbandingan besar sudut-sudut dalam sebuah segitiga adalah 2 : 3 : 4. Besar sudut terbesar pada segitiga tersebut adalah...",
+    options: ["40°", "60°", "80°", "100°"],
+    ans: 2,
+    exp: "Jumlah sudut segitiga = 180°. Sudut terbesar = (4 / (2+3+4)) × 180° = (4/9) × 180° = 80°."
+  },
+  {
+    q: "Luas sebuah layang-layang adalah 120 cm². Jika panjang salah satu diagonalnya adalah 16 cm, maka panjang diagonal lainnya adalah...",
+    options: ["12 cm", "15 cm", "18 cm", "20 cm"],
+    ans: 1,
+    exp: "Luas = 1/2 × d1 × d2 => 120 = 1/2 × 16 × d2 => 120 = 8 × d2 => d2 = 15 cm."
+  },
+  {
+    q: "Pak Anton memiliki sebidang tanah berbentuk persegi panjang berukuran 24 meter × 18 meter. Di sekeliling tanah dipasang pagar kawat dengan biaya Rp 40.000,00 per meter. Total biaya pembuatan pagar adalah...",
+    options: ["Rp 2.520.000,00", "Rp 3.000.000,00", "Rp 3.360.000,00", "Rp 6.720.000,00"],
+    ans: 2,
+    exp: "Keliling = 2 × (24 + 18) = 2 × 42 = 84 meter. Total biaya = 84 × Rp 40.000 = Rp 3.360.000,00."
+  },
+  {
+    q: "Dua garis sejajar dipotong oleh garis transversal. Hubungan antara sepasang sudut luar sepihak adalah...",
+    options: ["Besarnya sama", "Jumlah keduanya 180°", "Jumlah keduanya 90°", "Saling bertolak belakang"],
+    ans: 1,
+    exp: "Pasangan sudut luar sepihak pada dua garis sejajar dipotong garis transversal selalu berjumlah 180° (saling berpelurus)."
+  },
+  {
+    q: "Sebuah tangga panjangnya 10 meter disandarkan pada tembok rumah. Jika jarak ujung bawah tangga ke tembok adalah 6 meter, maka tinggi tembok yang dicapai oleh ujung atas tangga adalah...",
+    options: ["7 meter", "8 meter", "9 meter", "9,5 meter"],
+    ans: 1,
+    exp: "Tinggi tembok = √(10² - 6²) = √(100 - 36) = √64 = 8 meter."
+  },
+  {
+    q: "Diketahui sebuah jajar genjang memiliki alas 15 cm dan tinggi 10 cm. Luas jajar genjang tersebut adalah...",
+    options: ["75 cm²", "120 cm²", "150 cm²", "300 cm²"],
+    ans: 2,
+    exp: "Luas jajar genjang = alas × tinggi = 15 cm × 10 cm = 150 cm²."
+  },
+  {
+    q: "Panjang sisi-sisi suatu segitiga adalah 8 cm, 15 cm, dan 18 cm. Berdasarkan kebalikan teorema Pythagoras, jenis segitiga tersebut adalah...",
+    options: ["Segitiga lancip", "Segitiga siku-siku", "Segitiga tumpul", "Segitiga sama sisi"],
+    ans: 2,
+    exp: "Sisi terpanjang c = 18 => c² = 324. Jumlah kuadrat sisi lain a² + b² = 8² + 15² = 64 + 225 = 289. Karena c² > a² + b² (324 > 289), maka segitiga tumpul."
+  },
+  {
+    q: "Sebuah bangun terdiri dari gabungan persegi panjang (10 cm × 6 cm) dan segitiga siku-siku yang menempel pada lebar persegi panjang (6 cm) dengan alas segitiga 8 cm. Panjang sisi miring segitiga tersebut adalah...",
+    options: ["9 cm", "10 cm", "12 cm", "14 cm"],
+    ans: 1,
+    exp: "Sisi siku-siku segitiga adalah 6 cm dan 8 cm. Sisi miring = √(6² + 8²) = √(36 + 64) = √100 = 10 cm."
+  }
+];
+
+const bsQuestions = [
+  {
+    q: "Besar sudut penyiku (komplemen) dari sudut berukuran 38° adalah 52°.",
+    ans: true,
+    exp: "BENAR. Sudut penyiku berijumlah 90°, sehingga 90° - 38° = 52°."
+  },
+  {
+    q: "Berdasarkan kebalikan teorema Pythagoras, jika pada segitiga berlaku a² + b² < c², maka segitiga tersebut merupakan segitiga lancip.",
+    ans: false,
+    exp: "SALAH. Jika a² + b² < c² (atau c² > a² + b²), segitiga tersebut adalah segitiga tumpul. Jika c² < a² + b², barulah segitiga lancip."
+  },
+  {
+    q: "Sebuah tiang bendera setinggi 12 meter diikat kawat ke tanah yang berjarak 5 meter dari pangkal tiang. Panjang kawat lintasan langsung tersebut adalah 13 meter.",
+    ans: true,
+    exp: "BENAR. Panjang kawat = √(12² + 5²) = √(144 + 25) = √169 = 13 meter."
+  },
+  {
+    q: "Sebuah persegi memiliki keliling 48 cm, maka luas daerah persegi tersebut adalah 144 cm².",
+    ans: true,
+    exp: "BENAR. Sisi persegi = 48 / 4 = 12 cm. Luas = 12 × 12 = 144 cm²."
+  },
+  {
+    q: "Luas jajargenjang dengan panjang alas 14 cm dan tinggi 9 cm adalah 63 cm².",
+    ans: false,
+    exp: "SALAH. Luas jajargenjang = alas × tinggi = 14 × 9 = 126 cm² (bukan 63 cm²)."
+  }
+];
+
+const matchingData = [
+  {
+    premise: "1. Besar penyiku dari sudut 42°",
+    target: "48°",
+    exp: "90° - 42° = 48°."
+  },
+  {
+    premise: "2. Besar sudut bertolak belakang dengan sudut 115°",
+    target: "115°",
+    exp: "Sudut bertolak belakang selalu memiliki besar yang sama."
+  },
+  {
+    premise: "3. Jarak antara titik A(1, 2) dan B(7, 10) pada bidang Kartesius",
+    target: "10",
+    exp: "Jarak = √((7-1)² + (10-2)²) = √(6² + 8²) = √100 = 10."
+  },
+  {
+    premise: "4. Sisi miring segitiga siku-siku dengan alas 9 cm dan tinggi 12 cm",
+    target: "15 cm",
+    exp: "Sisi miring = √(9² + 12²) = √(81 + 144) = √225 = 15 cm."
+  },
+  {
+    premise: "5. Keliling belah ketupat dengan diagonal 12 cm dan 16 cm",
+    target: "40 cm",
+    exp: "Panjang sisi = √(6² + 8²) = 10 cm. Keliling = 4 × 10 = 40 cm."
+  }
+];
+
+const essayQuestions = [
+  {
+    q: "Dua garis sejajar dipotong garis transversal. Sudut dalam sepihak masing-masing bernilai (2x + 15)° dan (3x + 25)°. Tentukan nilai x dan besar masing-masing sudut!",
+    keywords: ["28", "71", "109"],
+    sampleAns: "Sudut dalam sepihak berjumlah 180°:\n(2x + 15) + (3x + 25) = 180°\n5x + 40 = 180 => 5x = 140 => x = 28.\nSudut 1 = 2(28) + 15 = 71°.\nSudut 2 = 3(28) + 25 = 109°.",
+    exp: "Pasangan sudut dalam sepihak saling berpelurus (jumlahnya 180°)."
+  },
+  {
+    q: "Pada segitiga ABC, sudut luar di titik A besarnya 120°. Jika perbandingan sudut dalam ∠B : ∠C = 3 : 5, tentukan besar ∠A, ∠B, dan ∠C!",
+    keywords: ["60", "45", "75"],
+    sampleAns: "• ∠A dalam = 180° - 120° = 60°.\n• Jumlah ∠B + ∠C = 180° - 60° = 120°.\n• ∠B = (3 / 8) × 120° = 45°.\n• ∠C = (5 / 8) × 120° = 75°.",
+    exp: "Sudut dalam A saling berpelurus dengan sudut luarnya, lalu sisa sudut segitiga dibagi rasio."
+  },
+  {
+    q: "Sebuah kapal berlayar ke arah Barat sejauh 80 km, kemudian berbelok ke arah Selatan sejauh 60 km. Hitunglah jarak terdekat posisi kapal sekarang dari titik awal!",
+    keywords: ["100"],
+    sampleAns: "Jarak = √(80² + 60²) = √(6400 + 3600) = √10000 = 100 km.",
+    exp: "Menggunakan Teorema Pythagoras untuk lintasan siku-siku."
+  },
+  {
+    q: "Tentukan keliling gabungan bangun datar yang terdiri dari sebuah persegi panjang (12 cm × 8 cm) dan segitiga sama kaki di atasnya dengan alas 12 cm dan tinggi 8 cm!",
+    keywords: ["48", "10"],
+    sampleAns: "• Sisi miring segitiga = √(6² + 8²) = 10 cm.\n• Keliling gabungan = 12 (bawah) + 8 (kiri) + 8 (kanan) + 10 (miring 1) + 10 (miring 2) = 48 cm.",
+    exp: "Keliling hanya menghitung panjang seluruh garis terluar yang membatasi bangun."
+  },
+  {
+    q: "Sebuah taman berbentuk trapesium siku-siku memiliki panjang sisi-sisi sejajar 15 meter dan 27 meter, serta tinggi 16 meter. Tentukan panjang sisi miring dan keliling taman!",
+    keywords: ["20", "78"],
+    sampleAns: "• Beda alas sejajar = 27 - 15 = 12 m.\n• Sisi miring = √(16² + 12²) = √(256 + 144) = √400 = 20 meter.\n• Keliling = 15 + 27 + 16 + 20 = 78 meter.",
+    exp: "Sisi miring dicari menggunakan Pythagoras pada segitiga siku-siku di dalam trapesium."
+  },
+  {
+    q: "Diketahui tiga buah kayu memiliki panjang 9 cm, 12 cm, dan 15 cm. Selidikilah apakah ketiga kayu tersebut dapat membentuk segitiga siku-siku! Jelaskan dengan Teorema Pythagoras!",
+    keywords: ["siku-siku", "225", "ya", "sama"],
+    sampleAns: "Uji Teorema Pythagoras:\n• c² = 15² = 225\n• a² + b² = 9² + 12² = 81 + 144 = 225\nKarena c² = a² + b² (225 = 225), maka ketiga kayu tersebut membentuk segitiga siku-siku.",
+    exp: "Jika c² = a² + b², maka segitiga berjenis siku-siku."
+  },
+  {
+    q: "Hitunglah jarak antara titik P(-2, 3) dan titik Q(4, 11) pada bidang koordinat Kartesius!",
+    keywords: ["10"],
+    sampleAns: "Jarak = √((4 - (-2))² + (11 - 3)²) = √(6² + 8²) = √(36 + 64) = √100 = 10 satuan.",
+    exp: "Menggunakan rumus jarak antara dua titik pada koordinat Kartesius: d = √((x2-x1)² + (y2-y1)²)."
+  },
+  {
+    q: "Sebuah kawat pancang dipasang dari puncak tiang bendera setinggi 15 meter ke pasak di tanah. Jika jarak pasak di tanah ke kaki tiang adalah 8 meter, hitunglah panjang kawat pancang yang dibutuhkan!",
+    keywords: ["17"],
+    sampleAns: "Panjang kawat = √(15² + 8²) = √(225 + 64) = √289 = 17 meter.",
+    exp: "Tiang bendera, tanah, dan kawat membentu segitiga siku-siku."
+  },
+  {
+    q: "Sebuah belah ketupat memiliki panjang diagonal masing-masing 16 cm dan 30 cm. Tentukan luas dan keliling belah ketupat tersebut!",
+    keywords: ["240", "68", "17"],
+    sampleAns: "• Luas = 1/2 × 16 × 30 = 240 cm².\n• Setengah diagonal = 8 cm dan 15 cm.\n• Panjang sisi s = √(8² + 15²) = √(64 + 225) = √289 = 17 cm.\n• Keliling = 4 × 17 = 68 cm.",
+    exp: "Sisi belah ketupat dicari dari Pythagoras setengah panjang diagonal-diagonalnya."
+  },
+  {
+    q: "Pak Rahmat memiliki aula berbentuk persegi panjang ukuran 20 m × 15 m. Di tengah aula ditaruh karpet berukuran 16 m × 11 m. Tentukan luas lantai aula yang tidak tertutup karpet!",
+    keywords: ["124", "300", "176"],
+    sampleAns: "• Luas aula = 20 × 15 = 300 m².\n• Luas karpet = 16 × 11 = 176 m².\n• Luas tidak tertutup karpet = 300 - 176 = 124 m².",
+    exp: "Pengurangan luas bangun besar oleh luas bangun di dalamnya."
+  }
+];
+
+// RENDER SOAL KE HTML
+function renderQuiz() {
+  // Render PG
+  const pgContainer = document.getElementById('pg-container');
+  pgQuestions.forEach((q, idx) => {
+    let optionsHtml = '';
+    q.options.forEach((opt, oIdx) => {
+      optionsHtml += `
+        <label class="option-label">
+          <input type="radio" name="pg_${idx}" value="${oIdx}">
+          ${String.fromCharCode(65 + oIdx)}. ${opt}
+        </label>
+      `;
+    });
+
+    pgContainer.innerHTML += `
+      <div class="question-card" id="card_pg_${idx}">
+        <div class="question-title">${idx + 1}. ${q.q.replace(/\n/g, '<br>')}</div>
+        <div class="options-group">${optionsHtml}</div>
+        <div class="feedback-box" id="fb_pg_${idx}"></div>
+      </div>
+    `;
+  });
+
+  // Render Benar / Salah
+  const bsContainer = document.getElementById('bs-container');
+  bsQuestions.forEach((q, idx) => {
+    bsContainer.innerHTML += `
+      <div class="question-card" id="card_bs_${idx}">
+        <div class="question-title">${idx + 16}. ${q.q}</div>
+        <div class="options-group">
+          <label class="option-label">
+            <input type="radio" name="bs_${idx}" value="true"> Benar
+          </label>
+          <label class="option-label">
+            <input type="radio" name="bs_${idx}" value="false"> Salah
+          </label>
+        </div>
+        <div class="feedback-box" id="fb_bs_${idx}"></div>
+      </div>
+    `;
+  });
+
+  // Render Menjodohkan
+  const matchingContainer = document.getElementById('matching-container');
+  const targets = ["48°", "115°", "10", "15 cm", "40 cm", "90°", "12 cm"];
+  
+  matchingData.forEach((m, idx) => {
+    let selectOptions = '<option value="">-- Pilih Jawaban --</option>';
+    targets.forEach(t => {
+      selectOptions += `<option value="${t}">${t}</option>`;
+    });
+
+    matchingContainer.innerHTML += `
+      <div class="question-card" id="card_match_${idx}">
+        <div class="matching-grid">
+          <div><strong>${idx + 21}.</strong> ${m.premise}</div>
+          <div>
+            <select class="matching-select" id="match_select_${idx}">
+              ${selectOptions}
+            </select>
+          </div>
+        </div>
+        <div class="feedback-box" id="fb_match_${idx}"></div>
+      </div>
+    `;
+  });
+
+  // Render Uraian
+  const essayContainer = document.getElementById('essay-container');
+  essayQuestions.forEach((e, idx) => {
+    essayContainer.innerHTML += `
+      <div class="question-card" id="card_essay_${idx}">
+        <div class="question-title">${idx + 26}. ${e.q}</div>
+        <textarea class="essay-input" id="essay_input_${idx}" placeholder="Tuliskan langkah pengerjaan dan jawaban akhir Anda..."></textarea>
+        <div class="feedback-box" id="fb_essay_${idx}"></div>
+      </div>
+    `;
+  });
+}
+
+// EVALUASI & PENILAIAN
+function submitQuiz() {
+  let totalScore = 0;
+
+  // 1. PG (15 Soal x 2 Poin = 30)
+  pgQuestions.forEach((q, idx) => {
+    const selected = document.querySelector(`input[name="pg_${idx}"]:checked`);
+    const fbBox = document.getElementById(`fb_pg_${idx}`);
+    let isCorrect = false;
+
+    if (selected) {
+      const userVal = parseInt(selected.value);
+      if (userVal === q.ans) {
+        isCorrect = true;
+        totalScore += 2;
+      }
+    }
+
+    fbBox.className = `feedback-box show ${isCorrect ? 'correct' : 'incorrect'}`;
+    fbBox.innerHTML = `
+      <strong>Status:</strong> ${isCorrect ? 'BENAR (+2)' : 'SALAH (+0)'}<br>
+      <strong>Kunci Jawaban:</strong> ${String.fromCharCode(65 + q.ans)}. ${q.options[q.ans]}<br>
+      <div class="explanation-text"><strong>Pembahasan:</strong> ${q.exp}</div>
+    `;
+  });
+
+  // 2. Benar/Salah (5 Soal x 2 Poin = 10)
+  bsQuestions.forEach((q, idx) => {
+    const selected = document.querySelector(`input[name="bs_${idx}"]:checked`);
+    const fbBox = document.getElementById(`fb_bs_${idx}`);
+    let isCorrect = false;
+
+    if (selected) {
+      const userVal = selected.value === 'true';
+      if (userVal === q.ans) {
+        isCorrect = true;
+        totalScore += 2;
+      }
+    }
+
+    fbBox.className = `feedback-box show ${isCorrect ? 'correct' : 'incorrect'}`;
+    fbBox.innerHTML = `
+      <strong>Status:</strong> ${isCorrect ? 'BENAR (+2)' : 'SALAH (+0)'}<br>
+      <strong>Kunci Jawaban:</strong> ${q.ans ? 'BENAR' : 'SALAH'}<br>
+      <div class="explanation-text"><strong>Pembahasan:</strong> ${q.exp}</div>
+    `;
+  });
+
+  // 3. Menjodohkan (5 Soal x 2 Poin = 10)
+  matchingData.forEach((m, idx) => {
+    const select = document.getElementById(`match_select_${idx}`);
+    const fbBox = document.getElementById(`fb_match_${idx}`);
+    const userVal = select.value;
+    let isCorrect = (userVal === m.target);
+    if (isCorrect) totalScore += 2;
+
+    fbBox.className = `feedback-box show ${isCorrect ? 'correct' : 'incorrect'}`;
+    fbBox.innerHTML = `
+      <strong>Status:</strong> ${isCorrect ? 'BENAR (+2)' : 'SALAH (+0)'}<br>
+      <strong>Jawaban Tepat:</strong> ${m.target}<br>
+      <div class="explanation-text"><strong>Pembahasan:</strong> ${m.exp}</div>
+    `;
+  });
+
+  // 4. Uraian (10 Soal x 5 Poin = 50)
+  essayQuestions.forEach((e, idx) => {
+    const inputVal = document.getElementById(`essay_input_${idx}`).value.trim().toLowerCase();
+    const fbBox = document.getElementById(`fb_essay_${idx}`);
+    let scoreGained = 0;
+
+    if (inputVal.length > 0) {
+      let matchCount = 0;
+      e.keywords.forEach(kw => {
+        if (inputVal.includes(kw.toLowerCase())) {
+          matchCount++;
+        }
+      });
+
+      let ratio = matchCount / e.keywords.length;
+      if (ratio >= 0.6) scoreGained = 5;
+      else if (ratio > 0.3) scoreGained = 3;
+      else scoreGained = 1.5;
+    }
+
+    totalScore += scoreGained;
+
+    fbBox.className = `feedback-box show ${scoreGained >= 3 ? 'correct' : 'incorrect'}`;
+    fbBox.innerHTML = `
+      <strong>Estimasi Skor:</strong> ${scoreGained} / 5<br>
+      <strong>Kunci Jawaban / Langkah Penyelesaian:</strong><br>${e.sampleAns.replace(/\n/g, '<br>')}<br>
+      <div class="explanation-text"><strong>Pembahasan:</strong> ${e.exp}</div>
+    `;
+  });
+
+  // DASHBOARD
+  const dashboard = document.getElementById('result-dashboard');
+  const finalScoreEl = document.getElementById('final-score');
+  const achievementLabelEl = document.getElementById('achievement-label');
+  const summaryEl = document.getElementById('score-summary');
+
+  const finalScore = Math.round(totalScore);
+  finalScoreEl.innerText = finalScore;
+
+  let achievement = "";
+  let color = "";
+
+  if (finalScore >= 88) {
+    achievement = "Sangat Baik (Sangat Menguasai)";
+    color = "#107c41";
+  } else if (finalScore >= 75) {
+    achievement = "Baik (Kompeten)";
+    color = "#0078d4";
+  } else if (finalScore >= 60) {
+    achievement = "Cukup (Cukup Menguasai)";
+    color = "#d13438";
+  } else {
+    achievement = "Perlu Bimbingan & Latihan Lebih Lanjut";
+    color = "#a80000";
+  }
+
+  achievementLabelEl.innerText = `Predikat: ${achievement}`;
+  achievementLabelEl.style.color = color;
+  summaryEl.innerText = `Anda telah menyelesaikan 35 soal latihan prediksi ASLIM Matematika. Tinjau kembali pembahasan di atas untuk memperdalam pemahaman konsep Anda.`;
+
+  dashboard.style.display = 'block';
+  dashboard.scrollIntoView({ behavior: 'smooth' });
+}
+
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
