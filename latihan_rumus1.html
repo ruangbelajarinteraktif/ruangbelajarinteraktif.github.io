@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Latihan Rumus SUMIFS & COUNTIFS</title>
+<style>
+:root{--bg:#f8fafc;--card:#fff;--tx:#1e293b;--mut:#64748b;--bd:#e2e8f0;--pri:#2563eb;--ok:#166534;--okb:#dcfce7;--wr:#92400e;--wrb:#fef3c7;--hl:#dbeafe;--hd:#f1f5f9;box-sizing:border-box;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f172a;--card:#1e293b;--tx:#e2e8f0;--mut:#94a3b8;--bd:#334155;--pri:#60a5fa;--ok:#bbf7d0;--okb:#14532d;--wr:#fde68a;--wrb:#78350f;--hl:#1e3a8a;--hd:#273449}}
+:root[data-theme=dark]{--bg:#0f172a;--card:#1e293b;--tx:#e2e8f0;--mut:#94a3b8;--bd:#334155;--pri:#60a5fa;--ok:#bbf7d0;--okb:#14532d;--wr:#fde68a;--wrb:#78350f;--hl:#1e3a8a;--hd:#273449}
+*{box-sizing:border-box}html,body{background:var(--bg)}body{margin:0;font:16px/1.55 system-ui,'Segoe UI',sans-serif;color:var(--tx);padding:1rem}
+.w{max-width:760px;margin:0 auto}h1{font-size:1.4rem;margin:.2rem 0}p.s{color:var(--mut);margin:0 0 1rem;font-size:.9rem}
+.hm{display:inline-flex;align-items:center;gap:.4rem;background:var(--pri);color:#fff;text-decoration:none;font-weight:600;font-size:.9rem;padding:.5rem 1rem;border-radius:8px;margin-bottom:.6rem}.hm:hover{opacity:.9}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:1rem;margin-bottom:1rem}
+.t{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.88rem}th,td{border:1px solid var(--bd);padding:.3rem .55rem;text-align:left;white-space:nowrap}th{background:var(--hd);color:var(--mut);font-weight:600;text-align:center}td.n{text-align:right}td.h{background:var(--hl)}tr:first-child td{font-weight:600}
+.tabs{display:flex;gap:.5rem;margin-bottom:.8rem}.tabs button{flex:1;padding:.5rem;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:8px;font-weight:600;cursor:pointer}.tabs button.a{border-color:var(--pri);color:var(--pri)}
+input{width:100%;padding:.6rem .7rem;font:1rem ui-monospace,Consolas,monospace;border:2px solid var(--bd);border-radius:8px;background:var(--card);color:var(--tx)}input:focus{outline:none;border-color:var(--pri)}
+.k{display:flex;gap:.4rem;margin:.5rem 0;flex-wrap:wrap}.k button{min-width:2.4rem;padding:.35rem .6rem;border:1px solid var(--bd);background:var(--hd);color:var(--tx);border-radius:6px;font:1rem ui-monospace,monospace;cursor:pointer}
+.b{background:var(--pri);color:#fff;border:0;padding:.6rem 1.2rem;border-radius:8px;font-weight:600;cursor:pointer}.g{background:none;border:1px solid var(--bd);color:var(--mut);padding:.6rem 1rem;border-radius:8px;cursor:pointer}
+.pv{font-size:.85rem;color:var(--mut);margin:.3rem 0 .7rem;min-height:1.3em}.m{padding:.7rem .9rem;border-radius:8px;margin-top:.8rem;font-size:.92rem}.ok{background:var(--okb);color:var(--ok)}.no{background:var(--wrb);color:var(--wr)}
+</style></head><body><div class="w">
+<a class="hm" href="https://ruangbelajarinteraktif.github.io" target="_blank" rel="noopener noreferrer">🏠 Kembali</a>
+<h1>📊 Latihan Rumus SUMIFS & COUNTIFS</h1><p class="s">Ketik rumus Excel untuk menjawab soal. Pemisah argumen boleh <b>;</b> atau <b>,</b>. Kalau salah, kamu akan dapat petunjuk bertahap.</p>
+<div class="c t"><table id="tb"></table></div>
+<div class="c"><div class="tabs" id="tabs"></div><p id="q" style="margin:0 0 .7rem;font-weight:600"></p>
+<input id="f" placeholder="=SUMIFS(...) atau =COUNTIFS(...)" autocomplete="off" autocapitalize="off" spellcheck="false">
+<div class="k" id="k"></div><div class="pv" id="pv"></div>
+<button class="b" id="go">Periksa</button> <button class="g" id="rv" hidden>Lihat jawaban</button><div id="o"></div></div></div>
+<script>
+const D=[["Barang","Kategori","Wilayah","Jumlah"],["Keripik","Snack","Jakarta",12],["Cokelat","Snack","Bandung",8],["Teh","Minuman","Jakarta",15],["Kopi","Minuman","Bandung",10],["Roti","Makanan","Jakarta",20],["Wafer","Snack","Bandung",6],["Susu","Minuman","Jakarta",9],["Nasi Box","Makanan","Bandung",14],["Permen","Snack","Jakarta",5],["Jus","Minuman","Bandung",7]];
+const ALT=D.map((r,i)=>i?[r[0],r[1],i%3==0?(r[2]=="Jakarta"?"Bandung":"Jakarta"):r[2],r[3]+i%4+1]:r);
+const S=[
+{t:"Berapa total Jumlah untuk kategori Snack?",fn:"SUMIFS",a:'=SUMIFS(D2:D11;B2:B11;"Snack")',sum:"D",kol:["B"],h:["Gunakan SUMIFS: rentang yang dijumlahkan ditulis PERTAMA, lalu pasangan (rentang kriteria; kriteria).","Yang dijumlahkan adalah kolom Jumlah (D), dan kriterianya ada di kolom Kategori (B).","Polanya: =SUMIFS(rentang_jumlah; rentang_kategori; \"teks\"). Pastikan rentang mencakup baris 2 sampai 11."]},
+{t:"Ada berapa baris data (transaksi) dari wilayah Jakarta?",fn:"COUNTIFS",a:'=COUNTIFS(C2:C11;"Jakarta")',kol:["C"],h:["Soal ini meminta menghitung BANYAKNYA data, jadi tidak ada rentang yang dijumlahkan.","COUNTIFS hanya berisi pasangan: rentang_kriteria; kriteria. Wilayah ada di kolom C.","Polanya: =COUNTIFS(rentang_wilayah; \"teks\"). Rentangnya C2 sampai C11."]},
+{t:"Berapa total Jumlah untuk kategori Minuman yang terjual di Bandung?",fn:"SUMIFS",a:'=SUMIFS(D2:D11;B2:B11;"Minuman";C2:C11;"Bandung")',sum:"D",kol:["B","C"],h:["Ada DUA syarat sekaligus. SUMIFS bisa menerima banyak pasangan kriteria.","Syarat 1 di kolom Kategori (B), syarat 2 di kolom Wilayah (C). Yang dijumlahkan tetap kolom D.","Polanya: =SUMIFS(D2:D11; B2:B11; \"...\"; C2:C11; \"...\"). Semua rentang harus sama panjang."]}];
+const col=c=>c.toUpperCase().charCodeAt(0)-65;
+const rg=s=>{const m=s.replace(/\$/g,"").match(/^([A-Z])(\d+)(?::([A-Z])(\d+))?$/i);return m&&{c1:col(m[1]),r1:+m[2],c2:col(m[3]||m[1]),r2:+(m[4]||m[2]),c:m[1].toUpperCase()}};
+function split(s){const a=[];let d=0,q=0,b="";for(const ch of s){if(ch=='"')q^=1;if(!q&&ch=="(")d++;if(!q&&ch==")")d--;if(!q&&!d&&(ch==";"||ch==",")){a.push(b);b=""}else b+=ch}a.push(b);return a.map(x=>x.trim())}
+function mt(v,c){const o=c.match(/^(>=|<=|<>|>|<|=)?([\s\S]*)$/),op=o[1]||"=";let x=o[2];if(x!==""&&!isNaN(x)&&typeof v=="number"){x=+x;return{">=":v>=x,"<=":v<=x,"<>":v!=x,">":v>x,"<":v<x,"=":v==x}[op]}const e=new RegExp("^"+x.replace(/[.+^$(){}|[\]\\]/g,"\\$&").replace(/\*/g,".*").replace(/\?/g,".")+"$","i").test(String(v));return op=="<>"?!e:e}
+function ev(f,d,Q){
+if(!f.startsWith("="))throw"Rumus di Excel selalu diawali tanda sama dengan (=).";
+let q=0,p=0;for(const ch of f){if(ch=='"')q^=1;else if(!q){if(ch=="(")p++;if(ch==")")p--}}
+if(q)throw'Tanda kutip belum ditutup. Teks kriteria ditulis seperti "Snack".';
+if(p)throw"Jumlah kurung buka dan tutup belum sama.";
+const m=f.slice(1).trim().match(/^([A-Za-z]+)\(([\s\S]*)\)$/);
+if(!m)throw"Bentuknya harus NAMAFUNGSI(argumen...). Mengetik angka hasilnya langsung tidak dihitung sebagai rumus.";
+const fn=m[1].toUpperCase(),a=split(m[2]);
+if(fn!="SUMIFS"&&fn!="COUNTIFS")throw["SUMIF","COUNTIF"].includes(fn)?`Latihan ini memakai ${fn}S (berakhiran S) yang urutan argumennya sedikit berbeda.`:`Fungsi ${fn} tidak dikenali (#NAME?). Cek ejaannya.`;
+if(Q&&fn!=Q.fn)throw Q.fn=="SUMIFS"?"Soal ini meminta menjumlahkan nilai, bukan menghitung banyaknya data.":"Soal ini meminta menghitung banyaknya data, bukan menjumlahkan nilai.";
+const sm=fn=="SUMIFS",n=a.length;
+if(sm?(n<3||n%2==0):(n<2||n%2))throw sm?"SUMIFS butuh: rentang_jumlah, lalu pasangan rentang_kriteria dan kriteria. Jumlah argumennya harus ganjil (3, 5, ...).":"COUNTIFS terdiri dari pasangan rentang_kriteria dan kriteria. Jumlah argumennya harus genap.";
+const R=(s,i)=>{const g=rg(s);if(!g)throw/^"|^\d/.test(s)?`Argumen ke-${i+1} seharusnya rentang sel (contoh B2:B11), bukan ${s}. Mungkin urutan argumennya tertukar?`:`Argumen ke-${i+1} (${s}) bukan rentang sel yang valid.`;if(g.c1!=g.c2)throw"Gunakan rentang satu kolom saja, misalnya B2:B11.";return g};
+const C=s=>{if(/^"[\s\S]*"$/.test(s))return s.slice(1,-1);if(/^-?\d+(\.\d+)?$/.test(s))return s;const g=rg(s);if(g&&g.r1==g.r2&&g.c1==g.c2)return String(d[g.r1-1][g.c1]);throw`Kriteria ${s} harus berupa teks di antara tanda kutip, misalnya "${s}".`};
+const sr=sm?R(a[0],0):null,P=[];
+for(let i=sm?1:0;i<n;i+=2)P.push([R(a[i],i),C(a[i+1])]);
+if(sm&&typeof d[sr.r1-1]?.[sr.c1]!="number")throw"Rentang yang dijumlahkan berisi teks. Kolom angka biasanya diletakkan di argumen PERTAMA SUMIFS.";
+const all=(sm?[sr]:[]).concat(P.map(x=>x[0]));
+if(new Set(all.map(g=>g.r2-g.r1)).size>1)throw"Ukuran rentang tidak sama (#VALUE!). Semua rentang harus punya jumlah baris yang sama.";
+let t=0,c=0;const L=P[0][0].r2-P[0][0].r1+1;
+for(let i=0;i<L;i++)if(P.every(([g,k])=>mt(d[g.r1-1+i]?.[g.c1],k))){c++;if(sm)t+=+d[sr.r1-1+i]?.[sr.c1]||0}
+return{v:sm?t:c,sr,P}}
+let cur=0,fails=[0,0,0],done=[0,0,0];const $=id=>document.getElementById(id);
+function cek(f){const Q=S[cur];let r;try{r=ev(f.trim(),D,Q)}catch(e){return{ok:0,m:String(e)}}
+const e1=ev(Q.a,D).v,e2=ev(Q.a,ALT).v;
+if(r.v==e1&&ev(f.trim(),ALT,Q).v==e2)return{ok:1};
+if(r.v==e1)return{ok:0,m:"Hasilnya cocok di data ini, tetapi rumusmu belum tepat secara umum. Cek apakah rentangnya mencakup seluruh baris data (2 sampai 11) dan tidak ada angka yang diketik langsung."};
+if(Q.sum&&r.sr.c!=Q.sum)return{ok:0,m:"Kolom yang kamu jumlahkan belum sesuai dengan yang diminta soal."};
+const u=[...new Set(r.P.map(x=>x[0].c))].sort().join();
+if(u!=[...Q.kol].sort().join())return{ok:0,m:Q.kol.length>r.P.length||u.length<Q.kol.join().length?"Syarat dalam soal belum semuanya kamu pakai.":"Kolom untuk kriteria belum sesuai dengan syarat di soal."};
+return{ok:0,m:"Struktur rumusmu sudah baik, tetapi hasilnya belum sesuai. Periksa ejaan teks kriteria dan cakupan rentangnya."}}
+function paint(){const f=$("f").value,h=new Set();(f.match(/\$?[A-D]\$?\d+(?::\$?[A-D]\$?\d+)?/gi)||[]).forEach(s=>{const g=rg(s);if(g)for(let r=g.r1;r<=g.r2;r++)for(let c=g.c1;c<=g.c2;c++)h.add(r+"."+c)});
+$("tb").innerHTML="<tr><th></th>"+"ABCD".split("").map(x=>`<th>${x}</th>`).join("")+"</tr>"+D.map((r,i)=>`<tr><th>${i+1}</th>${r.map((v,j)=>`<td class="${typeof v=="number"?"n ":""}${h.has((i+1)+"."+j)?"h":""}">${v}</td>`).join("")}</tr>`).join("");
+let p="";if(f.trim().length>1)try{p="Hasil sementara: <b>"+ev(f.trim(),D).v+"</b>"}catch(e){p="Hasil sementara: (rumus belum lengkap)"}$("pv").innerHTML=p}
+function show(){$("q").textContent=`Soal ${cur+1}: ${S[cur].t}`;$("f").value="";$("o").innerHTML="";$("rv").hidden=fails[cur]<3;
+$("tabs").innerHTML=S.map((_,i)=>`<button class="${i==cur?"a":""}" data-i="${i}">${done[i]?"✓ ":""}Soal ${i+1}</button>`).join("");paint()}
+$("tabs").onclick=e=>{if(e.target.dataset.i){cur=+e.target.dataset.i;show()}};
+$("k").innerHTML=[";",",",'"',"(",")",":","$"].map(x=>`<button type="button" data-k='${x}'>${x}</button>`).join("");
+$("k").onclick=e=>{const k=e.target.dataset.k;if(!k)return;const i=$("f");const s=i.selectionStart??i.value.length;i.setRangeText(k,s,i.selectionEnd??s,"end");i.focus();paint()};
+$("f").oninput=paint;$("f").onkeydown=e=>{if(e.key=="Enter")$("go").click()};
+$("go").onclick=()=>{const f=$("f").value;if(!f.trim())return;const r=cek(f);
+if(r.ok){done[cur]=1;fails[cur]=0;$("o").innerHTML='<div class="m ok">✅ Benar! Rumusmu tepat dan juga bekerja pada data lain.</div>';$("tabs").children[cur].textContent="✓ Soal "+(cur+1);$("rv").hidden=1;return}
+fails[cur]++;$("rv").hidden=fails[cur]<3;
+$("o").innerHTML=`<div class="m no">⚠️ ${r.m}<br><br>💡 <b>Petunjuk ${Math.min(fails[cur],3)}:</b> ${S[cur].h[Math.min(fails[cur],3)-1]}</div>`};
+$("rv").onclick=()=>{$("o").innerHTML+=`<div class="m ok">Salah satu jawaban yang benar: <code>${S[cur].a}</code></div>`};
+show();
+</script></body></html>
