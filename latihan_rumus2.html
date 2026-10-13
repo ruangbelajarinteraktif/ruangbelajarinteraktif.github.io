@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Latihan VLOOKUP & HLOOKUP</title>
+<style>
+:root{--bg:#f8fafc;--card:#fff;--tx:#1e293b;--mut:#64748b;--bd:#e2e8f0;--pri:#2563eb;--ok:#166534;--okb:#dcfce7;--wr:#92400e;--wrb:#fef3c7;--hl:#dbeafe;--hd:#f1f5f9;box-sizing:border-box;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f172a;--card:#1e293b;--tx:#e2e8f0;--mut:#94a3b8;--bd:#334155;--pri:#60a5fa;--ok:#bbf7d0;--okb:#14532d;--wr:#fde68a;--wrb:#78350f;--hl:#1e3a8a;--hd:#273449}}
+:root[data-theme=dark]{--bg:#0f172a;--card:#1e293b;--tx:#e2e8f0;--mut:#94a3b8;--bd:#334155;--pri:#60a5fa;--ok:#bbf7d0;--okb:#14532d;--wr:#fde68a;--wrb:#78350f;--hl:#1e3a8a;--hd:#273449}
+*{box-sizing:border-box}html,body{background:var(--bg)}body{margin:0;font:16px/1.55 system-ui,'Segoe UI',sans-serif;color:var(--tx);padding:1rem}
+.w{max-width:760px;margin:0 auto}h1{font-size:1.4rem;margin:.2rem 0}p.s{color:var(--mut);margin:0 0 1rem;font-size:.9rem}
+.hm{display:inline-flex;gap:.4rem;background:var(--pri);color:#fff;text-decoration:none;font-weight:600;font-size:.9rem;padding:.5rem 1rem;border-radius:8px;margin-bottom:.6rem}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:1rem;margin-bottom:1rem}.t{overflow-x:auto}.tn{font-weight:600;font-size:.9rem;margin:0 0 .5rem}
+table{border-collapse:collapse;width:100%;font-size:.88rem}th,td{border:1px solid var(--bd);padding:.3rem .55rem;text-align:left;white-space:nowrap;min-width:2.2rem}th{background:var(--hd);color:var(--mut);font-weight:600;text-align:center}td.n{text-align:right}td.h{background:var(--hl)}
+.tabs{display:flex;gap:.4rem;margin-bottom:.8rem}.tabs button{flex:1;padding:.5rem .2rem;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:8px;font-weight:600;cursor:pointer}.tabs button.a{border-color:var(--pri);color:var(--pri)}
+input{width:100%;padding:.6rem .7rem;font:1rem ui-monospace,Consolas,monospace;border:2px solid var(--bd);border-radius:8px;background:var(--card);color:var(--tx)}input:focus{outline:none;border-color:var(--pri)}
+.k{display:flex;gap:.4rem;margin:.5rem 0;flex-wrap:wrap}.k button{min-width:2.4rem;padding:.35rem .6rem;border:1px solid var(--bd);background:var(--hd);color:var(--tx);border-radius:6px;font:1rem ui-monospace,monospace;cursor:pointer}
+.b{background:var(--pri);color:#fff;border:0;padding:.6rem 1.2rem;border-radius:8px;font-weight:600;cursor:pointer}.g{background:none;border:1px solid var(--bd);color:var(--mut);padding:.6rem 1rem;border-radius:8px;cursor:pointer}
+.pv{font-size:.85rem;color:var(--mut);margin:.3rem 0 .7rem;min-height:1.3em}.m{padding:.7rem .9rem;border-radius:8px;margin-top:.8rem;font-size:.92rem}.ok{background:var(--okb);color:var(--ok)}.no{background:var(--wrb);color:var(--wr)}
+</style></head><body><div class="w">
+<a class="hm" href="https://ruangbelajarinteraktif.github.io" target="_blank" rel="noopener noreferrer">🏠 Beranda Ruang Belajar</a>
+<h1>🔎 Latihan VLOOKUP & HLOOKUP</h1><p class="s">Ketik rumus Excel untuk menjawab soal. Pemisah argumen boleh <b>;</b> atau <b>,</b>. Kalau salah, kamu akan dapat petunjuk bertahap.</p>
+<div class="c t"><p class="tn" id="tn"></p><table id="tb"></table></div>
+<div class="c"><div class="tabs" id="tabs"></div><p id="q" style="margin:0 0 .7rem;font-weight:600"></p>
+<input id="f" placeholder="=VLOOKUP(...)" autocomplete="off" autocapitalize="off" spellcheck="false">
+<div class="k" id="k"></div><div class="pv" id="pv"></div>
+<button class="b" id="go">Periksa</button> <button class="g" id="rv" hidden>Lihat jawaban</button><div id="o"></div></div></div>
+<script>
+const T=[{n:"Tabel 1 — Daftar Barang (data disusun menurun)",D:[["Kode","Nama","Harga","Stok","","Kode dicari"],["K01","Keripik",5000,40,"","K04"],["K02","Cokelat",8000,25],["K03","Teh",4000,60],["K04","Kopi",12000,30],["K05","Roti",7000,18],["K06","Susu",9000,22]],
+A:[["Kode","Nama","Harga","Stok","","Kode dicari"],["K06","Susu",9500,12,"","K02"],["K02","Cokelat",8500,31],["K05","Roti",7500,10],["K01","Keripik",5500,44],["K04","Kopi",12500,26],["K03","Teh",4500,52]]},
+{n:"Tabel 2 — Penjualan per Bulan (data disusun mendatar)",D:[["Bulan","Jan","Feb","Mar","Apr"],["Penjualan",120,150,90,200],["Biaya",80,95,70,130],["Laba",40,55,20,70]],
+A:[["Bulan","Apr","Jan","Mar","Feb"],["Penjualan",210,110,95,160],["Biaya",125,75,60,100],["Laba",85,35,35,60]]}];
+const S=[
+{s:0,fn:"VLOOKUP",idx:3,t:'Berapa harga barang dengan kode K03? (Cari di Tabel 1)',a:'=VLOOKUP("K03";A2:D7;3;FALSE)',h:["Data disusun menurun (judul di kolom atas), jadi gunakan VLOOKUP. Susunannya: VLOOKUP(nilai_dicari; tabel; nomor_kolom; FALSE).","Rentang tabel harus DIMULAI dari kolom yang berisi kode (kolom A). Harga ada di kolom ke-berapa jika dihitung dari A?","Polanya: =VLOOKUP(\"K03\"; A2:D7; 3; FALSE). Angka 3 = kolom ketiga dalam rentang, FALSE = cari persis."]},
+{s:0,fn:"VLOOKUP",idx:2,t:'Sel F2 berisi kode barang yang dicari. Tampilkan nama barangnya dengan merujuk sel F2 (jangan mengetik kodenya).',a:'=VLOOKUP(F2;A2:D7;2;FALSE)',h:["Nilai yang dicari tidak harus diketik. Kamu bisa menunjuk sel, misalnya F2, tanpa tanda kutip.","Nama barang ada di kolom ke-2 dari rentang yang dimulai di kolom A.","Polanya: =VLOOKUP(F2; A2:D7; 2; FALSE). Coba ubah kode di F2 pada tabel lain: rumusmu harus tetap benar."]},
+{s:1,fn:"HLOOKUP",idx:2,t:'Berapa penjualan pada bulan Mar? (Cari di Tabel 2)',a:'=HLOOKUP("Mar";A1:E4;2;FALSE)',h:["Data disusun mendatar (judul di baris atas), jadi gunakan HLOOKUP. Susunannya: HLOOKUP(nilai_dicari; tabel; nomor_BARIS; FALSE).","Rentang tabel harus dimulai dari baris yang berisi nama bulan (baris 1). Penjualan ada di baris ke-berapa?","Polanya: =HLOOKUP(\"Mar\"; A1:E4; 2; FALSE). Angka 2 = baris kedua dalam rentang."]},
+{s:1,fn:"HLOOKUP",idx:4,t:'Berapa laba pada bulan Apr?',a:'=HLOOKUP("Apr";A1:E4;4;FALSE)',h:["Sama seperti soal sebelumnya, tetapi baris yang diambil berbeda.","Hitung nomor baris dari baris PERTAMA rentang: Bulan = 1, Penjualan = 2, ...","Polanya: =HLOOKUP(\"Apr\"; A1:E4; 4; FALSE). Pastikan rentang mencakup sampai baris Laba."]}];
+const col=c=>c.toUpperCase().charCodeAt(0)-65;
+const rg=s=>{const m=s.replace(/\$/g,"").match(/^([A-Z])(\d+)(?::([A-Z])(\d+))?$/i);return m&&{c1:col(m[1]),r1:+m[2],c2:col(m[3]||m[1]),r2:+(m[4]||m[2])}};
+function split(s){const a=[];let d=0,q=0,b="";for(const ch of s){if(ch=='"')q^=1;if(!q&&ch=="(")d++;if(!q&&ch==")")d--;if(!q&&!d&&(ch==";"||ch==",")){a.push(b);b=""}else b+=ch}a.push(b);return a.map(x=>x.trim())}
+const nm=v=>typeof v=="number",low=v=>String(v).toLowerCase();
+const eq=(a,b)=>nm(a)&&nm(b)?a==b:low(a)==low(b),le=(a,b)=>nm(a)&&nm(b)?a<=b:low(a)<=low(b);
+function ev(f,d,Q){
+if(!f.startsWith("="))throw"Rumus di Excel selalu diawali tanda sama dengan (=).";
+let q=0,p=0;for(const ch of f){if(ch=='"')q^=1;else if(!q){if(ch=="(")p++;if(ch==")")p--}}
+if(q)throw'Tanda kutip belum ditutup. Teks yang dicari ditulis seperti "K03".';
+if(p)throw"Jumlah kurung buka dan tutup belum sama.";
+const m=f.slice(1).trim().match(/^([A-Za-z]+)\(([\s\S]*)\)$/);
+if(!m)throw"Bentuknya harus NAMAFUNGSI(argumen...). Mengetik hasilnya langsung tidak dihitung sebagai rumus.";
+const fn=m[1].toUpperCase(),a=split(m[2]),V=fn=="VLOOKUP";
+if(fn!="VLOOKUP"&&fn!="HLOOKUP")throw["LOOKUP","XLOOKUP","INDEX","MATCH"].includes(fn)?"Latihan ini khusus VLOOKUP dan HLOOKUP.":`Fungsi ${fn} tidak dikenali (#NAME?). Cek ejaannya.`;
+if(Q&&fn!=Q.fn)throw Q.fn=="VLOOKUP"?"Data pada soal ini disusun MENURUN (judul di kolom atas), jadi fungsi yang cocok adalah VLOOKUP.":"Data pada soal ini disusun MENDATAR (judul di baris atas), jadi fungsi yang cocok adalah HLOOKUP.";
+if(a.length<3||a.length>4)throw`${fn} butuh 3 atau 4 argumen: nilai_dicari; tabel; nomor_${V?"kolom":"baris"}; [FALSE].`;
+let lv;const x=a[0];
+if(/^"[\s\S]*"$/.test(x))lv=x.slice(1,-1);else if(/^-?\d+(\.\d+)?$/.test(x))lv=+x;
+else{const g=rg(x);if(!g||g.r1!=g.r2||g.c1!=g.c2)throw`Nilai yang dicari (${x}) harus teks dalam tanda kutip, atau referensi satu sel seperti F2.`;lv=d[g.r1-1]?.[g.c1]}
+const t=rg(a[1]);if(!t)throw`Argumen ke-2 (${a[1]}) harus berupa rentang tabel, misalnya A2:D7.`;
+if(!/^\d+$/.test(a[2]))throw`Argumen ke-3 harus berupa angka (nomor ${V?"kolom":"baris"}), bukan ${a[2]}.`;
+const idx=+a[2];if(idx<1)throw"#VALUE! Nomor harus 1 atau lebih.";
+let ap=true;if(a[3]!==undefined){if(/^(FALSE|0)$/i.test(a[3]))ap=false;else if(!/^(TRUE|1)$/i.test(a[3]))throw"Argumen ke-4 harus FALSE (cari persis) atau TRUE (perkiraan).";}
+const sz=V?t.c2-t.c1+1:t.r2-t.r1+1;
+if(idx>sz)throw`#REF! Nomor ${V?"kolom":"baris"} ${idx} melebihi jumlah ${V?"kolom":"baris"} dalam rentang (${sz}).`;
+const n=V?t.r2-t.r1+1:t.c2-t.c1+1,key=i=>V?d[t.r1-1+i]?.[t.c1]:d[t.r1-1]?.[t.c1+i];
+let hit=-1;
+if(ap){for(let i=0;i<n;i++){const k=key(i);if(k===undefined||k==="")continue;if(le(k,lv))hit=i;else break}}else for(let i=0;i<n;i++)if(eq(key(i),lv)){hit=i;break}
+if(hit<0)throw`#N/A Nilai "${lv}" tidak ditemukan di ${V?"kolom pertama":"baris pertama"} rentang. Pastikan rentang dimulai dari ${V?"kolom":"baris"} yang memuat nilai yang dicari.`;
+return{v:V?d[t.r1-1+hit][t.c1+idx-1]:d[t.r1-1+idx-1][t.c1+hit],idx,ap}}
+let cur=0,fails=[0,0,0,0],done=[0,0,0,0];const $=id=>document.getElementById(id);
+function cek(f){const Q=S[cur],X=T[Q.s];let r;try{r=ev(f,X.D,Q)}catch(e){return{ok:0,m:String(e)}}
+const e1=ev(Q.a,X.D).v,e2=ev(Q.a,X.A).v;let r2;try{r2=ev(f,X.A,Q).v}catch(e){r2=null}
+if(r.v===e1&&r2===e2)return{ok:1};
+if(r.ap)return{ok:0,m:"Argumen ke-4 kosong/TRUE berarti pencarian PERKIRAAN (data harus terurut). Untuk mencari nilai yang persis sama, tulis FALSE."};
+if(r.v===e1)return{ok:0,m:"Hasilnya cocok di data ini, tetapi rumusmu belum tepat secara umum. Periksa apakah nilai yang dicari memakai referensi sel (bukan diketik langsung) bila soal memintanya, dan apakah rentangnya sesuai."};
+if(r.idx!=Q.idx)return{ok:0,m:`Nomor ${Q.fn=="VLOOKUP"?"kolom":"baris"} untuk hasil belum sesuai dengan yang diminta soal. Hitung dari ${Q.fn=="VLOOKUP"?"kolom":"baris"} pertama rentang.`};
+return{ok:0,m:"Struktur rumusmu sudah baik, tetapi hasilnya belum sesuai. Periksa ejaan nilai yang dicari dan cakupan rentang."}}
+function paint(){const Q=S[cur],d=T[Q.s].D,f=$("f").value,h=new Set(),w=Math.max(...d.map(r=>r.length));
+(f.match(/\$?[A-F]\$?\d+(?::\$?[A-F]\$?\d+)?/gi)||[]).forEach(s=>{const g=rg(s);if(g)for(let r=g.r1;r<=g.r2;r++)for(let c=g.c1;c<=g.c2;c++)h.add(r+"."+c)});
+$("tn").textContent=T[Q.s].n;
+$("tb").innerHTML="<tr><th></th>"+"ABCDEF".slice(0,w).split("").map(x=>`<th>${x}</th>`).join("")+"</tr>"+d.map((r,i)=>`<tr><th>${i+1}</th>${Array.from({length:w},(_,j)=>`<td class="${nm(r[j])?"n ":""}${h.has((i+1)+"."+j)?"h":""}">${r[j]??""}</td>`).join("")}</tr>`).join("");
+let p="";if(f.trim().length>1)try{p="Hasil sementara: <b>"+ev(f.trim(),d,null).v+"</b>"}catch(e){p="Hasil sementara: (rumus belum lengkap)"}$("pv").innerHTML=p}
+function show(){$("q").textContent=`Soal ${cur+1}: ${S[cur].t}`;$("f").value="";$("o").innerHTML="";$("rv").hidden=fails[cur]<3;
+$("tabs").innerHTML=S.map((_,i)=>`<button class="${i==cur?"a":""}" data-i="${i}">${done[i]?"✓ ":""}Soal ${i+1}</button>`).join("");paint()}
+$("tabs").onclick=e=>{if(e.target.dataset.i){cur=+e.target.dataset.i;show()}};
+$("k").innerHTML=[";",",",'"',"(",")",":","$","FALSE"].map(x=>`<button type="button" data-k='${x}'>${x}</button>`).join("");
+$("k").onclick=e=>{const k=e.target.dataset.k;if(!k)return;const i=$("f"),s=i.selectionStart??i.value.length;i.setRangeText(k,s,i.selectionEnd??s,"end");i.focus();paint()};
+$("f").oninput=paint;$("f").onkeydown=e=>{if(e.key=="Enter")$("go").click()};
+$("go").onclick=()=>{const f=$("f").value.trim();if(!f)return;const r=cek(f);
+if(r.ok){done[cur]=1;fails[cur]=0;$("o").innerHTML='<div class="m ok">✅ Benar! Rumusmu tepat dan juga bekerja pada data lain.</div>';$("tabs").children[cur].textContent="✓ Soal "+(cur+1);$("rv").hidden=1;return}
+fails[cur]++;$("rv").hidden=fails[cur]<3;
+$("o").innerHTML=`<div class="m no">⚠️ ${r.m}<br><br>💡 <b>Petunjuk ${Math.min(fails[cur],3)}:</b> ${S[cur].h[Math.min(fails[cur],3)-1]}</div>`};
+$("rv").onclick=()=>{$("o").innerHTML+=`<div class="m ok">Salah satu jawaban yang benar: <code>${S[cur].a}</code></div>`};
+show();
+</script></body></html>
