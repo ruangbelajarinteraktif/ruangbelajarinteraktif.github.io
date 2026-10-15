@@ -1,0 +1,476 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Matematika Kelas 8 - Bab 1, 2, dan 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=JetBrains+Mono:wght@400;600&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+ --bg:#f1f2f8;--grid:#e0e3f1;--card:#fcfcff;--ink:#16182b;--mut:#555a78;--line:#cfd3e6;
+ --acc:#3b5bdb;--acc-ink:#ffffff;--acc-soft:#dfe6fc;
+ --hint:#7a4300;--hint-bg:#fff0d2;--ans:#1a4aa8;--ans-bg:#e0eaff;
+ --bad:#9c2226;--bad-bg:#fde3e1;--ok:#0a5a39;--ok-bg:#d8efe3;
+ --hd:#e6e9f5;--code:#eceef8;--s1:#3b5bdb;--s2:#d9480f;--s3:#2b8a3e;
+ --f-disp:'Bricolage Grotesque',Georgia,serif;--f-body:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;--f-mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#101224;--grid:#171a30;--card:#181b32;--ink:#e6e8f6;--mut:#9aa0c4;--line:#2d3254;
+ --acc:#8fa5ff;--acc-ink:#0d1440;--acc-soft:#1f2850;
+ --hint:#ffd591;--hint-bg:#3a2a0d;--ans:#a8c3ff;--ans-bg:#18284d;
+ --bad:#ffb4b0;--bad-bg:#47191b;--ok:#a6f0cd;--ok-bg:#12372a;
+ --hd:#222749;--code:#1e2342;--s1:#8fa5ff;--s2:#ff9f6e;--s3:#6fdc8c;color-scheme:dark}}
+*{box-sizing:border-box}
+body{background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font:16px/1.6 var(--f-body);margin:0}
+.homebar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+.hbin{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.home{display:inline-flex;align-items:center;gap:8px;background:var(--acc);color:var(--acc-ink);text-decoration:none;font:600 14px/1 var(--f-body);padding:10px 14px;border-radius:8px}
+.home:hover{filter:brightness(1.08)}.home:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.home svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{display:flex;flex-wrap:wrap;gap:12px 32px;align-items:flex-end;justify-content:space-between;padding-bottom:18px}
+.eyebrow{margin:0;font:600 12px/1.4 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+h1,h2,h3,h4{font-family:var(--f-disp);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,42px);letter-spacing:-.01em}
+.prog{min-width:min(100%,260px);font-size:13px;color:var(--mut)}
+.bar{height:8px;border-radius:99px;background:var(--hd);margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--acc);transition:width .3s}
+.shell{display:grid;grid-template-columns:270px minmax(0,1fr);gap:32px;align-items:start}
+nav{position:sticky;top:calc(72px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:2px;max-height:calc(100vh - 88px);overflow:auto;padding-right:4px}
+nav .lv{font:600 11px/1 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--mut);margin:16px 0 6px;padding-left:10px}
+nav .lv:first-child{margin-top:0}
+nav button{display:flex;gap:10px;align-items:baseline;text-align:left;width:100%;border:0;background:transparent;color:var(--ink);font:500 14px/1.35 var(--f-body);padding:8px 10px;border-radius:8px;cursor:pointer}
+nav button:hover{background:var(--hd)}
+nav button[aria-current="true"]{background:var(--acc-soft);font-weight:600}
+nav .no{font:600 12px var(--f-mono);color:var(--mut);min-width:1.6em}
+nav .ct{margin-left:auto;font:500 11px var(--f-mono);color:var(--mut);white-space:nowrap}
+nav .ct.all{color:var(--acc);font-weight:600}
+main{min-width:0;max-width:880px}
+.lhead{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.pill{display:inline-block;font:600 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:5px;background:var(--acc-soft);color:var(--acc);width:max-content;max-width:100%}
+h2{font-size:clamp(26px,4vw,36px)}
+.goal{margin:0;color:var(--mut);font-size:17px;max-width:62ch}
+.sec{margin-top:30px}
+.sec>h3{font:600 12px/1 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--mut);margin-bottom:12px}
+.theory{max-width:68ch}
+.theory p{margin:0 0 12px}
+.theory h4{font-size:18px;margin:18px 0 6px}
+.theory ul,.theory ol{margin:0 0 12px;padding-left:20px}
+.theory li{margin:3px 0}
+code{font:500 .9em var(--f-mono);background:var(--code);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.syn{font:600 15px/1.6 var(--f-mono);background:var(--code);border-radius:8px;padding:12px 14px;margin:0 0 12px;overflow-x:auto;white-space:pre;max-width:100%}
+.syn small{display:block;font:400 12px var(--f-body);color:var(--mut);white-space:normal;margin-top:4px}
+.note,.pit{border-radius:8px;padding:10px 12px;margin:0 0 12px;font-size:15px}
+.note{background:var(--ans-bg)}.pit{background:var(--hint-bg)}
+.note b,.pit b{font:600 11px var(--f-mono);letter-spacing:.07em;text-transform:uppercase;margin-right:6px}
+.note b{color:var(--ans)}.pit b{color:var(--hint)}
+.tbl{border-collapse:collapse;font-size:14px;margin:0 0 12px;display:block;overflow-x:auto;max-width:100%}
+.tbl th,.tbl td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+.tbl th{background:var(--hd);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px}
+.simbox{padding:14px}
+.simgrid{display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr);gap:18px;align-items:start}
+.ctl{display:flex;flex-direction:column;gap:10px}
+.sl{display:flex;flex-direction:column;gap:2px;font:600 12px var(--f-mono);letter-spacing:.03em;color:var(--mut)}
+.sl output{color:var(--ink)}
+.sl input{width:100%;accent-color:var(--acc)}
+select,input[type=text]{font:500 15px var(--f-body);color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0;width:100%}
+select:focus,input[type=text]:focus,button:focus-visible,input[type=range]:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.sel label{display:flex;flex-direction:column;gap:2px;font:600 12px var(--f-mono);color:var(--mut);letter-spacing:.03em}
+.res{font-size:15px;margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.res div{background:var(--hd);border-radius:8px;padding:8px 12px}
+.res b{font-family:var(--f-mono)}
+.res .big{background:var(--acc-soft)}
+.res .warn{background:var(--hint-bg)}
+svg.fig{width:100%;max-width:420px;height:auto;display:block;background:var(--card);border:1px solid var(--line);border-radius:8px}
+.gl{stroke:var(--line);stroke-width:1}.ax{stroke:var(--mut);stroke-width:1.6}
+.tx{fill:var(--mut);font:10px var(--f-mono)}
+.lbl{fill:var(--ink);font:600 12px var(--f-mono)}
+.ln{stroke:var(--ink);stroke-width:2.2;fill:none}
+.ln2{stroke:var(--s1);stroke-width:2.5;fill:none}
+.tr{stroke:var(--s2);stroke-width:2.5;fill:none}
+.shp{fill:var(--acc-soft);stroke:var(--ink);stroke-width:2.2}
+.sq1{fill:var(--s1);fill-opacity:.25;stroke:var(--s1);stroke-width:1.5}
+.sq2{fill:var(--s2);fill-opacity:.25;stroke:var(--s2);stroke-width:1.5}
+.sq3{fill:var(--s3);fill-opacity:.25;stroke:var(--s3);stroke-width:1.5}
+.cap{font-size:13px;color:var(--mut);margin:8px 2px 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:600 14px var(--f-body);border-radius:8px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;cursor:pointer}
+.btn:hover:not(:disabled){border-color:var(--acc)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.pri{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.btn.hint{background:var(--hint-bg);color:var(--hint);border-color:transparent}
+.btn.ans{background:var(--ans-bg);color:var(--ans);border-color:transparent}
+.ch{padding:16px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
+.ch.done{border-color:var(--acc)}
+.chh{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.tag{font:600 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.st{font:600 12px var(--f-mono);color:var(--mut)}.ch.done .st{color:var(--ok)}
+.q{margin:0;font-weight:500}
+.lk{margin:0;font-size:13px;color:var(--mut);border-left:3px solid var(--acc);padding-left:9px}
+.lk b{font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--acc);margin-right:6px}
+.in{display:flex;gap:8px;flex-wrap:wrap}.in input{flex:1;min-width:200px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts label{display:flex;gap:8px;align-items:center;background:var(--hd);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:15px}
+.fb{border-radius:8px;padding:10px 12px;font-size:14.5px}.fb.ok{background:var(--ok-bg);color:var(--ok)}.fb.no{background:var(--bad-bg);color:var(--bad)}
+.hints{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.hints li{background:var(--hint-bg);border-radius:8px;padding:9px 12px;font-size:14.5px}
+.hints li b{color:var(--hint);font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+.answer{background:var(--ans-bg);border-radius:8px;padding:10px 12px;font-size:14.5px}
+.answer code{display:block;background:transparent;padding:4px 0;font-size:15px;color:var(--ans);white-space:pre-wrap}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:34px;flex-wrap:wrap}
+.path{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.path .card{padding:12px 14px}.path h4{font-size:16px;margin-bottom:6px}.path ol{margin:0;padding-left:20px;font-size:14.5px}
+.path button{all:unset;cursor:pointer;color:var(--acc);text-decoration:underline;text-underline-offset:3px}
+@media (max-width:900px){
+ .shell{grid-template-columns:minmax(0,1fr);gap:16px}
+ nav{position:static;flex-direction:row;overflow-x:auto;max-height:none;gap:6px;padding-bottom:6px}
+ nav .lv{display:none}
+ nav button{width:auto;white-space:nowrap;border:1px solid var(--line);background:var(--card)}
+ nav .ct{display:none}
+ .simgrid{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style></head><body>
+<div class="homebar"><div class="hbin"><a class="home" id="home" href="https://ruangbelajarinteraktif.github.io" target="_top" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Beranda</a><button class="btn" id="rall" type="button">Reset semua tantangan</button></div></div>
+<div class="wrap">
+ <header class="top">
+  <div><p class="eyebrow">Matematika · Kelas 8 · Fase D · Bab 1 sampai 3</p><h1>Garis, Sudut, Bangun Datar, dan Pythagoras</h1></div>
+  <div class="prog"><span id="pt"></span><div class="bar"><i id="pb"></i></div></div>
+ </header>
+ <div class="shell"><nav id="nav" aria-label="Daftar materi"></nav><main id="main"></main></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=(n,d=2)=>String(+Number(n).toFixed(d)).replace('.',',');
+const gv=id=>+$(id).value;
+const D2R=Math.PI/180;
+const sl=(id,lab,min,max,step,val)=>`<label class="sl"><span>${lab}: <output id="o-${id}">${val}</output></span><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"></label>`;
+function fit(pts,W=300,H=200,pad=28){const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]),a=Math.min(...xs),A=Math.max(...xs),b=Math.min(...ys),B=Math.max(...ys);
+ const s=Math.min((W-2*pad)/((A-a)||1),(H-2*pad)/((B-b)||1)),ox=(W-(A-a)*s)/2,oy=(H-(B-b)*s)/2;
+ return{P:pts.map(p=>[ox+(p[0]-a)*s,H-oy-(p[1]-b)*s]),s}}
+const poly=P=>P.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+const cen=P=>[P.reduce((s,p)=>s+p[0],0)/P.length,P.reduce((s,p)=>s+p[1],0)/P.length];
+const svgOpen=(W,H,al,mw)=>`<svg class="fig" viewBox="0 0 ${W} ${H}" ${mw?`style="max-width:${mw}px"`:''} role="img" aria-label="${al}">`;
+
+/* ===== Simulasi ===== */
+const SIMS={
+plsv(){return{html:`<div class="simgrid"><div class="ctl">${sl('a','Koefisien a',1,9,1,3)}${sl('b','Konstanta b',-10,10,1,5)}${sl('c','Ruas kanan c',-20,40,1,20)}${sl('g','Tebakan x',-10,15,1,0)}</div><div><div id="sv"></div><div class="res" id="sr"></div></div></div>`,
+ run(){const a=gv('a'),b=gv('b'),c=gv('c'),g=gv('g'),L=a*g+b,diff=L-c,ang=-Math.max(-16,Math.min(16,diff/(Math.abs(c)+Math.abs(L)+1)*60));
+  $('sv').innerHTML=svgOpen(420,170,'Timbangan persamaan')+`<polygon points="210,60 190,150 230,150" fill="var(--hd)" stroke="var(--mut)" stroke-width="2"/><g transform="rotate(${ang} 210 60)"><line class="ln" x1="50" y1="60" x2="370" y2="60"/><rect x="20" y="64" width="64" height="30" rx="6" fill="var(--acc-soft)" stroke="var(--s1)" stroke-width="2"/><rect x="336" y="64" width="64" height="30" rx="6" fill="var(--hint-bg)" stroke="var(--s2)" stroke-width="2"/><text class="lbl" x="52" y="84" text-anchor="middle">${L}</text><text class="lbl" x="368" y="84" text-anchor="middle">${c}</text></g><text class="tx" x="52" y="130" text-anchor="middle">ruas kiri</text><text class="tx" x="368" y="130" text-anchor="middle">ruas kanan</text></svg>`;
+  const x=(c-b)/a;
+  $('sr').innerHTML=`<div class="big"><b>${a}x ${b<0?'- '+(-b):'+ '+b} = ${c}</b><br>Dengan x = ${g}: ruas kiri = ${a}(${g}) ${b<0?'- '+(-b):'+ '+b} = <b>${L}</b>. ${diff==0?'<b>Seimbang!</b> Tebakanmu benar.':diff>0?'Ruas kiri lebih berat.':'Ruas kanan lebih berat.'}</div><div>Langkah: ${a}x = ${c} ${b<0?'+ '+(-b):'- '+b} = ${c-b}, lalu x = ${c-b}/${a} = <b>${fmt(x)}</b></div>`}}},
+akar(){return{html:`<div class="simgrid"><div class="ctl">${sl('L','Luas persegi',1,225,1,49)}${sl('n','Bilangan n',1,15,1,7)}</div><div><div id="sv"></div><div class="res" id="sr"></div></div></div>`,
+ run(){const L=gv('L'),n=gv('n'),r=Math.sqrt(L),px=10+r/15*210,tot=+r.toFixed(9),isq=Number.isInteger(tot);
+  let g=svgOpen(260,240,'Persegi dengan luas yang dipilih','260')+`<rect x="10" y="10" width="${px-10}" height="${px-10}" class="sq1"/>`;
+  if(isq&&r<=15)for(let i=1;i<r;i++){const p=10+i*(px-10)/r;g+=`<line class="gl" x1="${p}" y1="10" x2="${p}" y2="${px}"/><line class="gl" x1="10" y1="${p}" x2="${px}" y2="${p}"/>`}
+  $('sv').innerHTML=g+`<text class="lbl" x="${(px+10)/2}" y="${(px+10)/2}" text-anchor="middle">${L}</text></svg>`;
+  const k=Math.floor(r);
+  $('sr').innerHTML=`<div class="big">Persegi luas ${L}: panjang sisi = √${L} = <b>${fmt(r,3)}</b>${isq?'<br>Bilangan kuadrat sempurna.':`<br>Berada di antara <b>${k}</b> dan <b>${k+1}</b> karena ${k}² = ${k*k} dan ${k+1}² = ${(k+1)**2}.`}</div><div>${n}² = ${n} × ${n} = <b>${n*n}</b> &nbsp; dan √${n*n} = <b>${n}</b></div><div class="cap" style="margin:0">Kuadrat dan akar kuadrat saling berkebalikan.</div>`}}},
+luas(){const C={persegi:{n:'Persegi',p:'Sisi s',l:null},pp:{n:'Persegi panjang',p:'Panjang p',l:'Lebar l'},seg:{n:'Segitiga',p:'Alas a',l:'Tinggi t'}};
+ return{html:`<div class="simgrid"><div class="ctl sel"><label>Bangun datar<select id="sh">${Object.keys(C).map(k=>`<option value="${k}">${C[k].n}</option>`).join('')}</select></label><div>${sl('p','<span id="lp"></span>',1,15,1,8)}</div><div id="wl">${sl('l','<span id="ll"></span>',1,15,1,5)}</div></div><div><div id="sv"></div><div class="res" id="sr"></div></div></div>`,
+ run(){const k=$('sh').value,c=C[k],p=gv('p'),l=gv('l');$('lp').textContent=c.p;$('ll').textContent=c.l||'';$('wl').style.display=c.l?'':'none';
+  let pts,f;
+  if(k=='persegi'){pts=[[0,0],[p,0],[p,p],[0,p]];f=`Keliling = 4s = <b>${4*p}</b><br>Luas = s × s = <b>${p*p}</b>`}
+  else if(k=='pp'){pts=[[0,0],[p,0],[p,l],[0,l]];f=`Keliling = 2(p + l) = <b>${2*(p+l)}</b><br>Luas = p × l = <b>${p*l}</b>`}
+  else{pts=[[0,0],[p,0],[p*0.3,l]];f=`Luas = ½ × a × t = ½ × ${p} × ${l} = <b>${fmt(p*l/2)}</b><br><span class="cap">Keliling segitiga = jumlah ketiga sisinya.</span>`}
+  const {P}=fit(pts);let g=svgOpen(300,200,'Bangun datar','340')+`<polygon class="shp" points="${poly(P)}"/>`;
+  if(k=='seg'){g+=`<line class="tr" x1="${P[2][0]}" y1="${P[2][1]}" x2="${P[2][0]}" y2="${P[0][1]}" stroke-dasharray="5 4"/>`}
+  $('sv').innerHTML=g+'</svg>';$('sr').innerHTML=`<div class="big">${f}</div>`}}},
+sudut(){return{html:`<div class="simgrid"><div class="ctl">${sl('th','Besar sudut (derajat)',1,359,1,50)}</div><div><div id="sv"></div><div class="res" id="sr"></div></div></div>`,
+ run(){const th=gv('th'),rd=th*D2R,cx=130,cy=130,R=110,r2=38,ex=cx+R*Math.cos(rd),ey=cy-R*Math.sin(rd);
+  const arc=`M${cx} ${cy} L${cx+r2} ${cy} A${r2} ${r2} 0 ${th>180?1:0} 0 ${cx+r2*Math.cos(rd)} ${cy-r2*Math.sin(rd)} Z`;
+  $('sv').innerHTML=svgOpen(260,260,'Sudut dengan dua sinar','300')+`<path d="${arc}" fill="var(--s2)" fill-opacity=".35" stroke="var(--s2)" stroke-width="1.5"/><line class="ln" x1="${cx}" y1="${cy}" x2="${cx+R}" y2="${cy}"/><line class="tr" x1="${cx}" y1="${cy}" x2="${ex}" y2="${ey}"/><circle cx="${cx}" cy="${cy}" r="4" fill="var(--ink)"/><text class="lbl" x="${cx+62*Math.cos(rd/2)}" y="${cy-62*Math.sin(rd/2)+4}" text-anchor="middle">${th}°</text></svg>`;
+  const jenis=th<90?'lancip (kurang dari 90°)':th==90?'siku-siku (tepat 90°)':th<180?'tumpul (antara 90° dan 180°)':th==180?'lurus (tepat 180°)':'refleks (lebih dari 180°)';
+  $('sr').innerHTML=`<div class="big">Sudut ${th}° adalah sudut <b>${jenis}</b>.</div><div>Penyiku (jumlah 90°): ${th<90?'<b>'+(90-th)+'°</b>':'tidak ada'}</div><div>Pelurus (jumlah 180°): ${th<180?'<b>'+(180-th)+'°</b>':'tidak ada'}</div><div>Pelengkap satu putaran (360°): <b>${360-th}°</b></div><div>Sudut bertolak belakang dengannya: <b>${th}°</b></div>`}}},
+sejajar(){const PR=[['Sehadap',1,5],['Sehadap',2,6],['Sehadap',3,7],['Sehadap',4,8],['Dalam berseberangan',3,6],['Dalam berseberangan',4,5],['Luar berseberangan',1,8],['Luar berseberangan',2,7],['Dalam sepihak',3,5],['Dalam sepihak',4,6],['Luar sepihak',1,7],['Luar sepihak',2,8]];
+ return{html:`<div class="simgrid"><div class="ctl sel">${sl('th','Sudut ∠2 (derajat)',30,150,5,60)}<label>Pasangan sudut<select id="pr">${PR.map((p,i)=>`<option value="${i}">${p[0]}: ∠${p[1]} dan ∠${p[2]}</option>`).join('')}</select></label></div><div><div id="sv"></div><div class="res" id="sr"></div></div></div>`,
+ run(){const th=gv('th'),rd=th*D2R,cot=Math.cos(rd)/Math.sin(rd),p1=[210+50*cot,70],p2=[210-50*cot,170],u=[Math.cos(rd),-Math.sin(rd)];
+  const val=[0,180-th,th,th,180-th,180-th,th,th,180-th],pr=PR[+$('pr').value],hl=[pr[1],pr[2]];
+  const bis=[null,(th+180)/2,th/2,th/2+180,th/2+270];
+  let g=svgOpen(420,240,'Dua garis sejajar dipotong transversal')+`<line class="ln" x1="20" y1="70" x2="400" y2="70"/><line class="ln" x1="20" y1="170" x2="400" y2="170"/><line class="tr" x1="${p1[0]+u[0]*55}" y1="${p1[1]+u[1]*55}" x2="${p2[0]-u[0]*55}" y2="${p2[1]-u[1]*55}"/>`;
+  [[1,p1],[5,p2]].forEach(([s,p])=>{for(let k=0;k<4;k++){const a=bis[k+1]*D2R,x=p[0]+34*Math.cos(a),y=p[1]-34*Math.sin(a),n=s+k,h=hl.includes(n);
+    g+=`<circle cx="${x}" cy="${y}" r="12" fill="${h?'var(--s2)':'var(--card)'}" stroke="${h?'var(--s2)':'var(--mut)'}" stroke-width="1.5"/><text class="lbl" x="${x}" y="${y+4}" text-anchor="middle" style="fill:${h?'#fff':'var(--ink)'}">${n}</text>`}});
+  $('sv').innerHTML=g+'</svg>';
+  const same=!/sepihak/.test(pr[0]);
+  $('sr').innerHTML=`<div class="big">${pr[0]}: ∠${pr[1]} = <b>${val[pr[1]]}°</b> dan ∠${pr[2]} = <b>${val[pr[2]]}°</b><br>${same?'Kedua sudut <b>sama besar</b>.':'Kedua sudut <b>berjumlah 180°</b> ('+val[pr[1]]+' + '+val[pr[2]]+' = '+(val[pr[1]]+val[pr[2]])+').'}</div><div>Semua sudut: ${[1,2,3,4,5,6,7,8].map(k=>'∠'+k+' = '+val[k]+'°').join(', ')}</div>`}}},
+segitiga(){return{html:`<div class="simgrid"><div class="ctl">${sl('A','Sudut A (derajat)',10,160,1,60)}${sl('B','Sudut B (derajat)',10,160,1,60)}</div><div><div id="sv"></div><div class="res" id="sr"></div></div></div>`,
+ run(){const A=gv('A'),B=gv('B'),C=180-A-B;
+  if(C<=0){$('sv').innerHTML='';$('sr').innerHTML='<div class="warn">Jumlah sudut A dan B harus kurang dari 180° agar sudut C positif. Kecilkan salah satunya.</div>';return}
+  const ac=Math.sin(B*D2R)/Math.sin(C*D2R),pts=[[0,0],[1,0],[ac*Math.cos(A*D2R),ac*Math.sin(A*D2R)]],{P}=fit(pts,300,200,34);
+  const lab=(p,dx,dy,t)=>`<text class="lbl" x="${p[0]+dx}" y="${p[1]+dy}" text-anchor="middle">${t}</text>`;
+  $('sv').innerHTML=svgOpen(300,200,'Segitiga dengan tiga sudut','360')+`<polygon class="shp" points="${poly(P)}"/>${lab(P[0],-8,18,'A '+A+'°')}${lab(P[1],8,18,'B '+B+'°')}${lab(P[2],0,-10,'C '+C+'°')}</svg>`;
+  const mx=Math.max(A,B,C),sd=mx<90?'lancip':mx==90?'siku-siku':'tumpul',eq=(A==B)+(B==C)+(A==C),ss=eq==3?'sama sisi':eq?'sama kaki':'sembarang';
+  $('sr').innerHTML=`<div class="big">A + B + C = ${A} + ${B} + ${C} = <b>180°</b></div><div>Menurut sudut: <b>${sd}</b>. Menurut sisi: <b>${ss}</b>.</div><div>Sudut luar di A = ${180-A}° = B + C. Sudut luar di B = ${180-B}° = A + C. Sudut luar di C = ${180-C}° = A + B.</div>`}}},
+segiempat(){const C={persegi:{n:'Persegi',p:'Sisi s',l:null,t:null,s:'Empat sisi sama panjang, empat sudut siku-siku, diagonal sama panjang dan berpotongan tegak lurus.'},
+ pp:{n:'Persegi panjang',p:'Panjang p',l:'Lebar l',t:null,s:'Sisi berhadapan sama panjang dan sejajar, empat sudut siku-siku, diagonal sama panjang.'},
+ jg:{n:'Jajargenjang',p:'Alas a',l:'Pergeseran',t:'Tinggi t',s:'Sisi berhadapan sama panjang dan sejajar, sudut berhadapan sama besar, sudut berdekatan berjumlah 180°.'},
+ bk:{n:'Belah ketupat',p:'Diagonal d1',l:null,t:'Diagonal d2',s:'Empat sisi sama panjang, diagonal saling tegak lurus dan membagi dua, sudut berhadapan sama besar.'},
+ ly:{n:'Layang-layang',p:'Diagonal mendatar d1',l:'Bagian atas diagonal d2',t:'Bagian bawah diagonal d2',s:'Dua pasang sisi berdekatan sama panjang, diagonal saling tegak lurus, satu diagonal dibagi dua oleh diagonal lain.'},
+ tr:{n:'Trapesium sama kaki',p:'Sisi sejajar bawah a',l:'Sisi sejajar atas b',t:'Tinggi t',s:'Tepat satu pasang sisi sejajar. Pada trapesium sama kaki, kaki sama panjang dan sudut alas sama besar.'}};
+ return{html:`<div class="simgrid"><div class="ctl sel"><label>Segiempat<select id="sh">${Object.keys(C).map(k=>`<option value="${k}">${C[k].n}</option>`).join('')}</select></label><div>${sl('p','<span id="lp"></span>',1,14,1,8)}</div><div id="wl">${sl('l','<span id="ll"></span>',1,14,1,4)}</div><div id="wt">${sl('t','<span id="lt"></span>',1,14,1,5)}</div></div><div><div id="sv"></div><div class="res" id="sr"></div></div></div>`,
+ run(){const k=$('sh').value,c=C[k],p=gv('p'),l=gv('l'),t=gv('t');$('lp').textContent=c.p;$('ll').textContent=c.l||'';$('lt').textContent=c.t||'';$('wl').style.display=c.l?'':'none';$('wt').style.display=c.t?'':'none';
+  let pts,kel,lu,ex='';
+  if(k=='persegi'){pts=[[0,0],[p,0],[p,p],[0,p]];kel=4*p;lu=p*p;ex=`Diagonal = s√2 ≈ ${fmt(p*Math.SQRT2)}`}
+  else if(k=='pp'){pts=[[0,0],[p,0],[p,l],[0,l]];kel=2*(p+l);lu=p*l;ex=`Diagonal = √(p² + l²) = ${fmt(Math.hypot(p,l))}`}
+  else if(k=='jg'){const m=Math.hypot(l,t);pts=[[0,0],[p,0],[p+l,t],[l,t]];kel=2*(p+m);lu=p*t;ex=`Sisi miring = √(${l}² + ${t}²) = ${fmt(m)}`}
+  else if(k=='bk'){const s=Math.hypot(p/2,t/2);pts=[[p/2,0],[p,t/2],[p/2,t],[0,t/2]];kel=4*s;lu=p*t/2;ex=`Sisi = √((d1/2)² + (d2/2)²) = ${fmt(s)}`}
+  else if(k=='ly'){const s1=Math.hypot(p/2,l),s2=Math.hypot(p/2,t);pts=[[p/2,0],[p,t],[p/2,t+l],[0,t]];kel=2*(s1+s2);lu=p*(l+t)/2;ex=`Sisi pendek = ${fmt(Math.min(s1,s2))}, sisi panjang = ${fmt(Math.max(s1,s2))}`}
+  else{const kk=Math.hypot((p-l)/2,t);pts=[[0,0],[p,0],[(p+l)/2,t],[(p-l)/2,t]];kel=p+l+2*kk;lu=(p+l)*t/2;ex=`Kaki = √(((a-b)/2)² + t²) = ${fmt(kk)}`}
+  const {P}=fit(pts);$('sv').innerHTML=svgOpen(300,200,'Segiempat '+c.n,'340')+`<polygon class="shp" points="${poly(P)}"/></svg>`;
+  $('sr').innerHTML=`<div class="big">Keliling = <b>${fmt(kel)}</b> &nbsp; Luas = <b>${fmt(lu)}</b><br>${ex}</div><div>${c.s}</div><div>Jumlah keempat sudut = <b>360°</b>.</div>`}}},
+rumah(){return{html:`<div class="simgrid"><div class="ctl">${sl('w','Lebar dinding w',4,16,1,10)}${sl('h','Tinggi dinding h',2,10,1,6)}${sl('t','Tinggi atap t',1,10,1,4)}</div><div><div id="sv"></div><div class="res" id="sr"></div></div></div>`,
+ run(){const w=gv('w'),h=gv('h'),t=gv('t'),at=Math.hypot(w/2,t),pts=[[0,0],[w,0],[w,h],[w/2,h+t],[0,h]],{P}=fit(pts);
+  $('sv').innerHTML=svgOpen(300,200,'Bangun gabungan persegi panjang dan segitiga','340')+`<polygon class="shp" points="${poly(P)}"/><line class="tr" x1="${P[4][0]}" y1="${P[4][1]}" x2="${P[2][0]}" y2="${P[2][1]}" stroke-dasharray="5 4"/></svg>`;
+  $('sr').innerHTML=`<div class="big">Luas = persegi panjang + segitiga<br>= ${w}×${h} + ½×${w}×${t} = ${w*h} + ${fmt(w*t/2)} = <b>${fmt(w*h+w*t/2)}</b></div><div>Sisi miring atap = √((${w}/2)² + ${t}²) = <b>${fmt(at)}</b> (Pythagoras)</div><div>Keliling siluet = w + 2h + 2 × sisi atap = <b>${fmt(w+2*h+2*at)}</b></div>`}}},
+pyth(){return{html:`<div class="simgrid"><div class="ctl">${sl('a','Sisi tegak a',1,12,1,3)}${sl('b','Sisi datar b',1,12,1,4)}<div class="res" id="sr"></div></div><div id="sv"></div></div>`,
+ run(){const p=gv('b'),q=gv('a'),c=Math.sqrt(p*p+q*q);
+  const xs=[-q,p+q,0,p],ys=[-(q+p),p,0,-q],minx=Math.min(...xs),maxx=Math.max(...xs),miny=Math.min(...ys),maxy=Math.max(...ys),pad=1.2,fs=Math.max(maxx-minx,maxy-miny)/22;
+  const vb=`${minx-pad} ${miny-pad} ${maxx-minx+2*pad} ${maxy-miny+2*pad}`;
+  const sqH=[[0,0],[p,0],[p,p],[0,p]],sqV=[[0,0],[0,-q],[-q,-q],[-q,0]],sqC=[[p,0],[0,-q],[q,-q-p],[p+q,-p]];
+  const lab=(x,y,t)=>`<text x="${x}" y="${y}" text-anchor="middle" font-size="${fs*1.1}" fill="var(--ink)" font-family="JetBrains Mono,monospace" font-weight="600">${t}</text>`;
+  $('sv').innerHTML=`<svg class="fig" viewBox="${vb}" role="img" aria-label="Segitiga siku-siku dengan persegi pada tiap sisi"><polygon class="sq1" points="${poly(sqH)}"/><polygon class="sq2" points="${poly(sqV)}"/><polygon class="sq3" points="${poly(sqC)}"/><polygon class="shp" points="${poly([[0,0],[p,0],[0,-q]])}"/>${lab(p/2,p/2+fs*.4,'b² = '+p*p)}${lab(-q/2,-q/2+fs*.4,'a² = '+q*q)}${lab((p+q)/2,-(p+q)/2+fs*.4,'c² = '+fmt(p*p+q*q))}${lab(p/2,-fs*.5,'b = '+p)}${lab(-fs*1.2,-q/2,'a = '+q)}</svg>`;
+  const int=Number.isInteger(+c.toFixed(9));
+  $('sr').innerHTML=`<div class="big">a² + b² = ${q*q} + ${p*p} = <b>${p*p+q*q}</b><br>c = √${p*p+q*q} = <b>${fmt(c,3)}</b></div>${int?`<div class="warn"><b>${q}, ${p}, ${c}</b> adalah tripel Pythagoras (ketiganya bilangan bulat).</div>`:''}<div>Luas persegi pada sisi miring sama dengan jumlah luas kedua persegi lainnya.</div>`}}},
+tangga(){return{html:`<div class="simgrid"><div class="ctl">${sl('L','Panjang tangga (m)',5,15,1,13)}${sl('x','Jarak kaki dari dinding (m)',1,14,1,5)}</div><div><div id="sv"></div><div class="res" id="sr"></div></div></div>`,
+ run(){const L=gv('L'),x=gv('x');
+  if(x>=L){$('sv').innerHTML='';$('sr').innerHTML='<div class="warn">Jarak kaki harus lebih kecil dari panjang tangga, kalau tidak tangga tidak menyentuh dinding.</div>';return}
+  const h=Math.sqrt(L*L-x*x),s=Math.min(240/x,190/h),fx=36+x*s,ty=230-h*s;
+  $('sv').innerHTML=svgOpen(320,260,'Tangga bersandar pada dinding','340')+`<rect x="14" y="10" width="22" height="220" fill="var(--hd)"/><line class="ax" x1="14" y1="230" x2="310" y2="230"/><polygon points="36,230 ${fx},230 36,${ty}" fill="var(--acc-soft)" opacity=".7"/><line class="tr" x1="${fx}" y1="230" x2="36" y2="${ty}" stroke-width="4"/><text class="lbl" x="${(36+fx)/2}" y="248" text-anchor="middle">x = ${x}</text><text class="lbl" x="44" y="${(230+ty)/2}">h = ${fmt(h)}</text><text class="lbl" x="${(36+fx)/2+14}" y="${(230+ty)/2-8}" style="fill:var(--s2)">L = ${L}</text></svg>`;
+  $('sr').innerHTML=`<div class="big">h² = L² − x² = ${L*L} − ${x*x} = <b>${L*L-x*x}</b><br>h = √${L*L-x*x} = <b>${fmt(h,3)} m</b></div>${Number.isInteger(+h.toFixed(9))?'<div class="warn">Hasilnya bilangan bulat, jadi (x, h, L) membentuk tripel Pythagoras.</div>':''}`}}},
+taman(){return{html:`<div class="simgrid"><div class="ctl">${sl('a','Sisi sejajar bawah AB',8,24,1,20)}${sl('b','Sisi sejajar atas DC',4,24,1,14)}${sl('t','Tinggi AD',3,14,1,8)}</div><div><div id="sv"></div><div class="res" id="sr"></div></div></div>`,
+ run(){const a=gv('a'),b=gv('b'),t=gv('t');
+  if(b>=a){$('sv').innerHTML='';$('sr').innerHTML='<div class="warn">Buat sisi atas DC lebih pendek dari sisi bawah AB agar membentuk trapesium siku-siku seperti gambar.</div>';return}
+  const m=Math.hypot(a-b,t),pts=[[0,0],[a,0],[b,t],[0,t]],{P}=fit(pts,300,200,34),B=Math.atan2(t,a-b)/D2R,ac=Math.hypot(b,t);
+  const lab=(p,dx,dy,tx)=>`<text class="lbl" x="${p[0]+dx}" y="${p[1]+dy}" text-anchor="middle">${tx}</text>`;
+  $('sv').innerHTML=svgOpen(300,200,'Taman berbentuk trapesium siku-siku','340')+`<polygon class="shp" points="${poly(P)}"/><line class="tr" x1="${P[0][0]}" y1="${P[0][1]}" x2="${P[2][0]}" y2="${P[2][1]}" stroke-dasharray="5 4"/>${lab(P[0],-10,16,'A')}${lab(P[1],10,16,'B')}${lab(P[2],10,-8,'C')}${lab(P[3],-10,-8,'D')}</svg>`;
+  $('sr').innerHTML=`<div class="big">BC = √((${a}−${b})² + ${t}²) = <b>${fmt(m)}</b><br>Keliling = ${a} + ${fmt(m)} + ${b} + ${t} = <b>${fmt(a+m+b+t)}</b><br>Luas = ½(${a}+${b}) × ${t} = <b>${fmt((a+b)*t/2)}</b></div><div>Diagonal AC = √(${b}² + ${t}²) = <b>${fmt(ac)}</b></div><div>Karena AB ∥ DC, ∠B + ∠C = 180°. Jika ∠B ≈ ${fmt(B,1)}°, maka ∠C ≈ <b>${fmt(180-B,1)}°</b>.</div>`}}}
+};
+
+/* ===== Materi ===== */
+const LES=[
+{id:'l1',lv:1,t:'Persamaan Linear Satu Variabel',sim:'plsv',goal:'Menyelesaikan persamaan sederhana. Keterampilan ini dipakai untuk mencari besar sudut yang berbentuk aljabar di Bab 1 dan 2.',
+theory:`<p><b>Persamaan linear satu variabel (PLSV)</b> adalah kalimat matematika dengan tanda = yang memuat satu variabel berpangkat satu, misalnya <code>3x + 5 = 20</code>.</p>
+<p>Bayangkan timbangan: ruas kiri dan kanan harus selalu seimbang. Apa pun yang kamu lakukan pada satu ruas, lakukan juga pada ruas lainnya.</p>
+<div class="syn">3x + 5 = 20
+3x = 20 - 5 = 15
+x = 15 / 3 = 5<small>Pindahkan suku konstanta, lalu bagi dengan koefisien.</small></div>
+<ul><li>Pindah ruas: tanda <b>+</b> menjadi <b>-</b>, dan sebaliknya.</li><li>Jika x ada di dua ruas, kumpulkan suku x di satu ruas dan konstanta di ruas lain.</li><li>Soal cerita: misalkan yang dicari dengan x, ubah kalimatnya menjadi persamaan.</li></ul>
+<div class="pit"><b>Hati-hati</b>Untuk <code>2(x - 4)</code>, kalikan 2 ke <b>kedua</b> suku di dalam kurung: 2x - 8.</div>
+<div class="note"><b>Mengapa penting</b>Di Bab 1 dan 2, besar sudut sering ditulis seperti (2x + 10)°. Kamu harus mencari x lebih dulu.</div>`,
+ch:[
+{q:'Selesaikan 3x + 5 = 20. Berapa nilai x?',a:5,h:['Pindahkan +5 ke ruas kanan menjadi -5.','3x = 20 - 5 = 15.','Bagi kedua ruas dengan 3.'],w:'3x = 15 sehingga x = 5.'},
+{q:'Selesaikan 2(x - 4) = 14.',a:11,h:['Kalikan 2 ke dalam kurung.','2x - 8 = 14, jadi 2x = 22.','Bagi dengan 2.'],w:'2x = 22, x = 11.'},
+{q:'Panjang persegi panjang 4 cm lebih dari lebarnya dan kelilingnya 36 cm. Berapa lebarnya (cm)?',a:7,h:['Misalkan lebar = l, maka panjang = l + 4.','Keliling: 2(l + l + 4) = 36, jadi 2l + 4 = 18.','2l = 14.'],w:'l = 7 cm dan panjang = 11 cm.'},
+{q:'Selesaikan 4x - 7 = 2x + 9.',a:8,h:['Kumpulkan suku x di ruas kiri.','4x - 2x = 9 + 7.','2x = 16.'],w:'x = 8.'},
+{q:'Tiga sudut berukuran 2x, 3x, dan 4x derajat dan jumlahnya 180°. Berapa derajat sudut terbesar?',a:80,lk:'Dipakai lagi pada Materi 6 (jumlah sudut segitiga).',h:['Jumlah ketiganya 180: 2x + 3x + 4x = 180.','9x = 180, jadi x = 20.','Sudut terbesar adalah 4x.'],w:'x = 20, sudut terbesar 4 × 20 = 80°.'}]},
+{id:'l2',lv:1,t:'Kuadrat dan Akar Kuadrat',sim:'akar',goal:'Menghitung bilangan kuadrat dan akar kuadrat. Ini dasar untuk Teorema Pythagoras di Bab 3.',
+theory:`<p><b>Kuadrat</b> suatu bilangan adalah bilangan itu dikali dirinya sendiri: <code>n² = n × n</code>. Contoh 7² = 49.</p>
+<p><b>Akar kuadrat</b> adalah kebalikannya: <code>√49 = 7</code> karena 7² = 49.</p>
+<p>Kuadrat berkaitan dengan luas persegi. Persegi bersisi n memiliki luas n². Sebaliknya, persegi seluas L memiliki sisi √L.</p>
+<table class="tbl"><tr><th>n</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th></tr><tr><th>n²</th><td>1</td><td>4</td><td>9</td><td>16</td><td>25</td><td>36</td><td>49</td><td>64</td><td>81</td><td>100</td><td>121</td><td>144</td><td>169</td><td>196</td><td>225</td></tr></table>
+<div class="syn">√50 ≈ 7,07<small>Karena 7² = 49 dan 8² = 64, nilai √50 ada di antara 7 dan 8, sangat dekat ke 7.</small></div>
+<div class="pit"><b>Hati-hati</b>(a + b)² tidak sama dengan a² + b². Hitung a² dan b² masing-masing sebelum dijumlahkan, itulah yang dilakukan pada Pythagoras.</div>`,
+ch:[
+{q:'Hitung 13².',a:169,h:['13² = 13 × 13.','13 × 10 = 130 dan 13 × 3 = 39.','130 + 39.'],w:'13 × 13 = 169.'},
+{q:'Hitung √144.',a:12,h:['Cari bilangan yang jika dikuadratkan menghasilkan 144.','Coba 12.','12 × 12 = 144.'],w:'√144 = 12.'},
+{q:'Hitung √(9² + 12²).',a:15,lk:'Bentuk ini muncul di Materi 9 (Pythagoras).',h:['Kuadratkan dulu masing-masing: 9² = 81 dan 12² = 144.','Jumlahkan: 81 + 144.','225, lalu akarkan.'],w:'√225 = 15.'},
+{q:'Sebuah lahan persegi memiliki luas 196 m². Berapa meter panjang sisinya?',a:14,h:['Luas persegi = sisi × sisi.','Sisi = √196.','Coba 14 × 14.'],w:'√196 = 14 m.'},
+{q:'Hitung √50, dibulatkan dua desimal.',a:7.07,tol:0.006,h:['Tentukan di antara dua bilangan bulat mana nilainya.','7² = 49 dan 8² = 64, jadi sedikit lebih dari 7.','Gunakan kalkulator atau coba 7,07 × 7,07.'],w:'√50 ≈ 7,07.'}]},
+{id:'l3',lv:1,t:'Keliling dan Luas Bangun Datar Dasar',sim:'luas',goal:'Mengingat rumus keliling dan luas persegi, persegi panjang, dan segitiga sebagai bekal Bab 2 dan 3.',
+theory:`<table class="tbl"><tr><th>Bangun</th><th>Keliling</th><th>Luas</th></tr><tr><td>Persegi (sisi s)</td><td>4s</td><td>s × s</td></tr><tr><td>Persegi panjang (p, l)</td><td>2(p + l)</td><td>p × l</td></tr><tr><td>Segitiga (alas a, tinggi t)</td><td>jumlah tiga sisi</td><td>½ × a × t</td></tr></table>
+<p><b>Keliling</b> adalah panjang garis yang mengelilingi bangun, satuannya cm, m, dan sejenisnya. <b>Luas</b> adalah besar daerah di dalam bangun, satuannya cm², m².</p>
+<div class="pit"><b>Hati-hati</b>Tinggi segitiga selalu tegak lurus alas. Sisi miring bukan tinggi.</div>
+<div class="note"><b>Hubungan</b>Persegi panjang yang dibelah menurut diagonalnya menjadi dua segitiga yang sama besar. Itu sebabnya luas segitiga adalah setengah dari alas kali tinggi.</div>`,
+ch:[
+{q:'Hitung keliling persegi panjang berukuran 12 cm × 7 cm.',a:38,h:['Rumus keliling: 2(p + l).','p + l = 12 + 7 = 19.','2 × 19.'],w:'K = 2 × 19 = 38 cm.'},
+{q:'Hitung luas persegi bersisi 9 cm.',a:81,h:['Luas persegi = sisi × sisi.','9 × 9.','Hasilnya di tabel kuadrat Materi 2.'],w:'L = 81 cm².'},
+{q:'Hitung luas segitiga beralas 10 cm dan tinggi 6 cm.',a:30,h:['Luas = ½ × alas × tinggi.','½ × 10 × 6.','5 × 6.'],w:'L = 30 cm².'},
+{q:'Luas persegi panjang 48 cm² dan panjangnya 8 cm. Hitung kelilingnya.',a:28,h:['Cari lebar: luas dibagi panjang.','l = 48 / 8 = 6.','K = 2(8 + 6).'],w:'l = 6 sehingga K = 28 cm.'},
+{q:'Sebuah taman persegi memiliki luas 169 m². Berapa meter pagar yang dibutuhkan untuk mengelilinginya?',a:52,lk:'Memakai akar kuadrat dari Materi 2 dan keliling dari Materi 3.',h:['Pagar mengelilingi taman, jadi yang dicari keliling.','Cari sisi: √169.','Sisi 13, keliling = 4 × 13.'],w:'Sisi 13 m, keliling 52 m.'}]},
+{id:'l4',lv:2,t:'Jenis Sudut dan Hubungan Antarsudut',sim:'sudut',goal:'Mengenali jenis sudut dan memakai hubungan berpenyiku, berpelurus, dan bertolak belakang untuk mencari besar sudut.',
+theory:`<table class="tbl"><tr><th>Jenis</th><th>Besar</th></tr><tr><td>Lancip</td><td>kurang dari 90°</td></tr><tr><td>Siku-siku</td><td>tepat 90°</td></tr><tr><td>Tumpul</td><td>antara 90° dan 180°</td></tr><tr><td>Lurus</td><td>tepat 180°</td></tr><tr><td>Refleks</td><td>antara 180° dan 360°</td></tr></table>
+<h4>Hubungan antarsudut</h4>
+<ul><li><b>Berpenyiku</b>: dua sudut berjumlah 90°.</li><li><b>Berpelurus</b>: dua sudut berjumlah 180° (membentuk garis lurus).</li><li><b>Bertolak belakang</b>: dua sudut yang saling berhadapan di perpotongan dua garis. Besarnya <b>sama</b>.</li></ul>
+<div class="syn">Penyiku dari x   = 90° - x
+Pelurus dari x   = 180° - x<small>Kombinasikan dengan PLSV bila besar sudut berbentuk aljabar.</small></div>
+<div class="pit"><b>Hati-hati</b>Sudut lebih dari 90° tidak punya penyiku, dan sudut lebih dari 180° tidak punya pelurus.</div>`,
+ch:[
+{q:'Berapa derajat penyiku sudut 35°?',a:55,h:['Penyiku berarti jumlahnya 90°.','90 - 35.','Hasilnya sudut lancip.'],w:'90° - 35° = 55°.'},
+{q:'Berapa derajat pelurus sudut 112°?',a:68,h:['Pelurus berarti jumlahnya 180°.','180 - 112.','Hasilnya sudut lancip.'],w:'180° - 112° = 68°.'},
+{q:'Sudut 135° termasuk jenis sudut apa?',type:'mc',o:['lancip','siku-siku','tumpul','refleks'],a:2,h:['Bandingkan dengan 90° dan 180°.','Nilainya lebih dari 90°.','Kurang dari 180°.'],w:'Antara 90° dan 180° disebut tumpul.'},
+{q:'Dua sudut berpelurus berukuran x° dan (2x + 30)°. Berapa derajat sudut yang lebih besar?',a:130,lk:'Memakai PLSV (Materi 1).',h:['Berpelurus berarti x + (2x + 30) = 180.','3x + 30 = 180, jadi 3x = 150.','x = 50. Hitung 2x + 30.'],w:'x = 50, sudut besar = 130°.'},
+{q:'Dua sudut bertolak belakang berukuran (3x + 10)° dan (5x - 30)°. Berapa derajat besar sudut itu?',a:70,lk:'Memakai PLSV (Materi 1).',h:['Bertolak belakang berarti sama besar.','3x + 10 = 5x - 30, jadi 2x = 40.','x = 20. Hitung 3x + 10.'],w:'x = 20 sehingga sudutnya 70°.'},
+{q:'Dua sudut berpenyiku memiliki selisih 20°. Berapa derajat sudut yang lebih besar?',a:55,h:['Misalkan sudut besar a dan kecil b: a + b = 90 dan a - b = 20.','Jumlahkan kedua persamaan: 2a = 110.','a = 55.'],w:'a = 55° dan b = 35°.'}]},
+{id:'l5',lv:2,t:'Garis Sejajar dan Transversal',sim:'sejajar',goal:'Memakai sudut sehadap, berseberangan, dan sepihak untuk mencari sudut yang belum diketahui.',
+theory:`<p>Bila dua garis sejajar dipotong oleh garis ketiga (<b>transversal</b>), terbentuk delapan sudut dengan hubungan khusus.</p>
+<table class="tbl"><tr><th>Pasangan sudut</th><th>Hubungan</th><th>Contoh pada simulasi</th></tr><tr><td>Sehadap</td><td>sama besar</td><td>∠1 dan ∠5</td></tr><tr><td>Dalam berseberangan</td><td>sama besar</td><td>∠3 dan ∠6</td></tr><tr><td>Luar berseberangan</td><td>sama besar</td><td>∠1 dan ∠8</td></tr><tr><td>Dalam sepihak</td><td>jumlah 180°</td><td>∠3 dan ∠5</td></tr><tr><td>Luar sepihak</td><td>jumlah 180°</td><td>∠1 dan ∠7</td></tr></table>
+<p>Sudut yang berpelurus (satu garis lurus) dan bertolak belakang dari Materi 4 tetap berlaku di sini.</p>
+<div class="pit"><b>Hati-hati</b>Hubungan di atas hanya berlaku jika kedua garis <b>sejajar</b>. Sebaliknya, jika sudut sehadap sama besar, garisnya pasti sejajar.</div>
+<div class="note"><b>Coba</b>Pilih tiap pasangan di simulasi lalu geser sudut ∠2. Perhatikan pasangan mana yang selalu sama dan mana yang selalu berjumlah 180°.</div>`,
+ch:[
+{q:'Dua garis sejajar dipotong transversal. Sudut sehadap dari sudut 65° besarnya berapa derajat?',a:65,h:['Sehadap berarti letaknya sama pada kedua garis.','Hubungan sehadap: sama besar.','Jawabannya sama dengan sudut semula.'],w:'Sudut sehadap sama besar, yaitu 65°.'},
+{q:'Sudut dalam sepihak berukuran 110°. Berapa derajat sudut pasangannya?',a:70,h:['Sepihak berarti berjumlah 180°.','180 - 110.','Hasilnya lancip.'],w:'180° - 110° = 70°.'},
+{q:'Dua sudut dalam berseberangan berukuran (2x + 10)° dan (3x - 20)°. Berapa derajat besar sudut itu?',a:70,lk:'Memakai PLSV (Materi 1).',h:['Dalam berseberangan berarti sama besar.','2x + 10 = 3x - 20, jadi x = 30.','Hitung 2x + 10.'],w:'x = 30 sehingga sudutnya 70°.'},
+{q:'Pasangan sudut yang berjumlah 180° saat dua garis sejajar dipotong transversal adalah...',type:'mc',o:['sehadap','dalam berseberangan','dalam sepihak'],a:2,h:['Ingat tabel hubungan di bagian konsep.','Dua jenis pertama sama besar.','Jenis "sepihak" berjumlah 180°.'],w:'Dalam sepihak berjumlah 180°.'},
+{q:'Dua sudut dalam sepihak berukuran (4x + 20)° dan (2x + 40)°. Berapa derajat sudut yang lebih besar?',a:100,lk:'Memakai PLSV (Materi 1) dan jumlah sepihak.',h:['Sepihak: (4x + 20) + (2x + 40) = 180.','6x + 60 = 180, jadi x = 20.','Hitung kedua sudutnya, pilih yang lebih besar.'],w:'Sudutnya 100° dan 80°.'},
+{q:'Dua sudut sehadap berukuran (3x - 5)° dan (2x + 25)°. Berapa derajat pelurus dari sudut itu?',a:95,lk:'Gabungan Materi 4 (pelurus), Materi 5 (sehadap), dan Materi 1 (PLSV).',h:['Sehadap: 3x - 5 = 2x + 25, jadi x = 30.','Sudutnya 3(30) - 5 = 85.','Pelurus = 180 - 85.'],w:'Sudut = 85°, pelurusnya 95°.'}]},
+{id:'l6',lv:3,t:'Sifat dan Jenis Segitiga',sim:'segitiga',goal:'Memakai jumlah sudut segitiga, sudut luar, dan ketidaksamaan segitiga.',
+theory:`<ul><li><b>Jumlah ketiga sudut</b> dalam segitiga = 180°.</li><li><b>Sudut luar</b> sama dengan jumlah dua sudut dalam yang tidak bersebelahan dengannya.</li><li><b>Ketidaksamaan segitiga</b>: jumlah dua sisi harus lebih panjang dari sisi ketiga.</li></ul>
+<table class="tbl"><tr><th>Menurut sisi</th><th>Menurut sudut</th></tr><tr><td>Sama sisi: tiga sisi sama, tiap sudut 60°</td><td>Lancip: semua sudut kurang dari 90°</td></tr><tr><td>Sama kaki: dua sisi sama, dua sudut alas sama</td><td>Siku-siku: satu sudut 90°</td></tr><tr><td>Sembarang: ketiga sisi berbeda</td><td>Tumpul: satu sudut lebih dari 90°</td></tr></table>
+<div class="syn">A + B + C = 180°
+sudut luar C = A + B<small>Tulis sudut luar sebagai 180° dikurangi sudut dalam di titik yang sama.</small></div>
+<div class="note"><b>Terkait Materi 4 dan 5</b>Pelurus sudut dalam adalah sudut luar. Jika segitiga ditempatkan di antara garis sejajar, sudut berseberangan membuktikan jumlah sudut 180°.</div>`,
+ch:[
+{q:'Dua sudut segitiga berukuran 50° dan 60°. Berapa derajat sudut ketiga?',a:70,h:['Jumlah ketiga sudut 180°.','50 + 60 = 110.','180 - 110.'],w:'Sudut ketiga = 70°.'},
+{q:'Pada segitiga ABC, sudut dalam A = 70° dan sudut luar di B = 125°. Berapa derajat sudut C?',a:55,lk:'Memakai pelurus (Materi 4).',h:['Sudut luar di B sama dengan A + C.','125 = 70 + C.','C = 125 - 70.'],w:'C = 55°. Cek: B = 55°, jadi 70 + 55 + 55 = 180.'},
+{q:'Segitiga sama kaki memiliki sudut puncak 40°. Berapa derajat masing-masing sudut alasnya?',a:70,h:['Dua sudut alas sama besar.','Jumlah sudut alas = 180 - 40 = 140.','Bagi dua.'],w:'Sudut alas masing-masing 70°.'},
+{q:'Tiga batang berukuran 3 cm, 4 cm, dan 8 cm. Apakah dapat membentuk segitiga?',type:'mc',o:['Ya, karena ada tiga batang','Tidak, karena 3 + 4 kurang dari 8','Ya, karena 3 + 8 lebih dari 4'],a:1,h:['Uji ketidaksamaan segitiga pada sisi terpanjang.','Jumlah dua sisi lain: 3 + 4 = 7.','Bandingkan 7 dengan 8.'],w:'7 < 8 sehingga tidak dapat membentuk segitiga.'},
+{q:'Sudut-sudut sebuah segitiga adalah 2x°, 3x°, dan 4x°. Berapa derajat sudut terkecilnya?',a:40,lk:'Melanjutkan soal terakhir Materi 1, dengan perhatian pada sudut terkecil.',h:['Jumlah: 2x + 3x + 4x = 180.','x = 20.','Sudut terkecil adalah 2x.'],w:'Sudutnya 40°, 60°, dan 80°. Segitiga ini lancip.'}]},
+{id:'l7',lv:3,t:'Sifat dan Jenis Segiempat',sim:'segiempat',goal:'Mengenali enam segiempat, sifat-sifatnya, dan menghitung luasnya.',
+theory:`<table class="tbl"><tr><th>Segiempat</th><th>Sifat utama</th><th>Luas</th></tr><tr><td>Persegi</td><td>4 sisi sama, 4 sudut siku-siku</td><td>s²</td></tr><tr><td>Persegi panjang</td><td>sisi berhadapan sama, 4 sudut siku-siku</td><td>p × l</td></tr><tr><td>Jajargenjang</td><td>sisi berhadapan sejajar dan sama, sudut berdekatan 180°</td><td>alas × tinggi</td></tr><tr><td>Belah ketupat</td><td>4 sisi sama, diagonal tegak lurus</td><td>½ × d₁ × d₂</td></tr><tr><td>Layang-layang</td><td>2 pasang sisi berdekatan sama, diagonal tegak lurus</td><td>½ × d₁ × d₂</td></tr><tr><td>Trapesium</td><td>satu pasang sisi sejajar</td><td>½ × (a + b) × t</td></tr></table>
+<p><b>Jumlah keempat sudut segiempat = 360°.</b> Alasannya: diagonal membagi segiempat menjadi dua segitiga, masing-masing 180°.</p>
+<div class="note"><b>Terkait Materi 5</b>Pada jajargenjang dan trapesium ada sisi yang sejajar. Sudut-sudut di antara sisi sejajar itu adalah sudut dalam sepihak, jadi berjumlah 180°.</div>
+<div class="pit"><b>Hati-hati</b>Tinggi trapesium dan jajargenjang diukur tegak lurus alas, bukan sepanjang sisi miring.</div>`,
+ch:[
+{q:'Tiga sudut sebuah segiempat adalah 90°, 100°, dan 80°. Berapa derajat sudut keempat?',a:90,h:['Jumlah sudut segiempat 360°.','90 + 100 + 80 = 270.','360 - 270.'],w:'Sudut keempat 90°.'},
+{q:'Salah satu sudut jajargenjang 70°. Berapa derajat sudut di sebelahnya (berdekatan)?',a:110,lk:'Memakai sudut dalam sepihak (Materi 5).',h:['Sisi berhadapan sejajar, jadi sudut berdekatan sepihak.','Jumlahnya 180°.','180 - 70.'],w:'Sudut berdekatan = 110°.'},
+{q:'Belah ketupat memiliki diagonal 12 cm dan 16 cm. Hitung luasnya.',a:96,h:['Luas = ½ × d₁ × d₂.','½ × 12 × 16.','6 × 16.'],w:'L = 96 cm².'},
+{q:'Trapesium memiliki sisi sejajar 8 cm dan 14 cm, tinggi 5 cm. Hitung luasnya.',a:55,h:['Luas = ½ × (a + b) × t.','a + b = 22.','½ × 22 × 5.'],w:'L = 11 × 5 = 55 cm².'},
+{q:'Layang-layang memiliki diagonal 10 cm dan 24 cm. Hitung luasnya.',a:120,h:['Rumusnya sama dengan belah ketupat.','½ × 10 × 24.','5 × 24.'],w:'L = 120 cm².'},
+{q:'Dua sudut berdekatan pada jajargenjang berukuran (2x + 10)° dan (3x - 10)°. Berapa derajat sudut yang lebih besar?',a:98,lk:'Gabungan Materi 1 (PLSV), Materi 5 (sepihak), dan Materi 7 (jajargenjang).',h:['Berdekatan berarti jumlahnya 180°.','(2x + 10) + (3x - 10) = 180, jadi 5x = 180.','x = 36. Hitung kedua sudut.'],w:'Sudutnya 82° dan 98°.'}]},
+{id:'l8',lv:3,t:'Keliling dan Luas Bangun Gabungan',sim:'rumah',goal:'Menggabungkan atau mengurangkan luas beberapa bangun datar untuk bentuk yang lebih rumit.',
+theory:`<p>Bentuk yang rumit biasanya dapat dipecah menjadi bangun yang sudah kita kenal.</p>
+<ul><li><b>Luas gabungan</b> = jumlah luas bagian-bagiannya.</li><li><b>Luas bagian berlubang</b> = luas besar dikurangi luas yang dibuang.</li><li><b>Keliling gabungan</b> hanya menghitung sisi di bagian luar. Sisi yang saling menempel tidak ikut dihitung.</li></ul>
+<p>Pada simulasi, rumah dipecah menjadi persegi panjang dan segitiga (atap). Panjang sisi atap dicari dengan Pythagoras, yang akan kamu pelajari lebih dalam di Bab 3.</p>
+<div class="pit"><b>Hati-hati</b>Pada keliling gabungan, garis potong antar bagian bukan bagian dari keliling.</div>
+<div class="note"><b>Terkait Materi 3 dan 7</b>Semua rumus luas persegi, persegi panjang, segitiga, dan trapesium dipakai di sini.</div>`,
+ch:[
+{q:'Sebuah bangun tersusun dari persegi panjang 10 × 6 dan segitiga di atasnya berukuran alas 10 dan tinggi 4. Hitung luas keseluruhan.',a:80,h:['Hitung luas persegi panjang: 10 × 6 = 60.','Hitung luas segitiga: ½ × 10 × 4.','Jumlahkan keduanya.'],w:'60 + 20 = 80.'},
+{q:'Sebuah persegi bersisi 10 m dipotong satu sudutnya berbentuk segitiga siku-siku dengan sisi siku-siku 6 m dan 8 m. Berapa luas sisanya?',a:76,h:['Luas persegi = 100.','Luas segitiga yang dipotong = ½ × 6 × 8.','Kurangkan.'],w:'100 - 24 = 76 m².'},
+{q:'Sebuah lantai terdiri dari trapesium siku-siku (sisi sejajar 6 m dan 10 m, tinggi 4 m) dan persegi panjang 10 m × 3 m. Hitung luas totalnya.',a:62,h:['Luas trapesium = ½ × (6 + 10) × 4.','Luas persegi panjang = 10 × 3.','Jumlahkan 32 dan 30.'],w:'32 + 30 = 62 m².'},
+{q:'Dua persegi bersisi 4 cm dipasang berdampingan sehingga satu sisinya menempel. Hitung keliling bangun gabungannya.',a:24,h:['Gabungan membentuk persegi panjang.','Ukurannya 8 cm × 4 cm.','Keliling = 2(8 + 4).'],w:'K = 24 cm. Sisi yang menempel tidak dihitung.'},
+{q:'Taman seluas 76 m² akan ditanami rumput seharga Rp5.000 per m². Berapa rupiah biaya rumputnya?',a:380000,ans:'Rp380.000',lk:'Memakai hasil luas dari soal nomor 2 pada materi ini.',h:['Biaya = luas × harga per m².','76 × 5.000.','Kalikan 76 × 5 lalu tambahkan tiga nol.'],w:'76 × 5.000 = 380.000.'}]},
+{id:'l9',lv:4,t:'Teorema Pythagoras',sim:'pyth',goal:'Menghitung sisi segitiga siku-siku, mengenali tripel Pythagoras, dan menguji jenis segitiga dari panjang sisinya.',
+theory:`<p>Pada segitiga siku-siku, kuadrat sisi miring (<b>hipotenusa</b>) sama dengan jumlah kuadrat kedua sisi siku-siku.</p>
+<div class="syn">c² = a² + b²
+a² = c² - b²<small>c adalah sisi miring, yaitu sisi di hadapan sudut siku-siku dan paling panjang.</small></div>
+<p>Luas persegi pada sisi miring sama dengan jumlah luas dua persegi lainnya. Lihat simulasi.</p>
+<p><b>Tripel Pythagoras</b> adalah tiga bilangan bulat yang memenuhi rumus, misalnya 3-4-5, 5-12-13, 8-15-17, dan 7-24-25. Kelipatannya juga tripel.</p>
+<h4>Kebalikan Pythagoras</h4>
+<p>Bandingkan kuadrat sisi terpanjang (c²) dengan a² + b²:</p>
+<ul><li>c² = a² + b²: segitiga <b>siku-siku</b>.</li><li>c² &lt; a² + b²: segitiga <b>lancip</b>.</li><li>c² &gt; a² + b²: segitiga <b>tumpul</b>.</li></ul>
+<div class="pit"><b>Hati-hati</b>Jika yang dicari sisi siku-siku, <b>kurangkan</b> (c² - b²), bukan dijumlahkan.</div>
+<div class="note"><b>Terkait materi sebelumnya</b>Kuadrat dan akar (Materi 2), jumlah sudut segitiga siku-siku (Materi 6), dan diagonal persegi panjang (Materi 7).</div>`,
+ch:[
+{q:'Sisi siku-siku sebuah segitiga 6 cm dan 8 cm. Berapa panjang sisi miringnya?',a:10,h:['Gunakan c² = a² + b².','36 + 64 = 100.','Akarkan.'],w:'c = √100 = 10 cm.'},
+{q:'Sisi miring 13 cm dan salah satu sisi siku-siku 5 cm. Berapa panjang sisi siku-siku yang lain?',a:12,h:['Sisi yang dicari bukan sisi miring, jadi kurangkan.','b² = 169 - 25 = 144.','Akarkan.'],w:'b = 12 cm.'},
+{q:'Manakah yang merupakan sisi-sisi segitiga siku-siku?',type:'mc',o:['5, 6, 7','7, 24, 25','8, 9, 12'],a:1,h:['Sisi terpanjang harus memenuhi c² = a² + b².','Uji pilihan satu per satu.','7² + 24² = 49 + 576.'],w:'49 + 576 = 625 = 25², jadi 7-24-25 siku-siku.'},
+{q:'Segitiga sama kaki memiliki alas 12 cm dan panjang kaki 10 cm. Berapa cm tingginya?',a:8,lk:'Tinggi membagi alas menjadi dua (Materi 6) dan membentuk segitiga siku-siku.',h:['Tinggi membagi alas menjadi dua bagian sama panjang, masing-masing 6.','Segitiga siku-siku: sisi miring 10, sisi tegak 6, sisi lain adalah tinggi.','t² = 100 - 36.'],w:'t = √64 = 8 cm.'},
+{q:'Sebuah lapangan berbentuk persegi panjang berukuran 15 m × 20 m. Berapa meter panjang diagonalnya?',a:25,lk:'Memakai persegi panjang (Materi 7) dan Pythagoras.',h:['Diagonal membentuk segitiga siku-siku dengan sisi panjang dan lebar.','d² = 15² + 20² = 225 + 400.','d² = 625.'],w:'d = 25 m (kelipatan tripel 3-4-5).'},
+{q:'Segitiga dengan sisi 8 cm, 15 cm, dan 17 cm adalah segitiga...',type:'mc',o:['siku-siku','lancip','tumpul'],a:0,h:['Sisi terpanjang adalah 17. Hitung 17².','8² + 15² = 64 + 225.','Bandingkan dengan 17² = 289.'],w:'289 = 289, jadi siku-siku.'}]},
+{id:'l10',lv:4,t:'Penerapan Pythagoras',sim:'tangga',goal:'Menerapkan Pythagoras pada jarak, tangga, dan bangun datar yang kamu pelajari sebelumnya.',
+theory:`<p>Banyak masalah sehari-hari tersembunyi segitiga siku-siku. Tugasmu adalah menemukannya.</p>
+<ul><li><b>Tangga bersandar</b>: dinding, lantai, dan tangga membentuk segitiga siku-siku.</li><li><b>Jarak lurus</b>: jalan ke utara lalu ke timur membentuk dua sisi siku-siku, dan jarak lurus adalah sisi miring.</li><li><b>Bangun datar</b>: tinggi segitiga sama kaki, sisi belah ketupat, dan kaki trapesium siku-siku bisa dicari dengan Pythagoras.</li></ul>
+<div class="syn">sisi belah ketupat = √((d₁/2)² + (d₂/2)²)
+kaki trapesium siku-siku = √(selisih sejajar² + tinggi²)<small>Gambar dulu, cari segitiga siku-sikunya, lalu hitung.</small></div>
+<div class="pit"><b>Hati-hati</b>Tentukan dulu mana sisi miringnya. Sisi miring selalu berhadapan dengan sudut siku-siku.</div>`,
+ch:[
+{q:'Tangga 13 m bersandar pada dinding dengan kaki tangga 5 m dari dinding. Berapa meter tinggi ujung tangga dari tanah?',a:12,h:['Tangga adalah sisi miring.','h² = 13² - 5² = 169 - 25.','Akarkan 144.'],w:'h = 12 m.'},
+{q:'Hitung jarak titik A(1, 1) ke B(7, 9).',a:10,h:['Selisih x = 6 dan selisih y = 8.','Keduanya sisi siku-siku.','√(36 + 64).'],w:'Jarak = 10 satuan.'},
+{q:'Belah ketupat memiliki diagonal 16 cm dan 12 cm. Hitung kelilingnya.',a:40,lk:'Memakai belah ketupat (Materi 7) dan Pythagoras.',h:['Diagonal saling tegak lurus dan membagi dua. Separuh diagonalnya 8 dan 6.','Sisi = √(8² + 6²) = √100.','Keliling = 4 × sisi.'],w:'Sisi 10 cm, keliling 40 cm.'},
+{q:'Trapesium siku-siku memiliki sisi sejajar 14 cm dan 8 cm, tinggi 8 cm. Hitung kelilingnya.',a:40,lk:'Memakai trapesium (Materi 7) dan Pythagoras.',h:['Cari sisi miring: selisih sisi sejajar adalah 14 - 8 = 6.','Sisi miring = √(6² + 8²).','Keliling = 14 + 8 + 8 + sisi miring.'],w:'Sisi miring 10, keliling 14 + 8 + 8 + 10 = 40 cm.'},
+{q:'Dari titik A, Budi berjalan 40 m ke utara lalu 30 m ke timur. Berapa meter jarak lurus Budi dari A?',a:50,h:['Arah utara dan timur saling tegak lurus.','d² = 40² + 30² = 1.600 + 900.','√2.500.'],w:'d = 50 m.'},
+{q:'Segitiga sama kaki memiliki keliling 36 cm dan alas 10 cm. Hitung luasnya (cm²).',a:60,lk:'Gabungan keliling (Materi 3), segitiga (Materi 6), dan Pythagoras.',h:['Kaki = (36 - 10) / 2.','Kaki = 13. Tinggi: √(13² - 5²).','Tinggi = 12. Luas = ½ × 10 × 12.'],w:'Tinggi 12 cm, luas 60 cm².'}]},
+{id:'l11',lv:5,t:'Proyek: Merancang Taman Sekolah',sim:'taman',goal:'Menyelesaikan satu masalah besar yang memakai persamaan, sudut, segiempat, dan Pythagoras sekaligus.',
+theory:`<p>Sekolah akan membangun taman berbentuk <b>trapesium siku-siku ABCD</b>. Sisi AB sejajar DC, sudut A dan D siku-siku. Ukurannya: AB = 20 m, DC = 14 m, dan AD = 8 m.</p>
+<p>Soal-soal berikut berurutan: jawaban sebelumnya dipakai pada soal berikutnya, jadi kerjakan dari atas.</p>
+<table class="tbl"><tr><th>Soal</th><th>Materi yang diperlukan</th></tr><tr><td>Sisi miring BC</td><td>Pythagoras (9), akar (2)</td></tr><tr><td>Keliling dan luas</td><td>Trapesium (7), gabungan (8)</td></tr><tr><td>Sudut C</td><td>Garis sejajar (5), sudut sepihak</td></tr><tr><td>Diagonal AC</td><td>Pythagoras (9)</td></tr><tr><td>Biaya pagar dan rumput</td><td>Hitung gabungan (8), aritmetika</td></tr></table>
+<div class="note"><b>Tips</b>Gambar trapesiumnya lebih dulu. Tarik garis dari C tegak lurus ke AB untuk membentuk segitiga siku-siku di sisi kanan, lalu cari sisinya. Atau ubah simulasi ke ukuran ini dan cocokkan jawabanmu.</div>`,
+ch:[
+{q:'Hitung panjang sisi miring BC (meter).',a:10,lk:'Pythagoras (Materi 9) dan akar (Materi 2).',h:['Tarik garis dari C tegak lurus ke AB. Alas segitiga siku-siku yang terbentuk adalah selisih AB dan DC.','Alasnya 20 - 14 = 6, tingginya 8.','BC = √(6² + 8²).'],w:'BC = √100 = 10 m.'},
+{q:'Hitung keliling taman (meter).',a:52,lk:'Memakai BC dari soal 1.',h:['Keliling = AB + BC + CD + DA.','20 + 10 + 14 + 8.','Jumlahkan.'],w:'K = 52 m.'},
+{q:'Hitung luas taman (m²).',a:136,lk:'Trapesium (Materi 7).',h:['Luas trapesium = ½ × (a + b) × t.','a + b = 20 + 14 = 34.','½ × 34 × 8.'],w:'L = 17 × 8 = 136 m².'},
+{q:'Diketahui sudut B = 53°. Berapa derajat sudut C?',a:127,lk:'AB sejajar DC (Materi 5, sudut dalam sepihak).',h:['AB ∥ DC dipotong transversal BC.','Sudut B dan C adalah sudut dalam sepihak.','Jumlahnya 180°, jadi C = 180 - 53.'],w:'C = 127°. Cek jumlah sudut segiempat: 90 + 90 + 53 + 127 = 360.'},
+{q:'Hitung panjang diagonal AC (meter), dibulatkan dua desimal.',a:16.12,tol:0.006,lk:'Pythagoras pada segitiga ACD (Materi 9).',h:['Segitiga ADC siku-siku di D.','AD = 8 dan DC = 14.','AC = √(64 + 196) = √260.'],w:'AC = √260 ≈ 16,12 m.'},
+{q:'Pagar dipasang mengelilingi taman dengan harga Rp25.000 per meter. Berapa rupiah biaya pagarnya?',a:1300000,ans:'Rp1.300.000',lk:'Memakai keliling dari soal 2.',h:['Panjang pagar sama dengan keliling.','52 × 25.000.','52 × 25 = 1.300, lalu tambah tiga nol.'],w:'52 × 25.000 = 1.300.000.'},
+{q:'Taman juga ditanami rumput Rp8.000 per m². Berapa rupiah total biaya pagar dan rumput?',a:2388000,ans:'Rp2.388.000',lk:'Memakai luas (soal 3) dan biaya pagar (soal 6).',h:['Biaya rumput = luas × 8.000.','136 × 8.000 = 1.088.000.','Tambahkan biaya pagar 1.300.000.'],w:'1.088.000 + 1.300.000 = 2.388.000.'}]}
+];
+const GRP=['','Prasyarat','Bab 1 · Garis dan Sudut','Bab 2 · Segitiga dan Segiempat','Bab 3 · Teorema Pythagoras','Tantangan Terpadu'];
+const KEY='mat8-bab123-v1';
+let S={done:{},cur:'intro'};
+try{const j=JSON.parse(localStorage.getItem(KEY)||'{}');if(j.done)S.done=j.done;if(j.cur)S.cur=j.cur}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const hs={};let CUR=null;
+const TOTAL=LES.reduce((s,L)=>s+L.ch.length,0);
+function progress(){const d=Object.keys(S.done).length;$('pt').textContent=d+' dari '+TOTAL+' tantangan selesai';$('pb').style.width=(100*d/TOTAL)+'%'}
+function renderNav(){let h=`<button data-go="intro" ${S.cur=='intro'?'aria-current="true"':''}><span class="no">0</span><span>Mulai di sini</span></button>`,last=-1;
+ LES.forEach((L,i)=>{if(L.lv!=last){last=L.lv;h+=`<div class="lv">${GRP[L.lv]}</div>`}
+  const d=L.ch.filter((_,j)=>S.done[L.id+'-'+j]).length;
+  h+=`<button data-go="${L.id}" ${S.cur==L.id?'aria-current="true"':''}><span class="no">${i+1}</span><span>${L.t}</span><span class="ct ${d==L.ch.length?'all':''}">${d}/${L.ch.length}</span></button>`});
+ $('nav').innerHTML=h;progress()}
+function go(id){S.cur=id;save();renderNav();id=='intro'?renderIntro():renderLesson(LES.find(l=>l.id==id));
+ try{history.replaceState(null,'','#'+id)}catch(e){}window.scrollTo(0,0)}
+function renderIntro(){CUR=null;
+ const groups=[1,2,3,4,5].map(v=>`<div class="card"><h4>${GRP[v]}</h4><ol start="${LES.indexOf(LES.find(l=>l.lv==v))+1}">${LES.filter(l=>l.lv==v).map(l=>`<li><button data-go="${l.id}">${l.t}</button></li>`).join('')}</ol></div>`).join('');
+ $('main').innerHTML=`<div class="lhead"><span class="pill">Matematika Kelas 8 · Fase D</span><h2>Dari garis dan sudut sampai Pythagoras</h2><p class="goal">Tiga bab dalam satu halaman: Bab 1 Garis dan Sudut, Bab 2 Segitiga dan Segiempat, Bab 3 Teorema Pythagoras. Kamu mulai dari tiga materi prasyarat, lalu soal-soalnya makin saling terhubung sampai proyek terpadu di akhir.</p></div>
+ <section class="sec"><h3>Cara belajar</h3><div class="theory"><ol><li><b>Baca konsep</b> singkat di awal setiap materi.</li><li><b>Mainkan simulasi.</b> Geser penggeser atau pilih pasangan sudut, lalu amati angka dan gambar yang berubah.</li><li><b>Kerjakan tantangan.</b> Tulis jawaban lalu tekan Periksa. Bila bingung buka <b>Hint</b> satu per satu. Setelah ketiga hint terbuka, tombol <b>Lihat jawaban</b> aktif.</li><li>Perhatikan tulisan <b>Terkait</b> pada soal. Itu menunjukkan materi lain yang dipakai.</li></ol>
+ <div class="note"><b>Catatan</b>Desimal boleh ditulis dengan koma atau titik. Pecahan boleh ditulis seperti 1/2. Titik pemisah ribuan juga boleh (1.300.000). Tulis jawaban tanpa satuan.</div></div></section>
+ <section class="sec"><h3>Alur keterkaitan</h3><div class="theory"><table class="tbl"><tr><th>Prasyarat</th><th>dipakai di</th></tr><tr><td>PLSV (Materi 1)</td><td>mencari sudut berbentuk aljabar pada Materi 4, 5, 6, dan 7</td></tr><tr><td>Kuadrat dan akar (Materi 2)</td><td>Pythagoras pada Materi 9, 10, dan 11</td></tr><tr><td>Keliling dan luas (Materi 3)</td><td>segiempat, bangun gabungan, dan proyek</td></tr><tr><td>Sudut sejajar (Materi 5)</td><td>jajargenjang, trapesium, dan sudut pada proyek</td></tr><tr><td>Segitiga dan segiempat (Materi 6, 7)</td><td>penerapan Pythagoras (Materi 10) dan proyek (Materi 11)</td></tr></table></div></section>
+ <section class="sec"><h3>Urutan materi</h3><div class="path">${groups}</div></section>
+ <div class="pager"><span></span><button class="btn pri" data-go="l1">Mulai materi 1</button></div>`}
+function chHTML(L,i){const c=L.ch[i],k=L.id+'-'+i,d=S.done[k];let inp;
+ if(c.type=='mc')inp=`<div class="opts" role="radiogroup">${c.o.map((t,j)=>`<label><input type="radio" name="r-${k}" value="${j}">${esc(t)}</label>`).join('')}</div><div class="row"><button class="btn pri" data-act="chk">Periksa</button></div>`;
+ else inp=`<div class="in"><input type="text" id="in-${k}" placeholder="Tulis angka" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Jawaban tantangan ${i+1}"><button class="btn pri" data-act="chk">Periksa</button></div>`;
+ return `<article class="card ch ${d?'done':''}" data-k="${k}" data-i="${i}"><div class="chh"><span class="tag">Tantangan ${i+1} dari ${L.ch.length}</span><span class="st">${d?'✓ Selesai':'Belum selesai'}</span></div><p class="q">${c.q}</p>${c.lk?`<p class="lk"><b>Terkait</b>${c.lk}</p>`:''}${inp}<div class="fb" hidden></div>
+ <div class="row"><button class="btn hint" data-act="hint">Hint</button><button class="btn ans" data-act="ans" disabled>Lihat jawaban</button><button class="btn" data-act="reset">Ulangi tantangan</button></div><ol class="hints"></ol><div class="answer" hidden></div></article>`}
+function renderLesson(L){const i=LES.indexOf(L);CUR=L;const sm=SIMS[L.sim](),prev=i?LES[i-1]:null,next=LES[i+1];
+ $('main').innerHTML=`<div class="lhead"><span class="pill">${GRP[L.lv]} · Materi ${i+1} dari ${LES.length}</span><h2>${L.t}</h2><p class="goal">${L.goal}</p></div>
+ <section class="sec"><h3>Konsep</h3><div class="theory">${L.theory}</div></section>
+ <section class="sec"><h3>Simulasi</h3><div class="card simbox" id="sim">${sm.html}</div></section>
+ <section class="sec"><h3>Tantangan</h3><div class="row" style="margin-bottom:12px"><button class="btn" data-act="resetlesson">Reset semua tantangan di materi ini</button></div>${L.ch.map((_,j)=>chHTML(L,j)).join('')}</section>
+ <div class="pager">${prev?`<button class="btn" data-go="${prev.id}">← ${prev.t}</button>`:`<button class="btn" data-go="intro">← Mulai di sini</button>`}${next?`<button class="btn pri" data-go="${next.id}">${next.t} →</button>`:`<span class="cap">Kamu sudah sampai materi terakhir. Kerja bagus!</span>`}</div>`;
+ const box=$('sim'),upd=()=>{box.querySelectorAll('input[type=range]').forEach(x=>{const o=$('o-'+x.id);if(o)o.textContent=x.value});sm.run()};
+ box.addEventListener('input',upd);box.addEventListener('change',upd);upd();
+ document.querySelectorAll('.ch').forEach(a=>restoreHints(L,a))}
+/* pemeriksa jawaban */
+function pnum(s){s=s.trim().replace(/[−–]/g,'-').replace(/\s/g,'');if(/^-?\d{1,3}(\.\d{3})+$/.test(s))s=s.replace(/\./g,'');s=s.replace(',','.');
+ const m=/^(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)$/.exec(s);if(m)return +m[2]?+m[1]/+m[2]:NaN;return /^-?\d+(\.\d+)?$/.test(s)?parseFloat(s):NaN}
+function verify(c,a){
+ if(c.type=='mc'){const r=a.querySelector('input[type=radio]:checked');if(!r)return{ok:0,m:'Pilih salah satu jawaban dulu.'};return +r.value==c.a?{ok:1}:{ok:0,m:'Pilihan itu belum tepat.'}}
+ const v=a.querySelector('input[type=text]').value.trim();if(!v)return{ok:0,m:'Tulis jawabanmu dulu.'};
+ const n=pnum(v);if(isNaN(n))return{ok:0,m:'Tulis jawaban berupa angka saja, misalnya 12 atau 7,07.'};
+ return Math.abs(n-c.a)<=(c.tol||1e-6*Math.max(1,Math.abs(c.a)))?{ok:1}:{ok:0,m:'Jawabanmu '+fmt(n,4)+' belum tepat.'}}
+function restoreHints(L,a){const k=a.dataset.k,n=hs[k]||0,c=L.ch[a.dataset.i];
+ a.querySelector('.hints').innerHTML=c.h.slice(0,n).map((t,j)=>`<li><b>Hint ${j+1}</b>${t}</li>`).join('');
+ const hb=a.querySelector('[data-act=hint]'),ab=a.querySelector('[data-act=ans]');
+ hb.textContent=n>=3?'Semua hint terbuka':'Hint ('+n+'/3)';hb.disabled=n>=3;
+ ab.disabled=!(n>=3||S.done[k]);ab.title=ab.disabled?'Buka ketiga hint dulu':'';
+ if(a.dataset.shown)showAnswer(L,a)}
+function showAnswer(L,a){const c=L.ch[a.dataset.i],el=a.querySelector('.answer');a.dataset.shown=1;
+ const t=c.type=='mc'?c.o[c.a]:c.ans||fmt(c.a,4);
+ el.hidden=false;el.innerHTML=`<b>Jawaban yang benar:</b><code>${esc(t)}</code>${esc(c.w)}`}
+function done(a){S.done[a.dataset.k]=1;save();a.classList.add('done');a.querySelector('.st').textContent='✓ Selesai';const y=$('nav').scrollTop;renderNav();$('nav').scrollTop=y}
+function feedback(a,r){const fb=a.querySelector('.fb');fb.hidden=false;fb.className='fb '+(r.ok?'ok':'no');fb.textContent=r.ok?'Benar! Kerja bagus.':r.m+' Butuh bantuan? Buka Hint.'}
+function resetCh(L,a){const k=a.dataset.k;delete S.done[k];hs[k]=0;delete a.dataset.shown;
+ const i=a.querySelector('input[type=text]');if(i)i.value='';a.querySelectorAll('input[type=radio]').forEach(x=>x.checked=false);
+ a.querySelector('.fb').hidden=true;a.querySelector('.answer').hidden=true;a.classList.remove('done');a.querySelector('.st').textContent='Belum selesai';save();restoreHints(L,a)}
+function runCheck(L,a){const r=verify(L.ch[a.dataset.i],a);feedback(a,r);if(r.ok){done(a);restoreHints(L,a)}}
+const main=$('main');
+main.addEventListener('click',e=>{
+ const g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return}
+ const act=e.target.dataset.act;if(!act||!CUR)return;
+ if(act=='resetlesson'){document.querySelectorAll('.ch').forEach(x=>resetCh(CUR,x));const y=$('nav').scrollTop;renderNav();$('nav').scrollTop=y;return}
+ const a=e.target.closest('.ch');if(!a)return;
+ if(act=='hint'){hs[a.dataset.k]=Math.min(3,(hs[a.dataset.k]||0)+1);restoreHints(CUR,a)}
+ if(act=='ans')showAnswer(CUR,a);
+ if(act=='chk')runCheck(CUR,a);
+ if(act=='reset'){resetCh(CUR,a);const y=$('nav').scrollTop;renderNav();$('nav').scrollTop=y}});
+main.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.matches('.in input'))runCheck(CUR,e.target.closest('.ch'))});
+let rt=null;
+$('rall').addEventListener('click',()=>{const b=$('rall');
+ if(!rt){b.textContent='Yakin? Klik lagi untuk menghapus semua';rt=setTimeout(()=>{rt=null;b.textContent='Reset semua tantangan'},4000);return}
+ clearTimeout(rt);rt=null;b.textContent='Reset semua tantangan';S.done={};for(const k in hs)delete hs[k];save();go(S.cur)});
+$('nav').addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go)});
+let h0='';try{h0=location.hash.slice(1)}catch(e){}
+go(LES.some(l=>l.id==h0)||h0=='intro'?h0:(LES.some(l=>l.id==S.cur)?S.cur:'intro'));
+</script>
+</body></html>
