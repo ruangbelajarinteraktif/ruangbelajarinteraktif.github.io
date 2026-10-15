@@ -1,0 +1,637 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Bab 1 Analisis Data</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=JetBrains+Mono:wght@400;600&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: lesson rail on the left, one lesson at a time; each lesson = concept text, an editable sheet, then challenges with hint and answer. Graph-paper ground, spreadsheet-green accent. */
+:root{
+ --bg:#eef2f3;--grid:#dde5e7;--card:#fbfcfc;--ink:#14232b;--mut:#51646d;--line:#cbd7da;
+ --acc:#0e7a4f;--acc-ink:#ffffff;--acc-soft:#d8efe3;
+ --hint:#7a4300;--hint-bg:#fff0d2;--ans:#1a4aa8;--ans-bg:#e0eaff;
+ --bad:#9c2226;--bad-bg:#fde3e1;--ok:#0a5a39;--ok-bg:#d8efe3;
+ --ref:#cfe1ff;--user:#e6f5ec;--hd:#e4ebed;--code:#e9eff1;
+ --f-disp:'Bricolage Grotesque',Georgia,serif;--f-body:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;--f-mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#0f181d;--grid:#16232a;--card:#16222a;--ink:#e4edf0;--mut:#93a7af;--line:#2b3d46;
+ --acc:#3fd596;--acc-ink:#07261a;--acc-soft:#14382b;
+ --hint:#ffd591;--hint-bg:#3a2a0d;--ans:#a8c3ff;--ans-bg:#18284d;
+ --bad:#ffb4b0;--bad-bg:#47191b;--ok:#a6f0cd;--ok-bg:#12372a;
+ --ref:#1d3a66;--user:#143328;--hd:#1e2e36;--code:#1b2b33;color-scheme:dark}}
+:root[data-theme="dark"]{
+ --bg:#0f181d;--grid:#16232a;--card:#16222a;--ink:#e4edf0;--mut:#93a7af;--line:#2b3d46;
+ --acc:#3fd596;--acc-ink:#07261a;--acc-soft:#14382b;
+ --hint:#ffd591;--hint-bg:#3a2a0d;--ans:#a8c3ff;--ans-bg:#18284d;
+ --bad:#ffb4b0;--bad-bg:#47191b;--ok:#a6f0cd;--ok-bg:#12372a;
+ --ref:#1d3a66;--user:#143328;--hd:#1e2e36;--code:#1b2b33;color-scheme:dark}
+*{box-sizing:border-box}
+body{background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font:16px/1.6 var(--f-body);margin:0}
+.homebar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+.hbin{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.home{display:inline-flex;align-items:center;gap:8px;background:var(--acc);color:var(--acc-ink);text-decoration:none;font:600 14px/1 var(--f-body);padding:10px 14px;border-radius:8px}
+.home:hover{filter:brightness(1.08)}.home:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.home svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{display:flex;flex-wrap:wrap;gap:12px 32px;align-items:flex-end;justify-content:space-between;padding-bottom:18px}
+.eyebrow{margin:0;font:600 12px/1.4 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+h1,h2,h3,h4{font-family:var(--f-disp);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,5vw,44px);letter-spacing:-.01em}
+.prog{min-width:min(100%,260px);font-size:13px;color:var(--mut)}
+.bar{height:8px;border-radius:99px;background:var(--hd);margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--acc);transition:width .3s}
+.shell{display:grid;grid-template-columns:260px minmax(0,1fr);gap:32px;align-items:start}
+nav{position:sticky;top:calc(72px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:2px;max-height:calc(100vh - 88px);overflow:auto;padding-right:4px}
+nav .lv{font:600 11px/1 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--mut);margin:16px 0 6px;padding-left:10px}
+nav .lv:first-child{margin-top:0}
+nav button{display:flex;gap:10px;align-items:baseline;text-align:left;width:100%;border:0;background:transparent;color:var(--ink);font:500 14px/1.35 var(--f-body);padding:8px 10px;border-radius:8px;cursor:pointer}
+nav button:hover{background:var(--hd)}
+nav button[aria-current="true"]{background:var(--acc-soft);color:var(--ink);font-weight:600}
+nav .no{font:600 12px var(--f-mono);color:var(--mut);min-width:1.6em}
+nav .ct{margin-left:auto;font:500 11px var(--f-mono);color:var(--mut);white-space:nowrap}
+nav .ct.all{color:var(--acc);font-weight:600}
+main{min-width:0;max-width:880px}
+.lhead{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.pill{display:inline-block;font:600 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:5px;background:var(--acc-soft);color:var(--ok);width:max-content}
+h2{font-size:clamp(26px,4vw,36px)}
+.goal{margin:0;color:var(--mut);font-size:17px;max-width:62ch}
+.sec{margin-top:30px}
+.sec>h3{font-size:12px;font:600 12px/1 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--mut);margin-bottom:12px}
+.theory{max-width:68ch}
+.theory p{margin:0 0 12px}
+.theory h4{font-size:18px;margin:18px 0 6px}
+.theory ul,.theory ol{margin:0 0 12px;padding-left:20px}
+.theory li{margin:3px 0}
+code{font:500 .9em var(--f-mono);background:var(--code);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.syn{font:600 15px/1.5 var(--f-mono);background:var(--code);border-radius:8px;padding:12px 14px;margin:0 0 12px;overflow-x:auto;white-space:pre;max-width:100%}
+.syn small{display:block;font:400 12px var(--f-body);color:var(--mut);white-space:normal;margin-top:4px}
+.note,.pit{border-radius:8px;padding:10px 12px;margin:0 0 12px;font-size:15px}
+.note{background:var(--ans-bg);color:var(--ink)}.pit{background:var(--hint-bg);color:var(--ink)}
+.note b,.pit b{font:600 11px var(--f-mono);letter-spacing:.07em;text-transform:uppercase;margin-right:6px}
+.note b{color:var(--ans)}.pit b{color:var(--hint)}
+.tbl{border-collapse:collapse;font-size:14px;margin:0 0 12px;display:block;overflow-x:auto;max-width:100%}
+.tbl th,.tbl td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+.tbl th{background:var(--hd);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px}
+.sheetbox{padding:12px}
+.fbar{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.nb{font:600 13px var(--f-mono);min-width:52px;text-align:center;padding:7px 8px;border:1px solid var(--line);border-radius:6px;background:var(--hd)}
+.fxl{font:italic 600 14px var(--f-disp);color:var(--mut)}
+input[type=text],select{font:500 14px var(--f-mono);color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+.fbar input{flex:1}
+input[type=text]:focus,select:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.gridw{overflow:auto;max-width:100%;border:1px solid var(--line);border-radius:6px}
+table.sg{border-collapse:collapse;font:13px/1.3 var(--f-mono);background:var(--card);width:max-content;min-width:100%}
+.sg th{background:var(--hd);color:var(--mut);font-weight:600;padding:4px 8px;border:1px solid var(--line);position:sticky;top:0;z-index:1}
+.sg th.rh{position:sticky;left:0;z-index:2;min-width:34px;text-align:center}
+.sg td{border:1px solid var(--line);padding:5px 9px;min-width:84px;height:28px;white-space:nowrap;cursor:cell;font-variant-numeric:tabular-nums}
+.sg td.n{text-align:right}.sg td.hd0{font-weight:600}
+.sg td.rf{background:var(--ref)}.sg td.us{background:var(--user)}.sg td.er{color:var(--bad);font-weight:600}
+.sg td.sel{outline:2px solid var(--acc);outline-offset:-2px}
+.cap{font-size:13px;color:var(--mut);margin:8px 2px 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:600 14px var(--f-body);border-radius:8px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;cursor:pointer}
+.btn:hover:not(:disabled){border-color:var(--acc)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.pri{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.btn.hint{background:var(--hint-bg);color:var(--hint);border-color:transparent}
+.btn.ans{background:var(--ans-bg);color:var(--ans);border-color:transparent}
+.ch{padding:16px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
+.ch.done{border-color:var(--acc)}
+.chh{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.tag{font:600 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.st{font:600 12px var(--f-mono);color:var(--mut)}.ch.done .st{color:var(--ok)}
+.q{margin:0;font-weight:500}
+.q code{white-space:normal}
+.in{display:flex;gap:8px;flex-wrap:wrap}.in input{flex:1;min-width:200px;font-size:15px}
+.keys{display:flex;gap:6px;flex-wrap:wrap}
+.keys button{font:500 14px var(--f-mono);min-width:36px;padding:4px 8px;border:1px solid var(--line);background:var(--hd);color:var(--ink);border-radius:6px;cursor:pointer}
+.pv{font-size:13px;color:var(--mut);min-height:1.4em}.pv b{color:var(--ink);font-family:var(--f-mono)}
+.fb{border-radius:8px;padding:10px 12px;font-size:14.5px}.fb.ok{background:var(--ok-bg);color:var(--ok)}.fb.no{background:var(--bad-bg);color:var(--bad)}
+.hints{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.hints li{background:var(--hint-bg);color:var(--ink);border-radius:8px;padding:9px 12px;font-size:14.5px}
+.hints li b{color:var(--hint);font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+.answer{background:var(--ans-bg);color:var(--ink);border-radius:8px;padding:10px 12px;font-size:14.5px}
+.answer code{display:block;background:transparent;padding:4px 0;font-size:14px;color:var(--ans);white-space:pre-wrap}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:34px;flex-wrap:wrap}
+.pvc{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.pvc label{display:flex;flex-direction:column;gap:4px;font:600 12px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--mut)}
+.pvc select{width:100%;font-family:var(--f-body);font-size:15px;text-transform:none;letter-spacing:0;font-weight:500}
+.pvt td.tot,.pvt th.tot{font-weight:700;background:var(--hd)}
+.pvt th.l{text-align:left;background:var(--hd);position:static}
+.path{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.path .card{padding:12px 14px}.path h4{font-size:16px;margin-bottom:6px}.path ol{margin:0;padding-left:20px;font-size:14.5px}
+.path button{all:unset;cursor:pointer;color:var(--acc);text-decoration:underline;text-underline-offset:3px}
+@media (max-width:900px){
+ .shell{grid-template-columns:minmax(0,1fr);gap:16px}
+ nav{position:static;flex-direction:row;overflow-x:auto;max-height:none;gap:6px;padding-bottom:6px}
+ nav .lv{display:none}
+ nav button{width:auto;white-space:nowrap;border:1px solid var(--line);background:var(--card)}
+ nav .ct{display:none}
+}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+<div class="homebar"><div class="hbin"><a class="home" id="home" href="https://ruangbelajarinteraktif.github.io" target="_top" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Beranda</a><button class="btn" id="rall" type="button">Reset semua tantangan</button></div></div>
+<div class="wrap">
+ <header class="top">
+  <div><p class="eyebrow">Informatika · Kelas 8 · Bab 1</p><h1>Analisis Data</h1></div>
+  <div class="prog"><span id="pt"></span><div class="bar"><i id="pb"></i></div></div>
+ </header>
+ <div class="shell"><nav id="nav" aria-label="Daftar materi"></nav><main id="main"></main></div>
+</div>
+<script>
+/* ===== Mesin rumus mini ===== */
+const colN=s=>{let n=0;for(const ch of s)n=n*26+ch.charCodeAt(0)-64;return n-1};
+const colL=n=>{let s='';n++;while(n>0){const m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26)}return s};
+class FErr extends Error{constructor(c,m){super(m||c);this.code=c;this.msg=m||c}}
+const isErr=v=>v&&typeof v=='object'&&v.err;
+const fmtN=v=>String(+v.toFixed(9));
+function tokenize(s){const t=[];let i=0;
+ while(i<s.length){const c=s[i];
+  if(/\s/.test(c)){i++;continue}
+  if(c=='"'){let j=i+1,v='';for(;;){if(j>=s.length)throw new FErr('#KUTIP','Tanda kutip belum ditutup. Teks ditulis seperti "Snack".');if(s[j]=='"'){if(s[j+1]=='"'){v+='"';j+=2;continue}break}v+=s[j++]}t.push({k:'s',v});i=j+1;continue}
+  const r=s.slice(i);let m;
+  if(m=/^\$?([A-Za-z]{1,2})\$?(\d+)(?![\w(])/.exec(r)){t.push({k:'r',v:(m[1]+m[2]).toUpperCase()});i+=m[0].length;continue}
+  if(m=/^\d+(\.\d+)?/.exec(r)){t.push({k:'n',v:parseFloat(m[0])});i+=m[0].length;continue}
+  if(m=/^[A-Za-z_][A-Za-z0-9_.]*/.exec(r)){t.push({k:'i',v:m[0]});i+=m[0].length;continue}
+  if(m=/^(<=|>=|<>|[-+*\/^&=<>(),;:%])/.exec(r)){t.push({k:'o',v:m[1]});i+=m[1].length;continue}
+  throw new FErr('#SYNTAX','Karakter "'+c+'" tidak dikenali dalam rumus.')}
+ return t}
+function parse(t){let p=0;const pk=()=>t[p],nx=()=>t[p++];
+ const isO=o=>pk()&&pk().k=='o'&&pk().v==o;
+ const CO=['=','<>','<','>','<=','>='];
+ function cmp(){let l=cat();while(pk()&&pk().k=='o'&&CO.includes(pk().v)){const o=nx().v;l={t:'bin',o,l,r:cat()}}return l}
+ function cat(){let l=add();while(isO('&')){nx();l={t:'bin',o:'&',l,r:add()}}return l}
+ function add(){let l=mul();while(isO('+')||isO('-')){const o=nx().v;l={t:'bin',o,l,r:mul()}}return l}
+ function mul(){let l=pow();while(isO('*')||isO('/')){const o=nx().v;l={t:'bin',o,l,r:pow()}}return l}
+ function pow(){let l=un();while(isO('^')){nx();l={t:'bin',o:'^',l,r:un()}}return l}
+ function un(){if(isO('-')){nx();return{t:'neg',e:un()}}if(isO('+')){nx();return un()}return pc()}
+ function pc(){let e=pri();while(isO('%')){nx();e={t:'bin',o:'/',l:e,r:{t:'n',v:100}}}return e}
+ function pri(){const k=nx();if(!k)throw new FErr('#SYNTAX','Rumus belum lengkap, ada bagian yang kurang di bagian akhir.');
+  if(k.k=='n')return{t:'n',v:k.v};
+  if(k.k=='s')return{t:'s',v:k.v};
+  if(k.k=='r'){if(isO(':')){nx();const k2=nx();if(!k2||k2.k!='r')throw new FErr('#REF!','Setelah tanda titik dua (:) harus ada alamat sel lain, misalnya A1:B5.');return{t:'rng',a:k.v,b:k2.v}}return{t:'ref',a:k.v}}
+  if(k.k=='i'){if(isO('(')){nx();const a=[];if(isO(')')){nx();return{t:'fn',n:k.v.toUpperCase(),a}}
+    for(;;){a.push(cmp());if(!pk())throw new FErr('#SYNTAX','Jumlah kurung buka dan tutup belum sama.');if(isO(',')||isO(';')){nx();continue}if(isO(')')){nx();break}throw new FErr('#SYNTAX','Antar argumen harus dipisah ; atau , dan diakhiri kurung tutup.')}
+    return{t:'fn',n:k.v.toUpperCase(),a}}
+   const u=k.v.toUpperCase();if(u=='TRUE')return{t:'b',v:true};if(u=='FALSE')return{t:'b',v:false};
+   throw new FErr('#NAME?','"'+k.v+'" tidak dikenali. Jika maksudnya teks, apit dengan tanda kutip, misalnya "'+k.v+'".')}
+  if(k.k=='o'&&k.v=='('){const e=cmp();if(!isO(')'))throw new FErr('#SYNTAX','Kurung buka belum ditutup.');nx();return e}
+  throw new FErr('#SYNTAX','Tanda "'+k.v+'" tidak diharapkan di posisi ini.')}
+ const e=cmp();if(p<t.length)throw new FErr('#SYNTAX',t[p].v==')'?'Ada kurung tutup yang berlebih.':'Ada bagian rumus yang tidak dikenali dekat "'+t[p].v+'".');return e}
+const addr=a=>{const m=/^([A-Z]+)(\d+)$/.exec(a);return[+m[2]-1,colN(m[1])]};
+const sc=x=>x&&x.rng?x.rows[0][0]:x;
+function num(x){if(x===null)return 0;if(typeof x=='number')return x;if(typeof x=='boolean')return x?1:0;
+ if(/^\s*-?\d+(\.\d+)?\s*$/.test(x))return parseFloat(x);throw new FErr('#VALUE!','Operasi hitung tidak bisa dipakai pada teks "'+x+'".')}
+const str=v=>v===null?'':typeof v=='boolean'?(v?'TRUE':'FALSE'):typeof v=='number'?fmtN(v):String(v);
+const rank=v=>typeof v=='number'?0:typeof v=='string'?1:2;
+function cmpv(a,b){if(a===null)a=typeof b=='string'?'':typeof b=='boolean'?false:0;if(b===null)b=typeof a=='string'?'':typeof a=='boolean'?false:0;
+ const ra=rank(a),rb=rank(b);if(ra!=rb)return ra-rb;if(ra==0)return a-b<-1e-9?-1:a-b>1e-9?1:0;
+ if(ra==1){const x=a.toLowerCase(),y=b.toLowerCase();return x<y?-1:x>y?1:0}return(a?1:0)-(b?1:0)}
+function bin(o,a,b){
+ if(o=='&')return str(a)+str(b);
+ if(['=','<>','<','>','<=','>='].includes(o)){const c=cmpv(a,b);return{'=':c==0,'<>':c!=0,'<':c<0,'>':c>0,'<=':c<=0,'>=':c>=0}[o]}
+ const x=num(a),y=num(b);
+ switch(o){case'+':return x+y;case'-':return x-y;case'*':return x*y;case'/':if(y==0)throw new FErr('#DIV/0!','Pembagian dengan nol.');return x/y;case'^':return Math.pow(x,y)}}
+function ev(n,sh){
+ switch(n.t){
+ case'n':case's':case'b':return n.v;
+ case'ref':{const[r,c]=addr(n.a);const v=sh.val(r,c);if(isErr(v))throw new FErr(v.err,v.msg);return v}
+ case'rng':{const[r1,c1]=addr(n.a),[r2,c2]=addr(n.b);const rows=[];
+  for(let r=Math.min(r1,r2);r<=Math.max(r1,r2);r++){const row=[];for(let c=Math.min(c1,c2);c<=Math.max(c1,c2);c++){const v=sh.val(r,c);if(isErr(v))throw new FErr(v.err,v.msg);row.push(v)}rows.push(row)}
+  return{rng:1,rows}}
+ case'neg':return -num(sc(ev(n.e,sh)));
+ case'bin':return bin(n.o,sc(ev(n.l,sh)),sc(ev(n.r,sh)));
+ case'fn':{const f=FN[n.n];if(!f)throw new FErr('#NAME?','Fungsi '+n.n+' tidak dikenali. Periksa ejaan namanya.');return f(n.a,x=>ev(x,sh))}}}
+function mkSheet(raw){const memo=new Map(),busy=new Set();
+ const sh={raw,val(r,c){const v=raw[r]&&raw[r][c];if(v===undefined||v===null||v==='')return null;
+  if(typeof v=='string'&&v[0]=='='){const k=r+','+c;if(memo.has(k))return memo.get(k);
+   if(busy.has(k))return{err:'#REF!',msg:'Rumus merujuk ke dirinya sendiri.'};
+   busy.add(k);let out;try{out=sc(ev(parse(tokenize(v.slice(1))),sh));if(out===undefined)out=null}catch(e){if(e instanceof FErr)out={err:e.code,msg:e.msg};else throw e}
+   busy.delete(k);memo.set(k,out);return out}
+  return v}};return sh}
+function calc(f,sh){try{f=f.trim();if(f[0]!='=')throw new FErr('#SYNTAX','Rumus di Excel selalu diawali tanda sama dengan (=).');
+ const v=sc(ev(parse(tokenize(f.slice(1))),sh));return{v:v===undefined?null:v}}catch(e){if(e instanceof FErr)return{err:e.code,msg:e.msg};throw e}}
+function mt(v,c){
+ if(typeof c=='number')return typeof v=='number'&&Math.abs(v-c)<1e-9;
+ if(typeof c=='boolean')return v===c;
+ if(c===null)return v===null;
+ const m=/^(>=|<=|<>|>|<|=)?([\s\S]*)$/.exec(String(c));const op=m[1]||'=',x=m[2];
+ const nx=x.trim()!==''&&!isNaN(x)?+x:null;
+ if(nx!==null){if(typeof v!='number')return op=='<>';const d=v-nx;return{'>=':d>=0,'<=':d<=0,'<>':Math.abs(d)>1e-9,'>':d>0,'<':d<0,'=':Math.abs(d)<1e-9}[op]}
+ if(v===null)return op=='<>'?x!=='':x==='';
+ const re=new RegExp('^'+x.replace(/[.+^${}()|[\]\\]/g,'\\$&').replace(/\*/g,'.*').replace(/\?/g,'.')+'$','i');
+ const e=re.test(str(v));return op=='<>'?!e:e}
+function nums(vals){const o=[];for(const v of vals){if(v&&v.rng){for(const r of v.rows)for(const x of r)if(typeof x=='number')o.push(x)}else o.push(num(v))}return o}
+const rngOf=(v,n)=>{if(!v||!v.rng)throw new FErr('#VALUE!',n+' membutuhkan rentang sel, misalnya A2:A10.');return v.rows};
+const truthy=v=>{if(typeof v=='boolean')return v;if(typeof v=='number')return v!=0;if(v===null)return false;
+ if(/^true$/i.test(v))return true;if(/^false$/i.test(v))return false;throw new FErr('#VALUE!','Syarat IF harus berupa perbandingan, misalnya B2>=75.')};
+function lk(rows,k,i,approx,nm,dim){
+ if(i<1)throw new FErr('#VALUE!','Nomor '+dim+' harus 1 atau lebih.');
+ if(i>rows[0].length)throw new FErr('#REF!','Nomor '+dim+' '+i+' melebihi jumlah '+dim+' pada tabel ('+rows[0].length+').');
+ let idx=-1;
+ if(!approx)idx=rows.findIndex(r=>r[0]!==null&&cmpv(r[0],k)==0);
+ else for(let j=0;j<rows.length;j++){const x=rows[j][0];if(x!==null&&rank(x)==rank(k)){if(cmpv(x,k)<=0)idx=j;else break}}
+ if(idx<0)throw new FErr('#N/A','Nilai yang dicari tidak ditemukan di '+(nm=='V'?'kolom pertama':'baris pertama')+' tabel.');
+ const v=rows[idx][i-1];return v===null?0:v}
+const crit=(a,s,E)=>{const P=[];for(let i=s;i<a.length;i+=2){if(i+1>=a.length)throw new FErr('#VALUE!','Setiap rentang kriteria harus diikuti kriterianya.');P.push([rngOf(E(a[i]),'Fungsi').flat(),sc(E(a[i+1]))])}return P};
+const sel=(P,n)=>{if(P.some(([v])=>v.length!=n))throw new FErr('#VALUE!','Ukuran rentang tidak sama. Semua rentang harus punya jumlah baris yang sama.');const o=[];for(let i=0;i<n;i++)if(P.every(([v,c])=>mt(v[i],c)))o.push(i);return o};
+const sumAt=(s,ix)=>ix.reduce((t,i)=>t+(typeof s[i]=='number'?s[i]:0),0);
+const A1=(a,E,i)=>sc(E(a[i]));
+const FN={
+ SUM:(a,E)=>nums(a.map(E)).reduce((s,x)=>s+x,0),
+ AVERAGE:(a,E)=>{const n=nums(a.map(E));if(!n.length)throw new FErr('#DIV/0!','Tidak ada angka yang bisa dirata-ratakan.');return n.reduce((s,x)=>s+x,0)/n.length},
+ COUNT:(a,E)=>a.map(E).reduce((s,v)=>s+(v&&v.rng?v.rows.flat().filter(x=>typeof x=='number').length:(typeof v=='number'?1:0)),0),
+ COUNTA:(a,E)=>a.map(E).reduce((s,v)=>s+(v&&v.rng?v.rows.flat().filter(x=>x!==null).length:(v===null?0:1)),0),
+ MAX:(a,E)=>{const n=nums(a.map(E));return n.length?Math.max(...n):0},
+ MIN:(a,E)=>{const n=nums(a.map(E));return n.length?Math.min(...n):0},
+ ROUND:(a,E)=>{const x=num(A1(a,E,0)),p=Math.pow(10,a[1]?num(A1(a,E,1)):0);return Math.round(x*p)/p},
+ IF:(a,E)=>{if(a.length<2)throw new FErr('#SYNTAX','IF butuh minimal syarat dan hasil jika benar.');return truthy(A1(a,E,0))?A1(a,E,1):(a[2]?A1(a,E,2):false)},
+ AND:(a,E)=>a.every(x=>truthy(sc(E(x)))),
+ OR:(a,E)=>a.some(x=>truthy(sc(E(x)))),
+ IFERROR:(a,E)=>{try{return A1(a,E,0)}catch(e){if(e instanceof FErr)return A1(a,E,1);throw e}},
+ VLOOKUP:(a,E)=>{const rows=rngOf(E(a[1]),'VLOOKUP');return lk(rows,A1(a,E,0),Math.trunc(num(A1(a,E,2))),!a[3]||truthy(A1(a,E,3)),'V','kolom')},
+ HLOOKUP:(a,E)=>{const rows=rngOf(E(a[1]),'HLOOKUP');const T=rows[0].map((_,j)=>rows.map(r=>r[j]));return lk(T,A1(a,E,0),Math.trunc(num(A1(a,E,2))),!a[3]||truthy(A1(a,E,3)),'H','baris')},
+ MATCH:(a,E)=>{const k=A1(a,E,0),v=rngOf(E(a[1]),'MATCH').flat(),t=a[2]?num(A1(a,E,2)):1;let idx=-1;
+  if(t==0)idx=v.findIndex(x=>x!==null&&cmpv(x,k)==0);
+  else for(let j=0;j<v.length;j++){const x=v[j];if(x!==null&&rank(x)==rank(k)&&(t>0?cmpv(x,k)<=0:cmpv(x,k)>=0))idx=j}
+  if(idx<0)throw new FErr('#N/A','Nilai yang dicari tidak ditemukan dalam rentang.');return idx+1},
+ INDEX:(a,E)=>{const rows=rngOf(E(a[0]),'INDEX');let r=a[1]?Math.trunc(num(A1(a,E,1))):0,c=a[2]?Math.trunc(num(A1(a,E,2))):0;
+  if(!a[2]){if(rows[0].length==1)c=1;else if(rows.length==1){c=r;r=1}else throw new FErr('#REF!','Rentang punya banyak kolom, sertakan nomor kolom: INDEX(A2:D9; baris; kolom).')}
+  if(r<1||c<1||r>rows.length||c>rows[0].length)throw new FErr('#REF!','Nomor baris atau kolom berada di luar rentang INDEX.');
+  const v=rows[r-1][c-1];return v===null?0:v},
+ CHOOSE:(a,E)=>{const i=Math.trunc(num(A1(a,E,0)));if(i<1||i>=a.length)throw new FErr('#VALUE!','Nomor pilihan '+i+' di luar daftar (1 sampai '+(a.length-1)+').');return A1(a,E,i)},
+ COUNTIF:(a,E)=>{const r=rngOf(E(a[0]),'COUNTIF').flat();return sel([[r,A1(a,E,1)]],r.length).length},
+ SUMIF:(a,E)=>{const r=rngOf(E(a[0]),'SUMIF').flat(),s=a[2]?rngOf(E(a[2]),'SUMIF').flat():r;if(s.length!=r.length)throw new FErr('#VALUE!','Rentang kriteria dan rentang jumlah harus sama panjang.');return sumAt(s,sel([[r,A1(a,E,1)]],r.length))},
+ AVERAGEIF:(a,E)=>{const r=rngOf(E(a[0]),'AVERAGEIF').flat(),s=a[2]?rngOf(E(a[2]),'AVERAGEIF').flat():r;if(s.length!=r.length)throw new FErr('#VALUE!','Rentang kriteria dan rentang rata-rata harus sama panjang.');
+  const ix=sel([[r,A1(a,E,1)]],r.length).filter(i=>typeof s[i]=='number');if(!ix.length)throw new FErr('#DIV/0!','Tidak ada data yang memenuhi kriteria.');return sumAt(s,ix)/ix.length},
+ SUMIFS:(a,E)=>{if(a.length<3||a.length%2==0)throw new FErr('#VALUE!','SUMIFS: rentang_jumlah, lalu pasangan rentang_kriteria dan kriteria.');const s=rngOf(E(a[0]),'SUMIFS').flat();return sumAt(s,sel(crit(a,1,E),s.length))},
+ COUNTIFS:(a,E)=>{if(a.length<2||a.length%2)throw new FErr('#VALUE!','COUNTIFS terdiri dari pasangan rentang_kriteria dan kriteria.');const P=crit(a,0,E);return sel(P,P[0][0].length).length}
+};
+const show=v=>isErr(v)?v.err:v===null?'':typeof v=='boolean'?(v?'TRUE':'FALSE'):typeof v=='number'?fmtN(v):String(v);
+function same(x,y){if(x.err||y.err)return x.err==y.err;let a=x.v,b=y.v;if(a===null)a=0;if(b===null)b=0;
+ if(typeof a=='number'&&typeof b=='number')return Math.abs(a-b)<=1e-6*Math.max(1,Math.abs(b));
+ if(typeof a!=typeof b)return false;return typeof a=='string'?a.trim().toLowerCase()==b.trim().toLowerCase():a===b}
+/* ===== Data & materi ===== */
+const KANTIN=[['Menu','Kategori','Hari','Harga','Terjual','Omzet','','Kategori dicari','Hari dicari'],
+['Nasi Goreng','Makanan','Senin',12000,20,'=D2*E2','','Minuman','Selasa'],['Mie Ayam','Makanan','Senin',10000,25,'=D3*E3'],['Es Teh','Minuman','Senin',3000,40,'=D4*E4'],['Keripik','Camilan','Senin',5000,15,'=D5*E5'],
+['Nasi Goreng','Makanan','Selasa',12000,18,'=D6*E6'],['Bakso','Makanan','Selasa',10000,22,'=D7*E7'],['Es Jeruk','Minuman','Selasa',4000,30,'=D8*E8'],['Cokelat','Camilan','Selasa',6000,12,'=D9*E9'],
+['Mie Ayam','Makanan','Rabu',10000,28,'=D10*E10'],['Es Teh','Minuman','Rabu',3000,45,'=D11*E11'],['Air Mineral','Minuman','Rabu',2000,50,'=D12*E12'],['Keripik','Camilan','Rabu',5000,20,'=D13*E13']];
+const SISWA=[['Nama','NIS','Kelas','Nilai','','','','NIS dicari'],['Aisyah',1001,'8A',85,'','','',1005],['Budi',1002,'8B',70],['Citra',1003,'8A',92],['Dimas',1004,'8C',60],['Eka',1005,'8B',78],['Fajar',1006,'8C',88],['Gita',1007,'8A',95]];
+const HARI5='"Senin";"Selasa";"Rabu";"Kamis";"Jumat"';
+const LES=[
+{id:'l1',lv:1,t:'Mengenal Data dan Tabel',goal:'Membedakan data dan informasi, mengenali baris, kolom, dan sel, lalu mengambil isi sel dengan alamatnya.',
+theory:`<p><b>Data</b> adalah fakta mentah yang dicatat: angka, teks, atau tanggal. Data baru berguna setelah diolah menjadi <b>informasi</b>, misalnya "menu apa yang paling laris di kantin minggu ini".</p>
+<h4>Dua jenis data</h4><ul><li><b>Numerik</b>: angka yang bisa dihitung, seperti harga dan jumlah terjual.</li><li><b>Kategorik</b>: teks pengelompokan, seperti jenis menu atau nama hari.</li></ul>
+<h4>Bagian-bagian tabel</h4><table class="tbl"><tr><th>Istilah</th><th>Artinya</th><th>Contoh di tabel</th></tr><tr><td>Kolom</td><td>Satu jenis data (atribut), diberi huruf A, B, C, ...</td><td>Kolom C berisi Harga</td></tr><tr><td>Baris</td><td>Satu catatan lengkap, diberi nomor 1, 2, 3, ...</td><td>Baris 4 berisi data Bakso</td></tr><tr><td>Sel</td><td>Pertemuan satu kolom dan satu baris</td><td>C4 berisi 10000</td></tr><tr><td>Rentang</td><td>Sel-sel berurutan, ditulis awal:akhir</td><td>C2:C9</td></tr></table>
+<p>Alamat sel selalu ditulis <b>huruf kolom dulu, lalu nomor baris</b>. Mengambil isi sel cukup dengan mengetik tanda sama dengan dan alamatnya.</p>
+<div class="syn">=C4<small>Menampilkan isi sel C4.</small></div>
+<div class="note"><b>Coba</b>Klik sel mana saja di tabel di bawah dan lihat alamatnya muncul di kotak kiri atas.</div>`,
+data:[['Menu','Kategori','Harga','Terjual'],['Nasi Goreng','Makanan',12000,25],['Mie Ayam','Makanan',10000,30],['Bakso','Makanan',10000,22],['Es Teh','Minuman',3000,48],['Es Jeruk','Minuman',4000,35],['Air Mineral','Minuman',2000,60],['Keripik','Camilan',5000,40],['Cokelat','Camilan',6000,18]],mut:'CD',
+ch:[
+{q:'Tampilkan harga <b>Bakso</b> dengan mengambil isi sel yang tepat.',a:'=C4',h:['Cari baris tempat Bakso berada. Nomor baris ada di sisi kiri tabel.','Harga ada di kolom C. Alamat sel = huruf kolom lalu nomor baris.','Bakso ada di baris 4, jadi tulis tanda sama dengan lalu alamat selnya.'],w:'Bakso di baris 4 dan Harga di kolom C, jadi alamatnya C4.'},
+{q:'Tampilkan jumlah <b>Es Jeruk</b> yang terjual.',a:'=D6',h:['Kolom mana yang berisi jumlah terjual?','Kolom D. Sekarang cari baris Es Jeruk.','Es Jeruk ada di baris 6. Gabungkan huruf kolom dan nomor barisnya.'],w:'Terjual ada di kolom D dan Es Jeruk di baris 6, jadi D6.'},
+{q:'Tampilkan nama menu pada baris data paling bawah.',a:'=A9',h:['Nama menu ada di kolom pertama.','Baris data terakhir adalah baris 9 (baris 1 adalah judul).','Kolom A, baris 9.'],w:'Nama menu ada di kolom A dan data terakhir di baris 9, jadi A9.'}]},
+{id:'l2',lv:1,t:'Rumus dan Operator Hitung',goal:'Menulis rumus yang memakai alamat sel dan operator, sehingga hasilnya ikut berubah saat data diubah.',
+theory:`<p>Rumus selalu diawali tanda <code>=</code>. Setelah itu kamu boleh menulis angka, alamat sel, dan operator hitung.</p>
+<table class="tbl"><tr><th>Operator</th><th>Fungsi</th><th>Contoh</th></tr><tr><td><code>+</code> <code>-</code></td><td>tambah, kurang</td><td><code>=B2+B3</code></td></tr><tr><td><code>*</code> <code>/</code></td><td>kali, bagi</td><td><code>=B2*C2</code></td></tr><tr><td><code>^</code></td><td>pangkat</td><td><code>=B2^2</code></td></tr><tr><td><code>%</code></td><td>persen</td><td><code>=B2*10%</code></td></tr></table>
+<p>Urutan pengerjaan: kurung dulu, lalu pangkat, lalu kali dan bagi, terakhir tambah dan kurang. Pakai kurung agar urutannya sesuai maksudmu.</p>
+<div class="syn">=B2*C2<small>Harga satuan dikali jumlah = total biaya baris 2.</small></div>
+<div class="pit"><b>Hati-hati</b>Jangan mengetik angkanya langsung (misalnya =8000*5). Pakai alamat sel supaya hasil otomatis berubah saat harga diganti.</div>
+<div class="note"><b>Coba</b>Di tabel bawah, ketik <code>=B2*C2</code> di sel D2, lalu ubah harga di B2 dan lihat D2 ikut berubah.</div>`,
+data:[['Barang','Harga Satuan','Jumlah'],['Spidol',8000,5],['Penghapus',3000,4],['Buku Tulis',5000,10],['Kertas HVS',45000,2]],mut:'BC',
+ch:[
+{q:'Hitung total biaya <b>Spidol</b> (harga satuan dikali jumlah).',a:'=B2*C2',h:['Total = harga satuan x jumlah.','Spidol ada di baris 2. Harga di kolom B, jumlah di kolom C.','Kalikan dua sel itu dengan tanda bintang.'],w:'Harga di B2 dikali jumlah di C2.'},
+{q:'Hitung gabungan total biaya <b>Spidol</b> dan <b>Penghapus</b>.',a:'=B2*C2+B3*C3',h:['Hitung dulu total tiap barang, lalu jumlahkan.','Kali dan bagi dikerjakan sebelum tambah, jadi tidak perlu kurung.','Total Spidol di baris 2, total Penghapus di baris 3, sambungkan dengan +.'],w:'B2*C2 adalah total Spidol, B3*C3 total Penghapus.'},
+{q:'Total <b>Buku Tulis</b> mendapat diskon 10%. Hitung yang harus dibayar.',a:'=B4*C4*(1-10%)',h:['Bayar = total x (100% - diskon).','Total Buku Tulis adalah B4*C4. Diskon 10% berarti membayar 90%.','Kalikan total dengan (1-10%) atau dengan 0.9.'],w:'Total B4*C4 dikali 90%.'},
+{q:'Hitung rata-rata harga satuan <b>Spidol</b> dan <b>Penghapus</b> tanpa memakai fungsi.',a:'=(B2+B3)/2',h:['Rata-rata dua nilai = jumlah dibagi 2.','Jumlahkan B2 dan B3 lebih dulu. Perlu kurung agar penjumlahan dikerjakan sebelum pembagian.','Tulis kurung, isi penjumlahan, tutup kurung, lalu bagi 2.'],w:'Tanpa kurung, hasilnya salah karena bagi dikerjakan lebih dulu.'},
+{q:'Hitung <b>total seluruh belanja</b> keempat barang. (Rumusnya akan panjang, dan itulah alasan kita butuh SUM di materi berikutnya.)',a:'=B2*C2+B3*C3+B4*C4+B5*C5',h:['Total tiap barang adalah harga x jumlah.','Ada empat barang, di baris 2 sampai 5.','Jumlahkan empat bentuk B?*C? dengan tanda +.'],w:'Empat total barang dijumlahkan.'}]},
+{id:'l3',lv:2,t:'SUM, AVERAGE, COUNT, MIN, MAX',goal:'Meringkas satu kolom data dengan fungsi dasar: total, rata-rata, banyak data, nilai terkecil dan terbesar.',
+theory:`<p><b>Fungsi</b> adalah rumus siap pakai. Kamu cukup menyebut nama fungsi dan <b>rentang</b> yang diolah, jadi tidak perlu menulis sel satu per satu.</p>
+<div class="syn">=SUM(B2:B9)<small>Rentang B2:B9 artinya dari sel B2 sampai B9.</small></div>
+<table class="tbl"><tr><th>Fungsi</th><th>Menghasilkan</th></tr><tr><td><code>SUM</code></td><td>jumlah semua angka</td></tr><tr><td><code>AVERAGE</code></td><td>rata-rata</td></tr><tr><td><code>COUNT</code></td><td>banyak sel berisi angka</td></tr><tr><td><code>COUNTA</code></td><td>banyak sel yang tidak kosong (termasuk teks)</td></tr><tr><td><code>MAX</code> / <code>MIN</code></td><td>nilai terbesar / terkecil</td></tr></table>
+<div class="pit"><b>Hati-hati</b>Jangan ikut menyertakan baris judul (baris 1) di rentang. Judul berupa teks dan tidak ikut dihitung sebagai angka.</div>`,
+data:[['Nama','Matematika','IPA','Informatika'],['Aisyah',85,90,88],['Budi',70,75,80],['Citra',92,88,95],['Dimas',60,65,72],['Eka',78,82,85],['Fajar',88,70,90],['Gita',95,92,98],['Hana',74,80,76]],mut:'BCD',
+ch:[
+{q:'Hitung <b>total</b> nilai Matematika seluruh siswa.',a:'=SUM(B2:B9)',need:['SUM'],h:['Fungsi mana yang menjumlahkan?','Nilai Matematika ada di kolom B, dari baris 2 sampai 9.','=SUM( rentang ) dengan rentang B2:B9.'],w:'SUM menjumlahkan seluruh sel pada B2:B9.'},
+{q:'Hitung <b>rata-rata</b> nilai IPA.',a:'=AVERAGE(C2:C9)',need:['AVERAGE'],h:['Fungsi rata-rata dalam Excel bernama AVERAGE.','Nilai IPA ada di kolom C, baris 2 sampai 9.','=AVERAGE(C2:C9)'],w:'AVERAGE membagi jumlah dengan banyaknya data.'},
+{q:'Cari nilai <b>tertinggi</b> Informatika.',a:'=MAX(D2:D9)',need:['MAX'],h:['Cari fungsi yang mengambil nilai terbesar.','Informatika ada di kolom D.','=MAX(D2:D9)'],w:'MAX mengambil nilai terbesar dari rentang.'},
+{q:'Cari nilai <b>terendah</b> Matematika.',a:'=MIN(B2:B9)',need:['MIN'],h:['Lawan dari MAX adalah MIN.','Matematika ada di kolom B.','=MIN(B2:B9)'],w:'MIN mengambil nilai terkecil dari rentang.'},
+{q:'Hitung <b>banyak siswa</b> yang datanya ada di tabel.',a:'=COUNTA(A2:A9)',h:['Nama siswa berupa teks. COUNT hanya menghitung angka, jadi pilih fungsi yang menghitung sel tidak kosong.','COUNTA menghitung semua sel yang terisi. Pakai kolom Nama.','=COUNTA(A2:A9)'],w:'COUNTA menghitung sel terisi, termasuk teks.'},
+{q:'Hitung <b>rata-rata ketiga mapel</b> milik Citra. (Rentang bisa mendatar.)',a:'=AVERAGE(B4:D4)',need:['AVERAGE'],h:['Citra ada di baris 4.','Nilainya ada di kolom B sampai D pada baris itu.','=AVERAGE(B4:D4)'],w:'Rentang boleh mendatar, selama berupa sel yang berurutan.'}]},
+{id:'l4',lv:2,t:'IF: Mengambil Keputusan',goal:'Membuat tabel yang bisa memilih hasil sendiri berdasarkan syarat, termasuk syarat bertingkat.',
+theory:`<p>Fungsi <code>IF</code> memeriksa satu syarat, lalu memberi hasil berbeda untuk benar dan salah.</p>
+<div class="syn">=IF(syarat; hasil_jika_benar; hasil_jika_salah)<small>Teks hasil diapit tanda kutip, misalnya "Tuntas".</small></div>
+<table class="tbl"><tr><th>Simbol</th><th>Arti</th><th>Simbol</th><th>Arti</th></tr><tr><td><code>&gt;</code></td><td>lebih dari</td><td><code>&lt;</code></td><td>kurang dari</td></tr><tr><td><code>&gt;=</code></td><td>lebih dari atau sama dengan</td><td><code>&lt;=</code></td><td>kurang dari atau sama dengan</td></tr><tr><td><code>=</code></td><td>sama dengan</td><td><code>&lt;&gt;</code></td><td>tidak sama dengan</td></tr></table>
+<h4>Syarat bertingkat dan gabungan</h4>
+<div class="syn">=IF(B2&gt;=90;"A";IF(B2&gt;=80;"B";"C"))<small>IF di dalam IF: jika syarat pertama salah, periksa syarat kedua.</small></div>
+<div class="syn">=IF(AND(B2&gt;=75;B2&lt;90);"Baik";"Lainnya")<small>AND benar bila semua syarat benar. OR benar bila salah satu benar.</small></div>`,
+data:[['Nama','Nilai'],['Aisyah',85],['Budi',70],['Citra',92],['Dimas',60],['Eka',78],['Fajar',88],['Gita',95],['Hana',74]],mut:'B',
+ch:[
+{q:'Di sel C2, tulis <b>"Tuntas"</b> jika nilai Aisyah (B2) minimal 75, selain itu <b>"Belum Tuntas"</b>.',a:'=IF(B2>=75;"Tuntas";"Belum Tuntas")',need:['IF'],h:['Syaratnya membandingkan B2 dengan 75. "Minimal 75" berarti 75 atau lebih.','IF punya tiga bagian: syarat, hasil jika benar, hasil jika salah. Pisahkan dengan ; atau ,','=IF(B2>=75; "Tuntas"; "Belum Tuntas")'],w:'Syarat B2>=75 benar menghasilkan Tuntas.'},
+{q:'Beri predikat Citra (B4): <b>"A"</b> jika nilai minimal 90, <b>"B"</b> jika minimal 80, selain itu <b>"C"</b>.',a:'=IF(B4>=90;"A";IF(B4>=80;"B";"C"))',need:['IF'],h:['Ada tiga hasil, jadi butuh dua IF.','Periksa syarat tertinggi dulu (>=90). Bagian "jika salah" diisi IF kedua.','=IF(B4>=90;"A";IF(B4>=80;"B";"C")) dan jangan lupa dua kurung tutup.'],w:'IF kedua berada di dalam bagian jika-salah IF pertama.'},
+{q:'Tulis <b>"Baik"</b> jika rata-rata kelas (B2:B9) minimal 75, selain itu <b>"Perlu Remedial"</b>.',a:'=IF(AVERAGE(B2:B9)>=75;"Baik";"Perlu Remedial")',need:['IF','AVERAGE'],h:['Syarat IF boleh berupa hasil fungsi lain.','Bandingkan AVERAGE(B2:B9) dengan 75.','=IF(AVERAGE(B2:B9)>=75; "Baik"; "Perlu Remedial")'],w:'Fungsi di dalam fungsi menghitung dulu rata-ratanya, lalu IF memutuskan.'},
+{q:'Fajar (B7) mendapat <b>"Pengayaan"</b> jika nilainya minimal 85 <b>dan</b> kurang dari 95, selain itu <b>"Reguler"</b>.',a:'=IF(AND(B7>=85;B7<95);"Pengayaan";"Reguler")',need:['IF','AND'],h:['Ada dua syarat yang harus benar sekaligus. Fungsi apa yang menggabungkan syarat?','AND(syarat1; syarat2) dipakai sebagai syarat di dalam IF.','=IF(AND(B7>=85; B7<95); "Pengayaan"; "Reguler")'],w:'AND bernilai benar hanya jika kedua syarat benar.'}]},
+{id:'l5',lv:3,t:'VLOOKUP: Mencari ke Bawah',goal:'Mengambil data dari tabel acuan dengan kunci pencarian di kolom paling kiri.',
+theory:`<p>Bayangkan daftar harga koperasi. Saat ada pesanan berisi kode barang, kamu ingin nama dan harganya muncul otomatis. Itu tugas <code>VLOOKUP</code> (<i>vertical lookup</i>).</p>
+<div class="syn">=VLOOKUP(kunci; tabel; nomor_kolom; FALSE)</div>
+<table class="tbl"><tr><th>Bagian</th><th>Isinya</th></tr><tr><td>kunci</td><td>nilai yang dicari, misalnya kode K03 atau sel E2</td></tr><tr><td>tabel</td><td>rentang acuan; kunci harus berada di <b>kolom paling kiri</b></td></tr><tr><td>nomor_kolom</td><td>urutan kolom di dalam tabel yang ingin diambil (kolom pertama = 1)</td></tr><tr><td>FALSE</td><td>cari yang persis sama. Hampir selalu dipakai.</td></tr></table>
+<div class="note"><b>Tips</b>Kunci tabel dengan tanda $ (misalnya <code>$A$2:$C$7</code>) agar rentang tidak bergeser saat rumus disalin ke bawah.</div>
+<div class="pit"><b>Hati-hati</b>Nomor kolom dihitung dari awal tabel yang kamu pilih, bukan dari kolom A lembar kerja.</div>`,
+data:[['Kode','Nama Barang','Harga','','Kode Dipesan','Nama Barang','Harga'],['K01','Pensil',2000,'','K04'],['K02','Penghapus',3000,'','K01'],['K03','Penggaris',4500,'','K06'],['K04','Buku Tulis',5000],['K05','Pulpen',3500],['K06','Spidol',8000]],mut:'C',
+ch:[
+{q:'Cari <b>nama barang</b> untuk kode <b>"K03"</b> dari tabel A2:C7.',a:'=VLOOKUP("K03";A2:C7;2;FALSE)',need:['VLOOKUP'],h:['Kunci pencarian adalah teks K03, jadi ditulis dengan tanda kutip.','Tabelnya A2:C7. Nama barang berada di kolom ke-2 tabel.','=VLOOKUP("K03"; A2:C7; 2; FALSE)'],w:'Kolom ke-2 tabel (Nama Barang) pada baris yang kodenya K03.'},
+{q:'Cari <b>harga</b> barang yang kodenya ada di sel <b>E2</b>.',a:'=VLOOKUP(E2;A2:C7;3;FALSE)',need:['VLOOKUP'],h:['Kunci tidak perlu diketik. Tunjuk saja selnya.','Harga ada di kolom ke-3 dari tabel A2:C7.','=VLOOKUP(E2; A2:C7; 3; FALSE)'],w:'Kunci diambil dari sel E2 (K04), harga ada di kolom ke-3.'},
+{q:'Cari <b>nama barang</b> untuk kode di <b>E3</b>, dengan rentang tabel dikunci memakai tanda <b>$</b>.',a:'=VLOOKUP(E3;$A$2:$C$7;2;FALSE)',need:['VLOOKUP'],h:['Tanda $ dipasang pada huruf dan angka sel: $A$2.','Tabel dikunci menjadi $A$2:$C$7. Nama barang ada di kolom ke-2.','=VLOOKUP(E3; $A$2:$C$7; 2; FALSE)'],w:'$ mengunci alamat agar tidak bergeser saat disalin.'},
+{q:'Hitung <b>total bayar</b> untuk tiga kode pesanan di E2, E3, dan E4 (harga ketiganya dijumlahkan).',a:'=VLOOKUP(E2;A2:C7;3;FALSE)+VLOOKUP(E3;A2:C7;3;FALSE)+VLOOKUP(E4;A2:C7;3;FALSE)',need:['VLOOKUP'],h:['Cari harga tiap kode, lalu jumlahkan hasilnya.','Satu VLOOKUP untuk tiap sel kode. Sambungkan dengan +.','VLOOKUP(E2;...;3;FALSE) + VLOOKUP(E3;...) + VLOOKUP(E4;...)'],w:'Tiga VLOOKUP harga dijumlahkan. Di materi berikutnya kamu akan belajar cara yang lebih ringkas.'},
+{q:'Kode <b>"K09"</b> tidak ada di tabel. Buat rumus yang menampilkan teks <b>"Tidak ada"</b> sebagai ganti pesan galat #N/A.',a:'=IFERROR(VLOOKUP("K09";A2:C7;2;FALSE);"Tidak ada")',need:['IFERROR','VLOOKUP'],h:['Fungsi IFERROR menangkap galat dan menggantinya dengan nilai lain.','IFERROR(rumus_utama; nilai_jika_galat). Rumus utamanya VLOOKUP untuk K09.','=IFERROR(VLOOKUP("K09"; A2:C7; 2; FALSE); "Tidak ada")'],w:'Bila VLOOKUP gagal (#N/A), IFERROR menampilkan teks pengganti.'}]},
+{id:'l6',lv:3,t:'HLOOKUP: Mencari ke Samping',goal:'Mengambil data dari tabel yang kunci pencariannya berada pada baris judul paling atas.',
+theory:`<p><code>HLOOKUP</code> (<i>horizontal lookup</i>) sama seperti VLOOKUP, tetapi tabelnya mendatar. Kunci dicari di <b>baris pertama</b>, lalu hasilnya diambil dari baris ke sekian.</p>
+<div class="syn">=HLOOKUP(kunci; tabel; nomor_baris; FALSE)</div>
+<p>Pada tabel kas di bawah, nama bulan ada di baris 1. Tabel acuannya <code>B1:E4</code>, dengan Pemasukan di baris ke-2, Pengeluaran ke-3, dan Saldo ke-4 dari tabel.</p>
+<div class="note"><b>Info</b>Sel Saldo berisi rumus (pemasukan dikurangi pengeluaran). Klik salah satunya untuk melihat rumusnya, lalu ubah angka pemasukan dan lihat Saldo ikut berubah.</div>`,
+data:[['Keterangan','Agustus','September','Oktober','November','','','Bulan dicari'],['Pemasukan',150000,160000,170000,155000,'','','September'],['Pengeluaran',100000,120000,90000,110000],['Saldo','=B2-B3','=C2-C3','=D2-D3','=E2-E3']],mut:'BCDE',
+ch:[
+{q:'Cari <b>pemasukan bulan Oktober</b>.',a:'=HLOOKUP("Oktober";B1:E4;2;FALSE)',need:['HLOOKUP'],h:['Kunci "Oktober" dicari di baris judul bulan.','Tabelnya B1:E4. Pemasukan ada di baris ke-2 tabel.','=HLOOKUP("Oktober"; B1:E4; 2; FALSE)'],w:'Baris ke-2 tabel adalah Pemasukan.'},
+{q:'Cari <b>pengeluaran</b> pada bulan yang tertulis di sel <b>H2</b>.',a:'=HLOOKUP(H2;B1:E4;3;FALSE)',need:['HLOOKUP'],h:['Gunakan sel H2 sebagai kunci, bukan teks.','Pengeluaran berada di baris ke-3 tabel.','=HLOOKUP(H2; B1:E4; 3; FALSE)'],w:'Kunci diambil dari H2 sehingga mengikuti bulan yang ditulis di sana.'},
+{q:'Cari <b>saldo bulan November</b>.',a:'=HLOOKUP("November";B1:E4;4;FALSE)',need:['HLOOKUP'],h:['Saldo ada di baris paling bawah tabel.','Menghitung dari baris judul: judul=1, Pemasukan=2, Pengeluaran=3, Saldo=?','=HLOOKUP("November"; B1:E4; 4; FALSE)'],w:'Saldo adalah baris ke-4 tabel.'},
+{q:'Hitung <b>selisih pemasukan dan pengeluaran</b> pada bulan di H2 dengan dua HLOOKUP.',a:'=HLOOKUP(H2;B1:E4;2;FALSE)-HLOOKUP(H2;B1:E4;3;FALSE)',need:['HLOOKUP'],h:['Ambil pemasukan dan pengeluaran, lalu kurangkan.','Dua HLOOKUP dengan kunci sama, nomor barisnya berbeda (2 dan 3).','=HLOOKUP(H2;B1:E4;2;FALSE) - HLOOKUP(H2;B1:E4;3;FALSE)'],w:'Hasilnya sama dengan Saldo bulan itu.'}]},
+{id:'l7',lv:3,t:'MATCH: Mencari Posisi',goal:'Menemukan urutan suatu nilai di dalam daftar, sebagai bahan untuk INDEX.',
+theory:`<p><code>MATCH</code> tidak mengambil isi data. Ia memberi tahu <b>urutan ke berapa</b> sebuah nilai berada di dalam rentang satu kolom atau satu baris.</p>
+<div class="syn">=MATCH(nilai_dicari; rentang; 0)<small>Angka 0 berarti cocok persis.</small></div>
+<p>Contoh: pada <code>B2:B8</code> berisi 1001 sampai 1007, <code>=MATCH(1003;B2:B8;0)</code> menghasilkan <b>3</b> karena 1003 ada di urutan ke-3, bukan di baris 3.</p>
+<div class="pit"><b>Hati-hati</b>Hasil MATCH dihitung dari awal rentang. Jika rentangmu mulai dari baris 2, urutan 1 berarti baris 2.</div>`,
+data:SISWA,mut:'D',
+ch:[
+{q:'Cari urutan <b>NIS 1004</b> pada kolom NIS (B2:B8).',a:'=MATCH(1004;B2:B8;0)',need:['MATCH'],h:['Fungsi yang mencari urutan adalah MATCH.','Rentangnya hanya kolom NIS: B2:B8. Gunakan 0 sebagai tipe pencocokan.','=MATCH(1004; B2:B8; 0)'],w:'1004 berada di urutan ke-4 pada B2:B8.'},
+{q:'Cari urutan nama <b>"Gita"</b> pada kolom Nama (A2:A8).',a:'=MATCH("Gita";A2:A8;0)',need:['MATCH'],h:['Teks harus diapit tanda kutip.','Rentang pencarian adalah kolom Nama.','=MATCH("Gita"; A2:A8; 0)'],w:'Gita adalah siswa urutan ke-7.'},
+{q:'Cari urutan NIS yang tertulis di sel <b>H2</b>.',a:'=MATCH(H2;B2:B8;0)',need:['MATCH'],h:['Kunci diambil dari sel, tidak diketik.','Cari H2 di kolom NIS.','=MATCH(H2; B2:B8; 0)'],w:'Kunci berasal dari H2.'},
+{q:'Cari <b>urutan nilai tertinggi</b> di kolom Nilai (D2:D8).',a:'=MATCH(MAX(D2:D8);D2:D8;0)',need:['MATCH','MAX'],h:['Cari dulu nilai tertingginya dengan MAX.','Hasil MAX menjadi nilai_dicari di dalam MATCH.','=MATCH(MAX(D2:D8); D2:D8; 0)'],w:'MAX menghasilkan nilai terbesar, MATCH mencari urutannya.'}]},
+{id:'l8',lv:3,t:'INDEX: Mengambil Berdasarkan Urutan',goal:'Mengambil isi sel dari suatu rentang berdasarkan nomor baris dan kolom.',
+theory:`<p><code>INDEX</code> kebalikan dari MATCH: kamu memberi nomor urutan, ia memberikan isinya.</p>
+<div class="syn">=INDEX(rentang; nomor_baris)
+=INDEX(tabel; nomor_baris; nomor_kolom)<small>Untuk satu kolom, cukup nomor baris. Untuk tabel banyak kolom, tambahkan nomor kolom.</small></div>
+<p><code>=INDEX(A2:A8;3)</code> memberi isi urutan ke-3 pada A2:A8, yaitu "Citra". Pada tabel <code>A2:D8</code>, <code>=INDEX(A2:D8;3;4)</code> mengambil baris ke-3 kolom ke-4, yaitu nilai Citra.</p>`,
+data:SISWA,mut:'D',
+ch:[
+{q:'Ambil <b>nama siswa urutan ke-3</b> dari kolom Nama.',a:'=INDEX(A2:A8;3)',need:['INDEX'],h:['Satu kolom saja, jadi cukup nomor baris.','Rentang: A2:A8.','=INDEX(A2:A8; 3)'],w:'Urutan ke-3 pada A2:A8 adalah Citra.'},
+{q:'Ambil <b>nilai siswa urutan ke-5</b> dari kolom Nilai.',a:'=INDEX(D2:D8;5)',need:['INDEX'],h:['Nilai ada di kolom D.','Rentang: D2:D8, nomor urut 5.','=INDEX(D2:D8; 5)'],w:'Urutan ke-5 adalah Eka.'},
+{q:'Dari seluruh tabel <b>A2:D8</b>, ambil isi <b>baris ke-4 dan kolom ke-4</b>.',a:'=INDEX(A2:D8;4;4)',need:['INDEX'],h:['Tabel banyak kolom butuh nomor baris dan nomor kolom.','Baris ke-4 lalu kolom ke-4 (Nilai adalah kolom ke-4).','=INDEX(A2:D8; 4; 4)'],w:'Baris ke-4 adalah Dimas dan kolom ke-4 adalah Nilai.'}]},
+{id:'l9',lv:3,t:'INDEX dan MATCH Bersama',goal:'Menggabungkan MATCH dan INDEX untuk mencari data ke arah mana pun, bahkan ke kiri.',
+theory:`<p>MATCH menemukan <b>urutan</b>, INDEX mengambil <b>isi</b> pada urutan itu. Keduanya digabung menjadi pencarian yang fleksibel.</p>
+<div class="syn">=INDEX(rentang_hasil; MATCH(kunci; rentang_kunci; 0))</div>
+<h4>Mengapa tidak cukup VLOOKUP?</h4>
+<p>Pada tabel ini, NIS ada di kolom B, sedangkan Nama ada di kolom A (di kiri NIS). VLOOKUP tidak bisa mengambil data di sebelah kiri kunci. INDEX dan MATCH bisa, karena rentang kunci dan rentang hasil ditulis terpisah.</p>
+<p>Cara membacanya dari dalam ke luar: MATCH mencari urutan NIS pada B2:B8, lalu INDEX mengambil isi urutan yang sama dari A2:A8.</p>`,
+data:SISWA,mut:'D',
+ch:[
+{q:'Tampilkan <b>nama siswa</b> yang NIS-nya ada di sel <b>H2</b>.',a:'=INDEX(A2:A8;MATCH(H2;B2:B8;0))',need:['INDEX','MATCH'],h:['Dua langkah: cari urutan NIS, lalu ambil nama pada urutan itu.','MATCH mencari H2 di B2:B8. INDEX mengambil dari A2:A8.','=INDEX(A2:A8; MATCH(H2; B2:B8; 0))'],w:'MATCH memberi urutan 5, INDEX mengambil Eka.'},
+{q:'Tampilkan <b>nilai</b> siswa bernama <b>"Fajar"</b>.',a:'=INDEX(D2:D8;MATCH("Fajar";A2:A8;0))',need:['INDEX','MATCH'],h:['Kali ini kuncinya nama dan hasilnya nilai.','MATCH mencari "Fajar" di A2:A8, INDEX mengambil dari D2:D8.','=INDEX(D2:D8; MATCH("Fajar"; A2:A8; 0))'],w:'Rentang kunci dan rentang hasil boleh berbeda kolom.'},
+{q:'Tampilkan <b>kelas</b> siswa dengan <b>NIS 1006</b>.',a:'=INDEX(C2:C8;MATCH(1006;B2:B8;0))',need:['INDEX','MATCH'],h:['Kunci: 1006 di kolom NIS.','Hasil yang diambil dari kolom Kelas (C2:C8).','=INDEX(C2:C8; MATCH(1006; B2:B8; 0))'],w:'Kelas ada di kolom C.'},
+{q:'<b>Tantangan:</b> tampilkan nama siswa yang memiliki <b>nilai tertinggi</b>.',a:'=INDEX(A2:A8;MATCH(MAX(D2:D8);D2:D8;0))',need:['INDEX','MATCH','MAX'],h:['Tiga langkah: nilai tertinggi, urutannya, lalu nama pada urutan itu.','MAX(D2:D8) menjadi kunci MATCH di D2:D8. Hasilnya dipakai INDEX pada A2:A8.','=INDEX(A2:A8; MATCH(MAX(D2:D8); D2:D8; 0))'],w:'MAX, MATCH, dan INDEX bekerja berantai.'}]},
+{id:'l10',lv:3,t:'CHOOSE: Memilih dari Daftar',goal:'Mengubah nomor kode menjadi teks atau nilai pilihan dengan satu fungsi.',
+theory:`<p><code>CHOOSE</code> memilih satu isi dari daftar berdasarkan <b>nomor urut</b>. Cocok untuk data yang disimpan sebagai kode angka.</p>
+<div class="syn">=CHOOSE(nomor; pilihan1; pilihan2; pilihan3; ...)<small>Nomor 1 mengambil pilihan1, nomor 2 mengambil pilihan2, dan seterusnya.</small></div>
+<p>Contoh: <code>=CHOOSE(2;"Merah";"Kuning";"Hijau")</code> menghasilkan Kuning.</p>
+<p>Daftar yang dipakai di latihan ini:</p>
+<table class="tbl"><tr><th>Hari piket (angka)</th><td>1 Senin, 2 Selasa, 3 Rabu, 4 Kamis, 5 Jumat</td></tr><tr><th>Nilai sikap (angka)</th><td>1 Kurang, 2 Cukup, 3 Baik, 4 Sangat Baik</td></tr></table>
+<div class="pit"><b>Hati-hati</b>Jika nomor lebih besar dari jumlah pilihan, hasilnya galat #VALUE!.</div>`,
+data:[['Nama','Hari Piket','Nilai Sikap'],['Aisyah',3,3],['Budi',1,2],['Citra',5,4],['Dimas',2,1],['Eka',4,3],['Fajar',3,2]],
+alt:d=>d.map((r,i)=>i?[r[0],(r[1]%5)+1,(r[2]%4)+1]:r),
+ch:[
+{q:'Tampilkan nama hari untuk nomor <b>3</b>, dengan CHOOSE dan daftar Senin sampai Jumat.',a:'=CHOOSE(3;"Senin";"Selasa";"Rabu";"Kamis";"Jumat")',need:['CHOOSE'],h:['Nomor ditulis pertama, lalu daftar pilihan berurutan.','Pilihannya: "Senin", "Selasa", "Rabu", "Kamis", "Jumat", masing-masing diapit kutip.','=CHOOSE(3; "Senin"; "Selasa"; "Rabu"; "Kamis"; "Jumat")'],w:'Pilihan ke-3 adalah Rabu.'},
+{q:'Tampilkan <b>nama hari piket Budi</b> dengan membaca nomornya di sel <b>B3</b>.',a:`=CHOOSE(B3;${HARI5})`,need:['CHOOSE'],h:['Nomor tidak diketik, tetapi diambil dari sel.','Ganti angka pertama dengan B3.','=CHOOSE(B3; "Senin"; "Selasa"; "Rabu"; "Kamis"; "Jumat")'],w:'Nomor dibaca dari B3, jadi rumus mengikuti datanya.'},
+{q:'Tampilkan <b>predikat sikap Citra</b> (nomor di C4): Kurang, Cukup, Baik, Sangat Baik.',a:'=CHOOSE(C4;"Kurang";"Cukup";"Baik";"Sangat Baik")',need:['CHOOSE'],h:['Daftar pilihan ada empat, urut dari nomor 1.','Nomor berasal dari C4.','=CHOOSE(C4; "Kurang"; "Cukup"; "Baik"; "Sangat Baik")'],w:'Nomor sikap diubah menjadi kata.'},
+{q:'<b>Tantangan:</b> untuk Aisyah (baris 2), tampilkan teks gabungan seperti <b>Rabu - Baik</b> (hari piket, spasi, tanda hubung, spasi, predikat sikap).',a:`=CHOOSE(B2;${HARI5})&" - "&CHOOSE(C2;"Kurang";"Cukup";"Baik";"Sangat Baik")`,need:['CHOOSE'],h:['Dua CHOOSE harus disambung dengan operator penggabung teks &.','Hari dari B2, predikat dari C2, dan di antaranya teks " - ".','=CHOOSE(B2; ...hari...) & " - " & CHOOSE(C2; ...sikap...)'],w:'Operator & menyambung beberapa teks menjadi satu.'}]},
+{id:'l11',lv:4,t:'COUNTIF dan SUMIF: Satu Syarat',goal:'Menghitung dan menjumlahkan hanya data yang memenuhi satu syarat.',
+theory:`<p>Kadang kita hanya ingin menghitung sebagian data, misalnya "berapa menu Makanan?". Dua fungsi ini memakai <b>kriteria</b>.</p>
+<div class="syn">=COUNTIF(rentang_kriteria; kriteria)
+=SUMIF(rentang_kriteria; kriteria; rentang_jumlah)<small>COUNTIF menghitung banyak baris. SUMIF menjumlahkan kolom lain pada baris yang cocok.</small></div>
+<table class="tbl"><tr><th>Kriteria</th><th>Artinya</th></tr><tr><td><code>"Makanan"</code></td><td>sama dengan teks Makanan</td></tr><tr><td><code>"&gt;=25"</code></td><td>angka 25 atau lebih (operator ikut di dalam kutip)</td></tr><tr><td><code>"&lt;&gt;Senin"</code></td><td>bukan Senin</td></tr><tr><td><code>H2</code></td><td>isi sel H2 (tanpa kutip)</td></tr></table>
+<p>Kolom Omzet pada tabel berisi rumus <code>=Harga*Terjual</code>. Klik salah satunya untuk melihat.</p>`,
+data:KANTIN,mut:'DE',
+ch:[
+{q:'Hitung <b>banyak baris</b> penjualan berkategori <b>Makanan</b>.',a:'=COUNTIF(B2:B13;"Makanan")',need:['COUNTIF'],h:['Yang diminta banyaknya baris, bukan jumlah angka.','Rentang kriteria adalah kolom Kategori (B2:B13).','=COUNTIF(B2:B13; "Makanan")'],w:'COUNTIF menghitung sel kategori yang sama dengan Makanan.'},
+{q:'Hitung <b>total terjual</b> untuk kategori <b>Minuman</b>.',a:'=SUMIF(B2:B13;"Minuman";E2:E13)',need:['SUMIF'],h:['Syarat ada di Kategori, yang dijumlahkan adalah Terjual.','SUMIF urutannya: rentang syarat, syarat, rentang yang dijumlahkan.','=SUMIF(B2:B13; "Minuman"; E2:E13)'],w:'Jumlahkan Terjual hanya pada baris yang kategorinya Minuman.'},
+{q:'Hitung banyak baris yang <b>terjual 25 atau lebih</b>.',a:'=COUNTIF(E2:E13;">=25")',need:['COUNTIF'],h:['Syaratnya berupa perbandingan angka pada kolom Terjual.','Operator perbandingan ditulis di dalam tanda kutip bersama angkanya.','=COUNTIF(E2:E13; ">=25")'],w:'">=25" berarti 25 atau lebih.'},
+{q:'Hitung <b>omzet</b> (kolom F) pada hari <b>Rabu</b>.',a:'=SUMIF(C2:C13;"Rabu";F2:F13)',need:['SUMIF'],h:['Syarat ada di kolom Hari, yang dijumlahkan kolom Omzet.','Rentang syarat C2:C13, rentang jumlah F2:F13.','=SUMIF(C2:C13; "Rabu"; F2:F13)'],w:'Omzet seluruh penjualan hari Rabu dijumlahkan.'},
+{q:'Hitung <b>omzet</b> untuk kategori yang tertulis di sel <b>H2</b>, tanpa mengetik nama kategorinya.',a:'=SUMIF(B2:B13;H2;F2:F13)',need:['SUMIF'],h:['Kriteria boleh berupa alamat sel.','Ganti "Minuman" dengan H2 (tanpa kutip).','=SUMIF(B2:B13; H2; F2:F13)'],w:'Jika H2 diganti kategori lain, hasilnya ikut berubah.'}]},
+{id:'l12',lv:4,t:'SUMIFS: Jumlah dengan Banyak Syarat',goal:'Menjumlahkan data yang memenuhi dua syarat atau lebih sekaligus.',
+theory:`<p><code>SUMIFS</code> bisa menerima banyak pasangan syarat, dan semua syarat harus terpenuhi.</p>
+<div class="syn">=SUMIFS(rentang_jumlah; rentang_syarat1; syarat1; rentang_syarat2; syarat2; ...)</div>
+<div class="pit"><b>Hati-hati</b>Pada SUMIFS, rentang yang dijumlahkan ditulis <b>pertama</b>. Pada SUMIF (satu syarat) letaknya terakhir. Semua rentang harus sama panjang.</div>
+<p>Contoh: total terjual untuk Makanan pada hari Senin, <code>=SUMIFS(E2:E13;B2:B13;"Makanan";C2:C13;"Senin")</code>. Kamu bisa memakai syarat yang sama pada satu kolom dua kali untuk membuat batas atas dan bawah.</p>`,
+data:KANTIN,mut:'DE',
+ch:[
+{q:'Hitung <b>total terjual</b> kategori <b>Minuman</b> pada hari <b>Rabu</b>.',a:'=SUMIFS(E2:E13;B2:B13;"Minuman";C2:C13;"Rabu")',need:['SUMIFS'],h:['Ada dua syarat: kategori dan hari.','Yang dijumlahkan Terjual (E) dan ditulis pertama. Lalu pasangan Kategori dan pasangan Hari.','=SUMIFS(E2:E13; B2:B13; "Minuman"; C2:C13; "Rabu")'],w:'Hanya baris yang Minuman dan Rabu yang ikut dijumlahkan.'},
+{q:'Hitung <b>omzet</b> kategori <b>Makanan</b> pada hari <b>Senin</b>.',a:'=SUMIFS(F2:F13;B2:B13;"Makanan";C2:C13;"Senin")',need:['SUMIFS'],h:['Kolom yang dijumlahkan sekarang Omzet (F).','Syarat tetap kategori dan hari.','=SUMIFS(F2:F13; B2:B13; "Makanan"; C2:C13; "Senin")'],w:'Rentang jumlah diganti ke kolom F.'},
+{q:'Hitung total terjual kategori <b>Camilan</b> yang <b>terjual 15 atau lebih</b> per baris.',a:'=SUMIFS(E2:E13;B2:B13;"Camilan";E2:E13;">=15")',need:['SUMIFS'],h:['Syarat kedua boleh memakai kolom yang sama dengan yang dijumlahkan.','Syarat 1: Kategori = Camilan. Syarat 2: Terjual >= 15.','=SUMIFS(E2:E13; B2:B13; "Camilan"; E2:E13; ">=15")'],w:'Kolom Terjual dipakai sebagai nilai sekaligus syarat.'},
+{q:'<b>Tantangan:</b> hitung omzet kategori <b>Makanan</b> pada hari <b>selain Senin</b>.',a:'=SUMIFS(F2:F13;B2:B13;"Makanan";C2:C13;"<>Senin")',need:['SUMIFS'],h:['"Selain" berarti tidak sama dengan.','Operator tidak sama dengan adalah <>. Tulis bersama kata Senin di dalam kutip.','=SUMIFS(F2:F13; B2:B13; "Makanan"; C2:C13; "<>Senin")'],w:'"<>Senin" mengecualikan hari Senin.'},
+{q:'Hitung total terjual untuk kategori di sel <b>H2</b> pada hari di sel <b>I2</b>.',a:'=SUMIFS(E2:E13;B2:B13;H2;C2:C13;I2)',need:['SUMIFS'],h:['Kriteria diambil dari sel, jadi tanpa kutip.','H2 untuk kategori dan I2 untuk hari.','=SUMIFS(E2:E13; B2:B13; H2; C2:C13; I2)'],w:'Ubah H2 dan I2 untuk menjawab pertanyaan lain tanpa mengubah rumus.'}]},
+{id:'l13',lv:4,t:'COUNTIFS: Menghitung dengan Banyak Syarat',goal:'Menghitung banyak data yang memenuhi beberapa syarat, termasuk batas bawah dan batas atas.',
+theory:`<p><code>COUNTIFS</code> mirip SUMIFS, tetapi tidak punya rentang jumlah. Ia hanya berisi pasangan syarat.</p>
+<div class="syn">=COUNTIFS(rentang1; syarat1; rentang2; syarat2; ...)</div>
+<p>Syarat bisa memakai kolom yang sama dua kali untuk rentang nilai. Contoh "antara 20 dan 40" berarti <code>"&gt;=20"</code> dan <code>"&lt;=40"</code> pada kolom yang sama.</p>
+<div class="note"><b>Info</b>Persentase = banyak data yang cocok dibagi seluruh data. Hasilnya berupa pecahan desimal, misalnya 0.25 berarti 25%.</div>`,
+data:KANTIN,mut:'DE',
+ch:[
+{q:'Hitung banyak baris kategori <b>Makanan</b> pada hari <b>Selasa</b>.',a:'=COUNTIFS(B2:B13;"Makanan";C2:C13;"Selasa")',need:['COUNTIFS'],h:['Dua syarat dari dua kolom berbeda.','COUNTIFS hanya berisi pasangan rentang dan syarat, tanpa rentang jumlah.','=COUNTIFS(B2:B13; "Makanan"; C2:C13; "Selasa")'],w:'Baris yang Makanan dan Selasa dihitung.'},
+{q:'Hitung banyak baris <b>Minuman</b> dengan harga <b>3000 atau kurang</b>.',a:'=COUNTIFS(B2:B13;"Minuman";D2:D13;"<=3000")',need:['COUNTIFS'],h:['Syarat pertama kategori, syarat kedua harga.','Syarat angka ditulis dengan operator di dalam kutip.','=COUNTIFS(B2:B13; "Minuman"; D2:D13; "<=3000")'],w:'"<=3000" berarti 3000 atau kurang.'},
+{q:'Hitung banyak baris yang <b>terjual antara 20 dan 40</b> (termasuk 20 dan 40).',a:'=COUNTIFS(E2:E13;">=20";E2:E13;"<=40")',need:['COUNTIFS'],h:['Kolom yang sama dipakai dua kali.','Syarat pertama batas bawah, syarat kedua batas atas.','=COUNTIFS(E2:E13; ">=20"; E2:E13; "<=40")'],w:'Dua syarat pada satu kolom membentuk rentang.'},
+{q:'Hitung banyak baris dengan kategori di <b>H2</b> dan hari di <b>I2</b>.',a:'=COUNTIFS(B2:B13;H2;C2:C13;I2)',need:['COUNTIFS'],h:['Kriteria dari sel, tanpa kutip.','Pasangkan B2:B13 dengan H2, dan C2:C13 dengan I2.','=COUNTIFS(B2:B13; H2; C2:C13; I2)'],w:'Rumus fleksibel: ganti H2 dan I2 untuk pertanyaan lain.'},
+{q:'<b>Tantangan:</b> hitung proporsi baris Makanan dari seluruh data (hasil berupa pecahan desimal), dengan membagi dengan banyak data yang dihitung otomatis.',a:'=COUNTIFS(B2:B13;"Makanan")/COUNTA(A2:A13)',need:['COUNTIFS'],h:['Proporsi = yang cocok dibagi seluruhnya.','Pembilang: COUNTIFS untuk Makanan. Penyebut: banyak seluruh baris, hitung dengan COUNTA.','=COUNTIFS(B2:B13; "Makanan") / COUNTA(A2:A13)'],w:'Pembilang dan penyebut sama-sama dihitung dengan fungsi.'}]},
+{id:'l14',lv:4,t:'Pivot Table: Merangkum Cepat',goal:'Menyusun tabel ringkasan dengan memilih bidang baris, kolom, nilai, dan jenis perhitungannya.',pivot:1,
+theory:`<p><b>Pivot Table</b> merangkum tabel data besar tanpa menulis rumus satu per satu. Kamu cukup memilih bidang mana yang menjadi baris, kolom, dan nilai.</p>
+<table class="tbl"><tr><th>Area</th><th>Fungsinya</th></tr><tr><td>Baris</td><td>pengelompokan yang turun ke bawah (misalnya Kategori)</td></tr><tr><td>Kolom</td><td>pengelompokan mendatar, bersifat opsional (misalnya Hari)</td></tr><tr><td>Nilai</td><td>bidang angka yang dihitung</td></tr><tr><td>Fungsi</td><td>cara menghitung: jumlah, rata-rata, hitung (banyak baris), maks, min</td></tr></table>
+<p>Di Excel: pilih seluruh tabel, buka menu <b>Insert &gt; PivotTable</b>, lalu seret bidang ke area yang diinginkan. Di sini, kamu memilihnya lewat kotak pilihan di bawah tabel data. Hasilnya diurutkan A sampai Z, seperti di Excel.</p>
+<div class="note"><b>Hubungan dengan rumus</b>Pivot bisa dibaca sebagai banyak SUMIFS sekaligus. Satu sel pivot sama dengan satu rumus SUMIFS.</div>`,
+data:KANTIN.map(r=>r.slice(0,6)),
+ch:[
+{q:'Susun pivot untuk melihat <b>total Terjual</b> tiap <b>Kategori</b>.',cfg:{row:'Kategori',col:'',val:'Terjual',agg:'sum'},h:['Kelompok yang ingin dibandingkan menjadi Baris.','Baris: Kategori. Nilai: Terjual. Kolom dikosongkan.','Fungsi: Jumlah.'],w:'Baris Kategori, Nilai Terjual, Fungsi Jumlah.'},
+{q:'Susun pivot untuk melihat <b>total Omzet</b> tiap <b>Hari</b>.',cfg:{row:'Hari',col:'',val:'Omzet',agg:'sum'},h:['Pengelompokannya per hari.','Baris: Hari. Nilai: Omzet.','Fungsi: Jumlah. Kolom kosong.'],w:'Baris Hari, Nilai Omzet, Fungsi Jumlah.'},
+{q:'Susun pivot silang: <b>total Terjual</b> tiap <b>Kategori</b> (baris) untuk setiap <b>Hari</b> (kolom).',cfg:{row:'Kategori',col:'Hari',val:'Terjual',agg:'sum'},h:['Ada dua pengelompokan sekaligus, satu ke bawah dan satu ke samping.','Baris: Kategori. Kolom: Hari.','Nilai: Terjual, Fungsi: Jumlah.'],w:'Setiap sel pivot setara satu SUMIFS dengan dua syarat.'},
+{q:'Susun pivot untuk melihat <b>rata-rata Harga</b> tiap <b>Kategori</b>.',cfg:{row:'Kategori',col:'',val:'Harga',agg:'avg'},h:['Kali ini yang dihitung bukan jumlah.','Baris: Kategori. Nilai: Harga.','Fungsi: Rata-rata.'],w:'Fungsi diganti dari Jumlah ke Rata-rata.'},
+{q:'Susun pivot untuk melihat <b>berapa kali</b> tiap <b>Menu</b> tercatat dalam data (banyak baris).',cfg:{row:'Menu',col:'',val:'Terjual',agg:'count'},h:['Yang dihitung adalah banyaknya baris data, bukan jumlah angka.','Baris: Menu. Nilai boleh Terjual.','Fungsi: Hitung.'],w:'Fungsi Hitung setara COUNTIF per menu.'}]},
+{id:'l15',lv:4,t:'Proyek: Analisis Data Ekskul',goal:'Menggabungkan beberapa fungsi untuk menjawab pertanyaan nyata dari data kegiatan ekstrakurikuler kelas 8.',
+theory:`<p>Pembina ekskul meminta ringkasan data kegiatan satu semester. Setiap anggota hadir dari maksimal <b>12 pertemuan</b>, dan iuran per anggota tergantung jenis ekskul.</p>
+<p>Pilih fungsi yang paling tepat untuk tiap pertanyaan. Beberapa soal butuh gabungan fungsi. Pakai petunjuk bila terjebak.</p>
+<table class="tbl"><tr><th>Jika soal meminta...</th><th>Pertimbangkan</th></tr><tr><td>jumlah dengan syarat</td><td>SUMIF / SUMIFS</td></tr><tr><td>banyak data dengan syarat</td><td>COUNTIF / COUNTIFS</td></tr><tr><td>rata-rata dengan syarat</td><td>AVERAGEIF</td></tr><tr><td>nama pemilik nilai tertinggi</td><td>INDEX + MATCH + MAX</td></tr><tr><td>keputusan berdasarkan syarat</td><td>IF</td></tr></table>
+<div class="note"><b>Tantangan lanjutan</b>Setelah selesai, buat sendiri pivot dengan data ini: berapa total iuran per ekskul?</div>`,
+data:[['Nama','Kelas','Ekskul','Hadir','Iuran'],['Aisyah','8A','Pramuka',11,10000],['Budi','8B','Basket',9,15000],['Citra','8A','Pramuka',12,10000],['Dimas','8C','Basket',6,15000],['Eka','8B','Robotik',10,20000],['Fajar','8C','Robotik',12,20000],['Gita','8A','Basket',10,15000],['Hana','8B','Pramuka',8,10000],['Indra','8A','Robotik',7,20000],['Joko','8C','Pramuka',9,10000],['Kiki','8A','Basket',12,15000],['Lina','8B','Robotik',11,20000]],
+alt:d=>d.map((r,i)=>i?[r[0],r[1],r[2],Math.max(0,Math.min(12,r[3]+((i*3)%5)-2)),r[4]]:r),
+ch:[
+{q:'Hitung <b>total iuran</b> anggota <b>Pramuka</b>.',a:'=SUMIF(C2:C13;"Pramuka";E2:E13)',need:['SUMIF'],h:['Menjumlahkan dengan satu syarat.','Syarat di kolom Ekskul (C), jumlah di kolom Iuran (E).','=SUMIF(C2:C13; "Pramuka"; E2:E13)'],w:'Iuran dijumlahkan hanya pada baris Pramuka.'},
+{q:'Hitung banyak anggota <b>Basket</b> yang berasal dari kelas <b>8A</b>.',a:'=COUNTIFS(C2:C13;"Basket";B2:B13;"8A")',need:['COUNTIFS'],h:['Menghitung banyak data dengan dua syarat.','Syarat 1: Ekskul = Basket. Syarat 2: Kelas = 8A.','=COUNTIFS(C2:C13; "Basket"; B2:B13; "8A")'],w:'Hanya baris yang memenuhi kedua syarat dihitung.'},
+{q:'Hitung <b>rata-rata kehadiran</b> anggota <b>Pramuka</b>.',a:'=AVERAGEIF(C2:C13;"Pramuka";D2:D13)',need:['AVERAGEIF'],h:['Fungsi rata-rata dengan satu syarat bernama AVERAGEIF.','Urutannya seperti SUMIF: rentang syarat, syarat, rentang yang dirata-ratakan.','=AVERAGEIF(C2:C13; "Pramuka"; D2:D13)'],w:'AVERAGEIF = rata-rata hanya untuk baris yang cocok.'},
+{q:'Tampilkan <b>nama anggota</b> dengan kehadiran <b>tertinggi</b>. (Jika ada yang sama, ambil yang paling atas.)',a:'=INDEX(A2:A13;MATCH(MAX(D2:D13);D2:D13;0))',need:['INDEX','MATCH','MAX'],h:['Pola yang sama dengan mencari nilai tertinggi pada materi INDEX dan MATCH.','Nilai tertingginya dari kolom Hadir (D). Nama di kolom A.','=INDEX(A2:A13; MATCH(MAX(D2:D13); D2:D13; 0))'],w:'MAX mencari kehadiran tertinggi, MATCH mencari urutannya, INDEX mengambil nama.'},
+{q:'Dimas (baris 5) disebut <b>"Aktif"</b> jika kehadirannya minimal <b>75%</b> dari 12 pertemuan, selain itu <b>"Perlu Dibina"</b>.',a:'=IF(D5/12>=75%;"Aktif";"Perlu Dibina")',need:['IF'],h:['Ubah jumlah hadir menjadi persentase dengan membaginya dengan 12.','Bandingkan D5/12 dengan 75% (boleh juga 0.75).','=IF(D5/12>=75%; "Aktif"; "Perlu Dibina")'],w:'Tanda % langsung dipahami Excel sebagai bagi 100.'},
+{q:'<b>Tantangan:</b> hitung total iuran dari anggota yang hadir <b>10 kali atau lebih</b>.',a:'=SUMIFS(E2:E13;D2:D13;">=10")',need:['SUMIFS'],h:['Jumlahkan Iuran dengan syarat pada kolom Hadir.','Rentang jumlah: E. Rentang syarat: D, syarat ">=10".','=SUMIFS(E2:E13; D2:D13; ">=10")'],w:'Syarat dan nilai yang dijumlahkan berasal dari kolom berbeda.'}]}
+];
+/* ===== Antarmuka ===== */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LV=['','Prasyarat','Dasar','Menengah','Menantang'];
+const KEY='bab1-analisis-data-v1';
+let S={done:{},cur:'intro'};
+try{const j=JSON.parse(localStorage.getItem(KEY)||'{}');if(j.done)S.done=j.done;if(j.cur)S.cur=j.cur}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const hs={};let G=null;
+const clone=d=>d.map(r=>r.slice());
+const mutate=(d,cols)=>{const ix=[...cols].map(colN);return d.map((r,i)=>i?r.map((v,c)=>ix.includes(c)&&typeof v=='number'?Math.max(1,v+((i*5+c*3)%9)-3):v):r)};
+const altOf=L=>L.alt?L.alt(clone(L.data)):mutate(clone(L.data),L.mut||'');
+const TOTAL=LES.reduce((s,L)=>s+L.ch.length,0);
+
+function progress(){const d=Object.keys(S.done).length;$('pt').textContent=d+' dari '+TOTAL+' tantangan selesai';$('pb').style.width=(100*d/TOTAL)+'%'}
+function renderNav(){let h=`<button data-go="intro" ${S.cur=='intro'?'aria-current="true"':''}><span class="no">0</span><span>Mulai di sini</span></button>`,last=-1;
+ LES.forEach((L,i)=>{if(L.lv!=last){last=L.lv;h+=`<div class="lv">${LV[L.lv]}</div>`}
+  const d=L.ch.filter((_,j)=>S.done[L.id+'-'+j]).length;
+  h+=`<button data-go="${L.id}" ${S.cur==L.id?'aria-current="true"':''}><span class="no">${i+1}</span><span>${L.t}</span><span class="ct ${d==L.ch.length?'all':''}">${d}/${L.ch.length}</span></button>`});
+ $('nav').innerHTML=h;progress()}
+function go(id){S.cur=id;save();renderNav();id=='intro'?renderIntro():renderLesson(LES.find(l=>l.id==id));
+ try{history.replaceState(null,'','#'+id)}catch(e){}window.scrollTo(0,0)}
+
+function renderIntro(){G=null;
+ const groups=[1,2,3,4].map(v=>`<div class="card"><h4>${LV[v]}</h4><ol start="${LES.indexOf(LES.find(l=>l.lv==v))+1}">${LES.filter(l=>l.lv==v).map(l=>`<li><button data-go="${l.id}">${l.t}</button></li>`).join('')}</ol></div>`).join('');
+ $('main').innerHTML=`<div class="lhead"><span class="pill">Informatika Kelas 8</span><h2>Dari data mentah menjadi keputusan</h2><p class="goal">Bab 1 dimulai dari pertanyaan sederhana tentang data di sekitar kamu, lalu naik bertahap sampai kamu bisa memecahkan masalah nyata dengan rumus dan pivot table.</p></div>
+ <section class="sec"><h3>Cara belajar</h3><div class="theory"><ol><li><b>Baca konsep</b> singkat di awal setiap materi.</li><li><b>Coba di tabel.</b> Klik sebuah sel, ketik rumus di kotak <i>fx</i> di atas tabel, lalu tekan Enter. Sel yang kamu ubah berwarna hijau muda, dan tombol Kembalikan data mengembalikan tabel seperti semula.</li><li><b>Kerjakan tantangan.</b> Ketik rumus lalu tekan Periksa. Jika masih bingung, buka <b>Hint</b> satu per satu. Setelah ketiga hint terbuka, tombol <b>Lihat jawaban</b> aktif.</li></ol>
+ <div class="note"><b>Catatan</b>Pemisah argumen boleh <code>;</code> atau <code>,</code>. Bilangan desimal ditulis dengan titik (0.5). Teks harus diapit tanda kutip ("Snack"). Rumusmu dicoba juga pada data lain, jadi mengetik hasilnya langsung tidak akan lolos.</div></div></section>
+ <section class="sec"><h3>Urutan materi</h3><div class="path">${groups}</div></section>
+ <div class="pager"><span></span><button class="btn pri" data-go="l1">Mulai materi 1</button></div>`}
+
+function chHTML(L,i){const c=L.ch[i],k=L.id+'-'+i,d=S.done[k];
+ const keys=[';',',','"','(',')',':','$','&','<','>','='].map(x=>`<button type="button" data-ins="${esc(x)}" aria-label="Sisipkan ${esc(x)}">${esc(x)}</button>`).join('');
+ return `<article class="card ch ${d?'done':''}" data-k="${k}" data-i="${i}"><div class="chh"><span class="tag">Tantangan ${i+1} dari ${L.ch.length}</span><span class="st">${d?'✓ Selesai':'Belum selesai'}</span></div>
+ <p class="q">${c.q}</p>
+ ${L.pivot?`<div class="row"><button class="btn pri" data-act="chk">Periksa susunan pivot</button></div>`:`<div class="in"><input type="text" id="in-${k}" placeholder="=" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Rumus tantangan ${i+1}"><button class="btn pri" data-act="chk">Periksa</button></div><div class="keys">${keys}</div><div class="pv"></div>`}
+ <div class="fb" hidden></div>
+ <div class="row"><button class="btn hint" data-act="hint">Hint</button><button class="btn ans" data-act="ans" disabled>Lihat jawaban</button><button class="btn" data-act="reset">Ulangi tantangan</button></div>
+ <ol class="hints"></ol><div class="answer" hidden></div></article>`}
+
+function renderLesson(L){const i=LES.indexOf(L);
+ gridInit(L);
+ const prev=i?LES[i-1]:null,next=LES[i+1];
+ $('main').innerHTML=`<div class="lhead"><span class="pill">${LV[L.lv]} · Materi ${i+1} dari ${LES.length}</span><h2>${L.t}</h2><p class="goal">${L.goal}</p></div>
+ <section class="sec"><h3>Konsep</h3><div class="theory">${L.theory}</div></section>
+ <section class="sec"><h3>Coba di tabel</h3><div class="card sheetbox"><div class="fbar"><span class="nb" id="nb">A1</span><span class="fxl">fx</span><input type="text" id="fb" aria-label="Kotak rumus" autocomplete="off" autocapitalize="off" spellcheck="false"></div><div class="gridw" id="grid"></div>
+ <div class="row" style="margin-top:10px"><button class="btn" id="rs">Kembalikan data</button></div><p class="cap">Klik sel lalu ketik isi baru di kotak fx dan tekan Enter. Rumus diawali =. Sel biru muda adalah sel yang sedang dirujuk rumus tantanganmu.</p>
+ ${L.pivot?`<div id="pvbox" style="margin-top:18px"><div class="pvc"><label>Baris<select id="p-row"></select></label><label>Kolom<select id="p-col"></select></label><label>Nilai<select id="p-val"></select></label><label>Fungsi<select id="p-agg"><option value="sum">Jumlah</option><option value="avg">Rata-rata</option><option value="count">Hitung</option><option value="max">Maks</option><option value="min">Min</option></select></label></div><div class="gridw" id="pvout"></div></div>`:''}
+ </div></section>
+ <section class="sec"><h3>Tantangan</h3><div class="row" style="margin-bottom:12px"><button class="btn" data-act="resetlesson">Reset semua tantangan di materi ini</button></div>${L.ch.map((_,j)=>chHTML(L,j)).join('')}</section>
+ <div class="pager">${prev?`<button class="btn" data-go="${prev.id}">← ${prev.t}</button>`:`<button class="btn" data-go="intro">← Mulai di sini</button>`}${next?`<button class="btn pri" data-go="${next.id}">${next.t} →</button>`:`<span class="cap">Kamu sudah sampai materi terakhir. Kerja bagus!</span>`}</div>`;
+ paintGrid();selCell(G.sel[0],G.sel[1]);
+ if(L.pivot)initPivot(L);
+ document.querySelectorAll('.ch').forEach(a=>restoreHints(L,a))}
+
+/* tabel */
+function gridInit(L){const orig=clone(L.data),nC=Math.max(...orig.map(r=>r.length))+1,nR=orig.length+2,raw=[];
+ for(let r=0;r<nR;r++){raw.push([]);for(let c=0;c<nC;c++)raw[r][c]=orig[r]&&orig[r][c]!==undefined?orig[r][c]:''}
+ G={L,raw,orig:raw.map(r=>r.slice()),sel:[1,0],hl:new Set(),nR,nC}}
+function paintGrid(){const sh=mkSheet(G.raw);let h='<table class="sg"><thead><tr><th class="rh"></th>';
+ for(let c=0;c<G.nC;c++)h+=`<th>${colL(c)}</th>`;h+='</tr></thead><tbody>';
+ for(let r=0;r<G.nR;r++){h+=`<tr><th class="rh">${r+1}</th>`;
+  for(let c=0;c<G.nC;c++){const v=sh.val(r,c),e=isErr(v),cl=[];
+   if(typeof v=='number')cl.push('n');if(r==0)cl.push('hd0');if(G.raw[r][c]!==G.orig[r][c])cl.push('us');if(e)cl.push('er');
+   if(G.sel[0]==r&&G.sel[1]==c)cl.push('sel');if(G.hl.has(r+','+c))cl.push('rf');
+   h+=`<td data-r="${r}" data-c="${c}" class="${cl.join(' ')}"${e?` title="${esc(v.msg)}"`:''}>${esc(show(v))}</td>`}
+  h+='</tr>'}
+ $('grid').innerHTML=h+'</tbody></table>'}
+function selCell(r,c){G.sel=[r,c];$('nb').textContent=colL(c)+(r+1);const v=G.raw[r][c];$('fb').value=v===''?'':String(v);paintGrid()}
+function commit(){const[r,c]=G.sel;let t=$('fb').value.trim();G.raw[r][c]=t===''?'':/^-?\d+(\.\d+)?$/.test(t)?parseFloat(t):t;paintGrid()}
+function hlFrom(text){G.hl=new Set();(String(text).match(/\$?[A-Z]{1,2}\$?\d+(?::\$?[A-Z]{1,2}\$?\d+)?/gi)||[]).forEach(s=>{const p=s.replace(/\$/g,'').toUpperCase().split(':'),a=addr(p[0]),b=addr(p[1]||p[0]);
+  for(let r=Math.min(a[0],b[0]);r<=Math.max(a[0],b[0]);r++)for(let c=Math.min(a[1],b[1]);c<=Math.max(a[1],b[1]);c++)G.hl.add(r+','+c)});paintGrid()}
+
+/* pemeriksa rumus */
+function diag(u,e){const a=u.v,b=e.v;
+ if(typeof a!=typeof b)return 'Hasil rumusmu berupa '+(typeof a=='number'?'angka':'teks')+', padahal soal mengharapkan '+(typeof b=='number'?'angka':'teks')+'. Periksa lagi apa yang diminta soal.';
+ if(typeof a=='number')return 'Rumusmu menghasilkan '+show(a)+', belum sesuai dengan yang diminta soal. Periksa rentang sel, syarat, dan urutan argumennya.';
+ return 'Hasil rumusmu ('+show(a)+') belum sama dengan yang diminta. Periksa ejaan teks, tanda kutip, dan sel yang dipilih.'}
+function verify(L,c,f){
+ if(!f)return{ok:0,m:'Ketik rumusmu dulu.'};
+ if(f[0]!='=')return{ok:0,m:'Rumus di Excel selalu diawali tanda sama dengan (=).'};
+ const base=mkSheet(clone(L.data)),alt=mkSheet(altOf(L)),u1=calc(f,base);
+ if(u1.err)return{ok:0,m:u1.err+': '+u1.msg};
+ if(!/[A-Za-z]+\s*\(|\$?[A-Z]{1,2}\$?\d+/i.test(f))return{ok:0,m:'Rumus harus memakai sel atau fungsi. Jangan mengetik hasilnya langsung.'};
+ for(const n of c.need||[])if(!new RegExp('\\b'+n+'\\s*\\(','i').test(f))return{ok:0,m:'Soal ini melatih fungsi '+n+'. Gunakan '+n+' di rumusmu.'};
+ const e1=calc(c.a,base),e2=calc(c.a,alt),u2=calc(f,alt);
+ if(same(u1,e1)&&same(u2,e2))return{ok:1};
+ if(same(u1,e1))return{ok:0,m:'Hasilnya cocok di data ini, tetapi rumusmu belum berlaku umum. Cek apakah ada angka yang diketik langsung atau rentang yang kurang lengkap.'};
+ return{ok:0,m:diag(u1,e1)}}
+
+/* pivot */
+const AGGL={sum:'Jumlah',avg:'Rata-rata',count:'Hitung',max:'Maks',min:'Min'};
+function initPivot(L){const sh=mkSheet(clone(L.data)),H=L.data[0],tx=[],nu=[];
+ H.forEach((h,c)=>{(typeof sh.val(1,c)=='number'?nu:tx).push(h)});
+ $('p-row').innerHTML=tx.map(x=>`<option>${esc(x)}</option>`).join('');
+ $('p-col').innerHTML='<option value="">(tidak ada)</option>'+tx.map(x=>`<option>${esc(x)}</option>`).join('');
+ $('p-val').innerHTML=nu.map(x=>`<option>${esc(x)}</option>`).join('');
+ $('p-row').value='Menu';$('p-val').value='Terjual';paintPivot()}
+const pivotCfg=()=>({row:$('p-row').value,col:$('p-col').value,val:$('p-val').value,agg:$('p-agg').value});
+function paintPivot(){const L=G.L,cfg=pivotCfg(),sh=mkSheet(clone(L.data)),H=L.data[0],rows=[];
+ for(let r=1;r<L.data.length;r++)rows.push(H.map((_,c)=>sh.val(r,c)));
+ const ri=H.indexOf(cfg.row),ci=cfg.col?H.indexOf(cfg.col):-1,vi=H.indexOf(cfg.val);
+ const uq=i=>[...new Set(rows.map(r=>r[i]))].sort((a,b)=>String(a).localeCompare(String(b),'id'));
+ const rk=uq(ri),ck=ci>=0?uq(ci):[];
+ const ag=xs=>{if(!xs.length)return '';switch(cfg.agg){case'sum':return xs.reduce((s,x)=>s+x,0);case'avg':return xs.reduce((s,x)=>s+x,0)/xs.length;case'count':return xs.length;case'max':return Math.max(...xs);default:return Math.min(...xs)}};
+ const cell=(rv,cv)=>{const x=ag(rows.filter(r=>(rv===null||r[ri]===rv)&&(cv===null||r[ci]===cv)).map(r=>r[vi]));return x===''?'':+Number(x).toFixed(2)};
+ let h='<table class="sg pvt"><thead><tr><th class="l">'+esc(cfg.row)+'</th>';
+ if(ci>=0){ck.forEach(c=>h+=`<th>${esc(c)}</th>`);h+='<th class="tot">Total</th>'}else h+=`<th class="tot">${AGGL[cfg.agg]} ${esc(cfg.val)}</th>`;
+ h+='</tr></thead><tbody>';
+ rk.forEach(rv=>{h+=`<tr><th class="l">${esc(rv)}</th>`;ck.forEach(cv=>h+=`<td class="n">${cell(rv,cv)}</td>`);h+=`<td class="n tot">${cell(rv,null)}</td></tr>`});
+ h+='<tr><th class="l tot">Total</th>';ck.forEach(cv=>h+=`<td class="n tot">${cell(null,cv)}</td>`);h+=`<td class="n tot">${cell(null,null)}</td></tr></tbody></table>`;
+ $('pvout').innerHTML=h}
+function checkPivot(c){const u=pivotCfg(),t=c.cfg,bad=[];
+ if(u.row!=t.row)bad.push('bidang Baris');if((u.col||'')!=(t.col||''))bad.push('bidang Kolom');
+ if(!(t.agg=='count'&&u.agg=='count')&&u.val!=t.val)bad.push('bidang Nilai');if(u.agg!=t.agg)bad.push('Fungsi');
+ return bad.length?{ok:0,m:'Yang belum sesuai: '+bad.join(', ')+'.'}:{ok:1}}
+
+/* hint, jawaban, pemeriksaan */
+function restoreHints(L,a){const k=a.dataset.k,n=hs[k]||0,c=L.ch[a.dataset.i];
+ a.querySelector('.hints').innerHTML=c.h.slice(0,n).map((t,j)=>`<li><b>Hint ${j+1}</b>${esc(t)}</li>`).join('');
+ const hb=a.querySelector('[data-act=hint]'),ab=a.querySelector('[data-act=ans]');
+ hb.textContent=n>=3?'Semua hint terbuka':'Hint ('+n+'/3)';hb.disabled=n>=3;
+ ab.disabled=!(n>=3||S.done[k]);ab.title=ab.disabled?'Buka ketiga hint dulu':'';
+ if(a.dataset.shown){showAnswer(L,a)}}
+function showAnswer(L,a){const c=L.ch[a.dataset.i],el=a.querySelector('.answer');a.dataset.shown=1;
+ const cfg=c.cfg?`Baris: ${c.cfg.row} · Kolom: ${c.cfg.col||'(tidak ada)'} · Nilai: ${c.cfg.val} · Fungsi: ${AGGL[c.cfg.agg]}`:c.a;
+ el.hidden=false;el.innerHTML=`<b>Salah satu jawaban yang benar:</b><code>${esc(cfg)}</code>${esc(c.w)}${c.cfg?'':' Pemisah ; boleh diganti koma.'}`}
+function done(a){const k=a.dataset.k;S.done[k]=1;save();a.classList.add('done');a.querySelector('.st').textContent='✓ Selesai';renderNavKeep()}
+function renderNavKeep(){const y=$('nav').scrollTop;renderNav();$('nav').scrollTop=y}
+function feedback(a,r){const fb=a.querySelector('.fb');fb.hidden=false;fb.className='fb '+(r.ok?'ok':'no');
+ fb.textContent=r.ok?'Benar! Rumusmu tepat dan juga bekerja pada data lain.':r.m+' Butuh bantuan? Buka Hint.';
+ if(r.ok&&G.L.pivot)fb.textContent='Benar! Susunan pivotmu menjawab pertanyaan ini.'}
+
+function resetCh(L,a){const k=a.dataset.k;delete S.done[k];hs[k]=0;delete a.dataset.shown;
+ const i=a.querySelector('input[type=text]');if(i)i.value='';const pv=a.querySelector('.pv');if(pv)pv.innerHTML='';
+ a.querySelector('.fb').hidden=true;a.querySelector('.answer').hidden=true;a.classList.remove('done');a.querySelector('.st').textContent='Belum selesai';
+ save();restoreHints(L,a)}
+const main=$('main');
+main.addEventListener('click',e=>{
+ const g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return}
+ const td=e.target.closest('#grid td');if(td){selCell(+td.dataset.r,+td.dataset.c);return}
+ if(e.target.id=='rs'){const L=G.L;gridInit(L);paintGrid();selCell(1,0);return}
+ if(e.target.dataset.act=='resetlesson'){document.querySelectorAll('.ch').forEach(x=>resetCh(G.L,x));hlFrom('');renderNavKeep();return}
+ const a=e.target.closest('.ch');if(!a)return;const L=G.L;
+ const ins=e.target.closest('[data-ins]');if(ins){const i=a.querySelector('input[type=text]');const s=i.selectionStart??i.value.length;i.setRangeText(ins.dataset.ins,s,i.selectionEnd??s,'end');i.focus();i.dispatchEvent(new Event('input',{bubbles:true}));return}
+ const act=e.target.dataset.act;if(!act)return;
+ if(act=='hint'){hs[a.dataset.k]=Math.min(3,(hs[a.dataset.k]||0)+1);restoreHints(L,a)}
+ if(act=='ans')showAnswer(L,a);
+ if(act=='chk')runCheck(L,a);
+ if(act=='reset'){resetCh(L,a);hlFrom('');renderNavKeep()}});
+function runCheck(L,a){const c=L.ch[a.dataset.i];
+ const r=L.pivot?checkPivot(c):verify(L,c,a.querySelector('input[type=text]').value.trim());
+ feedback(a,r);if(r.ok){done(a);restoreHints(L,a)}}
+main.addEventListener('input',e=>{
+ if(e.target.matches('.in input')){const a=e.target.closest('.ch'),f=e.target.value.trim();hlFrom(f);
+  let p='';if(f.length>1){const r=calc(f,mkSheet(clone(G.L.data)));p=r.err?(/SYNTAX|KUTIP|NAME/.test(r.err)?'Hasil sementara: (rumus belum lengkap)':'Hasil sementara: <b>'+esc(r.err)+'</b>'):'Hasil sementara: <b>'+esc(show(r.v))+'</b>'}
+  a.querySelector('.pv').innerHTML=p}});
+main.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.matches('.in input'))runCheck(G.L,e.target.closest('.ch'))});
+main.addEventListener('change',e=>{if(e.target.id=='fb')commit();if(/^p-/.test(e.target.id||''))paintPivot()});
+let rt=null;
+$('rall').addEventListener('click',()=>{const b=$('rall');
+ if(!rt){b.textContent='Yakin? Klik lagi untuk menghapus semua';rt=setTimeout(()=>{rt=null;b.textContent='Reset semua tantangan'},4000);return}
+ clearTimeout(rt);rt=null;b.textContent='Reset semua tantangan';S.done={};for(const k in hs)delete hs[k];save();go(S.cur)});
+$('nav').addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go)});
+let h0='';try{h0=location.hash.slice(1)}catch(e){}
+go(LES.some(l=>l.id==h0)||h0=='intro'?h0:(LES.some(l=>l.id==S.cur)?S.cur:'intro'));
+</script>
+</body></html>
