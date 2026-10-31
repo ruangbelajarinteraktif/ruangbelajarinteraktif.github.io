@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matematika Kelas 8 · Lingkaran · Unsur, Keliling, Luas & Aplikasinya</title>
+    <style>
+        :root {
+            --primary: #0891b2;
+            --primary-dark: #0e7490;
+            --secondary: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --bg: #f0f9ff;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-title h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .header-title p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-home {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-home:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-reset {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #dc2626;
+        }
+
+        .btn-check {
+            background: var(--primary);
+            color: white;
+            margin-top: 0.8rem;
+        }
+
+        .btn-check:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-unlock {
+            background: var(--secondary);
+            color: white;
+            width: 100%;
+            justify-content: center;
+            padding: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .btn-boss {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .section-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .bg-prereq { background: var(--purple); }
+        .bg-unsur { background: var(--primary); }
+        .bg-keliling { background: var(--success); }
+        .bg-sudut { background: var(--pink); }
+        .bg-level1 { background: #3b82f6; }
+        .bg-level2 { background: var(--secondary); }
+        .bg-level3 { background: var(--danger); }
+        .bg-challenge { background: #dc2626; }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--text);
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* Materi Box */
+        .materi-box {
+            background: #f1f5f9;
+            border-left: 4px solid var(--primary);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .materi-box h4 {
+            color: var(--primary-dark);
+            margin-bottom: 0.6rem;
+            font-size: 1.05rem;
+        }
+
+        .materi-box ul, .materi-box ol {
+            margin-left: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .materi-box li {
+            margin-bottom: 0.5rem;
+        }
+
+        .materi-box p {
+            margin-bottom: 0.5rem;
+        }
+
+        .rumus-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid var(--secondary);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #92400e;
+        }
+
+        .contoh-box {
+            background: #ecfdf5;
+            border-left: 4px solid var(--success);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        .contoh-box h5 {
+            color: #065f46;
+            margin-bottom: 0.4rem;
+        }
+
+        /* SVG Container */
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 12px;
+            border: 2px dashed var(--primary);
+        }
+
+        .svg-container svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .svg-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .svg-card {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .svg-card h5 {
+            color: var(--primary-dark);
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .svg-card p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.3rem;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .question-card.boss {
+            border: 2px solid var(--danger);
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        }
+
+        .question-card.correct {
+            border-color: var(--success);
+            background: #f0fdf4;
+        }
+
+        .question-card.incorrect {
+            border-color: var(--danger);
+            background: #fef2f2;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        .question-number.level1 { background: #3b82f6; }
+        .question-number.level2 { background: var(--secondary); }
+        .question-number.level3 { background: var(--danger); }
+        .question-number.boss-num { background: var(--danger); }
+
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+            line-height: 1.7;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .input-group input, .input-group select {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            width: 180px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--primary);
+        }
+
+        .feedback {
+            margin-top: 0.6rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: none;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+        }
+
+        .feedback.show { display: block; }
+        .feedback.success { 
+            color: #065f46; 
+            background: #d1fae5;
+        }
+        .feedback.error { 
+            color: #991b1b; 
+            background: #fee2e2;
+        }
+
+        .hint-box {
+            background: #fef3c7;
+            border-left: 4px solid var(--secondary);
+            padding: 0.8rem 1.2rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+            color: #92400e;
+        }
+
+        .hint-box strong {
+            color: #78350f;
+        }
+
+        /* Challenge Section */
+        .challenge-locked {
+            text-align: center;
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 2px dashed var(--border);
+        }
+
+        .challenge-locked p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: var(--border);
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--primary));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .math {
+            font-family: 'Courier New', monospace;
+            background: #e2e8f0;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .victory-box {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            border: 2px solid var(--success);
+            display: none;
+        }
+
+        .victory-box h2 {
+            color: var(--success);
+            font-size: 2rem;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            margin-left: 0.5rem;
+        }
+
+        .level-badge.easy { background: #3b82f6; }
+        .level-badge.medium { background: var(--secondary); }
+        .level-badge.hard { background: var(--danger); }
+
+        .info-banner {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid var(--secondary);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .info-banner-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .info-banner-text {
+            font-size: 0.9rem;
+            color: #78350f;
+        }
+
+        @media (max-width: 600px) {
+            .header-container { flex-direction: column; align-items: flex-start; }
+            .section { padding: 1.5rem; }
+            .input-group input, .input-group select { width: 100%; }
+            .header-title h1 { font-size: 1.2rem; }
+            .svg-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-title">
+                <h1>🔵 Matematika · Kelas 8 · Lingkaran</h1>
+                <p>Unsur-unsur • Keliling & Luas • Sudut Pusat & Keliling • Aplikasi</p>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-home" onclick="goHome()">🏠 Beranda</button>
+                <button class="btn btn-reset" onclick="resetAll()">🔄 Reset Tantangan</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <!-- Progress & Score -->
+        <div class="section" style="text-align: center; background: linear-gradient(135deg, #f0f9ff, #e0f2fe);">
+            <div class="score-display">⭐ Skor Kamu: <span id="totalScore">0</span> / 900 Poin</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-light);">Selesaikan soal-soal berjenjang untuk membuka <b>Tantangan Master Lingkaran</b> di bagian bawah!</p>
+        </div>
+
+        <!-- INFO BANNER -->
+        <div class="info-banner">
+            <div class="info-banner-icon">📝</div>
+            <div class="info-banner-text">
+                <b>Catatan Penting:</b> Untuk semua soal pada latihan ini, gunakan nilai <span class="math">π = 22/7</span> jika jari-jari atau diameter merupakan kelipatan 7, dan <span class="math">π = 3,14</span> untuk bilangan lainnya. Bulatkan hasil akhir sesuai petunjuk soal.
+            </div>
+        </div>
+
+        <!-- MATERI PRASYARAT -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon bg-prereq">🧠</div>
+                <div>
+                    <div class="section-title">Materi Prasyarat</div>
+                    <div class="section-subtitle">Bilangan Pi (π) & Operasi Dasar</div>
+                </div>
+            </div>
+
+            <div class="materi-box">
+                <h4>📌 1. Apa itu π (Pi)?</h4>
+                <p><b>π (pi)</b> adalah konstanta yang merupakan perbandingan antara keliling lingkaran dengan diameternya. Nilainya mendekati:</p>
+                <div class="rumus-box">
+                    π ≈ 22/7 ≈ 3,14
+                </div>
+                <ul>
+                    <li>Gunakan <span class="math">π = 22/7</span> jika jari-jari/diameter kelipatan 7 (7, 14, 21, 28, ...)</li>
+                    <li>Gunakan <span class="math">π = 3,14</span> untuk bilangan lainnya</li>
+                </ul>
+            </div>
+
+            <div class="materi-box">
+                <h4>📌 2. Pengingat Operasi Dasar</h4>
+                <ul>
+                    <li><b>Kuadrat:</b> <span class="math">r² = r × r</span> (contoh: 7² = 49)</li>
+                    <li><b>Akar kuadrat:</b> <span class="math">√49 = 7</span></li>
+                    <li><b>Perbandingan/pecahan:</b> kemampuan menghitung pecahan seperti 1/4, 1/8, dst.</li>
+                </ul>
+            </div>
+
+            <div class="question-card" id="q0-card">
+                <div class="question-text">
+                    <span class="question-number">PRASYARAT</span>
+                    Jika <span class="math">π × 14 × 14</span> dengan <span class="math">π = 22/7</span>, berapakah hasilnya?
+                </div>
+                <div class="hint-box">
+                    <strong>Petunjuk:</strong> Hitung <span class="math">(22/7) × 14 × 14</span>. Sederhanakan 14/7 = 2, lalu kalikan.
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q0" placeholder="Hasil...">
+                    <button class="btn btn-check" onclick="checkAnswer('q0', 616, 30)">Periksa</button>
+                </div>
+                <div class="feedback" id="q0-feedback"></div>
+            </div>
+        </div>
+
+        <!-- BAGIAN 1: UNSUR-UNSUR LINGKARAN -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon bg-unsur">🔵</div>
+                <div>
+                    <div class="section-title">Bagian 1: Unsur-Unsur Dasar Lingkaran</div>
+                    <div class="section-subtitle">Mengenal bagian-bagian penting pada lingkaran</div>
+                </div>
+            </div>
+
+            <div class="materi-box">
+                <h4>📌 Definisi Lingkaran</h4>
+                <p><b>Lingkaran</b> adalah kumpulan semua titik yang berjarak sama terhadap suatu titik tertentu yang disebut <b>pusat lingkaran</b>. Jarak yang tetap tersebut disebut <b>jari-jari</b>.</p>
+            </div>
+
+            <!-- SVG Diagram Unsur Lingkaran - DIPERBAIKI -->
+            <!-- 
+                Perhitungan geometri yang presisi:
+                Lingkaran: pusat O(225, 225), jari-jari r = 180
+                
+                Titik A (0° / kanan): (405, 225)
+                Titik B (180° / kiri): (45, 225)
+                Titik D (210° / kiri-atas): (225 + 180·cos210°, 225 + 180·sin210°) = (69.12, 135)
+                Titik E (330° / kanan-atas): (225 + 180·cos330°, 225 + 180·sin330°) = (380.88, 135)
+                
+                Tali busur DE: garis lurus dari D ke E (keduanya tepat di keliling)
+                Apotema: dari O(225,225) tegak lurus ke DE di titik (225, 135)
+            -->
+            <div class="svg-container">
+                <svg width="450" height="450" viewBox="0 0 450 450" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Lingkaran utama -->
+                    <circle cx="225" cy="225" r="180" fill="#e0f2fe" stroke="#0891b2" stroke-width="3"/>
+                    
+                    <!-- Diameter BC (biru) - melalui pusat -->
+                    <line x1="45" y1="225" x2="405" y2="225" stroke="#2563eb" stroke-width="2.5"/>
+                    
+                    <!-- Jari-jari OA (merah) - dari pusat ke keliling -->
+                    <line x1="225" y1="225" x2="405" y2="225" stroke="#dc2626" stroke-width="3"/>
+                    
+                    <!-- Tali busur DE (hijau) - dari D(69.12, 135) ke E(380.88, 135) -->
+                    <!-- Kedua titik tepat berada pada keliling lingkaran -->
+                    <line x1="69.12" y1="135" x2="380.88" y2="135" stroke="#10b981" stroke-width="3"/>
+                    
+                    <!-- Apotema (ungu) - dari pusat O tegak lurus ke tali busur DE -->
+                    <!-- Titik kaki apotema: (225, 135) -->
+                    <line x1="225" y1="225" x2="225" y2="135" stroke="#8b5cf6" stroke-width="2.5" stroke-dasharray="6,3"/>
+                    
+                    <!-- Tanda siku-siku di kaki apotema -->
+                    <polyline points="225,143 217,143 217,135" fill="none" stroke="#8b5cf6" stroke-width="1.5"/>
+                    
+                    <!-- Pusat O -->
+                    <circle cx="225" cy="225" r="5" fill="#dc2626"/>
+                    <text x="232" y="218" font-size="15" font-weight="bold" fill="#dc2626">O</text>
+                    
+                    <!-- Titik A (kanan) -->
+                    <circle cx="405" cy="225" r="4" fill="#1e293b"/>
+                    <text x="412" y="230" font-size="14" font-weight="bold">A</text>
+                    
+                    <!-- Titik B (kiri) -->
+                    <circle cx="45" cy="225" r="4" fill="#1e293b"/>
+                    <text x="25" y="230" font-size="14" font-weight="bold">B</text>
+                    
+                    <!-- Titik D (kiri-atas, tepat di keliling) -->
+                    <circle cx="69.12" cy="135" r="4" fill="#1e293b"/>
+                    <text x="50" y="130" font-size="14" font-weight="bold">D</text>
+                    
+                    <!-- Titik E (kanan-atas, tepat di keliling) -->
+                    <circle cx="380.88" cy="135" r="4" fill="#1e293b"/>
+                    <text x="388" y="130" font-size="14" font-weight="bold">E</text>
+                    
+                    <!-- Label Jari-jari -->
+                    <text x="280" y="215" font-size="13" font-weight="bold" fill="#dc2626">Jari-jari (r)</text>
+                    
+                    <!-- Label Diameter -->
+                    <text x="170" y="260" font-size="13" font-weight="bold" fill="#2563eb">Diameter (d = 2r)</text>
+                    
+                    <!-- Label Tali Busur -->
+                    <text x="180" y="125" font-size="13" font-weight="bold" fill="#10b981">Tali Busur DE</text>
+                    
+                    <!-- Label Apotema -->
+                    <text x="232" y="185" font-size="13" font-weight="bold" fill="#8b5cf6">Apotema</text>
+                </svg>
+            </div>
+
+            <div class="materi-box">
+                <h4>📌 Unsur-Unsur Lingkaran:</h4>
+                <ul>
+                    <li><b>Pusat Lingkaran (O):</b> Titik tengah yang menjadi acuan semua titik pada lingkaran.</li>
+                    <li><b>Jari-jari (r):</b> Garis dari pusat ke titik pada lingkaran. <span class="math">r = d/2</span></li>
+                    <li><b>Diameter (d):</b> Tali busur terpanjang yang melewati pusat. <span class="math">d = 2r</span></li>
+                    <li><b>Tali Busur:</b> Garis yang menghubungkan dua titik pada lingkaran (tidak harus melewati pusat).</li>
+                    <li><b>Busur:</b> Lengkungan bagian dari keliling lingkaran.</li>
+                    <li><b>Apotema:</b> Garis tegak lurus dari pusat ke tali busur (membagi tali busur menjadi dua sama panjang).</li>
+                </ul>
+            </div>
+
+            <!-- SVG Juring dan Tembereng - DIPERBAIKI -->
+            <!-- 
+                Perhitungan geometri yang presisi:
+                Lingkaran: pusat O(100, 100), jari-jari r = 80
+                
+                Untuk JURING:
+                - Dari pusat O(100,100) ke titik P di sudut 90° (atas): (100, 20)
+                - Dari pusat O(100,100) ke titik Q di sudut 30°: (100 + 80·cos30°, 100 - 80·sin30°) = (169.28, 60)
+                - Arc dari P ke Q dengan radius 80, large-arc-flag = 0 (busur pendek)
+                - Path: M 100 100 L 100 20 A 80 80 0 0 1 169.28 60 Z
+                
+                Untuk TEMBERENG:
+                - Tali busur dari R(30, 70) ke S(170, 70)
+                - Kedua titik harus tepat di keliling: 
+                  R: (100 + 80·cos(θ), 100 + 80·sin(θ)) = (30, 70)
+                  cos(θ) = -70/80 = -0.875 → θ ≈ 209°
+                  S: (100 + 80·cos(φ), 100 + 80·sin(φ)) = (170, 70)
+                  cos(φ) = 70/80 = 0.875 → φ ≈ -29° atau 331°
+                - Arc dari R ke S dengan radius 80 (busur atas yang pendek)
+                - Path: M 30 70 A 80 80 0 0 1 170 70 L 30 70 Z
+            -->
+            <h4 style="margin-top: 1.5rem; color: var(--primary-dark);">📌 Juring dan Tembereng:</h4>
+            <div class="svg-grid">
+                <div class="svg-card">
+                    <svg width="220" height="220" viewBox="0 0 220 220">
+                        <!-- Lingkaran utama (garis tipis sebagai referensi) -->
+                        <circle cx="110" cy="110" r="80" fill="none" stroke="#0891b2" stroke-width="2"/>
+                        
+                        <!-- JURING: daerah yang dibatasi 2 jari-jari dan busur -->
+                        <!-- Dari pusat O(110,110) ke P(110,30) di atas, dan ke Q(179.28,70) di kanan-atas -->
+                        <path d="M 110 110 L 110 30 A 80 80 0 0 1 179.28 70 Z" 
+                              fill="#fbbf24" fill-opacity="0.6" stroke="#0891b2" stroke-width="2"/>
+                        
+                        <!-- Jari-jari OP (atas) -->
+                        <line x1="110" y1="110" x2="110" y2="30" stroke="#0891b2" stroke-width="2"/>
+                        
+                        <!-- Jari-jari OQ (kanan-atas) -->
+                        <line x1="110" y1="110" x2="179.28" y2="70" stroke="#0891b2" stroke-width="2"/>
+                        
+                        <!-- Titik pusat O -->
+                        <circle cx="110" cy="110" r="4" fill="#dc2626"/>
+                        <text x="95" y="105" font-size="13" font-weight="bold" fill="#dc2626">O</text>
+                        
+                        <!-- Titik P (atas) -->
+                        <circle cx="110" cy="30" r="3" fill="#1e293b"/>
+                        <text x="115" y="25" font-size="12" font-weight="bold">P</text>
+                        
+                        <!-- Titik Q (kanan-atas) -->
+                        <circle cx="179.28" cy="70" r="3" fill="#1e293b"/>
+                        <text x="185" y="70" font-size="12" font-weight="bold">Q</text>
+                        
+                        <!-- Label Busur PQ -->
+                        <text x="145" y="45" font-size="11" font-weight="bold" fill="#0891b2">Busur PQ</text>
+                    </svg>
+                    <h5>JURING (Sector)</h5>
+                    <p>Daerah yang dibatasi oleh <b>dua jari-jari</b> dan sebuah <b>busur</b>.</p>
+                </div>
+
+                <div class="svg-card">
+                    <svg width="220" height="220" viewBox="0 0 220 220">
+                        <!-- Lingkaran utama -->
+                        <circle cx="110" cy="110" r="80" fill="none" stroke="#0891b2" stroke-width="2"/>
+                        
+                        <!-- TEMBERENG: daerah antara tali busur dan busur -->
+                        <!-- Tali busur dari R(40, 70) ke S(180, 70) - kedua titik tepat di keliling -->
+                        <!-- Busur atas dari R ke S (busur pendek) -->
+                        <path d="M 40 70 A 80 80 0 0 1 180 70 L 40 70 Z" 
+                              fill="#f472b6" fill-opacity="0.6" stroke="#0891b2" stroke-width="2"/>
+                        
+                        <!-- Tali busur RS -->
+                        <line x1="40" y1="70" x2="180" y2="70" stroke="#0891b2" stroke-width="2.5"/>
+                        
+                        <!-- Titik pusat O -->
+                        <circle cx="110" cy="110" r="4" fill="#dc2626"/>
+                        <text x="95" y="105" font-size="13" font-weight="bold" fill="#dc2626">O</text>
+                        
+                        <!-- Titik R (kiri) -->
+                        <circle cx="40" cy="70" r="3" fill="#1e293b"/>
+                        <text x="22" y="70" font-size="12" font-weight="bold">R</text>
+                        
+                        <!-- Titik S (kanan) -->
+                        <circle cx="180" cy="70" r="3" fill="#1e293b"/>
+                        <text x="185" y="70" font-size="12" font-weight="bold">S</text>
+                        
+                        <!-- Label Busur RS (busur atas) -->
+                        <text x="85" y="45" font-size="11" font-weight="bold" fill="#0891b2">Busur RS</text>
+                        
+                        <!-- Label Tali Busur RS -->
+                        <text x="75" y="88" font-size="11" font-weight="bold" fill="#0891b2">Tali Busur RS</text>
+                    </svg>
+                    <h5>TEMBERENG</h5>
+                    <p>Daerah yang dibatasi oleh <b>tali busur</b> dan <b>busur</b>.</p>
+                </div>
+            </div>
+
+            <div class="question-card" id="q1-card">
+                <div class="question-text">
+                    <span class="question-number level1">SOAL 1</span>
+                    <span class="level-badge easy">SEDANG</span><br>
+                    Sebuah lingkaran memiliki jari-jari <span class="math">21 cm</span>. Berapakah <b>diameter</b> lingkaran tersebut?
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q1" placeholder="Diameter (cm)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q1', 42, 40)">Periksa</button>
+                </div>
+                <div class="feedback" id="q1-feedback"></div>
+            </div>
+
+            <div class="question-card" id="q2-card">
+                <div class="question-text">
+                    <span class="question-number level1">SOAL 2</span>
+                    <span class="level-badge easy">SEDANG</span><br>
+                    Perhatikan diagram di atas. Garis yang menghubungkan dua titik pada lingkaran dan <b>melewati pusat</b> disebut ...
+                </div>
+                <div class="hint-box">
+                    <strong>Petunjuk:</strong> Ini adalah tali busur terpanjang yang membagi lingkaran menjadi dua bagian sama besar.
+                </div>
+                <div class="input-group">
+                    <select id="q2">
+                        <option value="">-- Pilih jawaban --</option>
+                        <option value="jari-jari">Jari-jari</option>
+                        <option value="diameter">Diameter</option>
+                        <option value="tali busur">Tali Busur</option>
+                        <option value="apotema">Apotema</option>
+                    </select>
+                    <button class="btn btn-check" onclick="checkChoice('q2', 'diameter', 40)">Periksa</button>
+                </div>
+                <div class="feedback" id="q2-feedback"></div>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: KELILING DAN LUAS -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon bg-keliling">📏</div>
+                <div>
+                    <div class="section-title">Bagian 2: Keliling dan Luas Lingkaran</div>
+                    <div class="section-subtitle">Rumus utama yang wajib dikuasai</div>
+                </div>
+            </div>
+
+            <div class="materi-box">
+                <h4>📌 A. Keliling Lingkaran</h4>
+                <p>Keliling adalah panjang keseluruhan lengkung lingkaran.</p>
+                <div class="rumus-box">
+                    K = 2 × π × r &nbsp;&nbsp;atau&nbsp;&nbsp; K = π × d
+                </div>
+            </div>
+
+            <div class="materi-box">
+                <h4>📌 B. Luas Lingkaran</h4>
+                <p>Luas adalah besarnya daerah yang dibatasi oleh lingkaran.</p>
+                <div class="rumus-box">
+                    L = π × r²
+                </div>
+            </div>
+
+            <div class="contoh-box">
+                <h5>💡 Contoh Soal:</h5>
+                <p>Lingkaran dengan jari-jari <span class="math">14 cm</span>. Hitung keliling dan luasnya!</p>
+                <p><b>Penyelesaian:</b> (karena r = 14 kelipatan 7, gunakan π = 22/7)</p>
+                <p>• Keliling = 2 × (22/7) × 14 = 2 × 22 × 2 = <b>88 cm</b></p>
+                <p>• Luas = (22/7) × 14 × 14 = 22 × 2 × 14 = <b>616 cm²</b></p>
+            </div>
+
+            <!-- SVG Ilustrasi Keliling & Luas -->
+            <div class="svg-container">
+                <svg width="500" height="250" viewBox="0 0 500 250">
+                    <!-- Keliling -->
+                    <circle cx="125" cy="125" r="90" fill="none" stroke="#0891b2" stroke-width="4" stroke-dasharray="8,4"/>
+                    <circle cx="125" cy="125" r="4" fill="#dc2626"/>
+                    <line x1="125" y1="125" x2="215" y2="125" stroke="#dc2626" stroke-width="2"/>
+                    <text x="155" y="118" font-size="13" font-weight="bold" fill="#dc2626">r</text>
+                    <text x="70" y="230" font-size="15" font-weight="bold" fill="#0891b2">KELILING</text>
+                    <text x="65" y="248" font-size="12" fill="#64748b">Panjang lengkung</text>
+                    
+                    <!-- Luas -->
+                    <circle cx="375" cy="125" r="90" fill="#bae6fd" stroke="#0891b2" stroke-width="3"/>
+                    <circle cx="375" cy="125" r="4" fill="#dc2626"/>
+                    <line x1="375" y1="125" x2="465" y2="125" stroke="#dc2626" stroke-width="2"/>
+                    <text x="405" y="118" font-size="13" font-weight="bold" fill="#dc2626">r</text>
+                    <text x="330" y="230" font-size="15" font-weight="bold" fill="#0891b2">LUAS</text>
+                    <text x="320" y="248" font-size="12" fill="#64748b">Daerah di dalam</text>
+                </svg>
+            </div>
+
+            <div class="question-card" id="q3-card">
+                <div class="question-text">
+                    <span class="question-number level1">SOAL 3</span>
+                    <span class="level-badge easy">SEDANG</span><br>
+                    Sebuah lingkaran memiliki jari-jari <span class="math">7 cm</span>. Berapakah <b>kelilingnya</b>? (gunakan π = 22/7)
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q3" placeholder="Keliling (cm)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q3', 44, 40)">Periksa</button>
+                </div>
+                <div class="feedback" id="q3-feedback"></div>
+            </div>
+
+            <div class="question-card" id="q4-card">
+                <div class="question-text">
+                    <span class="question-number level1">SOAL 4</span>
+                    <span class="level-badge easy">SEDANG</span><br>
+                    Sebuah lingkaran memiliki diameter <span class="math">20 cm</span>. Berapakah <b>luasnya</b>? (gunakan π = 3,14)
+                </div>
+                <div class="hint-box">
+                    <strong>Petunjuk:</strong> Cari jari-jari dulu: r = d/2 = 10 cm. Lalu hitung L = π × r².
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q4" placeholder="Luas (cm²)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q4', 314, 40)">Periksa</button>
+                </div>
+                <div class="feedback" id="q4-feedback"></div>
+            </div>
+
+            <div class="question-card" id="q5-card">
+                <div class="question-text">
+                    <span class="question-number level1">SOAL 5</span>
+                    <span class="level-badge easy">SEDANG</span><br>
+                    Keliling sebuah lingkaran adalah <span class="math">132 cm</span>. Berapakah <b>jari-jari</b> lingkaran tersebut? (gunakan π = 22/7)
+                </div>
+                <div class="hint-box">
+                    <strong>Petunjuk:</strong> K = 2πr → r = K / (2π) = 132 / (2 × 22/7)
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q5" placeholder="Jari-jari (cm)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q5', 21, 40)">Periksa</button>
+                </div>
+                <div class="feedback" id="q5-feedback"></div>
+            </div>
+        </div>
+
+        <!-- BAGIAN 3: SUDUT PUSAT & KELILING -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon bg-sudut">📐</div>
+                <div>
+                    <div class="section-title">Bagian 3: Sudut Pusat & Sudut Keliling</div>
+                    <div class="section-subtitle">Hubungan sudut dalam lingkaran</div>
+                </div>
+            </div>
+
+            <div class="materi-box">
+                <h4>📌 A. Pengertian</h4>
+                <ul>
+                    <li><b>Sudut Pusat:</b> Sudut yang terbentuk oleh dua jari-jari yang berpotongan di <b>pusat lingkaran</b>.</li>
+                    <li><b>Sudut Keliling:</b> Sudut yang terbentuk oleh dua tali busur yang berpotongan di <b>titik pada keliling lingkaran</b>.</li>
+                </ul>
+            </div>
+
+            <!-- SVG Sudut Pusat dan Keliling - DIPERBAIKI -->
+            <!-- 
+                Perhitungan geometri yang presisi:
+                Lingkaran: pusat O(125, 140), jari-jari r = 100
+                
+                SUDUT PUSAT α menghadap busur AB:
+                - Titik A di sudut 60°: (125 + 100·cos60°, 140 - 100·sin60°) = (175, 53.4)
+                - Titik B di sudut -30° (330°): (125 + 100·cos(-30°), 140 - 100·sin(-30°)) = (211.6, 190)
+                - Dua jari-jari dari O ke A dan O ke B
+                
+                SUDUT KELILING β menghadap busur yang SAMA (busur AB):
+                - Titik sudut C di keliling (di sisi lain busur AB), misal di sudut 200°:
+                  C = (125 + 100·cos200°, 140 - 100·sin200°) = (31.1, 174.2)
+                - Dua tali busur dari C ke A dan dari C ke B
+                - Sudut keliling β = ½ × sudut pusat α
+            -->
+            <div class="svg-container">
+                <svg width="550" height="300" viewBox="0 0 550 300">
+                    <!-- SUDUT PUSAT -->
+                    <circle cx="135" cy="150" r="100" fill="#e0f2fe" stroke="#0891b2" stroke-width="2"/>
+                    
+                    <!-- Titik A di sudut 60°: (185, 63.4) -->
+                    <circle cx="185" cy="63.4" r="4" fill="#1e293b"/>
+                    <text x="192" y="60" font-size="13" font-weight="bold">A</text>
+                    
+                    <!-- Titik B di sudut -30° (330°): (221.6, 200) -->
+                    <circle cx="221.6" cy="200" r="4" fill="#1e293b"/>
+                    <text x="228" y="205" font-size="13" font-weight="bold">B</text>
+                    
+                    <!-- Pusat O -->
+                    <circle cx="135" cy="150" r="4" fill="#dc2626"/>
+                    <text x="118" y="148" font-size="13" font-weight="bold" fill="#dc2626">O</text>
+                    
+                    <!-- Jari-jari OA -->
+                    <line x1="135" y1="150" x2="185" y2="63.4" stroke="#0891b2" stroke-width="2"/>
+                    
+                    <!-- Jari-jari OB -->
+                    <line x1="135" y1="150" x2="221.6" y2="200" stroke="#0891b2" stroke-width="2"/>
+                    
+                    <!-- Arc sudut pusat α (busur kecil dari A ke B searah jarum jam) -->
+                    <path d="M 155 115 A 40 40 0 0 1 168 175" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+                    <text x="172" y="150" font-size="14" font-weight="bold" fill="#dc2626">α</text>
+                    
+                    <!-- Busur AB yang diarsir (busur yang dihadapi sudut) -->
+                    <path d="M 185 63.4 A 100 100 0 0 1 221.6 200" fill="none" stroke="#f59e0b" stroke-width="4"/>
+                    
+                    <text x="55" y="275" font-size="14" font-weight="bold" fill="#0891b2">SUDUT PUSAT (α)</text>
+                    <text x="45" y="293" font-size="11" fill="#64748b">Titik sudut di pusat O</text>
+                    
+                    <!-- SUDUT KELILING -->
+                    <circle cx="415" cy="150" r="100" fill="#e0f2fe" stroke="#0891b2" stroke-width="2"/>
+                    
+                    <!-- Titik A' di sudut 60°: (465, 63.4) -->
+                    <circle cx="465" cy="63.4" r="4" fill="#1e293b"/>
+                    <text x="472" y="60" font-size="13" font-weight="bold">A'</text>
+                    
+                    <!-- Titik B' di sudut -30° (330°): (501.6, 200) -->
+                    <circle cx="501.6" cy="200" r="4" fill="#1e293b"/>
+                    <text x="508" y="205" font-size="13" font-weight="bold">B'</text>
+                    
+                    <!-- Titik C (titik sudut keliling) di sudut 200°: (321.1, 184.2) -->
+                    <circle cx="321.1" cy="184.2" r="5" fill="#ec4899"/>
+                    <text x="300" y="195" font-size="13" font-weight="bold" fill="#ec4899">C</text>
+                    
+                    <!-- Pusat O' -->
+                    <circle cx="415" cy="150" r="4" fill="#dc2626"/>
+                    <text x="398" y="148" font-size="13" font-weight="bold" fill="#dc2626">O'</text>
+                    
+                    <!-- Tali busur C'A' -->
+                    <line x1="321.1" y1="184.2" x2="465" y2="63.4" stroke="#ec4899" stroke-width="2"/>
+                    
+                    <!-- Tali busur C'B' -->
+                    <line x1="321.1" y1="184.2" x2="501.6" y2="200" stroke="#ec4899" stroke-width="2"/>
+                    
+                    <!-- Arc sudut keliling β -->
+                    <path d="M 345 175 A 30 30 0 0 1 340 195" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+                    <text x="348" y="192" font-size="14" font-weight="bold" fill="#dc2626">β</text>
+                    
+                    <!-- Busur A'B' yang diarsir (busur yang dihadapi sudut) -->
+                    <path d="M 465 63.4 A 100 100 0 0 1 501.6 200" fill="none" stroke="#f59e0b" stroke-width="4"/>
+                    
+                    <text x="330" y="275" font-size="14" font-weight="bold" fill="#0891b2">SUDUT KELILING (β)</text>
+                    <text x="320" y="293" font-size="11" fill="#64748b">Titik sudut di keliling (C)</text>
+                    
+                    <!-- Keterangan hubungan -->
+                    <text x="210" y="25" font-size="13" font-weight="bold" fill="#f59e0b">Busur yang sama (kuning)</text>
+                </svg>
+            </div>
+
+            <div class="materi-box">
+                <h4>📌 B. Hubungan Sudut Pusat dan Sudut Keliling</h4>
+                <p>Jika sudut pusat dan sudut keliling <b>menghadap busur yang sama</b>, maka:</p>
+                <div class="rumus-box">
+                    Sudut Pusat = 2 × Sudut Keliling &nbsp;&nbsp;→&nbsp;&nbsp; α = 2β
+                </div>
+            </div>
+
+            <div class="materi-box">
+                <h4>📌 C. Panjang Busur dan Luas Juring</h4>
+                <ul>
+                    <li><b>Panjang Busur:</b> <span class="math">PB = (sudut/360°) × 2πr</span></li>
+                    <li><b>Luas Juring:</b> <span class="math">LJ = (sudut/360°) × πr²</span></li>
+                </ul>
+            </div>
+
+            <div class="contoh-box">
+                <h5>💡 Contoh Soal:</h5>
+                <p>Sudut keliling yang menghadap busur AB adalah <span class="math">35°</span>. Berapakah sudut pusat yang menghadap busur AB?</p>
+                <p><b>Penyelesaian:</b> Sudut pusat = 2 × 35° = <b>70°</b></p>
+            </div>
+
+            <div class="question-card" id="q6-card">
+                <div class="question-text">
+                    <span class="question-number level1">SOAL 6</span>
+                    <span class="level-badge easy">SEDANG</span><br>
+                    Sebuah sudut pusat menghadap busur AB besarnya <span class="math">80°</span>. Berapakah besar <b>sudut keliling</b> yang juga menghadap busur AB?
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q6" placeholder="Sudut (°)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q6', 40, 40)">Periksa</button>
+                </div>
+                <div class="feedback" id="q6-feedback"></div>
+            </div>
+
+            <div class="question-card" id="q7-card">
+                <div class="question-text">
+                    <span class="question-number level1">SOAL 7</span>
+                    <span class="level-badge easy">SEDANG</span><br>
+                    Sebuah lingkaran berjari-jari <span class="math">21 cm</span>. Berapakah <b>panjang busur</b> yang memiliki sudut pusat <span class="math">60°</span>? (gunakan π = 22/7)
+                </div>
+                <div class="hint-box">
+                    <strong>Petunjuk:</strong> PB = (60/360) × 2 × (22/7) × 21
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q7" placeholder="Panjang busur (cm)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q7', 22, 40)">Periksa</button>
+                </div>
+                <div class="feedback" id="q7-feedback"></div>
+            </div>
+
+            <div class="question-card" id="q8-card">
+                <div class="question-text">
+                    <span class="question-number level1">SOAL 8</span>
+                    <span class="level-badge easy">SEDANG</span><br>
+                    Hitunglah <b>luas juring</b> lingkaran berjari-jari <span class="math">14 cm</span> dengan sudut pusat <span class="math">90°</span>! (gunakan π = 22/7)
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q8" placeholder="Luas juring (cm²)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q8', 154, 40)">Periksa</button>
+                </div>
+                <div class="feedback" id="q8-feedback"></div>
+            </div>
+        </div>
+
+        <!-- LEVEL 2: SOAL KEHIDUPAN SEHARI-HARI -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon bg-level2">🌍</div>
+                <div>
+                    <div class="section-title">Level 2: Aplikasi Kehidupan Sehari-hari</div>
+                    <div class="section-subtitle">Soal-soal kontekstual yang menantang</div>
+                </div>
+            </div>
+
+            <div class="question-card" id="q9-card">
+                <div class="question-text">
+                    <span class="question-number level2">SOAL 9</span>
+                    <span class="level-badge medium">MENENGAH</span><br>
+                    🚲 <b>Roda Sepeda:</b> Sebuah roda sepeda memiliki jari-jari <span class="math">35 cm</span>. Jika roda berputar sebanyak <span class="math">200 kali</span>, berapakah jarak yang ditempuh sepeda? (dalam meter, gunakan π = 22/7)
+                </div>
+                <!-- SVG Roda Sepeda -->
+                <div class="svg-container">
+                    <svg width="200" height="200" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="#0891b2" stroke-width="3"/>
+                        <circle cx="100" cy="100" r="5" fill="#dc2626"/>
+                        <!-- Jari-jari -->
+                        <line x1="100" y1="100" x2="180" y2="100" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="3,2"/>
+                        <line x1="100" y1="100" x2="100" y2="20" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="3,2"/>
+                        <line x1="100" y1="100" x2="20" y2="100" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="3,2"/>
+                        <line x1="100" y1="100" x2="100" y2="180" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="3,2"/>
+                        <line x1="100" y1="100" x2="156" y2="44" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="3,2"/>
+                        <line x1="100" y1="100" x2="44" y2="156" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="3,2"/>
+                        <line x1="100" y1="100" x2="156" y2="156" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="3,2"/>
+                        <line x1="100" y1="100" x2="44" y2="44" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="3,2"/>
+                        <text x="130" y="95" font-size="12" font-weight="bold" fill="#dc2626">r=35cm</text>
+                    </svg>
+                </div>
+                <div class="hint-box">
+                    <strong>Petunjuk:</strong> 1 putaran = keliling roda. Jarak = banyak putaran × keliling. Ingat 1 m = 100 cm.
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q9" placeholder="Jarak (meter)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q9', 440, 50)">Periksa</button>
+                </div>
+                <div class="feedback" id="q9-feedback"></div>
+            </div>
+
+            <div class="question-card" id="q10-card">
+                <div class="question-text">
+                    <span class="question-number level2">SOAL 10</span>
+                    <span class="level-badge medium">MENENGAH</span><br>
+                    🌳 <b>Taman Bundar:</b> Sebuah taman berbentuk lingkaran memiliki diameter <span class="math">42 m</span>. Pak Budi ingin memasang pagar di sekeliling taman. Jika biaya pagar per meter adalah <span class="math">Rp50.000</span>, berapa total biaya yang dibutuhkan Pak Budi? (dalam ribuan rupiah, gunakan π = 22/7)
+                </div>
+                <div class="svg-container">
+                    <svg width="220" height="220" viewBox="0 0 220 220">
+                        <!-- Taman -->
+                        <circle cx="110" cy="110" r="80" fill="#86efac" stroke="#16a34a" stroke-width="3"/>
+                        <!-- Pohon -->
+                        <circle cx="90" cy="90" r="12" fill="#16a34a"/>
+                        <rect x="87" y="100" width="6" height="15" fill="#78350f"/>
+                        <circle cx="130" cy="120" r="10" fill="#16a34a"/>
+                        <rect x="127" y="128" width="6" height="12" fill="#78350f"/>
+                        <circle cx="115" cy="140" r="8" fill="#16a34a"/>
+                        <rect x="113" y="146" width="4" height="10" fill="#78350f"/>
+                        <!-- Pagar (lingkaran luar) -->
+                        <circle cx="110" cy="110" r="85" fill="none" stroke="#78350f" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="60" y="210" font-size="12" font-weight="bold" fill="#16a34a">Taman Bundar</text>
+                    </svg>
+                </div>
+                <div class="hint-box">
+                    <strong>Petunjuk:</strong> K = π × d = (22/7) × 42 = 132 m. Biaya = 132 × 50.000 = ...
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q10" placeholder="Biaya (ribuan rupiah)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q10', 6600, 50)">Periksa</button>
+                </div>
+                <div class="feedback" id="q10-feedback"></div>
+            </div>
+
+            <div class="question-card" id="q11-card">
+                <div class="question-text">
+                    <span class="question-number level2">SOAL 11</span>
+                    <span class="level-badge medium">MENENGAH</span><br>
+                    🍕 <b>Pizza:</b> Sebuah pizza berbentuk lingkaran dengan diameter <span class="math">28 cm</span> dipotong menjadi <span class="math">8 bagian sama besar</span>. Berapakah <b>luas satu potong pizza</b>? (gunakan π = 22/7)
+                </div>
+                <div class="svg-container">
+                    <svg width="220" height="220" viewBox="0 0 220 220">
+                        <circle cx="110" cy="110" r="90" fill="#fde68a" stroke="#92400e" stroke-width="3"/>
+                        <!-- Potongan pizza -->
+                        <line x1="110" y1="20" x2="110" y2="200" stroke="#92400e" stroke-width="1.5"/>
+                        <line x1="20" y1="110" x2="200" y2="110" stroke="#92400e" stroke-width="1.5"/>
+                        <line x1="46" y1="46" x2="174" y2="174" stroke="#92400e" stroke-width="1.5"/>
+                        <line x1="174" y1="46" x2="46" y2="174" stroke="#92400e" stroke-width="1.5"/>
+                        <!-- Topping -->
+                        <circle cx="90" cy="70" r="5" fill="#dc2626"/>
+                        <circle cx="140" cy="80" r="5" fill="#dc2626"/>
+                        <circle cx="70" cy="130" r="5" fill="#dc2626"/>
+                        <circle cx="150" cy="140" r="5" fill="#dc2626"/>
+                        <circle cx="110" cy="110" r="5" fill="#dc2626"/>
+                        <circle cx="130" cy="170" r="5" fill="#dc2626"/>
+                        <circle cx="80" cy="170" r="5" fill="#dc2626"/>
+                        <circle cx="170" cy="110" r="5" fill="#dc2626"/>
+                    </svg>
+                </div>
+                <div class="hint-box">
+                    <strong>Petunjuk:</strong> Luas seluruh pizza = π × r². Luas 1 potong = Luas total / 8.
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q11" placeholder="Luas (cm²)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q11', 77, 50)">Periksa</button>
+                </div>
+                <div class="feedback" id="q11-feedback"></div>
+            </div>
+
+            <div class="question-card" id="q12-card">
+                <div class="question-text">
+                    <span class="question-number level2">SOAL 12</span>
+                    <span class="level-badge medium">MENENGAH</span><br>
+                    🕐 <b>Jam Dinding:</b> Jarum menit sebuah jam dinding panjangnya <span class="math">15 cm</span>. Berapakah panjang <b>lintasan ujung jarum</b> selama <span class="math">40 menit</span>? (gunakan π = 3,14)
+                </div>
+                <div class="svg-container">
+                    <svg width="200" height="200" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="85" fill="#f1f5f9" stroke="#1e293b" stroke-width="3"/>
+                        <circle cx="100" cy="100" r="5" fill="#dc2626"/>
+                        <!-- Angka jam -->
+                        <text x="95" y="30" font-size="12" font-weight="bold">12</text>
+                        <text x="170" y="105" font-size="12" font-weight="bold">3</text>
+                        <text x="95" y="180" font-size="12" font-weight="bold">6</text>
+                        <text x="25" y="105" font-size="12" font-weight="bold">9</text>
+                        <!-- Jarum menit -->
+                        <line x1="100" y1="100" x2="100" y2="25" stroke="#dc2626" stroke-width="3"/>
+                        <text x="105" y="60" font-size="11" font-weight="bold" fill="#dc2626">15 cm</text>
+                    </svg>
+                </div>
+                <div class="hint-box">
+                    <strong>Petunjuk:</strong> 60 menit = 1 putaran penuh (360°). 40 menit = (40/60) × 360° = 240°. Lintasan = (240/360) × 2πr.
+                </div>
+                <div class="input-group">
+                    <input type="number" step="0.01" id="q12" placeholder="Panjang lintasan (cm)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q12', 62.8, 50, true)">Periksa</button>
+                </div>
+                <div class="feedback" id="q12-feedback"></div>
+            </div>
+        </div>
+
+        <!-- LEVEL 3: SOAL MENANTANG -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon bg-level3">🔥</div>
+                <div>
+                    <div class="section-title">Level 3: Soal Menantang (HOTS)</div>
+                    <div class="section-subtitle">Kombinasi konsep yang menguji pemahaman mendalam</div>
+                </div>
+            </div>
+
+            <div class="question-card" id="q13-card">
+                <div class="question-text">
+                    <span class="question-number level3">SOAL 13</span>
+                    <span class="level-badge hard">MENANTANG</span><br>
+                    🎯 <b>Dua Lingkaran Konsentris:</b> Dua lingkaran memiliki pusat yang sama dengan jari-jari <span class="math">7 cm</span> dan <span class="math">14 cm</span>. Hitunglah <b>luas daerah cincin</b> (daerah di antara kedua lingkaran)! (gunakan π = 22/7)
+                </div>
+                <div class="svg-container">
+                    <svg width="250" height="250" viewBox="0 0 250 250">
+                        <circle cx="125" cy="125" r="110" fill="#bae6fd" stroke="#0891b2" stroke-width="2"/>
+                        <circle cx="125" cy="125" r="55" fill="#f0f9ff" stroke="#0891b2" stroke-width="2"/>
+                        <circle cx="125" cy="125" r="3" fill="#dc2626"/>
+                        <line x1="125" y1="125" x2="180" y2="125" stroke="#dc2626" stroke-width="1.5"/>
+                        <text x="140" y="120" font-size="11" fill="#dc2626">r=7</text>
+                        <line x1="125" y1="125" x2="235" y2="125" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3,2"/>
+                        <text x="175" y="140" font-size="11" fill="#dc2626">r=14</text>
+                    </svg>
+                </div>
+                <div class="hint-box">
+                    <strong>Petunjuk:</strong> Luas cincin = Luas lingkaran besar − Luas lingkaran kecil.
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q13" placeholder="Luas (cm²)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q13', 462, 60)">Periksa</button>
+                </div>
+                <div class="feedback" id="q13-feedback"></div>
+            </div>
+
+            <div class="question-card" id="q14-card">
+                <div class="question-text">
+                    <span class="question-number level3">SOAL 14</span>
+                    <span class="level-badge hard">MENANTANG</span><br>
+                    ⚙️ <b>Roda Gigi:</b> Roda A berjari-jari <span class="math">14 cm</span> berputar <span class="math">60 kali</span>. Agar roda B berjari-jari <span class="math">21 cm</span> menempuh <b>jarak yang sama</b>, berapa kali roda B harus berputar? (gunakan π = 22/7)
+                </div>
+                <div class="svg-container">
+                    <svg width="300" height="180" viewBox="0 0 300 180">
+                        <!-- Roda A -->
+                        <circle cx="80" cy="90" r="50" fill="#fde68a" stroke="#92400e" stroke-width="2"/>
+                        <circle cx="80" cy="90" r="4" fill="#dc2626"/>
+                        <text x="65" y="160" font-size="12" font-weight="bold" fill="#92400e">Roda A</text>
+                        <text x="65" y="175" font-size="11" fill="#64748b">r = 14 cm</text>
+                        <!-- Roda B -->
+                        <circle cx="220" cy="90" r="70" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+                        <circle cx="220" cy="90" r="4" fill="#dc2626"/>
+                        <text x="205" y="175" font-size="12" font-weight="bold" fill="#16a34a">Roda B</text>
+                        <!-- Panah -->
+                        <text x="140" y="95" font-size="20" fill="#64748b">→</text>
+                    </svg>
+                </div>
+                <div class="hint-box">
+                    <strong>Petunjuk:</strong> Jarak A = 60 × Keliling A. Jarak B = n × Keliling B. Karena jarak sama: 60 × K_A = n × K_B.
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q14" placeholder="Banyak putaran...">
+                    <button class="btn btn-check" onclick="checkAnswer('q14', 40, 60)">Periksa</button>
+                </div>
+                <div class="feedback" id="q14-feedback"></div>
+            </div>
+
+            <div class="question-card" id="q15-card">
+                <div class="question-text">
+                    <span class="question-number level3">SOAL 15</span>
+                    <span class="level-badge hard">MENANTANG</span><br>
+                    🏊 <b>Kolam Renang:</b> Sebuah kolam berbentuk <b>setengah lingkaran</b> dengan diameter <span class="math">28 m</span>. Hitunglah <b>keliling total</b> kolam (termasuk sisi lurusnya)! (gunakan π = 22/7)
+                </div>
+                <div class="svg-container">
+                    <svg width="280" height="180" viewBox="0 0 280 180">
+                        <!-- Air kolam -->
+                        <path d="M 40 140 A 100 100 0 0 1 240 140 Z" fill="#bae6fd" stroke="#0891b2" stroke-width="3"/>
+                        <!-- Garis diameter -->
+                        <line x1="40" y1="140" x2="240" y2="140" stroke="#0891b2" stroke-width="3"/>
+                        <!-- Ombak -->
+                        <path d="M 80 100 Q 90 90 100 100 T 120 100" fill="none" stroke="#0891b2" stroke-width="1.5"/>
+                        <path d="M 140 80 Q 150 70 160 80 T 180 80" fill="none" stroke="#0891b2" stroke-width="1.5"/>
+                        <!-- Label -->
+                        <text x="120" y="160" font-size="12" font-weight="bold" fill="#0891b2">28 m</text>
+                        <text x="100" y="115" font-size="11" fill="#0891b2">½ lingkaran</text>
+                    </svg>
+                </div>
+                <div class="hint-box">
+                    <strong>Petunjuk:</strong> Keliling total = ½ × keliling lingkaran penuh + diameter = ½ × π × d + d.
+                </div>
+                <div class="input-group">
+                    <input type="number" id="q15" placeholder="Keliling (m)...">
+                    <button class="btn btn-check" onclick="checkAnswer('q15', 72, 60)">Periksa</button>
+                </div>
+                <div class="feedback" id="q15-feedback"></div>
+            </div>
+        </div>
+
+        <!-- TANTANGAN AKHIR -->
+        <div class="section" id="challengeSection">
+            <div class="section-header">
+                <div class="section-icon bg-challenge">🏆</div>
+                <div>
+                    <div class="section-title">Tantangan Akhir: Master Lingkaran</div>
+                    <div class="section-subtitle">Gabungkan semua konsep untuk memecahkan misi rahasia!</div>
+                </div>
+            </div>
+
+            <div id="challengeLocked" class="challenge-locked">
+                <p style="font-size: 3rem;">🔒</p>
+                <p><b>Misi Master Lingkaran Terkunci!</b></p>
+                <p>Selesaikan <b>SEMUA soal dari Soal 1 sampai Soal 15</b> dengan benar untuk membuka tantangan final.</p>
+                <button class="btn btn-unlock" onclick="unlockChallenge()">🔓 Cek Kunci Misi</button>
+            </div>
+
+            <div id="challengeUnlocked" style="display: none;">
+                <div class="materi-box" style="border-left-color: var(--danger); background: #fef2f2;">
+                    <h4 style="color: var(--danger);">🕵️ Misi Rahasia: Proyek Taman Kota!</h4>
+                    <p>Pemerintah kota ingin membangun sebuah taman dengan desain khusus. Kamu ditunjuk sebagai <b>arsitek matematika</b> untuk menyelesaikan dua tantangan besar ini!</p>
+                </div>
+
+                <!-- BOSS 1 -->
+                <div class="question-card boss" id="q16-card">
+                    <div class="question-text">
+                        <span class="question-number boss-num">BOSS 1</span>
+                        🏛️ <b>Desain Air Mancur:</b> Sebuah air mancur berbentuk lingkaran memiliki <b>jari-jari = (Jawaban Soal 5 + Jawaban Soal 6) cm</b>.<br><br>
+                        Hitunglah <b>LUAS</b> permukaan air mancur tersebut! (gunakan π = 22/7)
+                    </div>
+                    <div class="hint-box">
+                        <strong>Petunjuk:</strong> Q5 = 21, Q6 = 40. Jadi r = 21 + 40 = 61 cm. Hitung L = π × r².
+                    </div>
+                    <div class="input-group">
+                        <input type="number" step="0.01" id="q16" placeholder="Luas (cm²)...">
+                        <button class="btn btn-boss" onclick="checkAnswer('q16', 11689.43, 100, true)">Buka Kode Boss 1</button>
+                    </div>
+                    <div class="feedback" id="q16-feedback"></div>
+                </div>
+
+                <!-- BOSS 2 -->
+                <div class="question-card boss" id="q17-card">
+                    <div class="question-text">
+                        <span class="question-number boss-num">BOSS 2</span>
+                        🌳 <b>Taman Bunga:</b> Taman bunga berbentuk <b>juring</b> dengan jari-jari <span class="math">21 m</span> dan sudut pusat <span class="math">(Jawaban Soal 7 × 3)°</span>.<br><br>
+                        Hitunglah <b>LUAS taman bunga</b> tersebut! (gunakan π = 22/7)
+                    </div>
+                    <div class="hint-box">
+                        <strong>Petunjuk:</strong> Q7 = 22. Sudut = 22 × 3 = 66°. LJ = (66/360) × (22/7) × 21 × 21.
+                    </div>
+                    <div class="input-group">
+                        <input type="number" step="0.01" id="q17" placeholder="Luas (m²)...">
+                        <button class="btn btn-boss" onclick="checkAnswer('q17', 808.5, 100, true)">Buka Kode Boss 2</button>
+                    </div>
+                    <div class="feedback" id="q17-feedback"></div>
+                </div>
+
+                <!-- Victory Message -->
+                <div class="victory-box" id="victoryMessage">
+                    <h2>🎉 MISI BERHASIL! 🎉</h2>
+                    <p style="font-size: 1.2rem; margin-top: 0.5rem;">Kamu resmi menjadi <b>Master Lingkaran</b>!</p>
+                    <p style="margin-top: 1rem; color: var(--text-light);">Total Skor Akhir: <b id="finalScoreDisplay">900</b> Poin</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Kamu telah menguasai unsur-unsur lingkaran, keliling, luas, sudut pusat/keliling, serta aplikasinya dalam kehidupan sehari-hari!</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        let score = 0;
+        const maxScore = 900;
+        let answeredQuestions = new Set();
+
+        function updateProgress() {
+            document.getElementById('totalScore').innerText = score;
+            const percentage = (score / maxScore) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+        }
+
+        function checkAnswer(qId, correctAnswer, points, allowDecimal = false) {
+            const input = document.getElementById(qId);
+            const card = document.getElementById(qId + '-card');
+            const feedback = document.getElementById(qId + '-feedback');
+            const userAnswer = parseFloat(input.value);
+
+            if (isNaN(userAnswer)) {
+                feedback.innerText = "⚠️ Masukkan angka yang valid!";
+                feedback.className = "feedback show error";
+                return;
+            }
+
+            const tolerance = allowDecimal ? 0.15 : 0.01;
+            const isCorrect = Math.abs(userAnswer - correctAnswer) <= tolerance;
+
+            if (isCorrect) {
+                if (!answeredQuestions.has(qId)) {
+                    score += points;
+                    answeredQuestions.add(qId);
+                    updateProgress();
+                }
+                card.className = "question-card correct";
+                feedback.innerText = "✅ Benar! Hebat, kamu mendapatkan " + points + " poin.";
+                feedback.className = "feedback show success";
+                input.disabled = true;
+            } else {
+                card.className = "question-card incorrect";
+                feedback.innerText = "❌ Kurang tepat. Coba hitung ulang dengan teliti! Periksa rumus dan nilai π yang digunakan.";
+                feedback.className = "feedback show error";
+            }
+        }
+
+        function checkChoice(qId, correctAnswer, points) {
+            const select = document.getElementById(qId);
+            const card = document.getElementById(qId + '-card');
+            const feedback = document.getElementById(qId + '-feedback');
+            const userAnswer = select.value;
+
+            if (!userAnswer) {
+                feedback.innerText = "⚠️ Pilih jawaban terlebih dahulu!";
+                feedback.className = "feedback show error";
+                return;
+            }
+
+            if (userAnswer === correctAnswer) {
+                if (!answeredQuestions.has(qId)) {
+                    score += points;
+                    answeredQuestions.add(qId);
+                    updateProgress();
+                }
+                card.className = "question-card correct";
+                feedback.innerText = "✅ Benar! Hebat, kamu mendapatkan " + points + " poin.";
+                feedback.className = "feedback show success";
+                select.disabled = true;
+            } else {
+                card.className = "question-card incorrect";
+                feedback.innerText = "❌ Kurang tepat. Baca kembali definisi unsur-unsur lingkaran.";
+                feedback.className = "feedback show error";
+            }
+        }
+
+        function unlockChallenge() {
+            const requiredQuestions = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'q15'];
+            const allCorrect = requiredQuestions.every(q => answeredQuestions.has(q));
+
+            if (allCorrect) {
+                document.getElementById('challengeLocked').style.display = 'none';
+                document.getElementById('challengeUnlocked').style.display = 'block';
+                document.getElementById('challengeSection').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                const answered = requiredQuestions.filter(q => answeredQuestions.has(q)).length;
+                alert("🔒 Misi masih terkunci!\n\nKamu baru menjawab benar " + answered + " dari 15 soal yang diperlukan.\n\nPastikan kamu sudah menjawab BENAR semua soal (Soal 1 - Soal 15) untuk membuka Tantangan Master Lingkaran.");
+            }
+        }
+
+        function resetAll() {
+            if (confirm("Apakah kamu yakin ingin mereset semua tantangan dan skor?")) {
+                score = 0;
+                answeredQuestions.clear();
+                updateProgress();
+
+                const inputs = document.querySelectorAll('input[type="number"]');
+                inputs.forEach(input => {
+                    input.value = '';
+                    input.disabled = false;
+                });
+
+                const selects = document.querySelectorAll('select');
+                selects.forEach(select => {
+                    select.value = '';
+                    select.disabled = false;
+                });
+
+                const cards = document.querySelectorAll('.question-card');
+                cards.forEach(card => {
+                    if (card.classList.contains('boss')) {
+                        card.className = 'question-card boss';
+                    } else {
+                        card.className = 'question-card';
+                    }
+                });
+
+                const feedbacks = document.querySelectorAll('.feedback');
+                feedbacks.forEach(fb => fb.className = 'feedback');
+
+                document.getElementById('challengeLocked').style.display = 'block';
+                document.getElementById('challengeUnlocked').style.display = 'none';
+                document.getElementById('victoryMessage').style.display = 'none';
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function goHome() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
