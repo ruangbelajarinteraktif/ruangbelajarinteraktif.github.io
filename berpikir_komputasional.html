@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Berpikir Komputasional - Kelas 8 SMP</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; color: #333; }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    background: white; border-radius: 20px; padding: 30px; margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; overflow: hidden;
+  }
+  .header::before {
+    content: ''; position: absolute; top: -50px; right: -50px; width: 200px; height: 200px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 50%; opacity: 0.15;
+  }
+  .header-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+  .home-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;
+    padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: bold;
+    display: flex; align-items: center; gap: 8px; transition: transform 0.2s; text-decoration: none;
+  }
+  .home-btn:hover { transform: scale(1.05); }
+  .home-btn svg { width: 20px; height: 20px; }
+  .score-badge {
+    background: linear-gradient(135deg, #f093fb, #f5576c); color: white;
+    padding: 10px 20px; border-radius: 50px; font-weight: bold;
+  }
+  .header h1 {
+    font-size: 2.2em; margin: 15px 0 5px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .header p { color: #666; font-size: 1.05em; }
+
+  /* Intro */
+  .intro {
+    background: white; border-radius: 20px; padding: 30px; margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  .intro h2 { color: #764ba2; margin-bottom: 15px; font-size: 1.5em; }
+  .intro p { line-height: 1.7; color: #555; font-size: 1.05em; }
+  .intro-visual {
+    display: flex; justify-content: center; align-items: center; gap: 30px;
+    margin: 25px 0; flex-wrap: wrap;
+  }
+  .intro-visual svg { max-width: 100%; height: auto; }
+
+  /* Pillars */
+  .pillars {
+    background: white; border-radius: 20px; padding: 30px; margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  .pillars h2 { color: #764ba2; margin-bottom: 15px; font-size: 1.5em; text-align: center; }
+  .pillars > p { text-align: center; color: #666; margin-bottom: 25px; }
+  .pillars-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px;
+  }
+  .pillar-card {
+    background: linear-gradient(135deg, #f6f8ff, #eef1ff);
+    border-radius: 15px; padding: 25px 20px; text-align: center;
+    border: 2px solid transparent; transition: all 0.3s;
+  }
+  .pillar-card:hover { transform: translateY(-5px); border-color: #764ba2; box-shadow: 0 8px 20px rgba(118, 75, 162, 0.2); }
+  
+  /* PERBESARAN GAMBAR PILAR */
+  .pillar-icon {
+    width: 130px; height: 130px; margin: 0 auto 15px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pillar-card h3 { color: #764ba2; margin-bottom: 10px; font-size: 1.15em; }
+  .pillar-card p { color: #555; font-size: 0.95em; line-height: 1.5; }
+
+  /* Exercises */
+  .exercises {
+    background: white; border-radius: 20px; padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  .exercises h2 { color: #764ba2; margin-bottom: 10px; font-size: 1.5em; text-align: center; }
+  .exercises > p { text-align: center; color: #666; margin-bottom: 25px; }
+  .question-card {
+    background: #fafbff; border-radius: 15px; padding: 25px; margin-bottom: 20px;
+    border-left: 5px solid #764ba2;
+  }
+  .q-header {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 15px;
+  }
+  .q-title { font-size: 1.15em; color: #333; font-weight: bold; }
+  .q-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge {
+    padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: bold; color: white;
+  }
+  .badge-level-sedang { background: #f5a623; }
+  .badge-level-menantang { background: #e74c3c; }
+  .badge-level-super { background: #8e44ad; }
+  .badge-xp { background: #27ae60; }
+  .q-case {
+    background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px;
+    border: 1px dashed #764ba2;
+  }
+  .q-case strong { color: #764ba2; }
+  .q-context { color: #555; line-height: 1.6; margin-top: 5px; }
+  .q-visual { text-align: center; margin: 15px 0; }
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+  .option {
+    background: white; border: 2px solid #ddd; padding: 12px 15px; border-radius: 10px;
+    cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px;
+  }
+  .option:hover { border-color: #764ba2; background: #f6f8ff; }
+  .option.selected { border-color: #764ba2; background: #eef1ff; }
+  .option.correct { border-color: #27ae60; background: #d4edda; }
+  .option.wrong { border-color: #e74c3c; background: #f8d7da; }
+  .option-letter {
+    width: 30px; height: 30px; border-radius: 50%; background: #764ba2; color: white;
+    display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;
+  }
+  .option-text { flex: 1; line-height: 1.5; }
+
+  /* Drag & Drop */
+  .drag-container { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+  .drag-item {
+    background: white; border: 2px solid #764ba2; padding: 12px 15px; border-radius: 10px;
+    cursor: grab; display: flex; align-items: center; gap: 10px; user-select: none;
+    transition: all 0.2s;
+  }
+  .drag-item:active { cursor: grabbing; }
+  .drag-item.dragging { opacity: 0.5; }
+  .drag-number {
+    width: 30px; height: 30px; border-radius: 50%; background: #764ba2; color: white;
+    display: flex; align-items: center; justify-content: center; font-weight: bold;
+  }
+  .drag-handle { color: #764ba2; font-size: 1.2em; }
+
+  /* Buttons */
+  .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer;
+    font-weight: bold; transition: all 0.2s; font-size: 0.95em;
+  }
+  .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+  .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(118,75,162,0.4); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-hint { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
+  .btn-hint:disabled { background: #ccc; cursor: not-allowed; }
+  .btn-hint .lock-icon { margin-right: 5px; }
+  .btn-reset { background: #95a5a6; color: white; }
+
+  /* Feedback */
+  .feedback {
+    margin-top: 15px; padding: 12px 15px; border-radius: 10px;
+    display: none; line-height: 1.5;
+  }
+  .feedback.show { display: block; animation: slideIn 0.3s; }
+  .feedback.correct { background: #d4edda; color: #155724; border-left: 4px solid #27ae60; }
+  .feedback.wrong { background: #f8d7da; color: #721c24; border-left: 4px solid #e74c3c; }
+  .hint-box {
+    margin-top: 15px; padding: 15px; background: #fff3cd; border-left: 4px solid #f5a623;
+    border-radius: 10px; display: none;
+  }
+  .hint-box.show { display: block; animation: slideIn 0.3s; }
+  .hint-box strong { color: #856404; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center; color: white; margin-top: 25px; padding: 20px;
+    font-size: 0.95em;
+  }
+  .footer a { color: white; font-weight: bold; text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.6em; }
+    .pillars-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ================= GAME STYLES ================= */
+  .game-section {
+    background: white; border-radius: 20px; padding: 30px; margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  .game-header { text-align: center; margin-bottom: 25px; }
+  .game-header h2 { color: #764ba2; font-size: 1.8em; margin-bottom: 10px; }
+  
+  .game-layout {
+    display: grid; grid-template-columns: 1fr 1.5fr; gap: 25px; align-items: start;
+  }
+  .game-panel {
+    background: #fafbff; border-radius: 15px; padding: 20px; border: 2px solid #eef1ff;
+  }
+  .game-panel h3 { color: #764ba2; margin-bottom: 15px; }
+  
+  .door-legend {
+    background: white; padding: 15px; border-radius: 10px; margin: 15px 0; border: 2px solid #764ba2;
+  }
+  .door-legend h4 { color: #764ba2; margin-bottom: 12px; font-size: 1.1em; }
+  .legend-item {
+    background: #f6f8ff; padding: 12px; border-radius: 8px; margin: 8px 0; text-align: center;
+  }
+  .legend-door {
+    color: white; font-weight: bold; padding: 5px 15px; border-radius: 20px;
+    display: inline-block; margin-bottom: 8px;
+  }
+  .legend-transform {
+    display: flex; align-items: center; justify-content: center; gap: 10px; margin: 8px 0;
+  }
+  .legend-transform .shape { width: 35px; height: 35px; font-size: 1.3em; }
+  .arrow { color: #764ba2; font-weight: bold; font-size: 1.2em; }
+  .legend-item small { display: block; color: #555; margin-top: 5px; font-weight: 600; }
+  .important-note {
+    background: #fff3cd; border-left: 4px solid #f5a623; padding: 10px;
+    margin-top: 12px; border-radius: 5px; font-size: 0.9em;
+  }
+  .important-note strong { color: #856404; }
+  
+  .shape {
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.5em; font-weight: bold; border-radius: 8px;
+  }
+  .shape.square { background: #667eea; color: white; }
+  .shape.triangle { background: #f5576c; color: white; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+  .shape.circle { background: #27ae60; color: white; border-radius: 50%; }
+  
+  .level-info {
+    display: flex; justify-content: space-between; margin-bottom: 20px;
+    padding: 10px 15px; background: white; border-radius: 10px; font-size: 1.1em;
+  }
+  .machine-visual {
+    display: flex; align-items: center; justify-content: space-around; gap: 15px; margin: 20px 0; flex-wrap: wrap;
+  }
+  .start-shape, .target-shape { text-align: center; }
+  .shape-label { font-size: 0.9em; color: #666; margin-bottom: 10px; font-weight: bold; }
+  .machine-doors { display: flex; gap: 10px; }
+  .door {
+    width: 70px; height: 90px; background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 10px; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; cursor: pointer; transition: all 0.3s; border: 3px solid transparent; color: white;
+  }
+  .door:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(118, 75, 162, 0.4); }
+  .door.selected { border-color: #f5a623; background: linear-gradient(135deg, #f5a623, #f093fb); }
+  .door-number { font-size: 1.5em; font-weight: bold; }
+  .door-icon { font-size: 1.8em; margin-top: 5px; }
+  
+  .sequence-display { text-align: center; margin: 20px 0; }
+  .sequence-label { font-weight: bold; color: #764ba2; margin-bottom: 10px; }
+  .sequence-slots { display: flex; gap: 10px; justify-content: center; }
+  .slot {
+    width: 50px; height: 50px; background: white; border: 3px dashed #764ba2;
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.5em; font-weight: bold; color: #764ba2;
+  }
+  .slot.filled { border-style: solid; background: #eef1ff; }
+  
+  .game-controls { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+  .game-feedback {
+    margin-top: 20px; padding: 15px; border-radius: 10px; text-align: center;
+    font-weight: bold; display: none; animation: slideIn 0.3s;
+  }
+  .game-feedback.show { display: block; }
+  .game-feedback.success { background: #d4edda; color: #155724; border: 2px solid #27ae60; }
+  .game-feedback.error { background: #f8d7da; color: #721c24; border: 2px solid #e74c3c; }
+
+  @media (max-width: 900px) {
+    .game-layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header" id="top">
+    <div class="header-top">
+      <button class="home-btn" onclick="window.location.href='https://ruangbelajarinteraktif.github.io'">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        Beranda
+      </button>
+      <div class="score-badge">Total Skor: <span id="totalScore">0</span> / 220 XP</div>
+    </div>
+    <h1>🧠 Berpikir Komputasional</h1>
+    <p>Informatika SMP Kelas 8 — Belajar memecahkan masalah seperti ahli komputer!</p>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <h2>Apa itu Berpikir Komputasional?</h2>
+    <p>Berpikir Komputasional <strong>bukanlah</strong> belajar berpikir seperti komputer, melainkan <strong>metode pemecahan masalah</strong> secara efektif, efisien, dan optimal agar solusinya dapat dijalankan oleh manusia maupun komputer.</p>
+    <div class="intro-visual">
+      <svg width="280" height="180" viewBox="0 0 280 180">
+        <rect x="10" y="60" width="80" height="80" rx="10" fill="#f5576c" opacity="0.9"/>
+        <text x="50" y="105" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Masalah</text>
+        <text x="50" y="120" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Besar</text>
+        <path d="M95 100 L130 100" stroke="#764ba2" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+        <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <polygon points="0 0, 10 3, 0 6" fill="#764ba2"/>
+        </marker></defs>
+        <rect x="135" y="30" width="55" height="40" rx="8" fill="#667eea"/>
+        <text x="162" y="55" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Bagian A</text>
+        <rect x="135" y="80" width="55" height="40" rx="8" fill="#667eea"/>
+        <text x="162" y="105" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Bagian B</text>
+        <rect x="135" y="130" width="55" height="40" rx="8" fill="#667eea"/>
+        <text x="162" y="155" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Bagian C</text>
+        <path d="M195 100 L220 100" stroke="#27ae60" stroke-width="3" fill="none" marker-end="url(#arrow2)"/>
+        <defs><marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <polygon points="0 0, 10 3, 0 6" fill="#27ae60"/>
+        </marker></defs>
+        <circle cx="250" cy="100" r="30" fill="#27ae60"/>
+        <text x="250" y="95" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Solusi</text>
+        <text x="250" y="110" text-anchor="middle" fill="white" font-size="11" font-weight="bold">✓</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 4 PILARS -->
+  <div class="pillars">
+    <h2>🏛️ 4 Pilar Berpikir Komputasional</h2>
+    <p>Empat langkah utama yang digunakan para ahli komputer untuk menyelesaikan masalah rumit.</p>
+    
+    <div class="pillars-grid">
+      <!-- Pilar 1: Dekomposisi -->
+      <div class="pillar-card">
+        <div class="pillar-icon">
+          <svg width="130" height="130" viewBox="0 0 100 100">
+            <rect x="10" y="10" width="80" height="80" rx="10" fill="#f5576c" opacity="0.15"/>
+            <rect x="15" y="15" width="30" height="30" rx="6" fill="#f5576c" stroke="#fff" stroke-width="2"/>
+            <rect x="55" y="15" width="30" height="30" rx="6" fill="#f093fb" stroke="#fff" stroke-width="2"/>
+            <rect x="15" y="55" width="30" height="30" rx="6" fill="#f093fb" stroke="#fff" stroke-width="2"/>
+            <rect x="55" y="55" width="30" height="30" rx="6" fill="#f5576c" stroke="#fff" stroke-width="2"/>
+            <line x1="50" y1="10" x2="50" y2="90" stroke="white" stroke-width="2" stroke-dasharray="3,3" opacity="0.6"/>
+            <line x1="10" y1="50" x2="90" y2="50" stroke="white" stroke-width="2" stroke-dasharray="3,3" opacity="0.6"/>
+          </svg>
+        </div>
+        <h3>1. Dekomposisi</h3>
+        <p>Memecah masalah besar menjadi bagian kecil yang lebih mudah dikelola.</p>
+      </div>
+
+      <!-- Pilar 2: Pengenalan Pola -->
+      <div class="pillar-card">
+        <div class="pillar-icon">
+          <svg width="130" height="130" viewBox="0 0 100 100">
+            <rect x="10" y="10" width="80" height="80" rx="10" fill="#667eea" opacity="0.15"/>
+            <circle cx="20" cy="30" r="7" fill="#667eea"/>
+            <circle cx="40" cy="30" r="7" fill="#667eea"/>
+            <circle cx="60" cy="30" r="7" fill="#667eea"/>
+            <circle cx="80" cy="30" r="7" fill="#667eea"/>
+            <circle cx="20" cy="70" r="7" fill="#764ba2"/>
+            <circle cx="40" cy="70" r="7" fill="#764ba2"/>
+            <circle cx="60" cy="70" r="7" fill="#764ba2"/>
+            <circle cx="80" cy="70" r="7" fill="#764ba2"/>
+            <path d="M20 37 L20 63" stroke="#764ba2" stroke-width="2" opacity="0.5"/>
+            <path d="M40 37 L40 63" stroke="#764ba2" stroke-width="2" opacity="0.5"/>
+            <path d="M60 37 L60 63" stroke="#764ba2" stroke-width="2" opacity="0.5"/>
+            <path d="M80 37 L80 63" stroke="#764ba2" stroke-width="2" opacity="0.5"/>
+          </svg>
+        </div>
+        <h3>2. Pengenalan Pola</h3>
+        <p>Mencari kesamaan atau keteraturan dari masalah yang sudah pernah dihadapi.</p>
+      </div>
+
+      <!-- Pilar 3: Abstraksi -->
+      <div class="pillar-card">
+        <div class="pillar-icon">
+          <svg width="130" height="130" viewBox="0 0 100 100">
+            <rect x="10" y="10" width="80" height="80" rx="10" fill="#764ba2" opacity="0.15"/>
+            <rect x="15" y="20" width="70" height="60" rx="4" fill="#e8e8e8" stroke="#999" stroke-width="1"/>
+            <line x1="20" y1="30" x2="80" y2="30" stroke="#ccc" stroke-width="2"/>
+            <line x1="20" y1="40" x2="80" y2="40" stroke="#ccc" stroke-width="2"/>
+            <line x1="20" y1="50" x2="80" y2="50" stroke="#ccc" stroke-width="2"/>
+            <line x1="20" y1="60" x2="80" y2="60" stroke="#ccc" stroke-width="2"/>
+            <line x1="20" y1="70" x2="80" y2="70" stroke="#ccc" stroke-width="2"/>
+            <line x1="15" y1="25" x2="85" y2="75" stroke="#e74c3c" stroke-width="3" stroke-linecap="round"/>
+            <rect x="25" y="38" width="50" height="24" rx="4" fill="#764ba2" stroke="#fff" stroke-width="2"/>
+            <text x="50" y="54" text-anchor="middle" fill="white" font-size="9" font-weight="bold">PENTING</text>
+          </svg>
+        </div>
+        <h3>3. Abstraksi</h3>
+        <p>Fokus pada informasi penting dan mengabaikan detail yang tidak relevan.</p>
+      </div>
+
+      <!-- Pilar 4: Desain Algoritma (FIXED) -->
+      <div class="pillar-card">
+        <div class="pillar-icon">
+          <svg width="130" height="130" viewBox="0 0 100 100">
+            <rect x="10" y="10" width="80" height="80" rx="10" fill="#27ae60" opacity="0.15"/>
+            <circle cx="20" cy="20" r="10" fill="#27ae60" stroke="#fff" stroke-width="2"/>
+            <text x="20" y="24" text-anchor="middle" fill="white" font-size="10" font-weight="bold">1</text>
+            <line x1="20" y1="30" x2="20" y2="40" stroke="#27ae60" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <circle cx="20" cy="50" r="10" fill="#27ae60" stroke="#fff" stroke-width="2"/>
+            <text x="20" y="54" text-anchor="middle" fill="white" font-size="10" font-weight="bold">2</text>
+            <line x1="20" y1="60" x2="20" y2="70" stroke="#27ae60" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <circle cx="20" cy="80" r="10" fill="#27ae60" stroke="#fff" stroke-width="2"/>
+            <text x="20" y="84" text-anchor="middle" fill="white" font-size="10" font-weight="bold">3</text>
+            <line x1="30" y1="50" x2="40" y2="50" stroke="#764ba2" stroke-width="2"/>
+            <rect x="42" y="25" width="48" height="55" rx="4" fill="white" stroke="#764ba2" stroke-width="2"/>
+            <line x1="48" y1="35" x2="84" y2="35" stroke="#764ba2" stroke-width="1.5"/>
+            <line x1="48" y1="45" x2="84" y2="45" stroke="#764ba2" stroke-width="1.5"/>
+            <line x1="48" y1="55" x2="84" y2="55" stroke="#764ba2" stroke-width="1.5"/>
+            <line x1="48" y1="65" x2="75" y2="65" stroke="#764ba2" stroke-width="1.5"/>
+            <!-- Teks ALGORITMA diposisikan di ATAS dokumen agar tidak terpotong -->
+            <text x="66" y="20" text-anchor="middle" fill="#764ba2" font-size="8" font-weight="bold">ALGORITMA</text>
+            <defs>
+              <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <polygon points="0 0, 6 3, 0 6" fill="#27ae60"/>
+              </marker>
+            </defs>
+          </svg>
+        </div>
+        <h3>4. Desain Algoritma</h3>
+        <p>Menyusun langkah-langkah penyelesaian masalah secara urut dan jelas.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME INTERAKTIF PEMBUAT ADONAN KUE -->
+  <div class="game-section" id="game-adonan">
+    <div class="game-header">
+      <h2>🎮 Permainan: Pembuat Adonan Kue</h2>
+      <p>Pelajari konsep algoritma sebelum mengerjakan soal! <strong>Urutan langkah TIDAK bisa dibalik!</strong></p>
+    </div>
+
+    <div class="game-layout">
+      <!-- KOLOM KIRI: Instruksi & Fungsi Pintu -->
+      <div class="game-panel side-panel">
+        <h3>📋 Instruksi</h3>
+        <p>Bobo harus mengubah <strong>adonan awal</strong> menjadi <strong>bentuk target</strong> menggunakan mesin dengan 3 pintu.</p>
+        
+        <div class="door-legend">
+          <h4>🚪 Fungsi Setiap Pintu:</h4>
+          <div class="legend-item">
+            <div class="legend-door" style="background: #667eea;">Pintu 1</div>
+            <div class="legend-transform">
+              <span class="shape square">□</span>
+              <span class="arrow">→</span>
+              <span class="shape triangle">△</span>
+            </div>
+            <small>Persegi → Segitiga</small>
+          </div>
+          <div class="legend-item">
+            <div class="legend-door" style="background: #f5576c;">Pintu 2</div>
+            <div class="legend-transform">
+              <span class="shape triangle">△</span>
+              <span class="arrow">→</span>
+              <span class="shape circle">○</span>
+            </div>
+            <small>Segitiga → Lingkaran</small>
+          </div>
+          <div class="legend-item">
+            <div class="legend-door" style="background: #27ae60;">Pintu 3</div>
+            <div class="legend-transform">
+              <span class="shape circle">○</span>
+              <span class="arrow">→</span>
+              <span class="shape square">□</span>
+            </div>
+            <small>Lingkaran → Persegi</small>
+          </div>
+          <div class="important-note">
+            <strong>⚠️ Penting:</strong> Setiap pintu HANYA bisa memproses bentuk tertentu. Jika bentuk adonan tidak sesuai, mesin akan menolak!
+          </div>
+        </div>
+        <p><strong>🎯 Tugas:</strong> Pilih urutan pintu yang benar untuk mencapai bentuk target!</p>
+      </div>
+
+      <!-- KOLOM KANAN: Area Permainan -->
+      <div class="game-panel play-area">
+        <div class="level-info">
+          <span>Level: <strong id="currentLevel">1</strong>/3</span>
+          <span>Skor: <strong id="gameScore">0</strong></span>
+        </div>
+
+        <div class="machine-visual">
+          <div class="start-shape">
+            <div class="shape-label">Awal</div>
+            <div id="startShape" class="shape square">□</div>
+          </div>
+          <div class="machine-doors">
+            <div class="door" data-door="1" onclick="selectDoor(1)"><div class="door-number">1</div><div class="door-icon">🚪</div></div>
+            <div class="door" data-door="2" onclick="selectDoor(2)"><div class="door-number">2</div><div class="door-icon">🚪</div></div>
+            <div class="door" data-door="3" onclick="selectDoor(3)"><div class="door-number">3</div><div class="door-icon">🚪</div></div>
+          </div>
+          <div class="sequence-display">
+            <div class="sequence-label">Urutan Pilihanmu:</div>
+            <div id="sequenceContainer" class="sequence-slots">
+              <div class="slot" data-pos="1">-</div>
+              <div class="slot" data-pos="2">-</div>
+              <div class="slot" data-pos="3">-</div>
+            </div>
+          </div>
+          <div class="target-shape">
+            <div class="shape-label">Target</div>
+            <div id="targetShape" class="shape circle">○</div>
+          </div>
+        </div>
+
+        <div class="game-controls">
+          <button class="btn btn-reset" onclick="resetSequence()">🔄 Ulangi</button>
+          <button class="btn btn-primary" onclick="checkSequence()" id="checkBtn">✓ Cek Urutan</button>
+          <button class="btn btn-hint" onclick="showGameHint()" id="hintBtn">💡 Petunjuk</button>
+        </div>
+        <div id="gameFeedback" class="game-feedback"></div>
+        <div id="gameHintBox" class="hint-box" style="display:none;">
+          <strong>💡 Petunjuk:</strong> <span id="hintText"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXERCISES -->
+  <div class="exercises">
+    <h2>🎯 Latihan Interaktif Berjenjang</h2>
+    <p>Kerjakan soal dari tingkat Sedang → Menantang → Super! 💡 <em>Hint baru terbuka setelah kamu mencoba menjawab.</em></p>
+
+    <!-- SOAL 1 -->
+    <div class="question-card" data-q="1" data-answer="B" data-xp="15">
+      <div class="q-header">
+        <div class="q-title">Soal 1 — Dekomposisi</div>
+        <div class="q-badges"><span class="badge badge-level-sedang">Sedang</span><span class="badge badge-xp">+15 XP</span></div>
+      </div>
+      <div class="q-case">
+        <strong>📚 Kasus: Membangun Sistem Perpustakaan Digital Sekolah</strong>
+        <div class="q-context">Tim Informatika SMP ingin membuat aplikasi perpustakaan sekolah. Manakah kelompok <strong>sub-tugas (dekomposisi)</strong> yang paling tepat dan lengkap?</div>
+      </div>
+      <div class="options">
+        <div class="option" data-val="A"><span class="option-letter">A</span><span class="option-text">Langsung membuat desain tombol aplikasi dan membeli server mahal tanpa perencanaan fungsi.</span></div>
+        <div class="option" data-val="B"><span class="option-letter">B</span><span class="option-text">Membagi menjadi 3 modul: Pendataan Buku, Manajemen Anggota/Siswa, dan Sistem Peminjaman/Pengembalian.</span></div>
+        <div class="option" data-val="C"><span class="option-letter">C</span><span class="option-text">Menulis daftar nama seluruh siswa di buku cetak lalu mengetiknya di komputer satu per satu.</span></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-submit">Jawab</button>
+        <button class="btn btn-hint btn-hint-toggle" disabled><span class="lock-icon">🔒</span>Hint (coba jawab dulu)</button>
+      </div>
+      <div class="feedback"></div>
+      <div class="hint-box"><strong>💡 Petunjuk:</strong> Dekomposisi berarti memecah sistem kompleks menjadi bagian-bagian sub-sistem utama yang saling melengkapi secara logis.</div>
+    </div>
+
+    <!-- SOAL 2 -->
+    <div class="question-card" data-q="2" data-answer="C" data-xp="20">
+      <div class="q-header">
+        <div class="q-title">Soal 2 — Pengenalan Pola</div>
+        <div class="q-badges"><span class="badge badge-level-sedang">Sedang</span><span class="badge badge-xp">+20 XP</span></div>
+      </div>
+      <div class="q-case">
+        <strong>🔐 Kasus: Pola Transmisi Kode Keamanan Laboratorium</strong>
+        <div class="q-context">Sebuah komputer lab mengirimkan urutan angka kode biner terenkripsi: <strong>2, 5, 11, 23, 47, ...</strong><br>Berdasarkan pengenalan pola matematika di atas, berapakah nilai angka berikutnya?</div>
+      </div>
+      <div class="options">
+        <div class="option" data-val="A"><span class="option-letter">A</span><span class="option-text">25</span></div>
+        <div class="option" data-val="B"><span class="option-letter">B</span><span class="option-text">70</span></div>
+        <div class="option" data-val="C"><span class="option-letter">C</span><span class="option-text">95</span></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-submit">Jawab</button>
+        <button class="btn btn-hint btn-hint-toggle" disabled><span class="lock-icon">🔒</span>Hint (coba jawab dulu)</button>
+      </div>
+      <div class="feedback"></div>
+      <div class="hint-box"><strong>💡 Petunjuk:</strong> Perhatikan hubungan angka pertama ke kedua: (2 × 2) + 1 = 5. Cobakan rumus yang sama untuk angka berikutnya!</div>
+    </div>
+
+    <!-- SOAL 3 -->
+    <div class="question-card" data-q="3" data-answer="AC" data-xp="25" data-multiple="true">
+      <div class="q-header">
+        <div class="q-title">Soal 3 — Abstraksi</div>
+        <div class="q-badges"><span class="badge badge-level-menantang">Menantang</span><span class="badge badge-xp">+25 XP</span></div>
+      </div>
+      <div class="q-case">
+        <strong>🏍️ Kasus: Aplikasi GPS Rute Sepeda Motor</strong>
+        <div class="q-context">Kamu merancang algoritma Peta Digital khusus pengendara sepeda motor. Pilihlah <strong>2 informasi yang TIDAK RELEVAN</strong> (harus diabstraksi/diabstraksikan) dalam aplikasi navigasi sepeda motor!</div>
+      </div>
+      <div class="options">
+        <div class="option" data-val="A"><span class="option-letter">A</span><span class="option-text">Kecepatan angin di atap gedung pencakar langit</span></div>
+        <div class="option" data-val="B"><span class="option-letter">B</span><span class="option-text">Jalur khusus jalan tol yang melarang kendaraan roda dua</span></div>
+        <div class="option" data-val="C"><span class="option-letter">C</span><span class="option-text">Menu dan daftar harga makanan di restoran dekat rute</span></div>
+        <div class="option" data-val="D"><span class="option-letter">D</span><span class="option-text">Jarak dan kondisi kemacetan jalan arteri</span></div>
+        <div class="option" data-val="E"><span class="option-letter">E</span><span class="option-text">Posisi SPBU / Tempat Pengisian Bahan Bakar</span></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-submit">Jawab</button>
+        <button class="btn btn-hint btn-hint-toggle" disabled><span class="lock-icon">🔒</span>Hint (coba jawab dulu)</button>
+      </div>
+      <div class="feedback"></div>
+      <div class="hint-box"><strong>💡 Petunjuk:</strong> Pikirkan informasi yang sama sekali tidak mempengaruhi keselamatan atau penentuan jalur jalan motor.</div>
+    </div>
+
+    <!-- SOAL 4 -->
+    <div class="question-card" data-q="4" data-answer="2,1,4,3,5" data-xp="30" data-drag="true">
+      <div class="q-header">
+        <div class="q-title">Soal 4 — Desain Algoritma</div>
+        <div class="q-badges"><span class="badge badge-level-menantang">Menantang</span><span class="badge badge-xp">+30 XP</span></div>
+      </div>
+      <div class="q-case">
+        <strong>📊 Kasus: Mencari Nilai Ujian Tertinggi</strong>
+        <div class="q-context">Urutkan langkah-langkah di bawah agar menjadi <strong>Algoritma yang Logis dan Benar</strong> untuk mencari nilai ujian tertinggi dari daftar angka siswa!</div>
+      </div>
+      <div class="drag-container" id="dragContainer4">
+        <div class="drag-item" draggable="true" data-id="1"><span class="drag-handle">☰</span><span class="drag-number">?</span><span>Periksa angka berikutnya. Jika lebih besar dari Nilai Maksimum, perbarui Nilai Maksimum.</span></div>
+        <div class="drag-item" draggable="true" data-id="2"><span class="drag-handle">☰</span><span class="drag-number">?</span><span>Mulai dan siapkan daftar seluruh nilai siswa.</span></div>
+        <div class="drag-item" draggable="true" data-id="3"><span class="drag-handle">☰</span><span class="drag-number">?</span><span>Ulangi pemeriksaan hingga seluruh angka dalam daftar selesai diperiksa.</span></div>
+        <div class="drag-item" draggable="true" data-id="4"><span class="drag-handle">☰</span><span class="drag-number">?</span><span>Tetapkan angka pertama sebagai "Nilai Maksimum Sementara".</span></div>
+        <div class="drag-item" draggable="true" data-id="5"><span class="drag-handle">☰</span><span class="drag-number">?</span><span>Cetak Nilai Maksimum akhir dan Selesai.</span></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-submit">Jawab</button>
+        <button class="btn btn-hint btn-hint-toggle" disabled><span class="lock-icon">🔒</span>Hint (coba jawab dulu)</button>
+      </div>
+      <div class="feedback"></div>
+      <div class="hint-box"><strong>💡 Petunjuk:</strong> Mulailah dari penyiapan data → menentukan patokan awal → proses perbandingan → pengulangan → output akhir.</div>
+    </div>
+
+    <!-- SOAL 5 -->
+    <div class="question-card" data-q="5" data-answer="B" data-xp="20">
+      <div class="q-header">
+        <div class="q-title">Soal 5 — Dekomposisi (Kontekstual)</div>
+        <div class="q-badges"><span class="badge badge-level-sedang">Sedang</span><span class="badge badge-xp">+20 XP</span></div>
+      </div>
+      <div class="q-case">
+        <strong>🎉 Kasus: Mengadakan Class Meeting Akhir Semester</strong>
+        <div class="q-context">Kelasmu ditugaskan mengadakan <strong>Class Meeting</strong>. Agar persiapan rapi, ketua kelas ingin menerapkan <strong>dekomposisi</strong>. Manakah pembagian sub-tugas yang paling tepat?</div>
+      </div>
+      <div class="options">
+        <div class="option" data-val="A"><span class="option-letter">A</span><span class="option-text">Semua siswa mengerjakan semua hal sekaligus tanpa pembagian tugas.</span></div>
+        <div class="option" data-val="B"><span class="option-letter">B</span><span class="option-text">Membagi menjadi: Sie Acara, Sie Perlengkapan, Sie Konsumsi, dan Sie Dokumentasi.</span></div>
+        <div class="option" data-val="C"><span class="option-letter">C</span><span class="option-text">Hanya fokus membeli piala dan mengabaikan jadwal lomba.</span></div>
+        <div class="option" data-val="D"><span class="option-letter">D</span><span class="option-text">Menyuruh satu orang saja mengerjakan semuanya dari A-Z.</span></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-submit">Jawab</button>
+        <button class="btn btn-hint btn-hint-toggle" disabled><span class="lock-icon">🔒</span>Hint (coba jawab dulu)</button>
+      </div>
+      <div class="feedback"></div>
+      <div class="hint-box"><strong>💡 Petunjuk:</strong> Dekomposisi yang baik membagi masalah besar menjadi bagian-bagian spesifik yang bisa dikerjakan oleh tim berbeda secara paralel.</div>
+    </div>
+
+    <!-- SOAL 6 -->
+    <div class="question-card" data-q="6" data-answer="B" data-xp="25">
+      <div class="q-header">
+        <div class="q-title">Soal 6 — Pengenalan Pola (Kontekstual)</div>
+        <div class="q-badges"><span class="badge badge-level-menantang">Menantang</span><span class="badge badge-xp">+25 XP</span></div>
+      </div>
+      <div class="q-case">
+        <strong>💰 Kasus: Tabungan Bulanan Rani</strong>
+        <div class="q-context">Rani menabung di celengan dengan pola berikut:<br>Bulan 1: Rp5.000 | Bulan 2: Rp10.000 | Bulan 3: Rp20.000 | Bulan 4: Rp40.000<br>Jika pola ini terus berlanjut, berapa total tabungan Rani sampai <strong>Bulan ke-6</strong>?</div>
+      </div>
+      <div class="options">
+        <div class="option" data-val="A"><span class="option-letter">A</span><span class="option-text">Rp160.000</span></div>
+        <div class="option" data-val="B"><span class="option-letter">B</span><span class="option-text">Rp315.000</span></div>
+        <div class="option" data-val="C"><span class="option-letter">C</span><span class="option-text">Rp200.000</span></div>
+        <div class="option" data-val="D"><span class="option-letter">D</span><span class="option-text">Rp120.000</span></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-submit">Jawab</button>
+        <button class="btn btn-hint btn-hint-toggle" disabled><span class="lock-icon">🔒</span>Hint (coba jawab dulu)</button>
+      </div>
+      <div class="feedback"></div>
+      <div class="hint-box"><strong>💡 Petunjuk:</strong> Setiap bulan tabungan <strong>berlipat 2</strong> dari bulan sebelumnya. Bulan 5 = 80.000, Bulan 6 = 160.000. Jumlahkan semua dari Bulan 1 sampai 6!</div>
+    </div>
+
+    <!-- SOAL 7 -->
+    <div class="question-card" data-q="7" data-answer="B" data-xp="25">
+      <div class="q-header">
+        <div class="q-title">Soal 7 — Abstraksi (Kontekstual)</div>
+        <div class="q-badges"><span class="badge badge-level-menantang">Menantang</span><span class="badge badge-xp">+25 XP</span></div>
+      </div>
+      <div class="q-case">
+        <strong>🎮 Kasus: Membuat Profil Pemain Turnamen E-Sport Sekolah</strong>
+        <div class="q-context">Kamu membuat form pendaftaran turnamen Mobile Legend antar kelas. Data mana yang <strong>PALING TIDAK PERLU</strong> dicantumkan (harus diabstraksi) karena tidak relevan dengan keperluan turnamen?</div>
+      </div>
+      <div class="options">
+        <div class="option" data-val="A"><span class="option-letter">A</span><span class="option-text">Nickname game & ID pemain</span></div>
+        <div class="option" data-val="B"><span class="option-letter">B</span><span class="option-text">Warna kesukaan & makanan favorit pemain</span></div>
+        <div class="option" data-val="C"><span class="option-letter">C</span><span class="option-text">Kelas & nama lengkap peserta</span></div>
+        <div class="option" data-val="D"><span class="option-letter">D</span><span class="option-text">Role utama (Jungler, Roamer, dll) & rank</span></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-submit">Jawab</button>
+        <button class="btn btn-hint btn-hint-toggle" disabled><span class="lock-icon">🔒</span>Hint (coba jawab dulu)</button>
+      </div>
+      <div class="feedback"></div>
+      <div class="hint-box"><strong>💡 Petunjuk:</strong> Abstraksi = fokus pada data yang benar-benar dibutuhkan untuk keperluan spesifik. Mana yang tidak berpengaruh pada jalannya turnamen?</div>
+    </div>
+
+    <!-- SOAL 8 -->
+    <div class="question-card" data-q="8" data-answer="C" data-xp="30">
+      <div class="q-header">
+        <div class="q-title">Soal 8 — Algoritma (Kontekstual)</div>
+        <div class="q-badges"><span class="badge badge-level-super">Super</span><span class="badge badge-xp">+30 XP</span></div>
+      </div>
+      <div class="q-case">
+        <strong>🍜 Kasus: Algoritma Memasak Mie Instan</strong>
+        <div class="q-context">Ibu meminta kamu memasak mie instan untuk adik. Berikut langkah-langkah yang <strong>ACAK</strong>. Urutkan menjadi algoritma yang logis!</div>
+        <div class="q-visual">
+          <svg width="280" height="140" viewBox="0 0 280 140">
+            <rect x="10" y="40" width="60" height="60" rx="8" fill="#f5576c"/><text x="40" y="65" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Rebus</text><text x="40" y="80" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Air</text>
+            <rect x="80" y="40" width="60" height="60" rx="8" fill="#667eea"/><text x="110" y="65" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Siapkan</text><text x="110" y="80" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Bahan</text>
+            <rect x="150" y="40" width="60" height="60" rx="8" fill="#27ae60"/><text x="180" y="65" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Tiriskan</text><text x="180" y="80" text-anchor="middle" fill="white" font-size="10" font-weight="bold">& Campur</text>
+            <rect x="220" y="40" width="55" height="60" rx="8" fill="#f5a623"/><text x="247" y="65" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Masak</text><text x="247" y="80" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Mie</text>
+          </svg>
+        </div>
+      </div>
+      <div class="options">
+        <div class="option" data-val="A"><span class="option-letter">A</span><span class="option-text">Masak mie → Siapkan bahan → Rebus air → Tiriskan & campur bumbu</span></div>
+        <div class="option" data-val="B"><span class="option-letter">B</span><span class="option-text">Rebus air → Masak mie → Tiriskan & campur bumbu → Siapkan bahan</span></div>
+        <div class="option" data-val="C"><span class="option-letter">C</span><span class="option-text">Siapkan bahan → Rebus air → Masak mie → Tiriskan & campur bumbu</span></div>
+        <div class="option" data-val="D"><span class="option-letter">D</span><span class="option-text">Tiriskan & campur bumbu → Siapkan bahan → Rebus air → Masak mie</span></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-submit">Jawab</button>
+        <button class="btn btn-hint btn-hint-toggle" disabled><span class="lock-icon">🔒</span>Hint (coba jawab dulu)</button>
+      </div>
+      <div class="feedback"></div>
+      <div class="hint-box"><strong>💡 Petunjuk:</strong> Algoritma dimulai dari persiapan → proses inti → hasil akhir. Mana yang harus dilakukan PALING AWAL sebelum menyalakan kompor?</div>
+    </div>
+
+    <!-- SOAL 9 -->
+    <div class="question-card" data-q="9" data-answer="B" data-xp="30">
+      <div class="q-header">
+        <div class="q-title">Soal 9 — Berpikir Komputasional Terpadu</div>
+        <div class="q-badges"><span class="badge badge-level-super">Super</span><span class="badge badge-xp">+30 XP</span></div>
+      </div>
+      <div class="q-case">
+        <strong>🛵 Kasus: Ojek Online & Hujan</strong>
+        <div class="q-context">Kamu memesan ojek online saat mendung. Aplikasi memberikan 4 pilihan driver dengan data:<br>
+        • Driver A: Jarak 1,2 km, rating 4.9, harga Rp12.000<br>
+        • Driver B: Jarak 3,5 km, rating 4.2, harga Rp8.000<br>
+        • Driver C: Jarak 0,8 km, rating 4.7, harga Rp15.000<br>
+        • Driver D: Jarak 2,0 km, rating 3.5, harga Rp10.000<br>
+        Jika kamu mengutamakan <strong>kecepatan datang + rating bagus</strong> (karena hujan akan segera turun), driver mana yang paling tepat dipilih menggunakan prinsip <strong>abstraksi</strong> (abaikan harga)?</div>
+      </div>
+      <div class="options">
+        <div class="option" data-val="A"><span class="option-letter">A</span><span class="option-text">Driver A — jarak dekat & rating sangat bagus</span></div>
+        <div class="option" data-val="B"><span class="option-letter">B</span><span class="option-text">Driver C — jarak paling dekat & rating bagus</span></div>
+        <div class="option" data-val="C"><span class="option-letter">C</span><span class="option-text">Driver B — harga paling murah</span></div>
+        <div class="option" data-val="D"><span class="option-letter">D</span><span class="option-text">Driver D — jarak sedang</span></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-submit">Jawab</button>
+        <button class="btn btn-hint btn-hint-toggle" disabled><span class="lock-icon">🔒</span>Hint (coba jawab dulu)</button>
+      </div>
+      <div class="feedback"></div>
+      <div class="hint-box"><strong>💡 Petunjuk:</strong> Soal meminta kamu mengABSTRAKSI (abaikan) harga. Fokus hanya pada 2 kriteria: <strong>jarak paling dekat</strong> dan <strong>rating bagus</strong>.</div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    🎓 Media Pembelajaran Interaktif Informatika SMP — Berpikir Komputasional<br>
+    <a href="https://ruangbelajarinteraktif.github.io">↑ Kembali ke Beranda</a>
+  </div>
+
+</div>
+
+<script>
+  // ================= GAME LOGIC =================
+  let currentLevel = 1;
+  let gameScore = 0;
+  let currentSequence = [];
+  let maxSteps = 3;
+
+  const levels = [
+    { start: 'square', target: 'circle', correctSequence: [1, 2], hint: 'Dari persegi, kamu perlu 2 langkah: pertama jadi segitiga (Pintu 1), lalu jadi lingkaran (Pintu 2).' },
+    { start: 'triangle', target: 'square', correctSequence: [2, 3], hint: 'Dari segitiga, ubah jadi lingkaran dulu (Pintu 2), baru jadi persegi (Pintu 3).' },
+    { start: 'circle', target: 'triangle', correctSequence: [3, 1], hint: 'Dari lingkaran, kamu harus kembali ke persegi dulu (Pintu 3), lalu ke segitiga (Pintu 1).' }
+  ];
+
+  const transformations = {
+    1: { from: 'square', to: 'triangle', symbol: '□→△' },
+    2: { from: 'triangle', to: 'circle', symbol: '△→○' },
+    3: { from: 'circle', to: 'square', symbol: '○→□' }
+  };
+
+  const shapeSymbols = { square: '□', triangle: '△', circle: '○' };
+
+  function initGame() { loadLevel(1); }
+
+  function loadLevel(level) {
+    currentLevel = level;
+    currentSequence = [];
+    const levelData = levels[level - 1];
+    document.getElementById('currentLevel').textContent = level;
+    document.getElementById('startShape').className = `shape ${levelData.start}`;
+    document.getElementById('startShape').textContent = shapeSymbols[levelData.start];
+    document.getElementById('targetShape').className = `shape ${levelData.target}`;
+    document.getElementById('targetShape').textContent = shapeSymbols[levelData.target];
+    document.getElementById('hintText').textContent = levelData.hint;
+    resetSequence();
+    hideFeedback();
+    document.getElementById('hintBtn').disabled = false;
+    document.getElementById('gameHintBox').style.display = 'none';
+  }
+
+  function selectDoor(doorNumber) {
+    if (currentSequence.length >= maxSteps) { showFeedback('Maksimal 3 langkah!', 'error'); return; }
+    currentSequence.push(doorNumber);
+    updateSequenceDisplay();
+    const door = document.querySelector(`.door[data-door="${doorNumber}"]`);
+    door.classList.add('selected');
+    setTimeout(() => door.classList.remove('selected'), 300);
+  }
+
+  function updateSequenceDisplay() {
+    const slots = document.querySelectorAll('.slot');
+    slots.forEach((slot, index) => {
+      if (index < currentSequence.length) { slot.textContent = currentSequence[index]; slot.classList.add('filled'); }
+      else { slot.textContent = '-'; slot.classList.remove('filled'); }
+    });
+  }
+
+  function resetSequence() {
+    currentSequence = [];
+    document.querySelectorAll('.slot').forEach(slot => { slot.textContent = '-'; slot.classList.remove('filled'); });
+    hideFeedback();
+  }
+
+  function checkSequence() {
+    if (currentSequence.length === 0) { showFeedback('Pilih minimal satu pintu!', 'error'); return; }
+    const levelData = levels[currentLevel - 1];
+    let currentShape = levelData.start;
+    let pathValid = true;
+    let finalShape = currentShape;
+    
+    for (let door of currentSequence) {
+      const transform = transformations[door];
+      if (transform.from === currentShape) { currentShape = transform.to; finalShape = currentShape; }
+      else { pathValid = false; break; }
+    }
+    
+    if (!pathValid) { showFeedback('❌ Urutan salah! Bentuk tidak bisa diproses di pintu tersebut. Ingat, setiap pintu hanya menerima bentuk tertentu!', 'error'); return; }
+    
+    if (finalShape === levelData.target) {
+      gameScore += 10;
+      document.getElementById('gameScore').textContent = gameScore;
+      showFeedback(`✅ Benar! Kamu berhasil mengubah ${shapeSymbols[levelData.start]} menjadi ${shapeSymbols[levelData.target]}. Algoritma yang sempurna!`, 'success');
+      setTimeout(() => {
+        if (currentLevel < levels.length) { loadLevel(currentLevel + 1); }
+        else {
+          showFeedback(`🎉 Selamat! Kamu menyelesaikan semua level dengan skor ${gameScore}! Sekarang kamu paham bahwa urutan algoritma sangat penting!`, 'success');
+          document.getElementById('hintBtn').disabled = true;
+        }
+      }, 2000);
+    } else {
+      showFeedback(`❌ Belum tepat! Kamu mendapat ${shapeSymbols[finalShape]}, tapi targetnya ${shapeSymbols[levelData.target]}. Coba urutan yang berbeda. Ingat: ALGORITMA TIDAK BISA DIBALIK!`, 'error');
+    }
+  }
+
+  function showGameHint() {
+    document.getElementById('gameHintBox').style.display = 'block';
+    document.getElementById('hintBtn').disabled = true;
+  }
+
+  function showFeedback(message, type) {
+    const feedback = document.getElementById('gameFeedback');
+    feedback.textContent = message;
+    feedback.className = `game-feedback show ${type}`;
+  }
+
+  function hideFeedback() { document.getElementById('gameFeedback').classList.remove('show'); }
+  window.addEventListener('DOMContentLoaded', initGame);
+
+  // ================= EXERCISE LOGIC =================
+  const state = {};
+  let totalScore = 0;
+
+  document.querySelectorAll('.question-card').forEach(card => {
+    const qId = card.dataset.q;
+    state[qId] = { attempted: false, answered: false, selected: [] };
+    const isMultiple = card.dataset.multiple === 'true';
+    const isDrag = card.dataset.drag === 'true';
+
+    if (!isDrag) {
+      card.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          if (state[qId].answered) return;
+          if (isMultiple) {
+            opt.classList.toggle('selected');
+            const val = opt.dataset.val;
+            const idx = state[qId].selected.indexOf(val);
+            if (idx > -1) state[qId].selected.splice(idx, 1);
+            else state[qId].selected.push(val);
+          } else {
+            card.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            state[qId].selected = [opt.dataset.val];
+          }
+        });
+      });
+    }
+
+    card.querySelector('.btn-submit').addEventListener('click', () => {
+      if (state[qId].answered) return;
+      let userAnswer, correctAnswer;
+      if (isDrag) {
+        const items = [...card.querySelectorAll('.drag-item')];
+        userAnswer = items.map(i => i.dataset.id).join(',');
+        correctAnswer = card.dataset.answer;
+      } else if (isMultiple) {
+        if (state[qId].selected.length === 0) { alert('Pilih minimal satu jawaban!'); return; }
+        userAnswer = state[qId].selected.sort().join('');
+        correctAnswer = card.dataset.answer.split('').sort().join('');
+      } else {
+        if (state[qId].selected.length === 0) { alert('Pilih salah satu jawaban!'); return; }
+        userAnswer = state[qId].selected[0];
+        correctAnswer = card.dataset.answer;
+      }
+
+      state[qId].attempted = true;
+      const hintBtn = card.querySelector('.btn-hint-toggle');
+      hintBtn.disabled = false;
+      hintBtn.innerHTML = '💡 Tampilkan Hint';
+
+      const feedback = card.querySelector('.feedback');
+      const xp = parseInt(card.dataset.xp);
+      if (userAnswer === correctAnswer) {
+        state[qId].answered = true;
+        feedback.className = 'feedback show correct';
+        feedback.innerHTML = `✅ <strong>Benar!</strong> Kamu mendapatkan <strong>+${xp} XP</strong>. Hebat!`;
+        if (!isDrag) card.querySelectorAll('.option.selected').forEach(o => o.classList.add('correct'));
+        else card.querySelectorAll('.drag-item').forEach(i => i.style.borderColor = '#27ae60');
+        totalScore += xp;
+        document.getElementById('totalScore').textContent = totalScore;
+        card.querySelector('.btn-submit').disabled = true;
+        hintBtn.disabled = true;
+        hintBtn.innerHTML = '✅ Selesai';
+      } else {
+        feedback.className = 'feedback show wrong';
+        feedback.innerHTML = `❌ <strong>Belum tepat.</strong> Coba lagi! Hint sudah terbuka untuk membantumu.`;
+        if (!isDrag) {
+          card.querySelectorAll('.option.selected').forEach(o => o.classList.add('wrong'));
+          setTimeout(() => {
+            card.querySelectorAll('.option').forEach(o => o.classList.remove('wrong', 'selected'));
+            state[qId].selected = [];
+          }, 1500);
+        }
+      }
+    });
+
+    card.querySelector('.btn-hint-toggle').addEventListener('click', () => {
+      card.querySelector('.hint-box').classList.toggle('show');
+    });
+  });
+
+  // Drag & Drop for Soal 4
+  const dragContainer = document.getElementById('dragContainer4');
+  let draggedItem = null;
+
+  function updateDragNumbers() {
+    dragContainer.querySelectorAll('.drag-item').forEach((item, idx) => {
+      item.querySelector('.drag-number').textContent = idx + 1;
+    });
+  }
+  updateDragNumbers();
+
+  dragContainer.querySelectorAll('.drag-item').forEach(item => {
+    item.addEventListener('dragstart', e => { draggedItem = item; setTimeout(() => item.classList.add('dragging'), 0); });
+    item.addEventListener('dragend', () => { item.classList.remove('dragging'); draggedItem = null; updateDragNumbers(); });
+    item.addEventListener('dragover', e => e.preventDefault());
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      if (draggedItem && draggedItem !== item) {
+        const allItems = [...dragContainer.querySelectorAll('.drag-item')];
+        const draggedIdx = allItems.indexOf(draggedItem);
+        const droppedIdx = allItems.indexOf(item);
+        if (draggedIdx < droppedIdx) dragContainer.insertBefore(draggedItem, item.nextSibling);
+        else dragContainer.insertBefore(draggedItem, item);
+        updateDragNumbers();
+      }
+    });
+    item.addEventListener('click', () => {
+      if (state['4'].answered) return;
+      const next = item.nextElementSibling;
+      if (next) dragContainer.insertBefore(next, item);
+      updateDragNumbers();
+    });
+  });
+</script>
+</body>
+</html>
