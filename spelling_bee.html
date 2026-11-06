@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oxford 3000 Spelling Bee Challenge</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bee: {
+                            50: '#fffbeed',
+                            100: '#fef3c7',
+                            300: '#fde047',
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            700: '#a16207',
+                            900: '#422006',
+                        },
+                        hive: '#1e1b18',
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fefce8;
+            background-image: radial-gradient(#fef08a 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+        }
+
+        .font-game {
+            font-family: 'Fredoka', cursive;
+        }
+
+        .hexagon {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(250, 204, 21, 0.3);
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 0.4; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .pulse-animation {
+            animation: pulse-ring 2s infinite ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .shake-effect {
+            animation: shake 0.4s ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col justify-between selection:bg-yellow-300">
+
+    <!-- Navbar / Header -->
+    <header class="bg-hive text-white py-3 px-4 sm:px-8 shadow-lg border-b-4 border-yellow-400 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="showScreen('menuScreen')">
+                <div class="w-10 h-10 bg-yellow-400 rounded-2xl flex items-center justify-center text-hive font-black text-2xl shadow-md transform rotate-3">
+                    <i class="fa-solid font-bold fa-bee"></i>
+                </div>
+                <div>
+                    <h1 class="font-game text-xl sm:text-2xl font-bold tracking-wide text-yellow-400 flex items-center gap-2">
+                        SPELLING BEE <span class="bg-yellow-500 text-hive text-xs px-2 py-0.5 rounded-full font-sans font-bold">OXFORD 3000</span>
+                    </h1>
+                    <p class="text-xs text-yellow-200/80 hidden sm:block">Asah Ejaan Bahasa Inggris dari Level A1 - B2</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-4">
+                <button id="soundToggleBtn" onclick="toggleMute()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-yellow-400 transition-all border border-yellow-500/30">
+                    <i id="soundIcon" class="fa-solid fa-volume-high"></i>
+                </button>
+                <button onclick="showLeaderboardModal()" class="px-3 py-2 rounded-xl bg-yellow-500 hover:bg-yellow-400 text-hive font-bold text-sm transition-all flex items-center gap-2 shadow-md">
+                    <i class="fa-solid fa-trophy"></i>
+                    <span class="hidden sm:inline">Papan Skor</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto w-full p-4 sm:p-6 flex-grow flex items-center justify-center">
+
+        <!-- 1. MAIN MENU SCREEN -->
+        <div id="menuScreen" class="w-full space-y-6">
+            <div class="text-center space-y-3">
+                <div class="inline-block bg-yellow-100 text-yellow-800 border border-yellow-300 font-bold px-4 py-1.5 rounded-full text-sm shadow-sm">
+                    <i class="fa-solid fa-graduation-cap mr-1"></i> Latihan Kosakata Standar Internasional CEFR
+                </div>
+                <h2 class="font-game text-4xl sm:text-5xl font-extrabold text-hive">Pilih Mode Permainan</h2>
+                <p class="text-slate-600 max-w-lg mx-auto">Tingkatkan penguasaan kosa kata Bahasa Inggris dengan latihan mengeja berbasis audio & kamus interaktif.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 pt-4">
+                <!-- Solo Practice Card -->
+                <div onclick="selectMode('practice')" class="glass-card rounded-3xl p-6 hover:shadow-xl hover:-translate-y-1.5 transition-all cursor-pointer group border-2 border-yellow-200 hover:border-yellow-400 relative overflow-hidden">
+                    <div class="w-14 h-14 bg-yellow-400 text-hive rounded-2xl flex items-center justify-center text-2xl font-bold mb-4 shadow-md group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <span class="text-xs font-bold text-yellow-700 uppercase tracking-wider">Tanpa Batas Waktu</span>
+                    <h3 class="font-game text-2xl font-bold text-hive mt-1">Mode Latihan</h3>
+                    <p class="text-sm text-slate-600 mt-2">Bebas memilih level CEFR (A1-B2). Dilengkapi dengan audio, arti, contoh kalimat, dan hint.</p>
+                    <div class="mt-5 flex items-center text-yellow-600 font-bold text-sm group-hover:translate-x-1 transition-transform">
+                        Mulai Latihan <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+
+                <!-- Time Challenge Card -->
+                <div onclick="selectMode('challenge')" class="glass-card rounded-3xl p-6 hover:shadow-xl hover:-translate-y-1.5 transition-all cursor-pointer group border-2 border-amber-200 hover:border-amber-400 relative overflow-hidden">
+                    <div class="w-14 h-14 bg-amber-500 text-white rounded-2xl flex items-center justify-center text-2xl font-bold mb-4 shadow-md group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-stopwatch"></i>
+                    </div>
+                    <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">Tantangan Skor</span>
+                    <h3 class="font-game text-2xl font-bold text-hive mt-1">Time Challenge</h3>
+                    <p class="text-sm text-slate-600 mt-2">Waktu terbatas per kata, sistem skor, dan 3 nyawa. Kumpulkan poin tertinggi ke leaderboard!</p>
+                    <div class="mt-5 flex items-center text-amber-600 font-bold text-sm group-hover:translate-x-1 transition-transform">
+                        Mulai Tantangan <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+
+                <!-- Team Relay Card -->
+                <div onclick="selectMode('relay')" class="glass-card rounded-3xl p-6 hover:shadow-xl hover:-translate-y-1.5 transition-all cursor-pointer group border-2 border-orange-200 hover:border-orange-400 relative overflow-hidden">
+                    <div class="w-14 h-14 bg-orange-500 text-white rounded-2xl flex items-center justify-center text-2xl font-bold mb-4 shadow-md group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider">Multiplayer Lokal</span>
+                    <h3 class="font-game text-2xl font-bold text-hive mt-1">Estafet Tim</h3>
+                    <p class="text-sm text-slate-600 mt-2">Permainan bergiliran antar Tim A dan Tim B. Sangat cocok untuk suasana kelas atau kelompok.</p>
+                    <div class="mt-5 flex items-center text-orange-600 font-bold text-sm group-hover:translate-x-1 transition-transform">
+                        Atur Tim <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. SETUP CONFIG SCREEN -->
+        <div id="setupScreen" class="w-full max-w-xl glass-card rounded-3xl p-6 sm:p-8 shadow-2xl hidden">
+            <button onclick="showScreen('menuScreen')" class="text-sm font-bold text-slate-500 hover:text-hive mb-4 flex items-center gap-1">
+                <i class="fa-solid fa-chevron-left"></i> Kembali ke Menu
+            </button>
+            <h2 id="setupTitle" class="font-game text-3xl font-bold text-hive mb-2">Pengaturan Latihan</h2>
+            <p id="setupSub" class="text-sm text-slate-600 mb-6">Pilih tingkat kesulitan kata berdasarkan kerangka CEFR Oxford 3000.</p>
+
+            <form id="setupForm" onsubmit="handleStartGame(event)" class="space-y-6">
+                <!-- Level Selection -->
+                <div>
+                    <label class="block font-bold text-hive text-sm mb-3">Tingkat Kesulitan CEFR:</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="cefrLevel" value="ALL" checked class="peer sr-only">
+                            <div class="p-3.5 rounded-2xl border-2 border-slate-200 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 text-center transition-all">
+                                <div class="font-bold text-hive">Campuran (A1-B2)</div>
+                                <div class="text-xs text-slate-500">Semua Kosakata</div>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="cefrLevel" value="A1" class="peer sr-only">
+                            <div class="p-3.5 rounded-2xl border-2 border-slate-200 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 text-center transition-all">
+                                <div class="font-bold text-emerald-600">Level A1</div>
+                                <div class="text-xs text-slate-500">Dasar / Pemula</div>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="cefrLevel" value="A2" class="peer sr-only">
+                            <div class="p-3.5 rounded-2xl border-2 border-slate-200 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 text-center transition-all">
+                                <div class="font-bold text-blue-600">Level A2</div>
+                                <div class="text-xs text-slate-500">Elemen Menengah</div>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="cefrLevel" value="B1" class="peer sr-only">
+                            <div class="p-3.5 rounded-2xl border-2 border-slate-200 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 text-center transition-all">
+                                <div class="font-bold text-purple-600">Level B1</div>
+                                <div class="text-xs text-slate-500">Menengah</div>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer col-span-2 sm:col-span-1">
+                            <input type="radio" name="cefrLevel" value="B2" class="peer sr-only">
+                            <div class="p-3.5 rounded-2xl border-2 border-slate-200 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 text-center transition-all">
+                                <div class="font-bold text-rose-600">Level B2</div>
+                                <div class="text-xs text-slate-500">Menengah Atas / Mahir</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Player Name Input (For Challenge Mode) -->
+                <div id="playerNameInputGroup" class="hidden">
+                    <label class="block font-bold text-hive text-sm mb-2" for="playerName">Nama Pemain:</label>
+                    <input type="text" id="playerName" placeholder="Masukkan nama Anda..." class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-yellow-500 focus:outline-none font-bold text-hive">
+                </div>
+
+                <!-- Team Names Input (For Relay Mode) -->
+                <div id="teamInputGroup" class="hidden space-y-3">
+                    <div>
+                        <label class="block font-bold text-hive text-sm mb-1">Nama Tim 1:</label>
+                        <input type="text" id="team1Name" value="Tim Lebah 1" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-200 focus:border-yellow-500 focus:outline-none font-bold">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-hive text-sm mb-1">Nama Tim 2:</label>
+                        <input type="text" id="team2Name" value="Tim Lebah 2" class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-200 focus:border-yellow-500 focus:outline-none font-bold">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-4 bg-yellow-400 hover:bg-yellow-300 text-hive font-game font-extrabold text-xl rounded-2xl shadow-lg transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-play"></i> Mulai Permainan
+                </button>
+            </form>
+        </div>
+
+        <!-- 3. GAMEPLAY SCREEN -->
+        <div id="gameplayScreen" class="w-full max-w-2xl glass-card rounded-3xl p-5 sm:p-8 shadow-2xl hidden relative overflow-hidden">
+            
+            <!-- Game Top Status Bar -->
+            <div class="flex items-center justify-between pb-4 border-b border-yellow-200/60 mb-6">
+                <!-- Status Left (Level / Turn) -->
+                <div>
+                    <span id="badgeCEFR" class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-yellow-200 text-yellow-900">Level A1</span>
+                    <span id="turnIndicator" class="ml-2 text-xs font-extrabold text-slate-600 hidden">Turn: Tim 1</span>
+                </div>
+
+                <!-- Status Center (Hearts or Progress) -->
+                <div id="livesContainer" class="flex gap-1 text-red-500 text-lg">
+                    <i class="fa-solid fa-heart"></i>
+                    <i class="fa-solid fa-heart"></i>
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+
+                <!-- Status Right (Score & Timer) -->
+                <div class="flex items-center gap-4">
+                    <div id="scoreDisplay" class="text-right">
+                        <span class="text-xs text-slate-500 font-bold block">SKOR</span>
+                        <span id="scoreValue" class="font-game text-2xl font-black text-hive">0</span>
+                    </div>
+                    <div id="timerDisplay" class="hidden text-right pl-3 border-l-2 border-slate-200">
+                        <span class="text-xs text-slate-500 font-bold block">WAKTU</span>
+                        <span id="timerValue" class="font-game text-2xl font-black text-amber-600">20s</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Relay Score Board Header (Only in Relay Mode) -->
+            <div id="relayHeader" class="hidden grid-cols-2 gap-3 mb-6 p-3 bg-yellow-50 rounded-2xl border border-yellow-200">
+                <div id="team1Card" class="p-2 rounded-xl text-center border-2 border-yellow-400 bg-white">
+                    <div id="team1Label" class="text-xs font-bold text-slate-500">Tim 1</div>
+                    <div id="team1Score" class="font-game text-xl font-bold text-hive">0 Poin</div>
+                </div>
+                <div id="team2Card" class="p-2 rounded-xl text-center border-2 border-transparent">
+                    <div id="team2Label" class="text-xs font-bold text-slate-500">Tim 2</div>
+                    <div id="team2Score" class="font-game text-xl font-bold text-hive">0 Poin</div>
+                </div>
+            </div>
+
+            <!-- Main Interactive Audio Bee Button -->
+            <div class="text-center my-4">
+                <div class="relative inline-block">
+                    <button id="pronounceMainBtn" onclick="speakCurrentWord()" class="w-24 h-24 sm:w-28 sm:h-28 bg-yellow-400 hover:bg-yellow-300 text-hive rounded-full shadow-xl flex flex-col items-center justify-center transition-all transform hover:scale-105 active:scale-95 border-4 border-white pulse-animation mx-auto">
+                        <i class="fa-solid fa-volume-high text-3xl sm:text-4xl mb-1"></i>
+                        <span class="text-[10px] font-extrabold uppercase tracking-widest">Dengar Kata</span>
+                    </button>
+                </div>
+                <p class="text-xs text-slate-500 mt-3">Klik tombol di atas untuk mendengarkan pengucapan kata.</p>
+            </div>
+
+            <!-- Input & Letters Area -->
+            <div class="space-y-4 my-6">
+                <!-- Revealed Letters Mask -->
+                <div id="wordHintBox" class="text-center font-mono text-2xl sm:text-3xl font-bold tracking-[0.3em] text-slate-700 min-h-[40px] flex items-center justify-center gap-1 sm:gap-2">
+                    <!-- Dynamic underscores/revealed letters -->
+                </div>
+
+                <!-- Text Input Field -->
+                <div class="relative max-w-md mx-auto">
+                    <input type="text" id="spellInput" autocomplete="off" spellcheck="false" placeholder="Ketik ejaan di sini..." class="w-full px-5 py-4 rounded-2xl border-3 border-yellow-400 text-center font-game text-2xl font-bold text-hive placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-yellow-300 shadow-inner uppercase tracking-wider">
+                </div>
+
+                <div class="flex justify-center gap-3 max-w-md mx-auto">
+                    <button onclick="checkSpelling()" class="flex-1 py-3.5 bg-hive hover:bg-slate-800 text-yellow-400 font-game font-bold text-lg rounded-2xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-check"></i> Periksa Ejaan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lifelines & Hints Controls -->
+            <div class="border-t border-yellow-200/60 pt-4 mt-6">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block text-center mb-3">Bantuan & Informasi Kata</span>
+                <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                    <button onclick="showDefinition()" class="p-2.5 rounded-xl bg-yellow-100 hover:bg-yellow-200 text-yellow-900 text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 text-center">
+                        <i class="fa-solid fa-book text-yellow-700"></i>
+                        <span>Jenis & Arti</span>
+                    </button>
+                    <button onclick="showSentence()" class="p-2.5 rounded-xl bg-yellow-100 hover:bg-yellow-200 text-yellow-900 text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 text-center">
+                        <i class="fa-solid fa-quote-left text-yellow-700"></i>
+                        <span>Contoh Kalimat</span>
+                    </button>
+                    <button id="hintBtn" onclick="giveLetterHint()" class="p-2.5 rounded-xl bg-yellow-100 hover:bg-yellow-200 text-yellow-900 text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 text-center">
+                        <i class="fa-solid fa-lightbulb text-yellow-700"></i>
+                        <span>Buka 1 Huruf</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dynamic Information Display Area -->
+            <div id="infoDisplayBox" class="mt-4 p-4 rounded-2xl bg-yellow-50 border border-yellow-200 text-sm hidden">
+                <div id="infoContent" class="text-slate-700"></div>
+            </div>
+
+            <!-- Bottom Exit Action -->
+            <div class="mt-6 text-center">
+                <button onclick="quitGame()" class="text-xs font-bold text-slate-400 hover:text-red-500 transition-colors">
+                    <i class="fa-solid fa-right-from-bracket"></i> Keluar Permainan
+                </button>
+            </div>
+        </div>
+
+        <!-- 4. GAME OVER / RESULTS SCREEN -->
+        <div id="resultScreen" class="w-full max-w-lg glass-card rounded-3xl p-6 sm:p-8 shadow-2xl text-center hidden space-y-6">
+            <div class="w-20 h-20 bg-yellow-400 text-hive rounded-full flex items-center justify-center text-4xl mx-auto shadow-lg">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            
+            <div>
+                <h2 class="font-game text-3xl font-extrabold text-hive">Permainan Selesai!</h2>
+                <p id="resultSubtitle" class="text-slate-600 text-sm mt-1">Kerja bagus! Berikut adalah hasil ejaan Anda.</p>
+            </div>
+
+            <div class="p-5 bg-yellow-50 rounded-2xl border border-yellow-200 space-y-3">
+                <div class="flex justify-between items-center border-b border-yellow-200/60 pb-2">
+                    <span class="text-sm font-bold text-slate-500">Skor Akhir</span>
+                    <span id="finalScore" class="font-game text-2xl font-black text-hive">0</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-yellow-200/60 pb-2">
+                    <span class="text-sm font-bold text-slate-500">Kata Berhasil Dieja</span>
+                    <span id="finalSpelled" class="font-bold text-slate-800">0 Kata</span>
+                </div>
+                <div id="teamResultContainer" class="hidden text-left pt-2 space-y-1">
+                    <!-- Team winner announce -->
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="restartGame()" class="flex-1 py-3.5 bg-yellow-400 hover:bg-yellow-300 text-hive font-game font-bold text-lg rounded-2xl shadow-md transition-all">
+                    <i class="fa-solid fa-rotate-right"></i> Main Lagi
+                </button>
+                <button onclick="showScreen('menuScreen')" class="flex-1 py-3.5 bg-hive hover:bg-slate-800 text-white font-game font-bold text-lg rounded-2xl shadow-md transition-all">
+                    Menu Utama
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Leaderboard -->
+    <div id="leaderboardModal" class="fixed inset-0 bg-hive/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white max-w-md w-full rounded-3xl p-6 shadow-2xl border-2 border-yellow-300 space-y-5">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-game text-2xl font-bold text-hive flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-yellow-500"></i> Papan Skor Lokal
+                </h3>
+                <button onclick="closeLeaderboardModal()" class="text-slate-400 hover:text-hive font-bold text-xl">&times;</button>
+            </div>
+
+            <div id="leaderboardList" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                <!-- Leaderboard items rendered dynamically -->
+            </div>
+
+            <button onclick="closeLeaderboardModal()" class="w-full py-3 bg-yellow-400 hover:bg-yellow-300 text-hive font-bold rounded-2xl">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 text-center text-xs text-slate-500 border-t border-yellow-200/50 bg-white/50">
+        Oxford 3000™ Spelling Bee Game &bull; Materi Berdasarkan Kerangka CEFR A1-B2
+    </footer>
+
+    <!-- JS Logic -->
+    <script>
+        /* ==========================================================================
+           1. OXFORD 3000 VOCABULARY DATABASE (Representative A1 - B2 Words)
+           ========================================================================== */
+        const oxfordDatabase = [
+            // --- LEVEL A1 ---
+            { word: "beautiful", level: "A1", pos: "Adjective", def: "Sangat indah atau menarik dipandang.", sentence: "The garden is full of beautiful flowers." },
+            { word: "because", level: "A1", pos: "Conjunction", def: "Sebab atau alasan dari sesuatu.", sentence: "I stayed home because it was raining." },
+            { word: "chocolate", level: "A1", pos: "Noun", def: "Makanan manis berwarna cokelat dari biji kakao.", sentence: "She loves eating dark chocolate." },
+            { word: "dangerous", level: "A1", pos: "Adjective", def: "Dapat menyebabkan bahaya atau cedera.", sentence: "It is dangerous to drive too fast." },
+            { word: "dictionary", level: "A1", pos: "Noun", def: "Buku rujukan daftar kata dan artinya.", sentence: "Look up the word in the English dictionary." },
+            { word: "expensive", level: "A1", pos: "Adjective", def: "Memiliki harga yang mahal.", sentence: "That sports car is very expensive." },
+            { word: "important", level: "A1", pos: "Adjective", def: "Memiliki nilai atau dampak besar; penting.", sentence: "Sleep is very important for good health." },
+            { word: "restaurant", level: "A1", pos: "Noun", def: "Tempat membeli dan memakan makanan siap saji.", sentence: "We had dinner at an Italian restaurant." },
+            { word: "vegetable", level: "A1", pos: "Noun", def: "Tanaman yang dimakan sebagai makanan (sayuran).", sentence: "Carrot is my favorite vegetable." },
+            { word: "yesterday", level: "A1", pos: "Adverb", def: "Hari sebelum hari ini.", sentence: "I met my friend yesterday afternoon." },
+            { word: "breakfast", level: "A1", pos: "Noun", def: "Makanan yang disantap di pagi hari.", sentence: "Eggs and toast make a healthy breakfast." },
+            { word: "different", level: "A1", pos: "Adjective", def: "Tidak sama dengan yang lain.", sentence: "They have different opinions on this topic." },
+            { word: "difficult", level: "A1", pos: "Adjective", def: "Sukar dipahami atau dilakukan.", sentence: "The math exam was very difficult." },
+
+            // --- LEVEL A2 ---
+            { word: "adventure", level: "A2", pos: "Noun", def: "Pengalaman yang seru dan berisiko.", sentence: "Going on a jungle safari is an exciting adventure." },
+            { word: "brilliant", level: "A2", pos: "Adjective", def: "Sangat cerdas, hebat, atau cemerlang.", sentence: "She had a brilliant idea for the project." },
+            { word: "comfortable", level: "A2", pos: "Adjective", def: "Memberikan rasa nyaman secara fisik.", sentence: "This sofa is soft and comfortable." },
+            { word: "government", level: "A2", pos: "Noun", def: "Badan penata/pengelola pemerintahan negara.", sentence: "The government announced a new education policy." },
+            { word: "international", level: "A2", pos: "Adjective", def: "Melibatkan dua atau lebih negara.", sentence: "The airport handles international flights." },
+            { word: "knowledge", level: "A2", pos: "Noun", def: "Informasi dan pemahaman yang dimiliki seseorang.", sentence: "Books are a great source of knowledge." },
+            { word: "opportunity", level: "A2", pos: "Noun", def: "Kesempatan baik untuk mencapai sesuatu.", sentence: "Studying abroad is a great opportunity." },
+            { word: "particular", level: "A2", pos: "Adjective", def: "Spesifik atau khusus.", sentence: "Is there a particular reason for your decision?" },
+            { word: "successful", level: "A2", pos: "Adjective", def: "Mencapai hasil yang diinginkan atau sukses.", sentence: "He is a successful business owner." },
+            { word: "traditional", level: "A2", pos: "Adjective", def: "Berdasarkan tradisi atau kebiasaan lama.", sentence: "They wore traditional clothes for the ceremony." },
+            { word: "description", level: "A2", pos: "Noun", def: "Gambaran atau penjelasan rinci.", sentence: "The witness gave a detailed description of the car." },
+            { word: "immediately", level: "A2", pos: "Adverb", def: "Seketika itu juga; tanpa menunda.", sentence: "Please reply to this email immediately." },
+
+            // --- LEVEL B1 ---
+            { word: "ambition", level: "B1", pos: "Noun", def: "Keinginan kuat untuk mencapai keberhasilan.", sentence: "Her ambition is to become a world-class doctor." },
+            { word: "challenge", level: "B1", pos: "Noun / Verb", def: "Tantangan yang menguji kemampuan.", sentence: "Climbing the high mountain was a huge challenge." },
+            { word: "consequence", level: "B1", pos: "Noun", def: "Hasil atau akibat dari suatu tindakan.", sentence: "You must accept the consequence of your actions." },
+            { word: "embarrass", level: "B1", pos: "Verb", def: "Membuat seseorang merasa malu/canggung.", sentence: "Public speaking used to embarrass him." },
+            { word: "intelligence", level: "B1", pos: "Noun", def: "Kemampuan belajar, memahami, dan berpikir logis.", sentence: "Dolphins are known for their high intelligence." },
+            { word: "recommendation", level: "B1", pos: "Noun", def: "Saran atau anjuran positif.", sentence: "I chose this hotel based on your recommendation." },
+            { word: "technology", level: "B1", pos: "Noun", def: "Penerapan ilmu sains untuk tujuan praktis.", sentence: "Modern technology has changed how we communicate." },
+            { word: "environment", level: "B1", pos: "Noun", def: "Lingkungan alam tempat tinggal manusia/hewan.", sentence: "We must reduce plastic pollution to protect the environment." },
+            { word: "arrangement", level: "B1", pos: "Noun", def: "Rencana atau susunan yang telah disiapkan.", sentence: "We made an arrangement to meet at five o'clock." },
+            { word: "disappoint", level: "B1", pos: "Verb", def: "Mengecewakan harapan seseorang.", sentence: "I hope the final test results do not disappoint you." },
+            { word: "satisfaction", level: "B1", pos: "Noun", def: "Perasaan puas atas pencapaian.", sentence: "Finishing the marathon gave her great satisfaction." },
+
+            // --- LEVEL B2 ---
+            { word: "accommodation", level: "B2", pos: "Noun", def: "Tempat menginap atau tempat tinggal sementara.", sentence: "Hotel accommodation is included in the tour package." },
+            { word: "characteristic", level: "B2", pos: "Noun / Adj", def: "Ciri khas yang membedakan sesuatu.", sentence: "Patience is an essential characteristic of a teacher." },
+            { word: "contemporary", level: "B2", pos: "Adjective", def: "Modern atau berasal dari masa kini.", sentence: "The museum showcases contemporary art pieces." },
+            { word: "investigation", level: "B2", pos: "Noun", def: "Penyelidikan resmi terhadap suatu masalah/kejahatan.", sentence: "The police launched an investigation into the incident." },
+            { word: "philosophy", level: "B2", pos: "Noun", def: "Studi mendasar tentang hakekat pengetahuan dan kehidupan.", sentence: "He is studying Ancient Greek philosophy at university." },
+            { word: "qualification", level: "B2", pos: "Noun", def: "Keahlian atau ijazah resmi yang diperlukan.", sentence: "You need a teaching qualification to work at this school." },
+            { word: "interpretation", level: "B2", pos: "Noun", def: "Penafsiran atau pemaknaan terhadap sesuatu.", sentence: "Everyone has a different interpretation of the poem." },
+            { word: "consciousness", level: "B2", pos: "Noun", def: "Kesadaran akan keberadaan dan sekitar.", sentence: "The patient slowly regained consciousness." },
+            { word: "substantially", level: "B2", pos: "Adverb", def: "Secara signifikan atau dalam jumlah besar.", sentence: "Company profits have increased substantially this year." },
+            { word: "unprecedented", level: "B2", pos: "Adjective", def: "Belum pernah terjadi sebelumnya.", sentence: "The global pandemic created unprecedented challenges." }
+        ];
+
+        /* ==========================================================================
+           2. GAME STATE MANAGEMENT
+           ========================================================================== */
+        let gameState = {
+            mode: 'practice', // 'practice', 'challenge', 'relay'
+            cefrLevel: 'ALL',
+            wordsPool: [],
+            currentIndex: 0,
+            currentWordObj: null,
+            revealedIndices: [],
+            score: 0,
+            lives: 3,
+            timer: 20,
+            timerInterval: null,
+            playerName: '',
+            
+            // Relay mode specific
+            team1Name: 'Tim 1',
+            team2Name: 'Tim 2',
+            team1Score: 0,
+            team2Score: 0,
+            currentTeamTurn: 1, // 1 or 2
+            
+            soundMuted: false
+        };
+
+        /* ==========================================================================
+           3. WEB AUDIO SYNTHESIZER (SOUND EFFECTS)
+           ========================================================================== */
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (gameState.soundMuted) return;
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'correct') {
+                // Happy chord chime
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+                osc.start(now);
+                osc.stop(now + 0.5);
+            } else if (type === 'wrong') {
+                // Low buzz error
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.setValueAtTime(120, now + 0.15);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            } else if (type === 'click') {
+                // Short pop
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } else if (type === 'win') {
+                // Victory fan-fare
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.15);
+                osc.frequency.setValueAtTime(783.99, now + 0.30);
+                osc.frequency.setValueAtTime(1046.50, now + 0.45);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.8);
+                osc.start(now);
+                osc.stop(now + 0.8);
+            }
+        }
+
+        function toggleMute() {
+            gameState.soundMuted = !gameState.soundMuted;
+            const soundIcon = document.getElementById('soundIcon');
+            if (gameState.soundMuted) {
+                soundIcon.className = "fa-solid fa-volume-xmark text-red-400";
+            } else {
+                soundIcon.className = "fa-solid fa-volume-high text-yellow-400";
+                playSound('click');
+            }
+        }
+
+        /* ==========================================================================
+           4. TEXT-TO-SPEECH (SPEECH SYNTHESIS)
+           ========================================================================== */
+        function speakCurrentWord() {
+            if (!gameState.currentWordObj) return;
+            
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Stop active queue
+                
+                const utterance = new SpeechSynthesisUtterance(gameState.currentWordObj.word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85; // Slightly slower for clear spelling bee practice
+
+                // Select high quality US voice if available
+                const voices = window.speechSynthesis.getVoices();
+                const usVoice = voices.find(v => v.lang.includes('en') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha')));
+                if (usVoice) utterance.voice = usVoice;
+
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Perangkat Anda tidak mendukung fitur Text-to-Speech.");
+            }
+        }
+
+        /* ==========================================================================
+           5. NAVIGATION & UI CONTROLLER
+           ========================================================================== */
+        function showScreen(screenId) {
+            playSound('click');
+            ['menuScreen', 'setupScreen', 'gameplayScreen', 'resultScreen'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        function selectMode(mode) {
+            gameState.mode = mode;
+            const setupTitle = document.getElementById('setupTitle');
+            const setupSub = document.getElementById('setupSub');
+            const playerGroup = document.getElementById('playerNameInputGroup');
+            const teamGroup = document.getElementById('teamInputGroup');
+
+            playerGroup.classList.add('hidden');
+            teamGroup.classList.add('hidden');
+
+            if (mode === 'practice') {
+                setupTitle.innerText = "Pengaturan Mode Latihan";
+                setupSub.innerText = "Bebas berlatih mengeja tanpa tekanan waktu atau batas nyawa.";
+            } else if (mode === 'challenge') {
+                setupTitle.innerText = "Pengaturan Time Challenge";
+                setupSub.innerText = "Dapatkan skor sebanyak mungkin dalam waktu terbatas per kata!";
+                playerGroup.classList.remove('hidden');
+            } else if (mode === 'relay') {
+                setupTitle.innerText = "Pengaturan Estafet Tim";
+                setupSub.innerText = "Ajak teman atau tim Anda berlatih secara bergiliran.";
+                teamGroup.classList.remove('hidden');
+            }
+
+            showScreen('setupScreen');
+        }
+
+        /* ==========================================================================
+           6. GAMEPLAY LOGIC
+           ========================================================================== */
+        function handleStartGame(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const selectedLevel = document.querySelector('input[name="cefrLevel"]:checked').value;
+            gameState.cefrLevel = selectedLevel;
+
+            // Filter words based on CEFR level selection
+            if (selectedLevel === 'ALL') {
+                gameState.wordsPool = [...oxfordDatabase];
+            } else {
+                gameState.wordsPool = oxfordDatabase.filter(w => w.level === selectedLevel);
+            }
+
+            // Shuffle pool
+            gameState.wordsPool.sort(() => Math.random() - 0.5);
+            gameState.currentIndex = 0;
+            gameState.score = 0;
+            gameState.lives = 3;
+            gameState.team1Score = 0;
+            gameState.team2Score = 0;
+            gameState.currentTeamTurn = 1;
+
+            if (gameState.mode === 'challenge') {
+                gameState.playerName = document.getElementById('playerName').value.trim() || 'Pemain Lebah';
+            } else if (gameState.mode === 'relay') {
+                gameState.team1Name = document.getElementById('team1Name').value.trim() || 'Tim 1';
+                gameState.team2Name = document.getElementById('team2Name').value.trim() || 'Tim 2';
+            }
+
+            // UI Adjustments based on Mode
+            const livesContainer = document.getElementById('livesContainer');
+            const timerDisplay = document.getElementById('timerDisplay');
+            const relayHeader = document.getElementById('relayHeader');
+            const turnIndicator = document.getElementById('turnIndicator');
+
+            livesContainer.style.display = (gameState.mode === 'challenge') ? 'flex' : 'none';
+            timerDisplay.style.display = (gameState.mode === 'challenge') ? 'block' : 'none';
+            relayHeader.style.display = (gameState.mode === 'relay') ? 'grid' : 'none';
+            turnIndicator.style.display = (gameState.mode === 'relay') ? 'inline' : 'none';
+
+            if (gameState.mode === 'relay') {
+                document.getElementById('team1Label').innerText = gameState.team1Name;
+                document.getElementById('team2Label').innerText = gameState.team2Name;
+                updateRelayUI();
+            }
+
+            updateScoreBoard();
+            showScreen('gameplayScreen');
+            loadNextWord();
+        }
+
+        function loadNextWord() {
+            if (gameState.currentIndex >= gameState.wordsPool.length) {
+                endGame(true);
+                return;
+            }
+
+            gameState.currentWordObj = gameState.wordsPool[gameState.currentIndex];
+            gameState.revealedIndices = [];
+
+            // Reset UI
+            document.getElementById('spellInput').value = '';
+            document.getElementById('infoDisplayBox').classList.add('hidden');
+            document.getElementById('infoContent').innerHTML = '';
+            document.getElementById('badgeCEFR').innerText = `Level ${gameState.currentWordObj.level}`;
+            
+            renderWordHintBox();
+
+            // Auto pronounce word on load after short delay
+            setTimeout(() => {
+                speakCurrentWord();
+            }, 400);
+
+            // Timer reset for challenge mode
+            if (gameState.mode === 'challenge') {
+                resetTimer();
+            }
+
+            document.getElementById('spellInput').focus();
+        }
+
+        function renderWordHintBox() {
+            const word = gameState.currentWordObj.word.toUpperCase();
+            const hintBox = document.getElementById('wordHintBox');
+            hintBox.innerHTML = '';
+
+            for (let i = 0; i < word.length; i++) {
+                const charSpan = document.createElement('span');
+                charSpan.className = "w-8 h-10 border-b-4 border-yellow-500 flex items-center justify-center font-bold font-mono";
+
+                if (gameState.revealedIndices.includes(i)) {
+                    charSpan.innerText = word[i];
+                    charSpan.classList.add('text-yellow-600');
+                } else {
+                    charSpan.innerText = '_';
+                    charSpan.classList.add('text-slate-300');
+                }
+                hintBox.appendChild(charSpan);
+            }
+        }
+
+        function checkSpelling() {
+            const inputField = document.getElementById('spellInput');
+            const userAttempt = inputField.value.trim().toLowerCase();
+            const correctWord = gameState.currentWordObj.word.toLowerCase();
+
+            if (!userAttempt) {
+                shakeInput();
+                return;
+            }
+
+            if (userAttempt === correctWord) {
+                // CORRECT JAWABAN
+                playSound('correct');
+                
+                // Add Score
+                let pointsEarned = 10 * (gameState.currentWordObj.level === 'B2' ? 2 : 1);
+                
+                if (gameState.mode === 'relay') {
+                    if (gameState.currentTeamTurn === 1) gameState.team1Score += pointsEarned;
+                    else gameState.team2Score += pointsEarned;
+                    updateRelayUI();
+                } else {
+                    gameState.score += pointsEarned;
+                    updateScoreBoard();
+                }
+
+                showFeedbackToast(true, "Hebat! Ejaan Anda Benar 🎉");
+
+                // Switch turn if relay mode
+                if (gameState.mode === 'relay') {
+                    gameState.currentTeamTurn = gameState.currentTeamTurn === 1 ? 2 : 1;
+                    updateRelayUI();
+                }
+
+                gameState.currentIndex++;
+                setTimeout(() => {
+                    loadNextWord();
+                }, 1200);
+
+            } else {
+                // SALAH JAWABAN
+                playSound('wrong');
+                shakeInput();
+
+                if (gameState.mode === 'challenge') {
+                    gameState.lives--;
+                    updateLivesUI();
+
+                    if (gameState.lives <= 0) {
+                        endGame(false);
+                        return;
+                    }
+                }
+
+                showFeedbackToast(false, `Salah! Ejaan yang benar: "${gameState.currentWordObj.word}"`);
+
+                if (gameState.mode === 'relay') {
+                    gameState.currentTeamTurn = gameState.currentTeamTurn === 1 ? 2 : 1;
+                    updateRelayUI();
+                }
+
+                gameState.currentIndex++;
+                setTimeout(() => {
+                    loadNextWord();
+                }, 1800);
+            }
+        }
+
+        /* ==========================================================================
+           7. LIFELINES & HELPER FUNCTIONS
+           ========================================================================== */
+        function showDefinition() {
+            playSound('click');
+            const box = document.getElementById('infoDisplayBox');
+            const content = document.getElementById('infoContent');
+            box.classList.remove('hidden');
+            content.innerHTML = `
+                <div class="font-bold text-yellow-900 mb-1"><i class="fa-solid fa-tag"></i> Jenis Kata: <span class="italic text-yellow-700">${gameState.currentWordObj.pos}</span></div>
+                <div><i class="fa-solid fa-circle-info"></i> <strong>Arti:</strong> ${gameState.currentWordObj.def}</div>
+            `;
+        }
+
+        function showSentence() {
+            playSound('click');
+            const box = document.getElementById('infoDisplayBox');
+            const content = document.getElementById('infoContent');
+            box.classList.remove('hidden');
+
+            // Mask the word in the example sentence
+            const maskedSentence = gameState.currentWordObj.sentence.replace(
+                new RegExp(gameState.currentWordObj.word, 'gi'),
+                '______'
+            );
+
+            content.innerHTML = `
+                <div class="font-bold text-yellow-900 mb-1"><i class="fa-solid fa-quote-left"></i> Contoh Kalimat:</div>
+                <div class="italic text-slate-700">"${maskedSentence}"</div>
+            `;
+        }
+
+        function giveLetterHint() {
+            playSound('click');
+            const word = gameState.currentWordObj.word;
+            
+            // Find unrevealed letter indices
+            let unrevealed = [];
+            for (let i = 0; i < word.length; i++) {
+                if (!gameState.revealedIndices.includes(i)) {
+                    unrevealed.push(i);
+                }
+            }
+
+            if (unrevealed.length > 1) { // Leave at least 1 hidden letter
+                const randomIdx = unrevealed[Math.floor(Math.random() * unrevealed.length)];
+                gameState.revealedIndices.push(randomIdx);
+                renderWordHintBox();
+            } else {
+                showFeedbackToast(false, "Sisa huruf tidak bisa dibuka lagi!");
+            }
+        }
+
+        /* ==========================================================================
+           8. TIMER & GAME OVER LOGIC
+           ========================================================================== */
+        function resetTimer() {
+            clearInterval(gameState.timerInterval);
+            gameState.timer = 20;
+            document.getElementById('timerValue').innerText = `${gameState.timer}s`;
+
+            gameState.timerInterval = setInterval(() => {
+                gameState.timer--;
+                document.getElementById('timerValue').innerText = `${gameState.timer}s`;
+
+                if (gameState.timer <= 0) {
+                    clearInterval(gameState.timerInterval);
+                    playSound('wrong');
+                    showFeedbackToast(false, `Waktu Habis! Katanya: "${gameState.currentWordObj.word}"`);
+                    gameState.lives--;
+                    updateLivesUI();
+
+                    if (gameState.lives <= 0) {
+                        endGame(false);
+                    } else {
+                        gameState.currentIndex++;
+                        setTimeout(() => { loadNextWord(); }, 1500);
+                    }
+                }
+            }, 1000);
+        }
+
+        function endGame(completed) {
+            clearInterval(gameState.timerInterval);
+            playSound('win');
+
+            // Trigger Confetti
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+
+            document.getElementById('finalScore').innerText = gameState.score;
+            document.getElementById('finalSpelled').innerText = `${gameState.currentIndex} Kata`;
+
+            const resultSubtitle = document.getElementById('resultSubtitle');
+            const teamResultContainer = document.getElementById('teamResultContainer');
+            teamResultContainer.innerHTML = '';
+            teamResultContainer.classList.add('hidden');
+
+            if (gameState.mode === 'challenge') {
+                saveHighScore(gameState.playerName, gameState.score);
+                resultSubtitle.innerText = `Luar biasa ${gameState.playerName}! Anda berhasil mengumpulkan ${gameState.score} poin.`;
+            } else if (gameState.mode === 'relay') {
+                teamResultContainer.classList.remove('hidden');
+                let winnerText = "";
+                if (gameState.team1Score > gameState.team2Score) {
+                    winnerText = `🏆 Pemenang: <strong>${gameState.team1Name}</strong>!`;
+                } else if (gameState.team2Score > gameState.team1Score) {
+                    winnerText = `🏆 Pemenang: <strong>${gameState.team2Name}</strong>!`;
+                } else {
+                    winnerText = `🤝 Hasil Seri Antar Kedua Tim!`;
+                }
+                
+                teamResultContainer.innerHTML = `
+                    <div class="text-sm font-bold text-yellow-900">${winnerText}</div>
+                    <div class="text-xs text-slate-600 mt-1">${gameState.team1Name}: ${gameState.team1Score} Poin | ${gameState.team2Name}: ${gameState.team2Score} Poin</div>
+                `;
+            }
+
+            showScreen('resultScreen');
+        }
+
+        function restartGame() {
+            showScreen('setupScreen');
+        }
+
+        function quitGame() {
+            clearInterval(gameState.timerInterval);
+            showScreen('menuScreen');
+        }
+
+        /* ==========================================================================
+           9. HELPERS, UI TOASTS, & LOCAL STORAGE
+           ========================================================================== */
+        function updateScoreBoard() {
+            document.getElementById('scoreValue').innerText = gameState.score;
+        }
+
+        function updateLivesUI() {
+            const container = document.getElementById('livesContainer');
+            container.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                if (i < gameState.lives) {
+                    container.innerHTML += '<i class="fa-solid fa-heart"></i>';
+                } else {
+                    container.innerHTML += '<i class="fa-regular fa-heart text-slate-300"></i>';
+                }
+            }
+        }
+
+        function updateRelayUI() {
+            document.getElementById('team1Score').innerText = `${gameState.team1Score} Poin`;
+            document.getElementById('team2Score').innerText = `${gameState.team2Score} Poin`;
+
+            const card1 = document.getElementById('team1Card');
+            const card2 = document.getElementById('team2Card');
+            const turnIndicator = document.getElementById('turnIndicator');
+
+            if (gameState.currentTeamTurn === 1) {
+                card1.className = "p-2 rounded-xl text-center border-2 border-yellow-500 bg-white shadow-sm";
+                card2.className = "p-2 rounded-xl text-center border-2 border-transparent opacity-60";
+                turnIndicator.innerText = `Giliran: ${gameState.team1Name}`;
+            } else {
+                card2.className = "p-2 rounded-xl text-center border-2 border-yellow-500 bg-white shadow-sm";
+                card1.className = "p-2 rounded-xl text-center border-2 border-transparent opacity-60";
+                turnIndicator.innerText = `Giliran: ${gameState.team2Name}`;
+            }
+        }
+
+        function shakeInput() {
+            const card = document.getElementById('gameplayScreen');
+            card.classList.add('shake-effect');
+            setTimeout(() => { card.classList.remove('shake-effect'); }, 400);
+        }
+
+        function showFeedbackToast(isSuccess, message) {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 rounded-2xl font-bold text-sm shadow-xl z-50 transition-all ${
+                isSuccess ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'
+            }`;
+            toast.innerText = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 1500);
+        }
+
+        // --- Leaderboard Storage ---
+        function saveHighScore(name, score) {
+            let leaderboard = JSON.parse(localStorage.getItem('oxford_bee_scores') || '[]');
+            leaderboard.push({ name, score, date: new Date().toLocaleDateString('id-ID') });
+            leaderboard.sort((a, b) => b.score - a.score);
+            leaderboard = leaderboard.slice(0, 10); // Keep top 10
+            localStorage.setItem('oxford_bee_scores', JSON.stringify(leaderboard));
+        }
+
+        function showLeaderboardModal() {
+            playSound('click');
+            const modal = document.getElementById('leaderboardModal');
+            const list = document.getElementById('leaderboardList');
+            let leaderboard = JSON.parse(localStorage.getItem('oxford_bee_scores') || '[]');
+
+            list.innerHTML = '';
+
+            if (leaderboard.length === 0) {
+                list.innerHTML = `<div class="text-center text-slate-400 py-6">Belum ada skor tersimpan.</div>`;
+            } else {
+                leaderboard.forEach((entry, index) => {
+                    const item = document.createElement('div');
+                    item.className = "flex justify-between items-center p-3 rounded-xl bg-yellow-50 border border-yellow-100";
+                    item.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <span class="font-bold text-hive text-sm w-6">${index + 1}.</span>
+                            <div>
+                                <div class="font-bold text-hive text-sm">${entry.name}</div>
+                                <div class="text-[10px] text-slate-400">${entry.date}</div>
+                            </div>
+                        </div>
+                        <span class="font-game font-black text-yellow-700 text-lg">${entry.score} pts</span>
+                    `;
+                    list.appendChild(item);
+                });
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeLeaderboardModal() {
+            document.getElementById('leaderboardModal').classList.add('hidden');
+        }
+
+        // Enter Key Listener for Input
+        document.getElementById('spellInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkSpelling();
+            }
+        });
+    </script>
+</body>
+</html>
