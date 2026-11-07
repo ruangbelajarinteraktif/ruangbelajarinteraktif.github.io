@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Simulator Rakit Cuci Tangan Otomatis (v3 - Edukasi Sinyal)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #fff;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  h1 { text-align: center; margin-bottom: 8px; font-size: 1.8em; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .subtitle { text-align: center; color: #9fd3c7; margin-bottom: 20px; font-size: 0.95em; }
+  .container { display: grid; grid-template-columns: 280px 1fr 280px; gap: 15px; max-width: 1400px; margin: 0 auto; }
+  .panel { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 15px; backdrop-filter: blur(10px); }
+  .panel h2 { font-size: 1.05em; color: #ffd369; margin-bottom: 12px; border-bottom: 1px solid rgba(255,211,105,0.3); padding-bottom: 6px; }
+  .component { background: rgba(0,0,0,0.25); border-left: 4px solid; padding: 10px; margin-bottom: 10px; border-radius: 6px; font-size: 0.82em; line-height: 1.4; }
+  .component b { display: block; margin-bottom: 4px; font-size: 0.95em; }
+  .c-ir { border-color: #ff6b6b; } .c-relay { border-color: #4ecdc4; }
+  .c-pump { border-color: #45b7d1; } .c-bat { border-color: #f9ca24; } .c-other { border-color: #a29bfe; }
+  .simulator { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px; position: relative; min-height: 500px; }
+  svg { width: 100%; height: 500px; display: block; }
+  .controls { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+  button { background: linear-gradient(135deg, #4ecdc4, #44a3aa); color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.85em; transition: transform 0.2s; }
+  button:hover { transform: scale(1.05); }
+  button.danger { background: linear-gradient(135deg, #ff6b6b, #c44); }
+  button.warn { background: linear-gradient(135deg, #f9ca24, #d4a017); color: #222; }
+  .status-item { display: flex; justify-content: space-between; padding: 6px 8px; margin-bottom: 5px; background: rgba(0,0,0,0.25); border-radius: 5px; font-size: 0.82em; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #555; display: inline-block; margin-right: 6px; vertical-align: middle; }
+  .dot.on { background: #00ff88; box-shadow: 0 0 8px #00ff88; }
+  .log { background: rgba(0,0,0,0.4); border-radius: 6px; padding: 8px; height: 180px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.75em; margin-top: 10px; }
+  .log p { margin-bottom: 3px; color: #9fd3c7; }
+  .log p.signal { color: #ffd369; } .log p.action { color: #4ecdc4; } .log p.warn { color: #ff6b6b; }
+  .hand-hint { text-align: center; color: #ffd369; font-size: 0.8em; margin-top: 8px; font-style: italic; }
+  @media(max-width: 1000px){ .container { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<h1>🧼 Simulator Rakit Prototipe Cuci Tangan Otomatis</h1>
+<p class="subtitle">Pelajari cara kerja rangkaian elektronika sederhana melalui simulasi interaktif</p>
+
+<div class="container">
+
+  <div class="panel">
+    <h2>📦 Alat & Bahan</h2>
+    <div class="component c-bat"><b>🔋 Baterai (Sumber DC)</b>Menyediakan arus listrik DC untuk seluruh rangkaian. Menjadi pusat daya.</div>
+    
+    <!-- PERUBAHAN DI SINI: Penjelasan kabel putus-putus ditambahkan -->
+    <div class="component c-ir">
+      <b>📡 Modul Sensor IR</b>
+      Membaca gerakan tangan berdasarkan jarak. Memerlukan daya DC 3V dan mengirim <b>pulse sinyal</b> ke relay saat mendeteksi objek. 
+      <br><br>
+      <i style="color:#ffd369; font-size:0.95em;">💡 <b>Info Kabel:</b> Kabel putus-putus yang terhubung ke relay menandakan aliran <b>arus sinyal (kontrol)</b>, bukan arus DC (daya).</i>
+    </div>
+
+    <div class="component c-relay"><b>⚡ Modul Relay 5V</b>Saklar elektronik. Menerima sinyal dari IR, lalu membuka/menutup aliran arus DC ke pompa.</div>
+    <div class="component c-pump"><b>💧 Pompa Mini DC</b>Menghisap air dari tandon dan menyemprotkannya saat mendapat arus dari relay.</div>
+    <div class="component c-other"><b>🔗 Kabel, Selang & Tandon</b>Kabel penghubung listrik, selang air, dan wadah penampung air.</div>
+  </div>
+
+  <div class="panel simulator">
+    <svg id="sim" viewBox="0 0 800 500">
+      <rect x="600" y="340" width="150" height="120" fill="#1e3a5f" stroke="#45b7d1" stroke-width="2" rx="6"/>
+      <rect x="610" y="360" width="130" height="90" fill="#45b7d1" opacity="0.4"/>
+      <text x="675" y="335" text-anchor="middle" fill="#9fd3c7" font-size="12">Tandon Air</text>
+
+      <g id="pump">
+        <rect x="500" y="360" width="90" height="70" fill="#2c3e50" stroke="#45b7d1" stroke-width="2" rx="6"/>
+        <circle cx="545" cy="395" r="18" fill="#34495e" stroke="#45b7d1" stroke-width="2"/>
+        <text x="545" y="450" text-anchor="middle" fill="#9fd3c7" font-size="12">Pompa DC</text>
+      </g>
+
+      <path d="M 590 395 Q 620 395 620 400" stroke="#45b7d1" stroke-width="6" fill="none" opacity="0.7"/>
+      <path id="spout" d="M 500 380 Q 460 380 460 340" stroke="#45b7d1" stroke-width="6" fill="none" opacity="0.7"/>
+
+      <g id="relay">
+        <rect x="300" y="200" width="110" height="80" fill="#1e4d4a" stroke="#4ecdc4" stroke-width="2" rx="6"/>
+        <circle id="relayLed" cx="355" cy="240" r="8" fill="#333"/>
+        <text x="355" y="260" text-anchor="middle" fill="#fff" font-size="11">RELAY</text>
+        <text x="355" y="300" text-anchor="middle" fill="#9fd3c7" font-size="12">Modul Relay 5V</text>
+      </g>
+
+      <g id="irSensor">
+        <rect x="100" y="200" width="110" height="80" fill="#4d1e1e" stroke="#ff6b6b" stroke-width="2" rx="6"/>
+        <circle id="irLed" cx="130" cy="240" r="6" fill="#333"/>
+        <circle id="irLed2" cx="180" cy="240" r="6" fill="#333"/>
+        <text x="155" y="260" text-anchor="middle" fill="#fff" font-size="11">IR SENSOR</text>
+        <text x="155" y="300" text-anchor="middle" fill="#9fd3c7" font-size="12">Sensor Infra Red</text>
+      </g>
+
+      <g id="battery">
+        <rect x="300" y="50" width="130" height="60" fill="#4d3d0a" stroke="#f9ca24" stroke-width="2" rx="6"/>
+        <rect x="430" y="70" width="10" height="20" fill="#f9ca24"/>
+        <text x="365" y="85" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">BATERAI DC</text>
+        <text x="365" y="130" text-anchor="middle" fill="#9fd3c7" font-size="12">Sumber Daya</text>
+      </g>
+
+      <path id="wire1" d="M 330 110 Q 200 150 155 200" stroke="#555" stroke-width="3" fill="none"/>
+      <!-- Kabel putus-putus (Sinyal) -->
+      <path id="wire2" d="M 210 240 L 300 240" stroke="#555" stroke-width="3" fill="none" stroke-dasharray="5,5"/>
+      <path id="wire3" d="M 400 110 Q 400 160 355 200" stroke="#555" stroke-width="3" fill="none"/>
+      <path id="wire4" d="M 410 240 Q 480 240 545 360" stroke="#555" stroke-width="3" fill="none"/>
+      <path id="wire5" d="M 400 110 Q 600 150 545 360" stroke="#555" stroke-width="3" fill="none"/>
+
+      <g id="handZone" style="cursor:pointer;">
+        <rect x="20" y="210" width="70" height="60" fill="rgba(255,107,107,0.15)" stroke="#ff6b6b" stroke-dasharray="3,3" stroke-width="1"/>
+        <text x="55" y="200" text-anchor="middle" fill="#ff6b6b" font-size="10">Area Deteksi</text>
+      </g>
+
+      <g id="hand" style="display:none;">
+        <text x="55" y="245" text-anchor="middle" font-size="35">🖐️</text>
+      </g>
+
+      <g id="water" style="display:none;">
+        <circle cx="455" cy="340" r="3" fill="#45b7d1"/>
+        <circle cx="465" cy="350" r="3" fill="#45b7d1"/>
+        <circle cx="450" cy="355" r="3" fill="#45b7d1"/>
+        <circle cx="460" cy="365" r="3" fill="#45b7d1"/>
+        <circle cx="470" cy="375" r="3" fill="#45b7d1"/>
+      </g>
+    </svg>
+
+    <div class="controls">
+      <button onclick="connectAll()">🔌 Rakit Semua Kabel</button>
+      <button class="warn" onclick="resetAll()">🔄 Reset Rangkaian</button>
+      <button class="danger" onclick="toggleHand()">🖐️ Simulasi Tangan</button>
+    </div>
+    <p class="hand-hint">💡 Klik "Rakit Semua Kabel" dulu, lalu gerakkan tangan dengan tombol simulasi</p>
+  </div>
+
+  <div class="panel">
+    <h2>📊 Status Rangkaian</h2>
+    <div class="status-item"><span><span class="dot" id="d-wire"></span>Kabel Terpasang</span><span id="s-wire">0/5</span></div>
+    <div class="status-item"><span><span class="dot" id="d-ir"></span>Sensor IR</span><span id="s-ir">OFF</span></div>
+    <div class="status-item"><span><span class="dot" id="d-relay"></span>Relay</span><span id="s-relay">OFF</span></div>
+    <div class="status-item"><span><span class="dot" id="d-pump"></span>Pompa</span><span id="s-pump">OFF</span></div>
+    <div class="status-item"><span><span class="dot" id="d-water"></span>Air Mengalir</span><span id="s-water">TIDAK</span></div>
+
+    <h2 style="margin-top:15px;">📜 Log Alur Sinyal</h2>
+    <div class="log" id="log"><p>🟢 Simulator siap. Rakit kabel untuk memulai.</p></div>
+  </div>
+</div>
+
+<script>
+  const wires = ['wire1','wire2','wire3','wire4','wire5'];
+  let connected = {wire1:false,wire2:false,wire3:false,wire4:false,wire5:false};
+  let handDetected = false;
+  let autoHand = false;
+  let autoInterval = null;
+  let cycleTimeouts = [];   
+  let manualCycleActive = false; 
+
+  function log(msg, cls='') {
+    const l = document.getElementById('log');
+    const p = document.createElement('p');
+    p.className = cls;
+    p.textContent = '▶ ' + msg;
+    l.appendChild(p);
+    l.scrollTop = l.scrollHeight;
+  }
+
+  function schedule(fn, ms) {
+    const id = setTimeout(fn, ms);
+    cycleTimeouts.push(id);
+    return id;
+  }
+
+  function clearAllCycles() {
+    cycleTimeouts.forEach(id => clearTimeout(id));
+    cycleTimeouts = [];
+  }
+
+  function connectAll() {
+    wires.forEach(w => {
+      connected[w] = true;
+      const el = document.getElementById(w);
+      // Warna kabel sinyal (wire2) dibedakan saat aktif
+      el.setAttribute('stroke', w==='wire2' ? '#ffd369' : '#f9ca24');
+      el.setAttribute('stroke-width', '4');
+    });
+    document.getElementById('d-wire').classList.add('on');
+    document.getElementById('s-wire').textContent = '5/5';
+    document.getElementById('d-ir').classList.add('on');
+    document.getElementById('s-ir').textContent = 'SIAGA';
+    log('Semua kabel terhubung. Rangkaian siap!', 'action');
+    log('Baterai → menyuplai daya DC ke IR, Relay, Pompa', 'signal');
+  }
+
+  function resetAll() {
+    clearAllCycles();
+    wires.forEach(w => {
+      connected[w] = false;
+      const el = document.getElementById(w);
+      el.setAttribute('stroke', '#555');
+      el.setAttribute('stroke-width', '3');
+    });
+    ['d-wire','d-ir','d-relay','d-pump','d-water'].forEach(id=>{
+      document.getElementById(id).classList.remove('on');
+    });
+    document.getElementById('s-wire').textContent = '0/5';
+    document.getElementById('s-ir').textContent = 'OFF';
+    document.getElementById('s-relay').textContent = 'OFF';
+    document.getElementById('s-pump').textContent = 'OFF';
+    document.getElementById('s-water').textContent = 'TIDAK';
+    document.getElementById('irLed').setAttribute('fill','#333');
+    document.getElementById('irLed2').setAttribute('fill','#333');
+    document.getElementById('relayLed').setAttribute('fill','#333');
+    document.getElementById('hand').style.display = 'none';
+    document.getElementById('water').style.display = 'none';
+    document.getElementById('wire4').setAttribute('stroke','#555');
+    handDetected = false;
+    manualCycleActive = false;
+    if(autoInterval){ clearInterval(autoInterval); autoInterval=null; autoHand=false; }
+    document.getElementById('log').innerHTML = '<p>🟢 Simulator di-reset. Rakit ulang kabel.</p>';
+  }
+
+  function toggleHand() {
+    if (!Object.values(connected).every(v=>v)) {
+      log('⚠️ Rakit semua kabel dulu!', 'warn');
+      return;
+    }
+    autoHand = !autoHand;
+    if (autoHand) {
+      log('🖐️ Mode simulasi tangan aktif (otomatis)', 'action');
+      autoInterval = setInterval(simulateCycle, 2500);
+      simulateCycle();
+    } else {
+      clearInterval(autoInterval);
+      autoInterval = null;
+      document.getElementById('hand').style.display = 'none';
+      handDetected = false;
+      updatePump(false);
+      log('🖐️ Simulasi tangan dimatikan', 'action');
+    }
+  }
+
+  function simulateCycle() {
+    handDetected = true;
+    document.getElementById('hand').style.display = 'block';
+    log('👋 Tangan terdeteksi di depan sensor IR', 'signal');
+    document.getElementById('irLed').setAttribute('fill','#ff6b6b');
+    document.getElementById('irLed2').setAttribute('fill','#ff0000');
+    document.getElementById('d-ir').classList.add('on');
+    document.getElementById('s-ir').textContent = 'AKTIF';
+    log('📡 IR mengirim PULSE SINYAL ke Relay (kabel putus-putus)', 'signal');
+
+    schedule(()=>{
+      document.getElementById('relayLed').setAttribute('fill','#4ecdc4');
+      document.getElementById('d-relay').classList.add('on');
+      document.getElementById('s-relay').textContent = 'ON';
+      log('⚡ Relay menerima sinyal → menutup kontak arus DC ke Pompa', 'signal');
+      document.getElementById('wire4').setAttribute('stroke','#4ecdc4');
+
+      schedule(()=>{
+        updatePump(true);
+        log('💧 Pompa DC menyala, air disemprotkan', 'action');
+        document.getElementById('d-pump').classList.add('on');
+        document.getElementById('s-pump').textContent = 'ON';
+
+        schedule(()=>{
+          document.getElementById('hand').style.display = 'none';
+          handDetected = false;
+          log('✋ Tangan menjauh dari sensor', 'signal');
+          document.getElementById('irLed').setAttribute('fill','#333');
+          document.getElementById('irLed2').setAttribute('fill','#333');
+          document.getElementById('d-ir').classList.remove('on');
+          document.getElementById('s-ir').textContent = 'SIAGA';
+
+          schedule(()=>{
+            document.getElementById('relayLed').setAttribute('fill','#333');
+            document.getElementById('d-relay').classList.remove('on');
+            document.getElementById('s-relay').textContent = 'OFF';
+            document.getElementById('wire4').setAttribute('stroke','#f9ca24');
+            updatePump(false);
+            log('🔕 Relay putus → Pompa mati', 'signal');
+          }, 500);
+        }, 1500);
+      }, 300);
+    }, 400);
+  }
+
+  function updatePump(on) {
+    const pump = document.getElementById('pump');
+    const water = document.getElementById('water');
+    if (on) {
+      pump.querySelector('rect').setAttribute('fill','#45b7d1');
+      pump.querySelector('circle').setAttribute('fill','#4ecdc4');
+      water.style.display = 'block';
+      document.getElementById('d-water').classList.add('on');
+      document.getElementById('s-water').textContent = 'YA';
+      animateWater();
+    } else {
+      pump.querySelector('rect').setAttribute('fill','#2c3e50');
+      pump.querySelector('circle').setAttribute('fill','#34495e');
+      water.style.display = 'none';
+      document.getElementById('d-water').classList.remove('on');
+      document.getElementById('s-water').textContent = 'TIDAK';
+    }
+  }
+
+  function animateWater() {
+    const water = document.getElementById('water');
+    if (water.style.display === 'none') return;
+    const circles = water.querySelectorAll('circle');
+    circles.forEach((c,i)=>{
+      let cy = parseFloat(c.getAttribute('cy'));
+      cy += 2;
+      if (cy > 420) cy = 340;
+      c.setAttribute('cy', cy);
+    });
+    requestAnimationFrame(animateWater);
+  }
+
+  document.getElementById('handZone').addEventListener('mouseenter', ()=>{
+    if (!Object.values(connected).every(v=>v)) return;
+    if (autoHand) return;
+    if (manualCycleActive) return; 
+    manualCycleActive = true;
+
+    document.getElementById('hand').style.display = 'block';
+    handDetected = true;
+    log('👋 Tangan masuk area deteksi (manual)', 'signal');
+    document.getElementById('irLed').setAttribute('fill','#ff6b6b');
+    document.getElementById('irLed2').setAttribute('fill','#ff0000');
+    document.getElementById('d-ir').classList.add('on');
+    document.getElementById('s-ir').textContent = 'AKTIF';
+
+    schedule(()=>{
+      document.getElementById('relayLed').setAttribute('fill','#4ecdc4');
+      document.getElementById('d-relay').classList.add('on');
+      document.getElementById('s-relay').textContent = 'ON';
+      document.getElementById('wire4').setAttribute('stroke','#4ecdc4');
+      schedule(()=>{
+        updatePump(true);
+        log('💧 Pompa DC menyala, air disemprotkan', 'action');
+        document.getElementById('d-pump').classList.add('on');
+        document.getElementById('s-pump').textContent = 'ON';
+      }, 300);
+    }, 400);
+  });
+
+  document.getElementById('handZone').addEventListener('mouseleave', ()=>{
+    if (autoHand) return;
+    if (!manualCycleActive) return; 
+
+    clearAllCycles();
+    manualCycleActive = false;
+    handDetected = false;
+
+    document.getElementById('hand').style.display = 'none';
+    document.getElementById('irLed').setAttribute('fill','#333');
+    document.getElementById('irLed2').setAttribute('fill','#333');
+    document.getElementById('d-ir').classList.remove('on');
+    document.getElementById('s-ir').textContent = 'SIAGA';
+    document.getElementById('relayLed').setAttribute('fill','#333');
+    document.getElementById('d-relay').classList.remove('on');
+    document.getElementById('s-relay').textContent = 'OFF';
+    document.getElementById('wire4').setAttribute('stroke','#f9ca24');
+    updatePump(false);
+    log('✋ Tangan keluar → Relay & Pompa mati', 'signal');
+  });
+</script>
+</body>
+</html>
