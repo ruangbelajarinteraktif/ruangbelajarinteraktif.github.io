@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eksploratorium Bangun Ruang · Ruang Belajar Interaktif</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #6366f1; --primary-dark: #4f46e5;
+    --secondary: #06b6d4; --accent: #f59e0b;
+    --success: #10b981; --danger: #ef4444;
+    --bg: #0f172a; --bg-light: #1e293b;
+    --card: #1e293b; --text: #e2e8f0;
+    --text-dim: #94a3b8; --border: #334155;
+  }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    color: var(--text); min-height: 100vh; line-height: 1.6;
+  }
+  header {
+    background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--primary); padding: 1.5rem 2rem;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+  }
+  .header-content {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 1.5rem; font-weight: bold;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .logo-icon { font-size: 2rem; filter: drop-shadow(0 0 10px var(--primary)); }
+  .subtitle { font-size: 0.85rem; color: var(--text-dim); font-weight: normal; }
+  nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .nav-btn {
+    background: transparent; color: var(--text-dim);
+    border: 1px solid var(--border); padding: 0.5rem 1rem;
+    border-radius: 8px; cursor: pointer; font-size: 0.9rem;
+    transition: all 0.3s; font-weight: 500;
+  }
+  .nav-btn:hover { background: rgba(99, 102, 241, 0.1); color: var(--text); border-color: var(--primary); }
+  .nav-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white; border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+  }
+  main { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; }
+  .section { display: none; animation: fadeIn 0.5s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+  h1 {
+    font-size: 2.5rem; margin-bottom: 1rem;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  h2 {
+    font-size: 1.75rem; margin-bottom: 1rem; color: var(--secondary);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  h3 { font-size: 1.25rem; margin-bottom: 0.75rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; color: var(--text-dim); }
+  .hero {
+    text-align: center; padding: 3rem 1rem;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(6, 182, 212, 0.1));
+    border-radius: 20px; border: 1px solid var(--border); margin-bottom: 2rem;
+  }
+  .hero p { font-size: 1.1rem; max-width: 700px; margin: 1rem auto; }
+  .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+  .btn {
+    padding: 0.75rem 1.75rem; border: none; border-radius: 10px;
+    font-size: 1rem; font-weight: 600; cursor: pointer;
+    transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6); }
+  .btn-secondary { background: transparent; color: var(--text); border: 2px solid var(--primary); }
+  .btn-secondary:hover { background: var(--primary); color: white; }
+  .shape-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+  .shape-card {
+    background: var(--bg-light); border: 2px solid var(--border);
+    border-radius: 16px; padding: 1.5rem; text-align: center;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .shape-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3); }
+  .shape-card.selected { border-color: var(--accent); background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(99, 102, 241, 0.1)); }
+  .shape-icon { font-size: 3.5rem; margin-bottom: 0.5rem; }
+  .shape-name { font-weight: bold; color: var(--text); margin-bottom: 0.25rem; }
+  .shape-desc { font-size: 0.85rem; color: var(--text-dim); }
+  .goals { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+  .goal-item {
+    background: rgba(99, 102, 241, 0.08); border-left: 4px solid var(--primary);
+    padding: 1rem; border-radius: 8px; display: flex; align-items: flex-start; gap: 0.75rem;
+  }
+  .goal-item::before { content: "✓"; color: var(--success); font-weight: bold; font-size: 1.2rem; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+  .step { background: var(--bg-light); padding: 1.25rem; border-radius: 12px; position: relative; border: 1px solid var(--border); }
+  .step-num {
+    position: absolute; top: -12px; left: 15px;
+    background: var(--primary); color: white;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem;
+  }
+  .formula-box {
+    background: rgba(6, 182, 212, 0.08); border: 1px dashed var(--secondary);
+    padding: 1rem; border-radius: 10px; margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+  }
+  .formula-box strong { color: var(--secondary); }
+  #modelFormula { font-size: 1.35rem; line-height: 1.8; }
+  #modelFormula strong { font-size: 0.95rem; }
+  #modelFormula sup, #modelFormula sub { font-size: 0.82em; line-height: 0; }
+  #modelFormula sup { vertical-align: 0.5em; }
+  #modelFormula sub { vertical-align: -0.25em; }
+  .quiz-box {
+    background: rgba(245, 158, 11, 0.08); border: 1px solid var(--accent);
+    padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0;
+  }
+  .quiz-box input {
+    width: 100%; padding: 0.75rem; background: var(--bg);
+    border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); margin: 0.75rem 0; font-size: 1rem;
+  }
+  .feedback { padding: 1rem; border-radius: 8px; margin-top: 1rem; display: none; }
+  .feedback.correct { background: rgba(16, 185, 129, 0.15); border-left: 4px solid var(--success); color: #6ee7b7; display: block; }
+  .feedback.wrong { background: rgba(239, 68, 68, 0.15); border-left: 4px solid var(--danger); color: #fca5a5; display: block; }
+
+  /* ============ LAB 3D - MEKANISME ENGSEL ============ */
+  .lab-container { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1.5rem 0; }
+  @media (max-width: 900px) { .lab-container { grid-template-columns: 1fr; } }
+
+  .scene-3d {
+    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    border: 1px solid var(--border); border-radius: 16px;
+    height: 560px; perspective: 1600px;
+    position: relative; overflow: visible;
+    cursor: grab; display: flex; align-items: center; justify-content: center;
+  }
+  .scene-3d:active { cursor: grabbing; }
+
+  .model-3d {
+    position: relative; transform-style: preserve-3d;
+    transform: rotateX(-20deg) rotateY(-30deg);
+  }
+
+  .face-wrapper, .pyramid-base { position: absolute; transform-style: preserve-3d; }
+  .face { transform-style: preserve-3d; }
+
+  /* Label dua sisi: sisi depan bidang (terbaca saat jaring terbuka) dan sisi belakang bidang
+     (diputar 180° agar terbaca dari luar saat bangun tertutup) */
+  .lbl {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    pointer-events: none; font-size: 0.95rem; text-align: center;
+  }
+  .lbl-front { transform: translateZ(2px); }
+  .lbl-back  { transform: var(--flip, rotateY(180deg)) translateZ(2px); }
+
+  .face {
+    position: absolute;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: bold; font-size: 0.8rem;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    backface-visibility: visible;
+    border: 2px solid rgba(255,255,255,0.5);
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.15);
+    transition: transform 0.12s linear;
+  }
+  .face.front  { background: linear-gradient(135deg, rgba(99,102,241,0.92), rgba(99,102,241,0.72)); }
+  .face.back   { background: linear-gradient(135deg, rgba(245,158,11,0.92), rgba(245,158,11,0.72)); }
+  .face.left   { background: linear-gradient(135deg, rgba(6,182,212,0.92), rgba(6,182,212,0.72)); }
+  .face.right  { background: linear-gradient(135deg, rgba(16,185,129,0.92), rgba(16,185,129,0.72)); }
+  .face.top    { background: linear-gradient(135deg, rgba(236,72,153,0.92), rgba(236,72,153,0.72)); }
+  .face.bottom { background: linear-gradient(135deg, rgba(168,85,247,0.92), rgba(168,85,247,0.72)); }
+
+  /* Sisi segitiga menggunakan SVG bergradien agar tepi miring tetap memiliki border tajam */
+  .face.tri {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .face.tri svg {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    overflow: visible; pointer-events: none;
+  }
+
+  .info-panel { background: var(--bg-light); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border); }
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0; }
+  .stat { background: var(--bg); padding: 1rem; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
+  .stat-num { font-size: 2rem; font-weight: bold; color: var(--accent); display: block; }
+  .stat-label { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; }
+  .slider-container { margin: 1.5rem 0; }
+  .slider-container label { display: block; margin-bottom: 0.5rem; color: var(--text-dim); font-size: 0.9rem; }
+  input[type="range"] { width: 100%; height: 8px; background: var(--bg); border-radius: 5px; outline: none; -webkit-appearance: none; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: var(--primary); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px var(--primary); }
+  input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; background: var(--primary); border-radius: 50%; cursor: pointer; border: none; }
+  .control-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+  .control-btn { flex: 1; padding: 0.5rem; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s; }
+  .control-btn:hover { background: var(--primary); border-color: var(--primary); }
+
+  .assessment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+  .progress-bar { width: 100%; height: 10px; background: var(--bg); border-radius: 5px; overflow: hidden; margin: 1rem 0; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: width 0.5s; border-radius: 5px; }
+  .question-card { background: var(--bg-light); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 1rem; }
+  .question-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; margin-bottom: 0.75rem; }
+  .badge-sedang { background: var(--success); color: white; }
+  .badge-tinggi { background: var(--accent); color: white; }
+  .badge-sangat-tinggi { background: var(--danger); color: white; }
+  .options { display: grid; gap: 0.75rem; margin: 1rem 0; }
+  .option { background: var(--bg); border: 2px solid var(--border); padding: 1rem; border-radius: 10px; cursor: pointer; transition: all 0.3s; color: var(--text); text-align: left; font-size: 0.95rem; }
+  .option:hover { border-color: var(--primary); background: rgba(99,102,241,0.1); }
+  .option.selected { border-color: var(--primary); background: rgba(99,102,241,0.2); }
+  .option.correct { border-color: var(--success); background: rgba(16,185,129,0.2); }
+  .option.wrong { border-color: var(--danger); background: rgba(239,68,68,0.2); }
+  .result-box { text-align: center; padding: 2rem; background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(245,158,11,0.1)); border-radius: 16px; border: 2px solid var(--accent); }
+  .score-big { font-size: 4rem; font-weight: bold; background: linear-gradient(90deg, var(--accent), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .name-input { width: 100%; padding: 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); margin-bottom: 1rem; font-size: 1rem; }
+  .hint { background: rgba(6,182,212,0.1); border-left: 3px solid var(--secondary); padding: 0.75rem 1rem; border-radius: 6px; margin: 1rem 0; font-size: 0.9rem; color: var(--text-dim); }
+  .hint::before { content: "💡 "; }
+  footer { text-align: center; padding: 2rem; color: var(--text-dim); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <div class="logo">
+      <span class="logo-icon">🧊</span>
+      <div>
+        Eksploratorium Bangun Ruang
+        <div class="subtitle">Ruang Belajar Interaktif · Laboratorium Matematika</div>
+      </div>
+    </div>
+    <nav>
+      <button class="nav-btn active" data-section="beranda">🏠 Beranda</button>
+      <button class="nav-btn" data-section="prasyarat">📐 Prasyarat</button>
+      <button class="nav-btn" data-section="lab3d">🧊 Lab 3D</button>
+      <button class="nav-btn" data-section="latihan">🎯 Latihan</button>
+      <button class="nav-btn" data-section="asesmen">🏆 Asesmen</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section id="beranda" class="section active">
+  <div class="hero">
+    <h1>Selamat Datang, Penjelajah Matematika!</h1>
+    <p>Belajar dari benda-benda di sekitar kita: kardus, akuarium, tenda, kemasan, hingga atap rumah. Jelajahi dunia tiga dimensi dengan cara yang menyenangkan dan interaktif.</p>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="showSection('lab3d')">🚀 Mulai Eksplorasi</button>
+      <button class="btn btn-secondary" onclick="showSection('asesmen')">📝 Langsung ke Asesmen</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>🎯 Tujuan Belajar</h2>
+    <div class="goals">
+      <div class="goal-item">Mengidentifikasi sisi, rusuk, dan titik sudut</div>
+      <div class="goal-item">Menghubungkan bangun ruang dengan jaring-jaringnya</div>
+      <div class="goal-item">Menghitung luas bangun datar dan luas permukaan</div>
+      <div class="goal-item">Menyelesaikan masalah kontekstual dengan strategi yang tepat</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>🗺️ Alur Belajar</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><h3>Prasyarat</h3><p style="font-size:0.9rem;">Pelajari bangun datar sebagai fondasi.</p></div>
+      <div class="step"><div class="step-num">2</div><h3>Eksplorasi 3D</h3><p style="font-size:0.9rem;">Putar model & buka jaring-jaring dari sisi depan.</p></div>
+      <div class="step"><div class="step-num">3</div><h3>Latihan</h3><p style="font-size:0.9rem;">Kerjakan soal dengan umpan balik.</p></div>
+      <div class="step"><div class="step-num">4</div><h3>Asesmen</h3><p style="font-size:0.9rem;">Uji kemampuan dengan soal berjenjang.</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>🧩 Pilih Bangun Ruang</h2>
+    <div class="shape-grid">
+      <div class="shape-card" onclick="selectShape('kubus')"><div class="shape-icon">🧊</div><div class="shape-name">Kubus</div><div class="shape-desc">6 sisi persegi yang sama besar</div></div>
+      <div class="shape-card" onclick="selectShape('balok')"><div class="shape-icon">📦</div><div class="shape-name">Balok</div><div class="shape-desc">3 pasang sisi berhadapan yang sama</div></div>
+      <div class="shape-card" onclick="selectShape('prisma')"><div class="shape-icon">⛺</div><div class="shape-name">Prisma Segitiga</div><div class="shape-desc">2 alas segitiga & 3 sisi tegak</div></div>
+      <div class="shape-card" onclick="selectShape('limas')"><div class="shape-icon">🔺</div><div class="shape-name">Limas Segiempat</div><div class="shape-desc">1 alas persegi & 4 sisi segitiga</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="prasyarat" class="section">
+  <div class="card">
+    <h2>📐 Prasyarat: Bangun Datar</h2>
+    <p>Kuasai konsep segiempat dan segitiga karena setiap sisi bangun ruang tersusun dari bangun datar.</p>
+  </div>
+  <div class="card">
+    <h3>1. Keliling dan Luas Segiempat</h3>
+    <div class="formula-box"><strong>Persegi:</strong> K = 4s ; L = s²<br><strong>Persegi Panjang:</strong> K = 2(p + l) ; L = p × l</div>
+  </div>
+  <div class="card">
+    <h3>2. Keliling Diketahui Luasnya</h3>
+    <div class="formula-box">L = 48 m², l = 6 m → p = 8 m → K = 2 × (8 + 6) = 28 m</div>
+  </div>
+  <div class="card">
+    <h3>3. Unsur Segitiga dari Luas</h3>
+    <div class="formula-box">L = ½ × a × t → <strong>t = 2L ÷ a</strong><br>Contoh: L = 30 m², a = 10 m → t = 6 m</div>
+  </div>
+  <div class="card">
+    <h2>🎯 Cek Pemahaman</h2>
+    <div class="quiz-box">
+      <p><strong>Soal:</strong> Sebuah ruang baca memiliki lantai berbentuk persegi panjang dengan panjang 6 meter dan lebar 4 meter. Seluruh permukaan lantai tersebut akan ditutup menggunakan karpet tanpa menyisakan bagian yang terbuka.
+
+Pertanyaan:
+
+Berapa luas minimal karpet yang dibutuhkan untuk menutupi seluruh permukaan lantai ruang baca tersebut?</p>
+      <input type="number" id="quizPrasyarat" placeholder="Ketik jawabanmu (dalam m²)...">
+      <button class="btn btn-primary" onclick="checkPrasyarat()">Periksa Jawaban</button>
+      <div id="feedbackPrasyarat" class="feedback"></div>
+    </div>
+  </div>
+</section>
+
+<section id="lab3d" class="section">
+  <div class="card">
+    <h2>🧊 Laboratorium Bangun Ruang 3D</h2>
+    <p>Putar model, amati orientasi sisi-sisinya, lalu geser slider untuk melihat proses terbukanya jaring-jaring!</p>
+    <div class="shape-grid">
+      <div class="shape-card selected" id="card-kubus" onclick="loadModel('kubus')"><div class="shape-icon">🧊</div><div class="shape-name">Kubus</div></div>
+      <div class="shape-card" id="card-balok" onclick="loadModel('balok')"><div class="shape-icon">📦</div><div class="shape-name">Balok</div></div>
+      <div class="shape-card" id="card-prisma" onclick="loadModel('prisma')"><div class="shape-icon">⛺</div><div class="shape-name">Prisma Segitiga</div></div>
+      <div class="shape-card" id="card-limas" onclick="loadModel('limas')"><div class="shape-icon">🔺</div><div class="shape-name">Limas Segiempat</div></div>
+    </div>
+  </div>
+
+  <div class="lab-container">
+    <div class="scene-3d" id="scene3d">
+      <div class="model-3d" id="model3d"></div>
+    </div>
+    <div class="info-panel">
+      <h3 id="modelName">Kubus</h3>
+      <p id="modelDesc">Bangun ruang tiga dimensi yang dibatasi oleh 6 bidang sisi berbentuk persegi yang sama besar.</p>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat-num" id="statSisi">6</span><span class="stat-label">Sisi</span></div>
+        <div class="stat"><span class="stat-num" id="statRusuk">12</span><span class="stat-label">Rusuk</span></div>
+        <div class="stat"><span class="stat-num" id="statTitik">8</span><span class="stat-label">Titik Sudut</span></div>
+      </div>
+      <div class="formula-box" id="modelFormula">
+        <strong>Luas Permukaan:</strong><br>
+        LP = 6 × s<sup>2</sup><br>
+        <strong>Volume:</strong><br>
+        V = s<sup>3</sup>
+      </div>
+      <div class="slider-container">
+        <label>Tingkat pembukaan jaring-jaring: <span id="sliderValue">0%</span></label>
+        <input type="range" id="netSlider" min="0" max="100" value="0" oninput="updateNet(this.value)">
+      </div>
+      <div class="control-btns">
+        <button class="control-btn" onclick="resetView()">🔄 Reset</button>
+        <button class="control-btn" onclick="toggleAutoRotate()">⚙️ Auto Putar</button>
+        <button class="control-btn" onclick="toggleNet()">📖 Buka/Tutup Jaring</button>
+      </div>
+      <div class="hint" style="margin-top:1rem;">
+        Seret mouse/jari pada area 3D untuk memutar model. Gunakan slider untuk mengamati proses terbukanya jaring-jaring.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="latihan" class="section">
+  <div class="card">
+    <h2>🎯 Latihan Pemahaman</h2>
+    <p>Kerjakan soal kontekstual. Setiap jawaban langsung mendapat umpan balik.</p>
+  </div>
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+      <span class="question-badge badge-sedang">Level 1 · Memahami</span>
+      <span style="color:var(--text-dim); font-size:0.9rem;">Soal <span id="latihanNum">1</span> dari 6</span>
+    </div>
+    <div id="latihanQuestion" style="font-size:1.1rem; margin-bottom:1rem;"></div>
+    <div class="options" id="latihanOptions"></div>
+    <div id="latihanFeedback" class="feedback"></div>
+    <div class="control-btns" style="margin-top:1rem;">
+      <button class="control-btn" onclick="prevLatihan()">← Sebelumnya</button>
+      <button class="control-btn" onclick="nextLatihan()">Selanjutnya →</button>
+    </div>
+  </div>
+</section>
+
+<section id="asesmen" class="section">
+  <div class="card" id="asesmenStart">
+    <h2>🏆 Asesmen Akhir</h2>
+    <p>15 soal pilihan ganda berbasis situasi sehari-hari.</p>
+    <div class="stat-grid" style="margin:1.5rem 0;">
+      <div class="stat"><span class="stat-num">5</span><span class="stat-label">Sedang · Bobot 15</span></div>
+      <div class="stat"><span class="stat-num">5</span><span class="stat-label">Tinggi · Bobot 25</span></div>
+      <div class="stat"><span class="stat-num">5</span><span class="stat-label">Sangat Tinggi · Bobot 30</span></div>
+    </div>
+    <input type="text" class="name-input" id="studentName" placeholder="Masukkan nama kamu...">
+    <button class="btn btn-primary" onclick="startAssessment()" style="width:100%;">🚀 Mulai Asesmen</button>
+  </div>
+  <div class="card" id="asesmenQuiz" style="display:none;">
+    <div class="assessment-header">
+      <div><h3 id="assesmentName">Peserta</h3><p style="font-size:0.9rem; color:var(--text-dim);">Soal <span id="qNum">1</span>/15</p></div>
+      <span class="question-badge" id="qBadge">Sedang</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:6.67%;"></div></div>
+    <div class="question-card">
+      <div id="qText" style="font-size:1.05rem; margin-bottom:1rem;"></div>
+      <div class="options" id="qOptions"></div>
+    </div>
+    <div class="control-btns">
+      <button class="control-btn" onclick="prevQuestion()" id="prevBtn" disabled>← Sebelumnya</button>
+      <button class="control-btn" onclick="nextQuestion()" id="nextBtn">Selanjutnya →</button>
+      <button class="btn btn-primary" onclick="submitAssessment()" id="submitBtn" style="display:none;">✓ Kumpulkan</button>
+    </div>
+  </div>
+  <div class="card" id="asesmenResult" style="display:none;">
+    <div class="result-box">
+      <h2 style="color:var(--accent);">🎉 Asesmen Selesai!</h2>
+      <p style="font-size:1.1rem;">Selamat, <strong id="resultName">Peserta</strong>!</p>
+      <div class="score-big"><span id="resultScore">0</span>/30</div>
+      <p id="resultMessage" style="margin:1rem 0; font-size:1.1rem;"></p>
+      <button class="btn btn-primary" onclick="resetAssessment()">🔄 Ulangi Asesmen</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>Eksploratorium Bangun Ruang · Ruang Belajar Interaktif</p>
+  <p>Media pembelajaran matematika interaktif · Gunakan hasil asesmen sebagai bahan refleksi belajar.</p>
+</footer>
+
+<script>
+// ============ NAVIGASI ============
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.nav-btn[data-section="${id}"]`).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'lab3d') loadModel(currentModel);
+}
+document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', () => showSection(btn.dataset.section)));
+function selectShape(shape) { showSection('lab3d'); loadModel(shape); }
+
+// ============ PRASYARAT ============
+function checkPrasyarat() {
+  const val = parseFloat(document.getElementById('quizPrasyarat').value);
+  const fb = document.getElementById('feedbackPrasyarat');
+  if (val === 24) { fb.className = 'feedback correct'; fb.innerHTML = '✅ <strong>Benar!</strong> Luas = 6 × 4 = 24 m².'; }
+  else { fb.className = 'feedback wrong'; fb.innerHTML = '❌ <strong>Kurang tepat.</strong> L = p × l = 6 × 4 = 24 m².'; }
+}
+
+// ============ LAB 3D - JARING BANGUN RUANG ============
+let currentModel = 'kubus';
+let rotX = -20, rotY = -30;
+let isDragging = false, lastX, lastY;
+let autoRotate = false, autoRotateId = null;
+let netOpen = 0;
+
+const models = {
+  kubus: { name: 'Kubus', desc: 'Bangun ruang tiga dimensi yang dibatasi oleh 6 bidang sisi berbentuk persegi yang sama besar.', sisi: 6, rusuk: 12, titik: 8, formula: '<strong>Luas Permukaan:</strong><br>LP = 6 × s<sup>2</sup><br><strong>Volume:</strong><br>V = s<sup>3</sup>' },
+  balok: { name: 'Balok', desc: 'Bangun ruang tiga dimensi yang dibatasi oleh 3 pasang sisi berbentuk persegi panjang yang berhadapan dan sama besar.', sisi: 6, rusuk: 12, titik: 8, formula: '<strong>Luas Permukaan:</strong><br>LP = 2 × (p×l + p×t + l×t)<br><strong>Volume:</strong><br>V = p × l × t' },
+  prisma: { name: 'Prisma Segitiga', desc: 'Bangun ruang tiga dimensi yang dibatasi oleh 2 bidang alas dan tutup berbentuk segitiga yang kongruen serta 3 sisi tegak berbentuk persegi panjang.', sisi: 5, rusuk: 9, titik: 6, formula: '<strong>Luas Permukaan:</strong><br>LP = (2 × L<sub>alas</sub>) + (K<sub>alas</sub> × t)<br><strong>Volume:</strong><br>V = L<sub>alas</sub> × t' },
+  limas: { name: 'Limas Segiempat', desc: 'Bangun ruang tiga dimensi yang dibatasi oleh 1 bidang alas berbentuk segiempat dan 4 bidang sisi tegak berbentuk segitiga yang bertemu di satu titik puncak.', sisi: 5, rusuk: 8, titik: 5, formula: '<strong>Luas Permukaan:</strong><br>LP = L<sub>alas</sub> + Jumlah L<sub>sisi tegak</sub><br><strong>Volume:</strong><br>V = ⅓ × L<sub>alas</sub> × t' }
+};
+
+function loadModel(type) {
+  currentModel = type;
+  document.querySelectorAll('.shape-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('card-' + type).classList.add('selected');
+  const m = models[type];
+  document.getElementById('modelName').textContent = m.name;
+  document.getElementById('modelDesc').textContent = m.desc;
+  document.getElementById('statSisi').textContent = m.sisi;
+  document.getElementById('statRusuk').textContent = m.rusuk;
+  document.getElementById('statTitik').textContent = m.titik;
+  document.getElementById('modelFormula').innerHTML = m.formula;
+  render3D(type);
+}
+
+const S = 120, H = S / 2;   // sisi 120, setengah 60
+
+// Label dua sisi. Bidang atas (5) dibalik pada sumbu X agar teks tegak saat dilihat dari atas.
+const lbl = (txt, flip = 'rotateY(180deg)', padStyle = '') =>
+  `<span class="lbl lbl-front" style="${padStyle}">${txt}</span><span class="lbl lbl-back" style="--flip:${flip};${padStyle}">${txt}</span>`;
+
+// Helper SVG segitiga dengan gradasi dan garis tepi putih tajam
+const triSvg = (id, w, h, pts, c1, c2) => `
+  <svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">
+    <defs>
+      <linearGradient id="${id}" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="${c1}" stop-opacity="0.92"/>
+        <stop offset="100%" stop-color="${c2}" stop-opacity="0.72"/>
+      </linearGradient>
+    </defs>
+    <polygon points="${pts}" fill="url(#${id})" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linejoin="round"/>
+  </svg>`;
+
+function render3D(type) {
+  const model = document.getElementById('model3d');
+  let html = '';
+
+  if (type === 'kubus') {
+    /*
+     *         [5 Atas]
+     * [1 Kiri][2 Belakang][3 Kanan][4 Depan]
+     *         [6 Bawah]
+     */
+    html = `
+      <div class="face back" id="face-2" style="width:${S}px;height:${S}px;left:${-H}px;top:${-H}px;">${lbl('2 Belakang')}</div>
+      <div class="face left" id="face-1" style="width:${S}px;height:${S}px;left:${-H-S}px;top:${-H}px;transform-origin:100% 50%;">${lbl('1 Kiri')}</div>
+      <div class="face top" id="face-5" style="width:${S}px;height:${S}px;left:${-H}px;top:${-H-S}px;transform-origin:50% 100%;">${lbl('5 Atas', 'rotateX(180deg)')}</div>
+      <div class="face bottom" id="face-6" style="width:${S}px;height:${S}px;left:${-H}px;top:${H}px;transform-origin:50% 0%;">${lbl('6 Bawah')}</div>
+      <div class="face-wrapper" id="wrapper-3" style="width:${S}px;height:${S}px;left:${H}px;top:${-H}px;transform-origin:0% 50%;">
+        <div class="face right" id="face-3" style="width:${S}px;height:${S}px;left:0;top:0;">${lbl('3 Kanan')}</div>
+        <div class="face front" id="face-4" style="width:${S}px;height:${S}px;left:${S}px;top:0;transform-origin:0% 50%;">${lbl('4 Depan')}</div>
+      </div>`;
+  } else if (type === 'balok') {
+    const P = 156, L = 96, T = 120;
+    /*
+     *           [5 Atas (P×L)]
+     * [1 Kiri (L×T)][2 Belakang (P×T)][3 Kanan (L×T)][4 Depan (P×T)]
+     *           [6 Bawah (P×L)]
+     */
+    html = `
+      <div class="face back" id="face-2" style="width:${P}px;height:${T}px;left:${-P/2}px;top:${-T/2}px;">${lbl('2 Belakang')}</div>
+      <div class="face left" id="face-1" style="width:${L}px;height:${T}px;left:${-P/2-L}px;top:${-T/2}px;transform-origin:100% 50%;">${lbl('1 Kiri')}</div>
+      <div class="face top" id="face-5" style="width:${P}px;height:${L}px;left:${-P/2}px;top:${-T/2-L}px;transform-origin:50% 100%;">${lbl('5 Atas', 'rotateX(180deg)')}</div>
+      <div class="face bottom" id="face-6" style="width:${P}px;height:${L}px;left:${-P/2}px;top:${T/2}px;transform-origin:50% 0%;">${lbl('6 Bawah')}</div>
+      <div class="face-wrapper" id="wrapper-3" style="width:${L}px;height:${T}px;left:${P/2}px;top:${-T/2}px;transform-origin:0% 50%;">
+        <div class="face right" id="face-3" style="width:${L}px;height:${T}px;left:0;top:0;">${lbl('3 Kanan')}</div>
+        <div class="face front" id="face-4" style="width:${P}px;height:${T}px;left:${L}px;top:0;transform-origin:0% 50%;">${lbl('4 Depan')}</div>
+      </div>`;
+  } else if (type === 'prisma') {
+    const PS = 120, PH = PS / 2, PD = 132;
+    const hTri = PS * Math.sqrt(3) / 2; // ≈ 103.92px
+    const padTri = Math.round(hTri * 0.32);
+    /*
+     *              [4 Tutup Atas (Segitiga)]
+     * [1 Sisi Kiri] [2 Belakang (Anchor)] [3 Sisi Kanan]
+     *              [5 Alas Bawah (Segitiga)]
+     */
+    html = `
+      <div class="face back" id="prisma-2" style="width:${PS}px;height:${PD}px;left:${-PH}px;top:${-PD/2}px;">${lbl('2 Belakang')}</div>
+      <div class="face left" id="prisma-1" style="width:${PS}px;height:${PD}px;left:${-PH-PS}px;top:${-PD/2}px;transform-origin:100% 50%;">${lbl('1 Sisi Kiri')}</div>
+      <div class="face right" id="prisma-3" style="width:${PS}px;height:${PD}px;left:${PH}px;top:${-PD/2}px;transform-origin:0% 50%;">${lbl('3 Sisi Kanan')}</div>
+      <div class="face tri top" id="prisma-4" style="width:${PS}px;height:${hTri}px;left:${-PH}px;top:${-PD/2-hTri}px;transform-origin:50% 100%;">
+        ${triSvg('grad-p4', PS, hTri, `0,${hTri} ${PS},${hTri} ${PH},0`, '#ec4899', '#db2777')}
+        ${lbl('4 Tutup', 'rotateX(180deg)', `padding-top:${padTri}px;`)}
+      </div>
+      <div class="face tri bottom" id="prisma-5" style="width:${PS}px;height:${hTri}px;left:${-PH}px;top:${PD/2}px;transform-origin:50% 0%;">
+        ${triSvg('grad-p5', PS, hTri, `0,0 ${PS},0 ${PH},${hTri}`, '#a855f7', '#9333ea')}
+        ${lbl('5 Alas', 'rotateY(180deg)', `padding-bottom:${padTri}px;`)}
+      </div>`;
+  } else if (type === 'limas') {
+    const B = 126, BH = B / 2, HS = 112;
+    const hPyr = Math.sqrt(HS * HS - BH * BH); // ≈ 92.60px
+    const padL = Math.round(HS * 0.28);
+    /*
+     *              [3 Belakang]
+     * [4 Kiri]    [1 Alas (Persegi)]    [5 Kanan]
+     *               [2 Depan]
+     */
+    html = `
+      <div class="pyramid-base" id="pyramid-base" style="transform:translateY(${hPyr/2}px) rotateX(90deg);">
+        <div class="face bottom" id="limas-1" style="width:${B}px;height:${B}px;left:${-BH}px;top:${-BH}px;">${lbl('1 Alas', 'rotateX(180deg)')}</div>
+        <div class="face tri front" id="limas-2" style="width:${B}px;height:${HS}px;left:${-BH}px;top:${BH}px;transform-origin:50% 0%;">
+          ${triSvg('grad-l2', B, HS, `0,0 ${B},0 ${BH},${HS}`, '#6366f1', '#4f46e5')}
+          ${lbl('2 Depan', 'rotateX(180deg)', `padding-bottom:${padL}px;`)}
+        </div>
+        <div class="face tri back" id="limas-3" style="width:${B}px;height:${HS}px;left:${-BH}px;top:${-BH-HS}px;transform-origin:50% 100%;">
+          ${triSvg('grad-l3', B, HS, `0,${HS} ${B},${HS} ${BH},0`, '#f59e0b', '#d97706')}
+          ${lbl('3 Belakang', 'rotateY(180deg)', `padding-top:${padL}px;`)}
+        </div>
+        <div class="face tri left" id="limas-4" style="width:${HS}px;height:${B}px;left:${-BH-HS}px;top:${-BH}px;transform-origin:100% 50%;">
+          ${triSvg('grad-l4', HS, B, `${HS},0 ${HS},${B} 0,${BH}`, '#06b6d4', '#0891b2')}
+          ${lbl('4 Kiri', 'rotateY(180deg) rotateZ(-90deg)', `padding-left:${padL}px;`)}
+        </div>
+        <div class="face tri right" id="limas-5" style="width:${HS}px;height:${B}px;left:${BH}px;top:${-BH}px;transform-origin:0% 50%;">
+          ${triSvg('grad-l5', HS, B, `0,0 0,${B} ${HS},${BH}`, '#10b981', '#059669')}
+          ${lbl('5 Kanan', 'rotateY(180deg) rotateZ(90deg)', `padding-right:${padL}px;`)}
+        </div>
+      </div>`;
+  }
+
+  model.innerHTML = html;
+  model.dataset.config = type;
+  updateNet(0);
+  updateRotation();
+}
+
+function updateNet(val) {
+  netOpen = parseInt(val);
+  document.getElementById('sliderValue').textContent = netOpen + '%';
+  const t = netOpen / 100;
+  const a = 90 * (1 - t);   // 90° saat tertutup → 0° saat terbuka
+  const cfg = document.getElementById('model3d').dataset.config;
+  const fo = Math.min(1, t * 4);   // label sisi dalam muncul bertahap saat jaring mulai terbuka
+
+  if (cfg === 'kubus') {
+    const z = -H;
+    document.getElementById('face-2').style.transform = `translateZ(${z}px)`;                    // anchor, diam
+    document.getElementById('face-1').style.transform = `translateZ(${z}px) rotateY(${a}deg)`;   // kiri
+    document.getElementById('face-5').style.transform = `translateZ(${z}px) rotateX(${-a}deg)`;  // atas
+    document.getElementById('face-6').style.transform = `translateZ(${z}px) rotateX(${a}deg)`;   // bawah
+    document.getElementById('wrapper-3').style.transform = `translateZ(${z}px) rotateY(${-a}deg)`; // kanan
+    document.getElementById('face-4').style.transform = `rotateY(${-a}deg)`;                     // depan (anak bidang 3)
+    document.querySelectorAll('.lbl-front').forEach(l => l.style.opacity = fo);
+  } else if (cfg === 'balok') {
+    const L = 96, LH = L / 2, z = -LH;
+    document.getElementById('face-2').style.transform = `translateZ(${z}px)`;                    // anchor, diam
+    document.getElementById('face-1').style.transform = `translateZ(${z}px) rotateY(${a}deg)`;   // kiri
+    document.getElementById('face-5').style.transform = `translateZ(${z}px) rotateX(${-a}deg)`;  // atas
+    document.getElementById('face-6').style.transform = `translateZ(${z}px) rotateX(${a}deg)`;   // bawah
+    document.getElementById('wrapper-3').style.transform = `translateZ(${z}px) rotateY(${-a}deg)`; // kanan
+    document.getElementById('face-4').style.transform = `rotateY(${-a}deg)`;                     // depan (anak bidang 3)
+    document.querySelectorAll('.lbl-front').forEach(l => l.style.opacity = fo);
+  } else if (cfg === 'prisma') {
+    const PS = 120, hTri = PS * Math.sqrt(3) / 2;
+    const z = -hTri / 3;          // pusat massa prisma berada di sekitar sumbu rotasi
+    const sideAngle = 120 * (1 - t); // 120° saat tertutup → 0° saat terbuka datar
+    document.getElementById('prisma-2').style.transform = `translateZ(${z}px)`;
+    document.getElementById('prisma-1').style.transform = `translateZ(${z}px) rotateY(${sideAngle}deg)`;
+    document.getElementById('prisma-3').style.transform = `translateZ(${z}px) rotateY(${-sideAngle}deg)`;
+    document.getElementById('prisma-4').style.transform = `translateZ(${z}px) rotateX(${-a}deg)`;
+    document.getElementById('prisma-5').style.transform = `translateZ(${z}px) rotateX(${a}deg)`;
+    document.querySelectorAll('.lbl-front').forEach(l => l.style.opacity = fo);
+  } else if (cfg === 'limas') {
+    const BH = 63, HS = 112;
+    const alphaClosed = 180 - (Math.acos(BH / HS) * 180 / Math.PI); // ≈ 124.23°
+    const foldAngle = alphaClosed * (1 - t);
+    document.getElementById('limas-2').style.transform = `rotateX(${foldAngle}deg)`;
+    document.getElementById('limas-3').style.transform = `rotateX(${-foldAngle}deg)`;
+    document.getElementById('limas-4').style.transform = `rotateY(${foldAngle}deg)`;
+    document.getElementById('limas-5').style.transform = `rotateY(${-foldAngle}deg)`;
+    document.querySelectorAll('.lbl-front').forEach(l => l.style.opacity = fo);
+  }
+
+  updateRotation();
+}
+
+function updateRotation() {
+  const t = netOpen / 100;
+  const scale = 1 - t * 0.22;
+  document.getElementById('model3d').style.transform =
+    `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${scale})`;
+}
+
+function resetView() {
+  rotX = -20; rotY = -30;
+  document.getElementById('netSlider').value = 0;
+  updateNet(0);
+}
+
+function toggleAutoRotate() {
+  autoRotate = !autoRotate;
+  if (autoRotate) autoRotateId = setInterval(() => { rotY += 1; updateRotation(); }, 30);
+  else clearInterval(autoRotateId);
+}
+
+function toggleNet() {
+  const slider = document.getElementById('netSlider');
+  const target = netOpen > 50 ? 0 : 100;
+  let cur = parseInt(slider.value);
+  const step = target > cur ? 4 : -4;
+  const iv = setInterval(() => {
+    cur += step;
+    if ((step > 0 && cur >= target) || (step < 0 && cur <= target)) { cur = target; clearInterval(iv); }
+    slider.value = cur; updateNet(cur);
+  }, 20);
+}
+
+// Seret mouse / sentuh
+const scene = document.getElementById('scene3d');
+scene.addEventListener('mousedown', e => { isDragging = true; lastX = e.clientX; lastY = e.clientY; });
+document.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  rotY += (e.clientX - lastX) * 0.5; rotX -= (e.clientY - lastY) * 0.5;
+  lastX = e.clientX; lastY = e.clientY; updateRotation();
+});
+document.addEventListener('mouseup', () => isDragging = false);
+scene.addEventListener('touchstart', e => { isDragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; });
+scene.addEventListener('touchmove', e => {
+  if (!isDragging) return;
+  rotY += (e.touches[0].clientX - lastX) * 0.5; rotX -= (e.touches[0].clientY - lastY) * 0.5;
+  lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; updateRotation(); e.preventDefault();
+}, { passive: false });
+scene.addEventListener('touchend', () => isDragging = false);
+
+// ============ LATIHAN ============
+const latihanSoal = [
+  { q: "Sebuah kubus memiliki panjang rusuk 5 cm. Berapa luas permukaan kubus tersebut?", options: ["25 cm²", "150 cm²", "125 cm²", "180 cm²"], answer: 1, explain: "LP kubus = 6 × s² = 6 × 5² = 150 cm²." },
+  { q: "Akuarium berbentuk balok berukuran 60×40×50 cm (tanpa tutup). Berapa luas kaca yang dibutuhkan?", options: ["12.400 cm²", "14.800 cm²", "18.400 cm²", "10.000 cm²"], answer: 0, explain: "Luas = 2(60×50) + 2(40×50) + (60×40) = 12.400 cm²." },
+  { q: "Limas segiempat memiliki alas persegi sisi 8 cm dan tinggi limas 6 cm. Berapa volumenya?", options: ["128 cm³", "384 cm³", "192 cm³", "96 cm³"], answer: 0, explain: "V = ⅓ × 8² × 6 = 128 cm³." },
+  { q: "Kotak hadiah kubus dengan rusuk 12 cm. Berapa luas minimal kertas kado?", options: ["864 cm²", "1728 cm²", "144 cm²", "576 cm²"], answer: 0, explain: "LP = 6 × 12² = 864 cm²." },
+  { q: "Balok dengan p:l:t = 3:2:1 dan volume 48 cm³. Berapa luas permukaannya?", options: ["80 cm²", "88 cm²", "96 cm²", "64 cm²"], answer: 1, explain: "x=2 → p=6, l=4, t=2. LP = 2(24+12+8) = 88 cm²." },
+  { q: "Prisma segitiga dengan alas segitiga siku-siku (a=6, t=8) dan tinggi prisma 10 cm. Volumenya?", options: ["240 cm³", "480 cm³", "120 cm³", "360 cm³"], answer: 0, explain: "V = ½×6×8×10 = 240 cm³." }
+];
+let currentLatihan = 0;
+
+function renderLatihan() {
+  const soal = latihanSoal[currentLatihan];
+  document.getElementById('latihanNum').textContent = currentLatihan + 1;
+  document.getElementById('latihanQuestion').textContent = soal.q;
+  const div = document.getElementById('latihanOptions');
+  div.innerHTML = '';
+  soal.options.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'option';
+    b.textContent = String.fromCharCode(65 + i) + '. ' + opt;
+    b.onclick = () => checkLatihan(i);
+    div.appendChild(b);
+  });
+  const fb = document.getElementById('latihanFeedback');
+  fb.className = 'feedback'; fb.innerHTML = '';
+}
+function checkLatihan(sel) {
+  const soal = latihanSoal[currentLatihan];
+  document.querySelectorAll('#latihanOptions .option').forEach((o, i) => {
+    o.onclick = null;
+    if (i === soal.answer) o.classList.add('correct');
+    else if (i === sel) o.classList.add('wrong');
+  });
+  const fb = document.getElementById('latihanFeedback');
+  if (sel === soal.answer) { fb.className = 'feedback correct'; fb.innerHTML = '✅ <strong>Benar!</strong> ' + soal.explain; }
+  else { fb.className = 'feedback wrong'; fb.innerHTML = '❌ <strong>Kurang tepat.</strong> ' + soal.explain; }
+}
+function nextLatihan() { if (currentLatihan < latihanSoal.length - 1) { currentLatihan++; renderLatihan(); } }
+function prevLatihan() { if (currentLatihan > 0) { currentLatihan--; renderLatihan(); } }
+
+// ============ ASESMEN ============
+const assessmentQuestions = [
+  { level: 'sedang', bobot: 3, q: "Kubus dengan rusuk 4 cm. Luas permukaan?", options: ["64 cm²", "96 cm²", "48 cm²", "16 cm²"], answer: 1 },
+  { level: 'sedang', bobot: 3, q: "Balok p=10, l=5, t=4 cm. Volume?", options: ["200 cm³", "100 cm³", "150 cm³", "400 cm³"], answer: 0 },
+  { level: 'sedang', bobot: 3, q: "Berapa banyak sisi prisma segitiga?", options: ["4", "5", "6", "8"], answer: 1 },
+  { level: 'sedang', bobot: 3, q: "Limas segiempat memiliki berapa titik sudut?", options: ["4", "5", "6", "8"], answer: 1 },
+  { level: 'sedang', bobot: 3, q: "Rumus volume balok adalah...", options: ["s³", "p × l × t", "½ × a × t", "⅓ × L_alas × t"], answer: 1 },
+  { level: 'tinggi', bobot: 5, q: "Akuarium tanpa tutup 80×40×50 cm. Luas kaca?", options: ["15.200 cm²", "18.400 cm²", "22.400 cm²", "16.000 cm²"], answer: 0 },
+  { level: 'tinggi', bobot: 5, q: "Kubus volume 125 cm³. Luas permukaan?", options: ["150 cm²", "100 cm²", "75 cm²", "125 cm²"], answer: 0 },
+  { level: 'tinggi', bobot: 5, q: "Balok p:l:t = 4:3:2, volume 648 cm³. Luas permukaan?", options: ["432 cm²", "468 cm²", "484 cm²", "504 cm²"], answer: 1 },
+  { level: 'tinggi', bobot: 5, q: "Limas alas persegi sisi 10 cm, tinggi 12 cm. Volume?", options: ["400 cm³", "1200 cm³", "600 cm³", "800 cm³"], answer: 0 },
+  { level: 'tinggi', bobot: 5, q: "Prisma segitiga siku-siku (a=6, t=8), tinggi prisma 10 cm. Volume?", options: ["240 cm³", "480 cm³", "120 cm³", "360 cm³"], answer: 0 },
+  { level: 'sangat tinggi', bobot: 6, q: "Tangki balok 2×1,5×1 m. Berapa liter air?", options: ["3000 liter", "300 liter", "30 liter", "30000 liter"], answer: 0 },
+  { level: 'sangat tinggi', bobot: 6, q: "Dua kubus rusuk 3 cm dan 4 cm digabung. Total volume?", options: ["91 cm³", "125 cm³", "64 cm³", "27 cm³"], answer: 0 },
+  { level: 'sangat tinggi', bobot: 6, q: "Ruangan 6×5×3 m dicat dindingnya (tanpa lantai & plafon), ada pintu 2×1 m dan jendela 1,5×1 m. Luas yang dicat?", options: ["57,5 m²", "60,5 m²", "90 m²", "102 m²"], answer: 0 },
+  { level: 'sangat tinggi', bobot: 6, q: "Limas alas persegi sisi 8 cm, tinggi segitiga sisi tegak 10 cm. Luas permukaan?", options: ["224 cm²", "192 cm²", "256 cm²", "160 cm²"], answer: 0 },
+  { level: 'sangat tinggi', bobot: 6, q: "Prisma segitiga sama sisi sisi 6 cm, tinggi prisma 15 cm. Luas permukaan?", options: ["288 + 9√3 cm²", "270 cm²", "300 cm²", "250 cm²"], answer: 0 }
+];
+let currentQ = 0, userAnswers = new Array(assessmentQuestions.length).fill(null), studentName = '';
+
+function startAssessment() {
+  studentName = document.getElementById('studentName').value.trim() || 'Penjelajah';
+  document.getElementById('asesmenStart').style.display = 'none';
+  document.getElementById('asesmenQuiz').style.display = 'block';
+  document.getElementById('assesmentName').textContent = studentName;
+  currentQ = 0; userAnswers = new Array(assessmentQuestions.length).fill(null);
+  renderQuestion();
+}
+function renderQuestion() {
+  const q = assessmentQuestions[currentQ];
+  document.getElementById('qNum').textContent = currentQ + 1;
+  const badge = document.getElementById('qBadge');
+  badge.textContent = q.level.replace('sangat tinggi', 'Sangat Tinggi').replace('tinggi', 'Tinggi').replace('sedang', 'Sedang');
+  badge.className = 'question-badge badge-' + q.level.replace(' ', '-');
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('progressFill').style.width = ((currentQ + 1) / assessmentQuestions.length * 100) + '%';
+  const div = document.getElementById('qOptions'); div.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'option' + (userAnswers[currentQ] === i ? ' selected' : '');
+    b.textContent = String.fromCharCode(65 + i) + '. ' + opt;
+    b.onclick = () => selectAnswer(i);
+    div.appendChild(b);
+  });
+  document.getElementById('prevBtn').disabled = currentQ === 0;
+  document.getElementById('nextBtn').style.display = currentQ === assessmentQuestions.length - 1 ? 'none' : 'inline-block';
+  document.getElementById('submitBtn').style.display = currentQ === assessmentQuestions.length - 1 ? 'inline-flex' : 'none';
+}
+function selectAnswer(i) {
+  userAnswers[currentQ] = i;
+  document.querySelectorAll('#qOptions .option').forEach((o, idx) => o.classList.toggle('selected', idx === i));
+}
+function nextQuestion() { if (currentQ < assessmentQuestions.length - 1) { currentQ++; renderQuestion(); } }
+function prevQuestion() { if (currentQ > 0) { currentQ--; renderQuestion(); } }
+function submitAssessment() {
+  let score = 0;
+  assessmentQuestions.forEach((q, i) => { if (userAnswers[i] === q.answer) score += q.bobot; });
+  document.getElementById('asesmenQuiz').style.display = 'none';
+  document.getElementById('asesmenResult').style.display = 'block';
+  document.getElementById('resultName').textContent = studentName;
+  document.getElementById('resultScore').textContent = score;
+  let msg = '';
+  if (score >= 25) msg = '🌟 Luar biasa! Kamu menguasai materi bangun ruang dengan sangat baik!';
+  else if (score >= 18) msg = '👍 Bagus! Terus berlatih untuk hasil yang lebih sempurna.';
+  else if (score >= 10) msg = '💪 Cukup baik. Coba ulangi bagian Lab 3D untuk pemahaman lebih dalam.';
+  else msg = '📚 Jangan menyerah! Pelajari kembali prasyarat bangun datar dan coba lagi.';
+  document.getElementById('resultMessage').textContent = msg;
+}
+function resetAssessment() {
+  document.getElementById('asesmenResult').style.display = 'none';
+  document.getElementById('asesmenStart').style.display = 'block';
+  document.getElementById('studentName').value = '';
+}
+
+renderLatihan();
+loadModel('kubus');
+</script>
+
+</body>
+</html>
