@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lingkaran Interaktif · Matematika Kelas 8</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--fg:#1e2433;--mute:#6b7385;--ghost:#b9bfcc;--line:#e1e4ec;--acc:#2563eb;--ok:#16a34a;--bad:#dc2626;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10131c;--card:#1a1f2d;--fg:#e8ebf4;--mute:#98a0b5;--ghost:#4a526a;--line:#2b3247;--acc:#6ea0ff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10131c;--card:#1a1f2d;--fg:#e8ebf4;--mute:#98a0b5;--ghost:#4a526a;--line:#2b3247;--acc:#6ea0ff;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:22px 16px 8px;text-align:center}
+h1{margin:0;font-size:1.6rem}header p{margin:4px 0 0;color:var(--mute)}
+nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:10px 12px}
+nav button,.btn{border:1px solid var(--line);background:var(--card);color:var(--fg);padding:9px 15px;border-radius:999px;font:inherit;cursor:pointer}
+nav button.on,.btn.pri{background:var(--acc);color:#fff;border-color:var(--acc)}
+main{max-width:1000px;margin:0 auto;padding:6px 14px 40px}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.card h2{margin:0 0 6px;font-size:1.15rem}.card h3{margin:0 0 4px;font-size:1rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+svg{width:100%;height:auto;display:block}
+.mute{color:var(--mute);font-size:.92rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{border:2px solid var(--line);background:var(--bg);color:var(--fg);border-radius:12px;padding:7px 12px;font:inherit;cursor:pointer}
+.chip.sel{border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 25%,transparent)}
+.chip.done{border-color:var(--c);background:color-mix(in srgb,var(--c) 18%,var(--card));cursor:default}
+.chip.done::before{content:"✓ "}
+.msg{min-height:3.2em;padding:10px 12px;border-radius:12px;background:var(--bg);border-left:4px solid var(--acc)}
+.bar{height:10px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .4s}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0}
+.row label{min-width:92px;font-size:.92rem}.row input[type=range]{flex:1;min-width:130px}
+.out{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+.out div{background:var(--bg);border-radius:10px;padding:8px 10px;font-size:.92rem}.out b{display:block;font-size:1.05rem}
+.big{font-size:1.5rem;font-weight:700;color:var(--acc)}
+/* diagram */
+.g{fill:none;stroke:var(--ghost);stroke-width:2;stroke-linecap:round}
+.gd{fill:var(--ghost)}
+.pl{font:600 12px system-ui,sans-serif;fill:var(--mute);text-anchor:middle}
+.ov{display:none}.ov.ok{display:inline}
+.s{fill:none;stroke:var(--c);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1}
+.ok .s{animation:draw .8s ease both}
+.f{fill:var(--c);fill-opacity:.25;stroke:none}.ok .f{animation:fade .8s both}
+.dot{fill:var(--c);transform-box:fill-box;transform-origin:center}.ok .dot{animation:pop .7s both}
+.ht{cursor:pointer}
+.hl{fill:none;stroke:transparent;stroke-width:20;stroke-linecap:round;pointer-events:stroke}
+.ha{fill:transparent;stroke:none;pointer-events:fill}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{transform:scale(0)}60%{transform:scale(1.9)}100%{transform:scale(1)}}
+.lb{font:600 13px system-ui,sans-serif;opacity:0;transition:opacity .6s;fill:var(--c);pointer-events:none;paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}.lb.ok{opacity:1}
+.dim{font:12px system-ui,sans-serif;fill:var(--mute)}
+.ni{width:104px;padding:7px 9px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit}
+.ni:focus{outline:2px solid var(--acc)}
+.dl{font:600 12px system-ui,sans-serif;paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}
+.cal .row label{min-width:112px}
+.stp{font-size:.86rem;line-height:1.85;margin-top:10px}
+canvas{width:100%;max-width:300px;aspect-ratio:1;display:block;margin:0 auto;border:1px solid var(--line);border-radius:10px}
+</style>
+</head>
+<body>
+<header><h1>🔵 Lingkaran Interaktif</h1><p>Susun unsur · Rakit luas · Temukan π sendiri</p></header>
+<nav id="nav"><button class="on" data-t="t1">1 · Susun Unsur</button><button data-t="t2">2 · Luas &amp; Juring</button><button data-t="t3">3 · Menemukan π</button></nav>
+<main>
+
+<section id="t1" class="on">
+<div class="card"><h2>Lengkapi diagram lingkaran</h2>
+<p class="mute">Pilih sebuah istilah, lalu ketuk bagian yang tepat pada gambar. Hati-hati: satu istilah bisa berlaku untuk lebih dari satu garis atau lengkungan!</p>
+<div class="grid"><div><svg viewBox="0 0 400 400" id="dg" role="img" aria-label="Diagram lingkaran"></svg></div>
+<div><div class="row"><b id="cnt">0 / 10</b><div class="bar" style="flex:1"><i id="pg"></i></div></div>
+<div class="chips" id="chips"></div>
+<div class="msg" id="msg">Pilih satu istilah untuk memulai.</div>
+<div class="row"><button class="btn pri" id="demo">▶ Peragakan semua</button><button class="btn" id="rst">↺ Ulangi</button></div></div></div></div>
+</section>
+
+<section id="t2">
+<div class="card"><h2>Dari lingkaran menjadi persegi panjang</h2>
+<p class="mute">Potong lingkaran menjadi juring-juring, lalu susun bergantian. Semakin banyak potongan, bentuknya semakin mendekati persegi panjang.</p>
+<svg viewBox="0 0 520 250" id="sv"></svg>
+<div class="row"><label>Potongan: <b id="nv">12</b></label><input type="range" id="n" min="4" max="64" step="2" value="12"></div>
+<div class="row"><label>Susun</label><input type="range" id="t" min="0" max="100" value="0"><button class="btn pri" id="pl">▶ Animasikan</button></div>
+<div class="msg" id="lm">Geser “Susun” untuk merakit juring.</div></div>
+
+<div class="card cal"><h2>Kalkulator lingkaran &amp; juring</h2>
+<p class="mute">Geser slider atau ketik salah satu nilai (r, d, K, atau L): nilai lain dihitung otomatis lengkap dengan langkah-langkahnya. Nyalakan unsur-unsur di bawah gambar untuk melihat letaknya pada lingkaran.</p>
+<div class="grid"><div><svg viewBox="0 0 340 340" id="js"></svg><div class="chips" id="tg"></div></div>
+<div>
+<div class="row"><label>Jari-jari r</label><input class="ni" id="ir" inputmode="decimal"><span class="mute">cm</span></div>
+<div class="row"><input type="range" id="sr" min="1" max="50" value="14" style="width:100%"></div>
+<div class="row"><label>Diameter d</label><input class="ni" id="idm" inputmode="decimal"><span class="mute">cm</span></div>
+<div class="row"><label>Keliling K</label><input class="ni" id="iK" inputmode="decimal"><span class="mute">cm</span></div>
+<div class="row"><label>Luas L</label><input class="ni" id="iL" inputmode="decimal"><span class="mute">cm²</span></div>
+<div class="row"><label>Sudut pusat θ</label><input class="ni" id="ia" inputmode="decimal"><span class="mute">°</span></div>
+<div class="row"><input type="range" id="sa" min="5" max="360" step="5" value="90" style="width:100%"></div>
+<div class="row"><label>Nilai π</label><select id="pm" class="ni" style="width:auto;flex:1"><option value="auto">Otomatis (22/7 jika r kelipatan 7, selain itu 3,14)</option><option value="r22">π = 22/7</option><option value="r314">π = 3,14</option><option value="real">π kalkulator (3,14159…)</option></select></div>
+<div class="row"><button class="btn" id="rs0">↺ Contoh: r = 14, θ = 90°</button></div></div></div>
+<div class="out" id="jo"></div>
+<div class="msg stp" id="stp"></div></div>
+</section>
+
+<section id="t3">
+<div class="card"><h2>A. Menggelindingkan lingkaran</h2>
+<p class="mute">Gelindingkan lingkaran satu putaran penuh. Panjang lintasannya sama dengan keliling. Bandingkan lintasan itu dengan diameter (d): berapa kali d muat di dalamnya?</p>
+<svg viewBox="0 0 520 170" id="rs"></svg>
+<div class="row"><label>Diameter d: <b id="rdv">60</b></label><input type="range" id="rd" min="20" max="100" step="10" value="60"></div>
+<div class="row"><label>Putaran</label><input type="range" id="rt" min="0" max="100" value="0" style="flex:1"><button class="btn pri" id="rp">▶ Gelindingkan</button></div>
+<div class="msg" id="rm"></div></div>
+
+<div class="card"><h2>B. Cara Archimedes: kurung dengan segi-n</h2>
+<p class="mute">Lingkaran berjari-jari r = 1 (diameter d = 2) diapit segi-n beraturan di dalam (biru) dan di luar (oranye). Keliling segi-n ÷ d menjadi batas bawah dan batas atas π.</p>
+<div class="grid"><svg viewBox="0 0 300 300" id="as"></svg>
+<div><div class="row"><label>Sisi n: <b id="anv">6</b></label><input type="range" id="an" min="0" max="9" value="2"></div>
+<button class="btn pri" id="ap">▶ Tambah sisi otomatis</button>
+<div class="msg" id="ac" style="margin-top:8px;font-size:.9rem;line-height:1.75"></div></div></div>
+<svg viewBox="0 0 300 62" id="nl"></svg>
+<p class="mute" id="an2"></p></div>
+
+<div class="card"><h2>C. Lempar dart acak (Monte Carlo)</h2>
+<p class="mute">Persegi sisi 1 luasnya 1. Seperempat lingkaran r = 1 di dalamnya luasnya ¼ × π × 1² = π/4. Jadi peluang titik acak jatuh di dalam seperempat lingkaran adalah π/4, atau π ≈ 4 × (titik di dalam ÷ total titik).</p>
+<div class="grid"><canvas id="mc" width="300" height="300"></canvas>
+<div><div class="row"><button class="btn" data-k="1">+1</button><button class="btn" data-k="50">+50</button><button class="btn" data-k="500">+500</button><button class="btn pri" id="mp">▶ Otomatis</button><button class="btn" id="mr">↺</button></div>
+<div class="msg" id="mi" style="line-height:1.8">Belum ada titik. Titik hijau: x² + y² &lt; 1 (di dalam). Titik merah: di luar.</div>
+<svg viewBox="0 0 300 110" id="mh"></svg></div></div></div>
+</section>
+
+</main>
+
+<script>
+const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg',D=Math.PI/180;
+const f=(x,d=2)=>x.toLocaleString('id-ID',{maximumFractionDigits:d});
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('#nav button,section').forEach(e=>e.classList.remove('on'));b.classList.add('on');$(b.dataset.t).classList.add('on')});
+
+/* ===== 1. Susun unsur ===== */
+const cx=200,cy=200,R=150,pol=(a,r=R)=>[+(cx+r*Math.cos(a*D)).toFixed(2),+(cy+r*Math.sin(a*D)).toFixed(2)];
+const O=[cx,cy],A=pol(210),B=pol(180),C=pol(0),Pp=pol(-120),Q=pol(-60),Dd=pol(135),E=pol(45),M=[200,Dd[1]];
+const ln=(p,q,x='')=>`<line x1="${p[0]}" y1="${p[1]}" x2="${q[0]}" y2="${q[1]}" ${x}/>`;
+const arc=(p,q,sw)=>`M${p} A${R} ${R} 0 0 ${sw} ${q}`;
+const secP=`M${O} L${Pp} A${R} ${R} 0 0 1 ${Q}Z`,segP=`M${Dd} A${R} ${R} 0 0 0 ${E}Z`,rt=`M200 ${M[1]-9} L209 ${M[1]-9} L209 ${M[1]}`;
+const RAD=[A,B,C,Pp,Q,Dd,E],S=(w,x='')=>`class="s" pathLength="1" style="stroke-width:${w};${x}"`;
+const T=[
+{id:'pusat',n:'Pusat (O)',c:'#e11d48',d:'Titik tetap di tengah; semua titik pada lingkaran berjarak sama darinya.',ok:'Titik O adalah pusat. Jaraknya ke setiap titik pada lingkaran sama panjang.',ov:`<circle class="dot" cx="200" cy="200" r="7"/>`,l:[126,224,'pusat O']},
+{id:'jari',n:'Jari-jari',c:'#2563eb',d:'Ruas garis dari pusat ke SEBARANG titik pada keliling lingkaran (bisa banyak!). r = ½ × d.',ok:'Semua garis dari pusat ke keliling lingkaran adalah jari-jari: OA, OB, OC, OP, OQ, OD, OE. Panjangnya sama (r). Setengah diameter juga jari-jari.',ov:RAD.map((p,i)=>ln(O,p,S(3.5,`animation-delay:${i*.12}s`))).join(''),l:[88,128,'jari-jari']},
+{id:'diam',n:'Diameter',c:'#7c3aed',d:'Tali busur terpanjang karena melalui pusat. d = 2 × r.',ok:'Diameter BC melalui pusat O dan terdiri dari dua jari-jari: BC = OB + OC, jadi d = 2r.',ov:ln(B,C,S(9)),l:[60,190,'diameter BC','start']},
+{id:'busur',n:'Busur',c:'#ea580c',d:'Bagian lengkung dari keliling lingkaran, dibatasi dua titik pada lingkaran.',ok:'Busur PQ berujung tepat di titik P dan Q, yaitu ujung jari-jari OP dan OQ; busur ini membatasi juring. Busur DE membatasi tembereng. Panjang busur = θ/360° × 2πr.',ov:`<path ${S(6)} d="${arc(Pp,Q,1)}"/><path ${S(6,'animation-delay:.5s')} d="${arc(Dd,E,0)}"/>`,l:[200,34,'busur PQ','middle'],l2:[200,374,'busur DE','middle']},
+{id:'tali',n:'Tali busur',c:'#0d9488',d:'Ruas garis yang menghubungkan dua titik pada keliling lingkaran.',ok:'Tali busur DE menghubungkan titik D dan E tanpa melalui pusat.',ov:ln(Dd,E,S(5)),l:[304,342,'tali busur DE','start']},
+{id:'apot',n:'Apotema',c:'#db2777',d:'Garis dari pusat yang tegak lurus tali busur; membagi tali busur sama panjang.',ok:'Apotema OM tegak lurus tali busur DE (siku-siku di M) dan membagi DE sama panjang: DM = ME.',ov:ln(O,M,S(4))+`<path ${S(2.5)} d="${rt}"/>`,l:[207,252,'apotema OM','start']},
+{id:'juring',n:'Juring',c:'#16a34a',d:'Daerah yang dibatasi dua jari-jari dan satu busur. Luas = θ/360° × πr².',ok:'Juring POQ dibatasi jari-jari OP, jari-jari OQ, dan busur PQ.',ov:`<path class="f" d="${secP}"/>`,l:[200,120,'juring POQ','middle']},
+{id:'temb',n:'Tembereng',c:'#ca8a04',d:'Daerah yang dibatasi sebuah tali busur dan busur di hadapannya.',ok:'Tembereng dibatasi tali busur DE dan busur DE. Luasnya = luas juring ODE − luas segitiga ODE.',ov:`<path class="f" d="${segP}"/>`,l:[200,340,'tembereng','middle']},
+{id:'kel',n:'Keliling',c:'#0891b2',d:'Panjang seluruh lengkung lingkaran (satu putaran penuh). K = 2πr = πd.',ok:'Keliling adalah panjang seluruh garis lengkung lingkaran. K = 2πr = πd.',ov:`<circle ${S(4)} cx="200" cy="200" r="150"/>`,l:[336,282,'keliling','start']},
+{id:'luas',n:'Luas',c:'#4f46e5',d:'Daerah di dalam lingkaran. L = πr².',ok:'Luas adalah seluruh daerah di dalam lingkaran. L = πr².',ov:`<circle class="f" cx="200" cy="200" r="150"/>`,l:[285,152,'luas (L)','middle']}];
+const order=['luas','temb','juring','kel','diam','tali','apot','jari','busur','pusat'];
+const dg=$('dg'),g=`class="g"`;
+const letters=[['A',pol(210,R+14)],['B',pol(180,R+14)],['C',pol(0,R+14)],['P',pol(-120,R+14)],['Q',pol(-60,R+14)],['D',pol(135,R+14)],['E',pol(45,R+14)],['M',[200,M[1]+16]],['O',[220,187]]];
+const pts=[A,B,C,Pp,Q,Dd,E,M,O];
+const hit=(c,ts,tag,at)=>`<${tag} class="${c}" data-ts="${ts}" ${at}/>`;
+const circ=`cx="200" cy="200" r="150"`;
+dg.innerHTML=`<circle ${g} ${circ}/>`+RAD.map(p=>ln(O,p,g)).join('')+ln(Dd,E,g)+ln(O,M,g)+`<path ${g} d="${rt}" style="stroke-width:1.5"/>`+
+ pts.map(p=>`<circle class="gd" cx="${p[0]}" cy="${p[1]}" r="3.5"/>`).join('')+
+ letters.map(l=>`<text class="pl" x="${l[1][0]}" y="${l[1][1]+4}">${l[0]}</text>`).join('')+
+ order.map(id=>{const t=T.find(x=>x.id===id);return `<g class="ov" id="v-${id}" style="--c:${t.c}">${t.ov}</g>`}).join('')+
+ T.flatMap(t=>[t.l,t.l2].filter(Boolean).map(l=>`<text class="lb" data-t="${t.id}" x="${l[0]}" y="${l[1]}" text-anchor="${l[3]||'start'}" style="--c:${t.c}">${l[2]}</text>`)).join('')+
+ `<g class="ht">`+hit('ha','luas','circle',circ)+hit('ha','temb','path',`d="${segP}"`)+hit('ha','juring','path',`d="${secP}"`)+
+ hit('hl','kel busur','circle',circ)+hit('hl','busur juring kel','path',`d="${arc(Pp,Q,1)}"`)+hit('hl','busur temb kel','path',`d="${arc(Dd,E,0)}"`)+
+ [[O,A,'jari'],[B,C,'diam jari'],[O,Pp,'jari juring'],[O,Q,'jari juring'],[O,Dd,'jari'],[O,E,'jari'],[Dd,E,'tali temb'],[O,M,'apot']].map(x=>ln(x[0],x[1],`class="hl" data-ts="${x[2]}"`)).join('')+
+ hit('ha','pusat','circle','cx="200" cy="200" r="16"')+`</g>`;
+let sel=null,done=new Set(),tm=[];
+const msg=h=>$('msg').innerHTML=h,chips=$('chips');
+T.forEach(t=>{const b=document.createElement('button');b.className='chip';b.id='c-'+t.id;b.textContent=t.n;b.style.setProperty('--c',t.c);
+ b.onclick=()=>{if(done.has(t.id))return;sel=t.id;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));b.classList.add('sel');msg(`<b>${t.n}</b>: ${t.d} → ketuk bagian yang sesuai pada gambar.`)};
+ chips.appendChild(b)});
+function reveal(id){if(done.has(id))return;done.add(id);const t=T.find(x=>x.id===id);
+ $('v-'+id).classList.add('ok');document.querySelectorAll('.lb[data-t="'+id+'"]').forEach(e=>e.classList.add('ok'));const c=$('c-'+id);c.classList.remove('sel');c.classList.add('done');
+ msg(`✅ <b>${t.n}</b>: ${t.ok}`);$('cnt').textContent=done.size+' / 10';$('pg').style.width=done.size*10+'%';sel=null;
+ if(done.size==10)$('msg').innerHTML+='<br>🎉 Lengkap! Semua unsur lingkaran sudah kamu susun.'}
+dg.addEventListener('click',e=>{const h=e.target.closest('[data-ts]');if(!h)return;
+ const pt=dg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const p=pt.matrixTransform(dg.getScreenCTM().inverse());
+ const ts=h.dataset.ts.split(' ');if(Math.hypot(p.x-cx,p.y-cy)<R)ts.push('luas');
+ if(!sel){const d=ts.find(x=>done.has(x));msg(d?`<b>${T.find(x=>x.id===d).n}</b>: ${T.find(x=>x.id===d).ok}`:'Pilih dulu istilah di sebelah kanan.');return}
+ if(ts.includes(sel)){reveal(sel);return}
+ const t=T.find(x=>x.id===sel);let ex='';
+ if(sel==='jari'&&ts.includes('apot'))ex=' Apotema berhenti di tali busur, tidak sampai ke keliling.';
+ if(sel==='tali'&&ts.includes('diam'))ex=' Diameter juga termasuk tali busur, tetapi karena melalui pusat ia punya nama khusus, yaitu diameter. Pilih tali busur lain yang tidak melalui pusat.';
+ msg(`❌ Belum tepat.${ex} Petunjuk: ${t.d}`)});
+$('rst').onclick=()=>{tm.forEach(clearTimeout);tm=[];done.clear();sel=null;document.querySelectorAll('.ov.ok,.lb.ok').forEach(e=>e.classList.remove('ok'));
+ document.querySelectorAll('.chip').forEach(c=>c.classList.remove('done','sel'));$('cnt').textContent='0 / 10';$('pg').style.width=0;msg('Pilih satu istilah untuk memulai.')};
+$('demo').onclick=()=>{$('rst').onclick();['pusat','jari','diam','kel','busur','tali','apot','juring','temb','luas'].forEach((id,i)=>tm.push(setTimeout(()=>reveal(id),300+i*2200)))};
+
+/* ===== 2a. Susun juring ===== */
+const sv=$('sv'),Rr=70;let secs=[];
+function build(){const n=+$('n').value;$('nv').textContent=n;sv.innerHTML='';secs=[];const h=Math.PI/n,x=Rr*Math.sin(h),y=Rr*Math.cos(h);
+ for(let k=0;k<n;k++){const p=document.createElementNS(NS,'path');p.setAttribute('d',`M0 0 L${-x} ${-y} A${Rr} ${Rr} 0 0 1 ${x} ${-y}Z`);
+  p.setAttribute('fill',k%2?'#f59e0b':'#3b82f6');p.setAttribute('fill-opacity',.8);p.setAttribute('stroke','var(--card)');p.setAttribute('stroke-width',.8);sv.appendChild(p);secs.push(p)}
+ const g=(s,x,y,t)=>{const e=document.createElementNS(NS,'text');e.setAttribute('class','dim');e.setAttribute('x',x);e.setAttribute('y',y);e.setAttribute('text-anchor','middle');e.id=s;e.textContent=t;sv.appendChild(e)};
+ const dm=document.createElementNS(NS,'g');dm.id='dm';sv.appendChild(dm);place()}
+function place(){const n=+$('n').value,t=+$('t').value/100,w=2*Rr*Math.sin(Math.PI/n),x0=260-(n-1)*w/4;
+ secs.forEach((p,k)=>{const a=k*360/n,A=k%2==0,tg=A?0:180,d=((tg-a+540)%360)-180,ang=a+d*t;
+  const tx=260+(x0+k*w/2-260)*t,ty=150+((A?185:115)-150)*t;p.setAttribute('transform',`translate(${tx} ${ty}) rotate(${ang})`)});
+ {const y=203,xa=x0,xb=x0+n*w/2,xl=x0-w/2-14,ln=(a,b,c,d)=>`<line x1="${a}" y1="${b}" x2="${c}" y2="${d}" stroke="#e11d48" stroke-width="2" stroke-linecap="round"/>`;
+ $('dm').innerHTML=t>=.98?ln(xa,y,xb,y)+ln(xa,y-7,xa,y+7)+ln(xb,y-7,xb,y+7)+`<text x="${(xa+xb)/2}" y="${y+22}" text-anchor="middle" class="dim" style="fill:#e11d48;font-weight:700">panjang ≈ ½ keliling = πr</text>`+ln(xl,115,xl,185)+ln(xl-6,115,xl+6,115)+ln(xl-6,185,xl+6,185)+`<text x="${xl-9}" y="154" text-anchor="end" class="dim" style="fill:#e11d48;font-weight:700">r</text>`:''}
+ 
+ const ratio=n*Math.sin(Math.PI/n);
+ $('lm').innerHTML=t<.05?'Geser “Susun” untuk merakit juring.':t<.95?'Juring-juring sedang disusun bergantian…':`Panjang ÷ lebar = ${f(ratio,3)} (≈ π), lebar = r. Maka <b>Luas ≈ ½K × r = πr × r = πr²</b>. Coba tambah potongan!`}
+$('n').oninput=()=>{build()};$('t').oninput=place;
+let raf;$('pl').onclick=()=>{cancelAnimationFrame(raf);$('t').value=0;let s=null;const go=ts=>{s??=ts;const v=Math.min(1,(ts-s)/3000);$('t').value=100*(1-Math.pow(1-v,2));place();if(v<1)raf=requestAnimationFrame(go)};raf=requestAnimationFrame(go)};
+build();
+
+/* ===== 2b. Kalkulator ===== */
+const num=s=>parseFloat(String(s).replace(',','.')),g2=(x,d=2)=>f(Math.abs(x)<1e-9?0:x,d);
+let st={r:14,a:90,mode:'auto'};
+const sh={jari:1,diam:0,busur:1,tali:1,apot:1,juring:1,temb:1};
+const TG=[['jari','Jari-jari','#2563eb'],['diam','Diameter','#7c3aed'],['busur','Busur','#ea580c'],['tali','Tali busur','#0d9488'],['apot','Apotema','#db2777'],['juring','Juring','#16a34a'],['temb','Tembereng','#ca8a04']];
+const tg=$('tg');TG.forEach(t=>{const b=document.createElement('button');b.className='chip'+(sh[t[0]]?' done':'');b.textContent=t[1];b.style.setProperty('--c',t[2]);
+ b.onclick=()=>{sh[t[0]]^=1;b.classList.toggle('done',!!sh[t[0]]);draw()};tg.appendChild(b)});
+const piFor=r=>st.mode=='r22'?22/7:st.mode=='r314'?3.14:st.mode=='real'?Math.PI:(r>0&&Math.abs(r/7-Math.round(r/7))<1e-6?22/7:3.14);
+function fromInput(k,v){if(!isFinite(v)||v<=0)return;let r;
+ if(k=='r')r=v;else if(k=='d')r=v/2;else{const c=p=>k=='K'?v/(2*p):Math.sqrt(v/p);
+  if(st.mode=='auto'){const r7=c(22/7);r=Math.abs(r7/7-Math.round(r7/7))<1e-6?r7:c(3.14)}else r=c(piFor(0))}
+ st.r=r;render(k)}
+const IDS={r:'ir',d:'idm',K:'iK',L:'iL',a:'ia'};
+Object.keys(IDS).forEach(k=>$(IDS[k]).addEventListener('input',e=>{const v=num(e.target.value);if(k=='a'){if(v>0&&v<=360){st.a=v;render('a')}}else fromInput(k,v)}));
+$('sr').oninput=e=>{st.r=+e.target.value;render()};$('sa').oninput=e=>{st.a=+e.target.value;render()};
+$('pm').onchange=e=>{st.mode=e.target.value;render()};
+$('rs0').onclick=()=>{st.r=14;st.a=90;st.mode='auto';$('pm').value='auto';render()};
+const fi=x=>String(+x.toFixed(4)).replace('.',',');
+function calc(){const r=st.r,a=st.a,pi=piFor(r),K=2*pi*r,L=pi*r*r,jur=a/360*L,tri=.5*r*r*Math.sin(a*D);
+ return{r,a,pi,pS:st.mode=='real'?'π':(pi===22/7?'22/7':'3,14'),d:2*r,K,L,arc:a/360*K,jur,tali:2*r*Math.sin(a*D/2),apot:Math.abs(r*Math.cos(a*D/2)),tri,temb:jur-tri}}
+function draw(){const c=calc(),a=Math.min(st.a,359.99),h=a*D/2,cx=170,cy=170,R=100,sn=Math.sin(h),cs=Math.cos(h);
+ const P=[cx-R*sn,cy-R*cs],Q=[cx+R*sn,cy-R*cs],M=[cx,cy-R*cs],P2=[cx+R*sn,cy+R*cs],lg=a>180?1:0,
+ L=(p,q,col,w,x='')=>`<line x1="${p[0]}" y1="${p[1]}" x2="${q[0]}" y2="${q[1]}" stroke="${col}" stroke-width="${w}" stroke-linecap="round" ${x}/>`,
+ T=(x,y,t,col,an='start')=>`<text class="dl" x="${x}" y="${y}" text-anchor="${an}" style="fill:${col}">${t}</text>`;
+ let s=`<circle cx="170" cy="170" r="100" fill="none" stroke="var(--ghost)" stroke-width="2"/>`;
+ if(sh.juring)s+=`<path d="M170 170 L${P} A100 100 0 ${lg} 1 ${Q}Z" fill="#16a34a" fill-opacity=".25"/>`;
+ if(sh.temb)s+=`<path d="M${P} A100 100 0 ${lg} 1 ${Q}Z" fill="#ca8a04" fill-opacity=".38"/>`;
+ if(sh.diam)s+=L(P,P2,'#7c3aed',3,'stroke-dasharray="7 4"');
+ if(sh.tali)s+=L(P,Q,'#0d9488',4);
+ if(sh.apot){s+=L([cx,cy],M,'#db2777',3.5);const sg=cs>=0?1:-1;if(R*Math.abs(cs)>14&&R*sn>14)s+=`<path d="M${M[0]} ${M[1]+8*sg} L${M[0]+8} ${M[1]+8*sg} L${M[0]+8} ${M[1]}" fill="none" stroke="#db2777" stroke-width="1.8"/>`}
+ if(sh.jari)s+=L([cx,cy],P,'#2563eb',3.5)+L([cx,cy],Q,'#2563eb',3.5);
+ if(sh.busur)s+=`<path d="M${P} A100 100 0 ${lg} 1 ${Q}" fill="none" stroke="#ea580c" stroke-width="6" stroke-linecap="round"/>`;
+ s+=`<path d="M${cx-22*sn} ${cy-22*cs} A22 22 0 ${lg} 1 ${cx+22*sn} ${cy-22*cs}" fill="none" stroke="var(--fg)" stroke-width="1.5"/>`+T(cx,cy-36*cs+4,'θ','var(--fg)','middle');
+ s+=[P,Q,[cx,cy]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="var(--fg)"/>`).join('')+
+  T(P[0]-14*sn-2,P[1]-14*cs+4,'P','var(--mute)','middle')+T(Q[0]+14*sn+2,Q[1]-14*cs+4,'Q','var(--mute)','middle')+T(cx-12,cy+17,'O','var(--mute)','middle');
+ if(sh.apot||sh.tali)s+=T(cx-10,M[1]+(cs>=0?-6:14),'M','var(--mute)','middle');
+ if(sh.jari)s+=T((cx+Q[0])/2+7,(cy+Q[1])/2+4,'r','#2563eb');
+ if(sh.diam)s+=T(P2[0]+8,P2[1]+14,'diameter (d)','#7c3aed');
+ if(sh.busur)s+=T(cx,cy-R-12,'busur PQ','#ea580c','middle');
+ if(sh.tali)s+=T(Q[0]+12,Q[1]+4,'tali busur','#0d9488');
+ if(sh.apot&&R*Math.abs(cs)>14)s+=T(cx+6,(cy+M[1])/2+4,'apotema','#db2777');
+ $('js').innerHTML=s}
+function render(skip){const c=calc(),v={r:c.r,d:c.d,K:c.K,L:c.L,a:st.a};
+ Object.keys(IDS).forEach(k=>{if(k!==skip)$(IDS[k]).value=fi(v[k])});
+ $('sr').value=Math.min(50,Math.max(1,Math.round(c.r)));$('sa').value=Math.min(360,Math.max(5,Math.round(st.a/5)*5));
+ const it=[['Diameter d',g2(c.d)+' cm','#7c3aed'],['Keliling K',g2(c.K)+' cm','#0891b2'],['Luas lingkaran L',g2(c.L)+' cm²','#4f46e5'],['Panjang busur',g2(c.arc)+' cm','#ea580c'],['Luas juring',g2(c.jur)+' cm²','#16a34a'],['Panjang tali busur',g2(c.tali)+' cm','#0d9488'],['Apotema',g2(c.apot)+' cm','#db2777'],['Luas tembereng',g2(c.temb)+' cm²','#ca8a04']];
+ $('jo').innerHTML=it.map(x=>`<div style="border-left:4px solid ${x[2]}">${x[0]}<b>${x[1]}</b></div>`).join('');
+ const r=g2(c.r),a=g2(c.a),p=c.pS;
+ $('stp').innerHTML=`<b>Langkah perhitungan</b> (π = ${c.pS==='π'?'3,14159…':p})<br>
+ d = 2 × r = 2 × ${r} = <b>${g2(c.d)}</b><br>
+ K = 2 × π × r = 2 × ${p} × ${r} = <b>${g2(c.K)}</b><br>
+ L = π × r² = ${p} × ${r} × ${r} = <b>${g2(c.L)}</b><br>
+ Busur = θ/360° × K = ${a}/360 × ${g2(c.K)} = <b>${g2(c.arc)}</b><br>
+ Luas juring = θ/360° × L = ${a}/360 × ${g2(c.L)} = <b>${g2(c.jur)}</b><br>
+ Tali busur = 2 × r × sin(θ/2) = 2 × ${r} × sin ${g2(c.a/2)}° = <b>${g2(c.tali)}</b><br>
+ Apotema = r × cos(θ/2) = ${r} × cos ${g2(c.a/2)}° = <b>${g2(c.apot)}</b>${c.a>180?' (θ &gt; 180°: apotema berada di luar juring)':''}<br>
+ Luas segitiga OPQ = ½ × r² × sin θ = ½ × ${r}² × sin ${a}° = ${g2(c.tri)}<br>
+ Luas tembereng = luas juring − luas segitiga = ${g2(c.jur)} − (${g2(c.tri)}) = <b>${g2(c.temb)}</b>${c.a>180?'<br><span class="mute">Untuk θ &gt; 180°, nilai sin θ negatif sehingga segitiga justru ditambahkan.</span>':''}`;
+ draw()}
+render();
+
+/* ===== 3A. Menggelinding ===== */
+const fx=(x,d=4)=>x.toLocaleString('id-ID',{minimumFractionDigits:d,maximumFractionDigits:d});
+function roll(){const t=$('rt').value/100,d=+$('rd').value,r=d/2,x0=70,L=Math.PI*d,cur=L*t,x=x0+cur,gy=108;$('rdv').textContent=d;
+ let bars='';for(let i=0;i<4;i++){const w=Math.max(0,Math.min(d,cur-i*d)),bx=x0+i*(d+3);if(w>0)bars+=`<rect x="${bx}" y="136" width="${w}" height="20" rx="3" fill="${i<3?'#3b82f6':'#f59e0b'}"/>`+(i<3&&w>=d-.01?`<text x="${bx+d/2}" y="150" text-anchor="middle" class="dim" style="fill:#fff;font-weight:700">d</text>`:'')}
+ $('rs').innerHTML=`<line x1="10" y1="${gy}" x2="510" y2="${gy}" stroke="var(--ghost)" stroke-width="2"/>
+ <circle cx="${x0}" cy="${gy-r}" r="${r}" fill="none" stroke="var(--ghost)" stroke-dasharray="4 4"/>
+ <line x1="${x0-r}" y1="${gy-r}" x2="${x0+r}" y2="${gy-r}" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4 3"/>
+ <text x="${x0}" y="${gy-r-6}" text-anchor="middle" class="dim" style="fill:#7c3aed;font-weight:700">d = ${d}</text>
+ <line x1="${x0}" y1="${gy}" x2="${x}" y2="${gy}" stroke="#e11d48" stroke-width="5" stroke-linecap="round"/>
+ <g transform="translate(${x} ${gy-r}) rotate(${t*360})"><circle r="${r}" fill="#3b82f6" fill-opacity=".2" stroke="#3b82f6" stroke-width="3"/><line x1="0" y1="${-r}" x2="0" y2="${r}" stroke="#7c3aed" stroke-width="2"/><circle cy="${r}" r="5" fill="#e11d48"/></g>${bars}`;
+ const q=cur/d;$('rm').innerHTML=`Lintasan (merah) = <b>${f(cur,1)}</b> · diameter d = <b>${d}</b><br>Banyak d yang muat: ${f(cur,1)} ÷ ${d} = <b class="big">${fx(q,3)}</b><br>`+
+ (t>=1?`1 putaran penuh = 3 d penuh + sisa ${f(q-3,2)} d, jadi keliling ÷ d ≈ <b>3,14 = π</b>. Ganti d, hasilnya tetap ≈ 3,14!`:`Terus putar sampai 1 putaran penuh. Nilainya terus naik mendekati 3,14.`)}
+$('rt').oninput=$('rd').oninput=roll;roll();
+$('rp').onclick=()=>{cancelAnimationFrame(raf);let s=null;const go=ts=>{s??=ts;const v=Math.min(1,(ts-s)/4000);$('rt').value=v*100;roll();if(v<1)raf=requestAnimationFrame(go)};raf=requestAnimationFrame(go)};
+
+/* ===== 3B. Archimedes ===== */
+const NS_=[3,4,6,8,12,16,24,32,48,96];
+function arch(){const n=NS_[+$('an').value],th=Math.PI/n,r=100,ro=r/Math.cos(th),dg_=180/n;$('anv').textContent=n;
+ const poly=(rad,rot)=>Array.from({length:n},(_,i)=>{const a=(i*360/n-90+rot)*D;return[150+rad*Math.cos(a),150+rad*Math.sin(a)]}).map(p=>p.join(',')).join(' ');
+ $('as').innerHTML=`<polygon points="${poly(ro,180/n)}" fill="#f59e0b" fill-opacity=".12" stroke="#f59e0b" stroke-width="2"/>
+ <circle cx="150" cy="150" r="100" fill="none" stroke="var(--fg)" stroke-width="2"/>
+ <polygon points="${poly(r,0)}" fill="#3b82f6" fill-opacity=".18" stroke="#3b82f6" stroke-width="2"/>
+ <line x1="150" y1="150" x2="250" y2="150" stroke="#e11d48" stroke-width="2"/><circle cx="150" cy="150" r="3" fill="#e11d48"/><text x="200" y="143" text-anchor="middle" class="dim" style="fill:#e11d48;font-weight:700">r = 1</text>`;
+ const si=2*Math.sin(th),so=2*Math.tan(th),ki=n*si,ko=n*so,lo=ki/2,hi=ko/2,a=f(dg_,3);
+ $('ac').innerHTML=`θ = 180° ÷ n = 180° ÷ ${n} = <b>${a}°</b><br>
+ <b style="color:#2563eb">Segi-${n} dalam:</b> sisi = 2 × r × sin θ = 2 × 1 × sin ${a}° = ${fx(si,6)}<br>keliling = ${n} × ${fx(si,6)} ≈ ${fx(ki,4)}<br>keliling ÷ d = ${fx(ki,4)} ÷ 2 ≈ <b>${fx(lo,4)}</b><br>
+ <b style="color:#d97706">Segi-${n} luar:</b> sisi = 2 × r × tan θ = 2 × 1 × tan ${a}° = ${fx(so,6)}<br>keliling = ${n} × ${fx(so,6)} ≈ ${fx(ko,4)}<br>keliling ÷ d = ${fx(ko,4)} ÷ 2 ≈ <b>${fx(hi,4)}</b>`;
+ const X=v=>10+Math.min(Math.max((v-3)/.5,0),1)*280;let tk='';for(let v=3;v<=3.501;v+=.1)tk+=`<line x1="${X(v)}" y1="34" x2="${X(v)}" y2="42" stroke="var(--ghost)"/><text x="${X(v)}" y="55" text-anchor="middle" class="dim">${fx(v,1)}</text>`;
+ $('nl').innerHTML=`<line x1="10" y1="38" x2="290" y2="38" stroke="var(--ghost)" stroke-width="2"/>${tk}<rect x="${X(lo)}" y="28" width="${Math.max(2,X(hi)-X(lo))}" height="20" rx="3" fill="#3b82f6" fill-opacity=".35" stroke="#3b82f6"/>
+ <line x1="${X(Math.PI)}" y1="18" x2="${X(Math.PI)}" y2="48" stroke="#e11d48" stroke-width="2"/><text x="${X(Math.PI)}" y="13" text-anchor="middle" class="dim" style="fill:#e11d48;font-weight:700">π ≈ 3,1416</text>`;
+ $('an2').innerHTML=`${fx(lo,4)} &lt; π &lt; ${fx(hi,4)} · lebar jepitan = ${fx(hi-lo,4)}.`+(lo<3?' (Garis bantu 3,0–3,5; sebagian jepitan di luar garis.)':'')+(n==96?' Archimedes memakai n = 96 dan menulis 223/71 &lt; π &lt; 22/7, yaitu 3,1408 &lt; π &lt; 3,1429. Itu sebabnya 3,14 dan 22/7 dipakai sebagai pendekatan π.':' Tambah sisi dan lihat jepitannya makin sempit.')}
+$('an').oninput=arch;arch();
+$('ap').onclick=()=>{let i=0;$('an').value=0;arch();const iv=setInterval(()=>{if(++i>9){clearInterval(iv);return}$('an').value=i;arch()},1000)};
+
+/* ===== 3C. Monte Carlo ===== */
+const cv=$('mc'),cg=cv.getContext('2d');let pin=0,pt=0,mv=null,hist=[];
+function drawBase(){const fg=getComputedStyle(document.documentElement).getPropertyValue('--fg')||'#000';cg.clearRect(0,0,300,300);cg.strokeStyle=fg;cg.lineWidth=2;cg.strokeRect(10,10,280,280);cg.beginPath();cg.arc(10,290,280,-Math.PI/2,0);cg.stroke()}
+function chart(){const n=hist.length,H=110,Y=v=>H-8-(Math.min(Math.max(v,2.6),3.7)-2.6)/1.1*(H-16);
+ $('mh').innerHTML=`<line x1="5" y1="${Y(Math.PI)}" x2="295" y2="${Y(Math.PI)}" stroke="#e11d48" stroke-dasharray="4 3"/><text x="295" y="${Y(Math.PI)-4}" text-anchor="end" class="dim" style="fill:#e11d48">π = 3,1416</text>
+ <polyline fill="none" stroke="#3b82f6" stroke-width="1.8" points="${hist.map((v,i)=>`${5+i/Math.max(n-1,1)*290},${Y(v)}`).join(' ')}"/><text x="5" y="12" class="dim">perkiraan π tiap penambahan titik (skala 2,6–3,7)</text>`}
+function addPts(k){for(let i=0;i<k;i++){const x=Math.random(),y=Math.random(),ins=x*x+y*y<1;pt++;if(ins)pin++;cg.fillStyle=ins?'#16a34a':'#e11d48';cg.fillRect(10+x*280-1.5,290-y*280-1.5,3,3);hist.push(4*pin/pt)}
+ if(hist.length>400)hist=hist.slice(-400);const e=4*pin/pt;
+ $('mi').innerHTML=`Di dalam = <b>${pin}</b> · total = <b>${pt}</b><br>π ≈ 4 × (${pin} ÷ ${pt}) = 4 × ${fx(pin/pt,5)} = <b class="big">${fx(e,4)}</b><br>Selisih dari π: ${fx(Math.abs(e-Math.PI),4)}`;chart()}
+drawBase();
+document.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>addPts(+b.dataset.k));
+$('mp').onclick=()=>{if(mv){clearInterval(mv);mv=null;return}mv=setInterval(()=>addPts(40),60)};
+$('mr').onclick=()=>{clearInterval(mv);mv=null;pin=pt=0;hist=[];drawBase();$('mh').innerHTML='';$('mi').innerHTML='Belum ada titik. Titik hijau: x² + y² &lt; 1 (di dalam). Titik merah: di luar.'};
+</script>
+</body>
+</html>
