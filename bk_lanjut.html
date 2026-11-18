@@ -1,0 +1,2671 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informatika Kelas 8 • Bab 2: Berpikir Komputasional</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans, Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #ecfdf5 100%);
+            min-height: 100vh;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+
+        /* Animasi transisi antar tahap */
+        .stage-panel {
+            animation: fadeInSlide 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInSlide {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animasi Roda Gigi & Mesin Fungsi */
+        @keyframes spinGear {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spinGearReverse {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .gear-spin {
+            animation: spinGear 1.4s linear infinite;
+            transform-origin: center;
+        }
+
+        .gear-spin-reverse {
+            animation: spinGearReverse 1.4s linear infinite;
+            transform-origin: center;
+        }
+
+        @keyframes machineVibrate {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-2px, 2px) rotate(-0.8deg); }
+            50% { transform: translate(2px, -2px) rotate(0.8deg); }
+            75% { transform: translate(-1px, -1px) rotate(-0.4deg); }
+        }
+
+        .machine-working {
+            animation: machineVibrate 0.22s ease-in-out infinite;
+        }
+
+        /* Animasi Ban Berjalan (Conveyor Belt) */
+        @keyframes beltScroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 28px 0; }
+        }
+
+        .conveyor-track {
+            background-image: repeating-linear-gradient(
+                90deg,
+                #cbd5e1 0px,
+                #cbd5e1 14px,
+                #94a3b8 14px,
+                #94a3b8 28px
+            );
+        }
+
+        .conveyor-active {
+            animation: beltScroll 0.55s linear infinite;
+        }
+
+        /* Animasi Stack (Push & Pop) */
+        @keyframes stackDrop {
+            0% {
+                opacity: 0;
+                transform: translateY(-42px) scale(0.92);
+            }
+            70% {
+                opacity: 1;
+                transform: translateY(4px) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .stack-item-enter {
+            animation: stackDrop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes stackLiftOut {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-48px) scale(0.85);
+            }
+        }
+
+        .stack-item-exit {
+            animation: stackLiftOut 0.32s ease-in forwards;
+        }
+
+        /* Animasi Queue (Enqueue & Dequeue) */
+        @keyframes queueSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(36px) scale(0.92);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        .queue-item-enter {
+            animation: queueSlideIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes queueServeOut {
+            0% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-42px) scale(0.85);
+            }
+        }
+
+        .queue-item-exit {
+            animation: queueServeOut 0.32s ease-in forwards;
+        }
+
+        /* Animasi Sorot Peek / Front */
+        @keyframes peekHighlight {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.8); }
+            50% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); }
+        }
+
+        .peek-pulse {
+            animation: peekHighlight 0.85s ease-in-out 2;
+        }
+
+        /* Animasi Lampu Biner Menyala */
+        .bulb-glow {
+            box-shadow: 0 0 22px rgba(250, 204, 21, 0.9), 0 0 42px rgba(245, 158, 11, 0.45);
+        }
+
+        /* Animasi Pulse Tombol Lanjut */
+        @keyframes gentlePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.45); }
+            50% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); }
+        }
+
+        .btn-pulse-ready {
+            animation: gentlePulse 2s infinite;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Gaya Khusus Cetak Rapor (window.print) */
+        @media print {
+            body {
+                background: #ffffff !important;
+            }
+            header, nav, .no-print {
+                display: none !important;
+            }
+            main {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #report-card-container {
+                box-shadow: none !important;
+                border: 2px solid #cbd5e1 !important;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-100 selection:text-indigo-800">
+
+    <!-- ===================================================================== -->
+    <!-- HEADER, IDENTITAS SISWA & NAVIGASI PROGRES BELAJAR                    -->
+    <!-- ===================================================================== -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-3 pb-3">
+            <!-- Baris Atas: Judul, Identitas Siswa & Progress Bar -->
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-3">
+                <!-- Kiri: Logo & Judul -->
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-500 to-emerald-500 flex items-center justify-center text-white shadow-md shrink-0">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700">Kurikulum Merdeka • SMP</span>
+                            <span id="dynamic-subtitle" class="text-xs font-medium text-slate-500">Tahap 0: Menguasai 4 Fondasi Berpikir Komputasional</span>
+                        </div>
+                        <h1 class="font-display font-extrabold text-base sm:text-xl text-slate-900 leading-tight mt-0.5">
+                            Informatika Kelas 8 • Bab 2: Berpikir Komputasional
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Kanan: Input Nama/Kelas & Kotak Progress Bar -->
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                    <!-- Input Opsional Nama Siswa & Kelas -->
+                    <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-2xl px-3 py-1.5">
+                        <span class="text-sm" title="Identitas Siswa">🧑‍🎓</span>
+                        <input type="text" id="header-student-name" oninput="syncStudentIdentity()" placeholder="Nama Siswa..." class="bg-transparent text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none w-28 sm:w-32 border-r border-slate-200 pr-2">
+                        <input type="text" id="header-student-class" oninput="syncStudentIdentity()" placeholder="Kelas (8A)" class="bg-transparent text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none w-20">
+                    </div>
+
+                    <!-- Progress Bar Belajar -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2 min-w-[205px]">
+                        <div class="flex items-center justify-between text-xs font-semibold mb-1">
+                            <span class="text-slate-600">🚀 Progres Belajar</span>
+                            <span id="progress-percentage" class="text-indigo-600 font-bold">0%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                            <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-indigo-600 via-emerald-500 to-amber-500 rounded-full transition-all duration-500 ease-out" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5 Tab Navigasi Tahapan Belajar -->
+            <nav aria-label="Tahapan Belajar" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                <button onclick="switchStage(0)" id="nav-tab-0" class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all shrink-0 bg-indigo-600 text-white border-indigo-600 shadow-sm">
+                    <span id="badge-stage-0" class="w-5 h-5 rounded-full bg-white/20 text-white flex items-center justify-center text-xs font-bold">0</span>
+                    <span>Tahap 0: Prasyarat (4 Fondasi)</span>
+                </button>
+
+                <button onclick="switchStage(1)" id="nav-tab-1" class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all shrink-0 bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50">
+                    <span id="badge-stage-1" class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">1</span>
+                    <span>Tahap 1: Fungsi (Mudah)</span>
+                </button>
+
+                <button onclick="switchStage(2)" id="nav-tab-2" class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all shrink-0 bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50">
+                    <span id="badge-stage-2" class="w-5 h-5 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-bold">2</span>
+                    <span>Tahap 2: Himpunan & Bilangan (Menengah)</span>
+                </button>
+
+                <button onclick="switchStage(3)" id="nav-tab-3" class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all shrink-0 bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50">
+                    <span id="badge-stage-3" class="w-5 h-5 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-xs font-bold">3</span>
+                    <span>Tahap 3: Struktur Data (Menantang)</span>
+                </button>
+
+                <button onclick="switchStage(4)" id="nav-tab-4" class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all shrink-0 bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50">
+                    <span id="badge-stage-4" class="w-5 h-5 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-xs font-bold">🏆</span>
+                    <span>Tahap 4: Arena Tantangan & Skor</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- KONTEN UTAMA                                                          -->
+    <!-- ===================================================================== -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+
+        <!-- ================================================================= -->
+        <!-- TAHAP 0: MATERI PRASYARAT — 4 FONDASI BERPIKIR KOMPUTASIONAL      -->
+        <!-- ================================================================= -->
+        <section id="stage-0" class="stage-panel space-y-6">
+            <!-- Hero Banner Pengantar -->
+            <div class="bg-gradient-to-r from-indigo-600 via-indigo-500 to-emerald-600 rounded-3xl p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold tracking-wide uppercase mb-3">
+                        🧩 Tahap 0 • Materi Prasyarat Wajib
+                    </span>
+                    <h2 class="font-display font-extrabold text-2xl sm:text-3xl mb-2">
+                        4 Fondasi Utama Berpikir Komputasional
+                    </h2>
+                    <p class="text-indigo-50 text-sm sm:text-base leading-relaxed">
+                        Sebelum melangkah ke materi <strong>Fungsi</strong>, <strong>Himpunan</strong>, <strong>Sistem Bilangan</strong>, dan <strong>Struktur Data</strong>, kamu perlu menguasai <strong>4 pilar dasar cara berpikir ilmuwan komputer</strong> di bawah ini. Coba setiap simulasi mininya!
+                    </p>
+                </div>
+                <div class="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 text-7xl opacity-20 select-none">
+                    🧠🧩
+                </div>
+            </div>
+
+            <!-- GRID 4 FONDASI BERPIKIR KOMPUTASIONAL + SIMULASI MINI INTERAKTIF -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- 1. FONDASI 1: DEKOMPOSISI -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-indigo-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold">Fondasi 1 • Decomposition</span>
+                            <span class="text-2xl">🪓</span>
+                        </div>
+                        <h3 class="font-display font-extrabold text-xl text-slate-900 mb-2">
+                            1. Dekomposisi (Memecah Masalah)
+                        </h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                            Kemampuan <strong>memecah masalah besar atau sistem yang kompleks menjadi bagian-bagian kecil</strong> yang lebih sederhana dan mudah dikelola.
+                        </p>
+                        <div class="bg-indigo-50/80 border border-indigo-200/70 rounded-xl p-3 text-xs text-indigo-950 mb-4">
+                            <strong>Contoh Sehari-hari:</strong> Memecah panitia acara pentas seni sekolah menjadi tim acara, konsumsi, dan perlengkapan; atau memecah bilangan biner 8-bit menjadi kelompok 3-bit untuk diubah ke oktal.
+                        </div>
+                    </div>
+
+                    <!-- Simulasi Mini 1: Dekomposisi -->
+                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-xs font-bold text-slate-700">🎮 Demo Mini: Pecah Masalah Besar</span>
+                            <button onclick="toggleDecompDemo()" id="btn-decomp-demo" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all active:scale-95">
+                                Pecah Masalah ✂️
+                            </button>
+                        </div>
+                        <div id="decomp-visual-box" class="min-h-[84px] flex items-center justify-center">
+                            <div class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-center font-display font-bold text-sm shadow-sm">
+                                🎪 Proyek Besar: Acara Pentas Seni Sekolah
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. FONDASI 2: PENGENALAN POLA -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-emerald-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">Fondasi 2 • Pattern Recognition</span>
+                            <span class="text-2xl">🔍</span>
+                        </div>
+                        <h3 class="font-display font-extrabold text-xl text-slate-900 mb-2">
+                            2. Pengenalan Pola (Mencari Keteraturan)
+                        </h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                            Kemampuan <strong>menemukan kesamaan, keteraturan, atau tren yang berulang</strong> dari sekumpulan data untuk memprediksi solusi berikutnya.
+                        </p>
+                        <div class="bg-emerald-50/80 border border-emerald-200/70 rounded-xl p-3 text-xs text-emerald-950 mb-4">
+                            <strong>Contoh Sehari-hari:</strong> Mengenali pola kenaikan tarif ojek online setiap kilometer, atau pola kelipatan nilai tempat bilangan biner (<code>1, 2, 4, 8, 16...</code>).
+                        </div>
+                    </div>
+
+                    <!-- Simulasi Mini 2: Pengenalan Pola -->
+                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-slate-700">🎮 Demo Mini: Tebak Pola Nilai Tempat Biner</span>
+                            <span id="pattern-demo-status" class="text-[11px] font-bold text-emerald-600"></span>
+                        </div>
+                        <div class="flex items-center justify-center gap-1.5 sm:gap-2 my-2">
+                            <span class="w-9 h-9 rounded-lg bg-white border border-slate-300 flex items-center justify-center font-mono font-bold text-xs">1</span>
+                            <span class="text-slate-400 text-xs">→</span>
+                            <span class="w-9 h-9 rounded-lg bg-white border border-slate-300 flex items-center justify-center font-mono font-bold text-xs">2</span>
+                            <span class="text-slate-400 text-xs">→</span>
+                            <span class="w-9 h-9 rounded-lg bg-white border border-slate-300 flex items-center justify-center font-mono font-bold text-xs">4</span>
+                            <span class="text-slate-400 text-xs">→</span>
+                            <span class="w-9 h-9 rounded-lg bg-white border border-slate-300 flex items-center justify-center font-mono font-bold text-xs">8</span>
+                            <span class="text-slate-400 text-xs">→</span>
+                            <span id="pattern-demo-target" class="w-10 h-9 rounded-lg bg-amber-100 border-2 border-dashed border-amber-500 flex items-center justify-center font-mono font-extrabold text-xs text-amber-800">?</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 mt-2.5">
+                            <button onclick="checkPatternDemo(10, this)" class="pat-demo-btn py-1.5 rounded-lg bg-white border border-slate-300 hover:border-emerald-500 font-mono font-bold text-xs">10</button>
+                            <button onclick="checkPatternDemo(16, this)" class="pat-demo-btn py-1.5 rounded-lg bg-white border border-slate-300 hover:border-emerald-500 font-mono font-bold text-xs">16</button>
+                            <button onclick="checkPatternDemo(12, this)" class="pat-demo-btn py-1.5 rounded-lg bg-white border border-slate-300 hover:border-emerald-500 font-mono font-bold text-xs">12</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. FONDASI 3: ABSTRAKSI -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-amber-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold">Fondasi 3 • Abstraction</span>
+                            <span class="text-2xl">🗺️</span>
+                        </div>
+                        <h3 class="font-display font-extrabold text-xl text-slate-900 mb-2">
+                            3. Abstraksi (Menyaring Inti Informasi)
+                        </h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                            Kemampuan <strong>fokus pada informasi penting yang relevan saja dan mengabaikan detail rumit</strong> yang tidak dibutuhkan untuk menyelesaikan masalah.
+                        </p>
+                        <div class="bg-amber-50/80 border border-amber-200/70 rounded-xl p-3 text-xs text-amber-950 mb-4">
+                            <strong>Contoh Sehari-hari:</strong> Peta jalur KRL/TransJakarta yang hanya menampilkan garis rute dan nama stasiun tanpa menggambar pohon atau bentuk gedung, atau memodelkan mesin jus sebagai fungsi <code>f(x)</code> tanpa peduli merek mesinnya.
+                        </div>
+                    </div>
+
+                    <!-- Simulasi Mini 3: Abstraksi Peta Rute -->
+                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-slate-700">🎮 Demo Mini: Filter Informasi Peta</span>
+                            <button onclick="toggleAbstractionDemo()" id="btn-abs-demo" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all active:scale-95">
+                                Aktifkan Mode Abstraksi ✨
+                            </button>
+                        </div>
+                        <!-- Mini SVG Peta Detail vs Abstraksi -->
+                        <svg viewBox="0 0 360 88" class="w-full h-auto bg-white rounded-xl border border-slate-200">
+                            <!-- Detail Rumit yang Akan Disaring -->
+                            <g id="abs-clutter-layer" class="transition-opacity duration-500">
+                                <text x="24" y="24" font-size="14">🌳</text>
+                                <text x="85" y="20" font-size="13">☁️</text>
+                                <text x="145" y="76" font-size="14">🏢</text>
+                                <text x="215" y="22" font-size="14">🌲</text>
+                                <text x="280" y="76" font-size="14">🏠</text>
+                                <text x="328" y="24" font-size="13">🕊️</text>
+                                <path d="M 10 72 Q 90 58, 175 74 T 350 68" fill="none" stroke="#bae6fd" stroke-width="4"/>
+                            </g>
+                            <!-- Jalur Inti (Selalu Terlihat Jelas) -->
+                            <line x1="48" y1="45" x2="312" y2="45" stroke="#4f46e5" stroke-width="4" stroke-linecap="round"/>
+                            <circle cx="48" cy="45" r="7" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+                            <text x="48" y="66" text-anchor="middle" font-size="9" font-weight="700" fill="#1e293b">St. Kota</text>
+
+                            <circle cx="180" cy="45" r="7" fill="#ffffff" stroke="#10b981" stroke-width="3"/>
+                            <text x="180" y="66" text-anchor="middle" font-size="9" font-weight="700" fill="#1e293b">St. Pusat</text>
+
+                            <circle cx="312" cy="45" r="7" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+                            <text x="312" y="66" text-anchor="middle" font-size="9" font-weight="700" fill="#1e293b">St. Selatan</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- 4. FONDASI 4: DESAIN ALGORITMA -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-purple-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-bold">Fondasi 4 • Algorithm Design</span>
+                            <span class="text-2xl">📋</span>
+                        </div>
+                        <h3 class="font-display font-extrabold text-xl text-slate-900 mb-2">
+                            4. Desain Algoritma (Langkah Terurut)
+                        </h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                            Kemampuan <strong>menyusun langkah-langkah penyelesaian masalah secara sistematis, logis, dan berurutan</strong> dari awal hingga akhir.
+                        </p>
+                        <div class="bg-purple-50/80 border border-purple-200/70 rounded-xl p-3 text-xs text-purple-950 mb-4">
+                            <strong>Contoh Sehari-hari:</strong> Resep memasak langkah demi langkah, atau aturan urutan masuk dan keluar pada antrean (<strong>Queue</strong>) dan tumpukan (<strong>Stack</strong>).
+                        </div>
+                    </div>
+
+                    <!-- Simulasi Mini 4: Desain Algoritma -->
+                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-slate-700">🎮 Demo Mini: Klik Urutan Menyeberang Zebra Cross</span>
+                            <button onclick="resetAlgoDemo()" class="text-[11px] font-bold text-purple-600 hover:underline">Reset</button>
+                        </div>
+                        <div id="algo-demo-buttons" class="grid grid-cols-3 gap-1.5">
+                            <button onclick="clickAlgoStep(2, this)" class="algo-step-btn p-2 rounded-xl bg-white border border-slate-300 hover:border-purple-500 text-[11px] font-semibold text-slate-700 text-center transition-all">
+                                👀 Tengok kanan & kiri
+                            </button>
+                            <button onclick="clickAlgoStep(3, this)" class="algo-step-btn p-2 rounded-xl bg-white border border-slate-300 hover:border-purple-500 text-[11px] font-semibold text-slate-700 text-center transition-all">
+                                🚶 Menyeberang saat aman
+                            </button>
+                            <button onclick="clickAlgoStep(1, this)" class="algo-step-btn p-2 rounded-xl bg-white border border-slate-300 hover:border-purple-500 text-[11px] font-semibold text-slate-700 text-center transition-all">
+                                🛑 Berhenti di tepi jalan
+                            </button>
+                        </div>
+                        <div id="algo-demo-feedback" class="mt-2 text-[11px] font-semibold text-slate-500 text-center">
+                            Klik kartu sesuai urutan Langkah 1 → 2 → 3
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================= -->
+            <!-- KUIS PEMANASAN PRASYARAT (4 SOAL — MEWAKILI 4 FONDASI)        -->
+            <!-- ============================================================= -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-indigo-200/80 shadow-md">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100 mb-6">
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Kuis Pemanasan Prasyarat • 4 Fondasi</span>
+                        <h3 class="font-display font-extrabold text-xl text-slate-900">Uji Pemahaman 4 Fondasi Sebelum Lanjut</h3>
+                    </div>
+                    <span id="warmup-status-badge" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700">
+                        Tuntas: <span id="warmup-count">0</span> / 4 Fondasi
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <!-- Soal 1: Dekomposisi -->
+                    <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200/90 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="px-2.5 py-0.5 rounded-lg bg-indigo-100 text-indigo-800 text-xs font-bold">Soal 1 • Dekomposisi</span>
+                                <span id="wq-check-1" class="hidden text-emerald-600 font-bold text-xs">✓ Benar</span>
+                            </div>
+                            <p class="text-xs sm:text-sm font-semibold text-slate-800 mb-3">
+                                Untuk mengubah bilangan biner 8-bit <code>10110110₂</code> ke bilangan Oktal, kita membaginya menjadi kelompok 3-bit dari kanan (<code>[10][110][110]</code>). Tindakan memecah data besar menjadi bagian kecil ini menerapkan fondasi...
+                            </p>
+                            <div class="space-y-2">
+                                <button onclick="answerWarmupQuiz(1, true, this)" class="wq-btn-1 w-full text-left px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-indigo-400 text-xs font-semibold transition-all">
+                                    A. Dekomposisi (Decomposition)
+                                </button>
+                                <button onclick="answerWarmupQuiz(1, false, this)" class="wq-btn-1 w-full text-left px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-indigo-400 text-xs font-semibold transition-all">
+                                    B. Abstraksi (Abstraction)
+                                </button>
+                            </div>
+                        </div>
+                        <div id="wq-fb-1" class="hidden mt-3 p-2.5 rounded-xl text-xs font-medium"></div>
+                    </div>
+
+                    <!-- Soal 2: Pengenalan Pola -->
+                    <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200/90 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 text-xs font-bold">Soal 2 • Pengenalan Pola</span>
+                                <span id="wq-check-2" class="hidden text-emerald-600 font-bold text-xs">✓ Benar</span>
+                            </div>
+                            <p class="text-xs sm:text-sm font-semibold text-slate-800 mb-3">
+                                Tarif pengiriman paket tercatat: 1 km = Rp8.000, 2 km = Rp11.000, 3 km = Rp14.000. Dengan mengenali pola kenaikan Rp3.000 tiap km, berapa biaya untuk jarak 5 km?
+                            </p>
+                            <div class="space-y-2">
+                                <button onclick="answerWarmupQuiz(2, false, this)" class="wq-btn-2 w-full text-left px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-emerald-400 text-xs font-semibold transition-all">
+                                    A. Rp17.000
+                                </button>
+                                <button onclick="answerWarmupQuiz(2, true, this)" class="wq-btn-2 w-full text-left px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-emerald-400 text-xs font-semibold transition-all">
+                                    B. Rp20.000
+                                </button>
+                            </div>
+                        </div>
+                        <div id="wq-fb-2" class="hidden mt-3 p-2.5 rounded-xl text-xs font-medium"></div>
+                    </div>
+
+                    <!-- Soal 3: Abstraksi -->
+                    <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200/90 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 text-xs font-bold">Soal 3 • Abstraksi</span>
+                                <span id="wq-check-3" class="hidden text-emerald-600 font-bold text-xs">✓ Benar</span>
+                            </div>
+                            <p class="text-xs sm:text-sm font-semibold text-slate-800 mb-3">
+                                Saat membuat model fungsi mesin jus <code>f(buah) = jus</code>, kita hanya mencatat jenis buah masuk dan jus yang keluar tanpa peduli warna cat mesin atau merek pabrik pembuatnya. Proses menyaring detail tidak penting ini disebut...
+                            </p>
+                            <div class="space-y-2">
+                                <button onclick="answerWarmupQuiz(3, false, this)" class="wq-btn-3 w-full text-left px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-amber-400 text-xs font-semibold transition-all">
+                                    A. Desain Algoritma
+                                </button>
+                                <button onclick="answerWarmupQuiz(3, true, this)" class="wq-btn-3 w-full text-left px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-amber-400 text-xs font-semibold transition-all">
+                                    B. Abstraksi
+                                </button>
+                            </div>
+                        </div>
+                        <div id="wq-fb-3" class="hidden mt-3 p-2.5 rounded-xl text-xs font-medium"></div>
+                    </div>
+
+                    <!-- Soal 4: Desain Algoritma -->
+                    <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200/90 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="px-2.5 py-0.5 rounded-lg bg-purple-100 text-purple-800 text-xs font-bold">Soal 4 • Desain Algoritma</span>
+                                <span id="wq-check-4" class="hidden text-emerald-600 font-bold text-xs">✓ Benar</span>
+                            </div>
+                            <p class="text-xs sm:text-sm font-semibold text-slate-800 mb-3">
+                                Menuliskan aturan baku langkah demi langkah: <em>"(1) Terima input x → (2) Kalikan x dengan 2 → (3) Tambahkan hasil dengan 3 → (4) Tampilkan output"</em> merupakan penerapan dari fondasi...
+                            </p>
+                            <div class="space-y-2">
+                                <button onclick="answerWarmupQuiz(4, true, this)" class="wq-btn-4 w-full text-left px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-purple-400 text-xs font-semibold transition-all">
+                                    A. Desain Algoritma
+                                </button>
+                                <button onclick="answerWarmupQuiz(4, false, this)" class="wq-btn-4 w-full text-left px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-purple-400 text-xs font-semibold transition-all">
+                                    B. Dekomposisi
+                                </button>
+                            </div>
+                        </div>
+                        <div id="wq-fb-4" class="hidden mt-3 p-2.5 rounded-xl text-xs font-medium"></div>
+                    </div>
+                </div>
+
+                <!-- Tombol Lanjut ke Tahap 1 -->
+                <div class="mt-6 pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p id="stage0-hint" class="text-xs sm:text-sm text-slate-500">
+                        💡 Jawab keempat soal prasyarat di atas untuk menyalakan tombol lanjut ke <strong>Tahap 1: Fungsi</strong>.
+                    </p>
+                    <button id="btn-to-stage-1" onclick="switchStage(1)" class="w-full sm:w-auto px-6 py-3 rounded-2xl font-display font-bold text-sm bg-slate-200 text-slate-500 transition-all flex items-center justify-center gap-2">
+                        <span>Lanjut ke Tahap 1: Fungsi</span>
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- TAHAP 1: FUNGSI (LEVEL: MUDAH)                                    -->
+        <!-- ================================================================= -->
+        <section id="stage-1" class="stage-panel hidden space-y-6">
+            <!-- Header Materi Fungsi -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                    <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">Tahap 1 • Level: Mudah</span>
+                    <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">Konsep Input → Proses → Output & Domain</span>
+                </div>
+                <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mb-3">
+                    Memahami Konsep Fungsi Seperti Mesin Otomatis
+                </h2>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-5">
+                    Dalam Informatika, <strong>Fungsi</strong> adalah blok proses yang menerima masukan sah (<strong>Input / Domain</strong>), mengolahnya berdasarkan aturan rumus tertentu (<strong>Proses</strong>), dan menghasilkan keluaran yang pasti (<strong>Output / Range</strong>).
+                </p>
+
+                <!-- Contoh Konteks Sehari-hari -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex items-start gap-3">
+                        <span class="text-3xl">🧃</span>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-900">1. Mesin Pembuat Minuman Otomatis</h4>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                Hanya menerima buah-buahan segar sebagai <strong>Domain (Input)</strong>. Jika diberi input di luar domain (misalnya batu), mesin akan menolak memprosesnya.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200/80 flex items-start gap-3">
+                        <span class="text-3xl">🧾</span>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-900">2. Perhitungan Tarif & Harga Otomatis</h4>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                Seperti ongkos kirim <code>f(x) = 2x + 3</code> (dalam ribuan rupiah) atau cetak foto <code>f(x) = 3x - 1</code>, setiap nilai <code>x</code> memetakan tepat satu harga bayar <code>y</code>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMULATOR INTERAKTIF: MESIN FUNGSI AJAIB -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-emerald-200/80 shadow-md">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100 mb-6">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Laboratorium Animasi Interaktif</span>
+                        <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">🏭 Mesin Fungsi Ajaib</h3>
+                    </div>
+
+                    <!-- Switcher Mode A & Mode B -->
+                    <div class="inline-flex p-1.5 rounded-2xl bg-slate-100 border border-slate-200 self-start">
+                        <button id="btn-func-mode-a" onclick="setFunctionMode('A')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white shadow-sm transition-all">
+                            🧃 Mode A: Pabrik Jus Buah
+                        </button>
+                        <button id="btn-func-mode-b" onclick="setFunctionMode('B')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition-all">
+                            🔢 Mode B: Mesin Matematika
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ==================== MODE A: PABRIK JUS BUAH ==================== -->
+                <div id="func-mode-a-panel" class="space-y-5">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
+                            Pilih Bahan Input (Domain Mesin Jus = {Jeruk, Mangga, Stroberi}):
+                        </label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <button onclick="selectJuiceInput('jeruk', '🍊', 'Buah Jeruk', this)" class="juice-input-btn p-3 rounded-xl bg-emerald-50 border-2 border-emerald-500 text-center transition-all">
+                                <div class="text-2xl mb-1">🍊</div>
+                                <div class="text-xs font-bold text-slate-800">Jeruk</div>
+                                <div class="text-[10px] text-emerald-700 font-semibold">Anggota Domain</div>
+                            </button>
+                            <button onclick="selectJuiceInput('mangga', '🥭', 'Buah Mangga', this)" class="juice-input-btn p-3 rounded-xl bg-white border-2 border-slate-200 hover:border-emerald-300 text-center transition-all">
+                                <div class="text-2xl mb-1">🥭</div>
+                                <div class="text-xs font-bold text-slate-800">Mangga</div>
+                                <div class="text-[10px] text-emerald-700 font-semibold">Anggota Domain</div>
+                            </button>
+                            <button onclick="selectJuiceInput('stroberi', '🍓', 'Buah Stroberi', this)" class="juice-input-btn p-3 rounded-xl bg-white border-2 border-slate-200 hover:border-emerald-300 text-center transition-all">
+                                <div class="text-2xl mb-1">🍓</div>
+                                <div class="text-xs font-bold text-slate-800">Stroberi</div>
+                                <div class="text-[10px] text-emerald-700 font-semibold">Anggota Domain</div>
+                            </button>
+                            <button onclick="selectJuiceInput('batu', '🪨', 'Batu Kali', this)" class="juice-input-btn p-3 rounded-xl bg-white border-2 border-slate-200 hover:border-rose-300 text-center transition-all">
+                                <div class="text-2xl mb-1">🪨</div>
+                                <div class="text-xs font-bold text-slate-800">Batu (Uji Error)</div>
+                                <div class="text-[10px] text-rose-600 font-semibold">Di Luar Domain!</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Area Animasi Ban Berjalan & Mesin -->
+                    <div class="bg-gradient-to-b from-slate-900 to-slate-800 rounded-3xl p-5 sm:p-7 text-white relative overflow-hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-11 items-center gap-4">
+                            <!-- Jalur Input Kiri -->
+                            <div class="md:col-span-4 flex flex-col items-center">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">INPUT (BAHAN MASUK)</span>
+                                <div class="w-full h-24 rounded-2xl bg-slate-800/90 border border-slate-700 flex items-center justify-center relative overflow-hidden">
+                                    <div id="mode-a-input-item" class="flex flex-col items-center transition-all duration-700 transform translate-x-0">
+                                        <span class="text-4xl">🍊</span>
+                                        <span class="text-xs font-semibold text-emerald-300 mt-1">Buah Jeruk</span>
+                                    </div>
+                                </div>
+                                <div id="belt-left-a" class="conveyor-track w-full h-3 rounded-full mt-2"></div>
+                            </div>
+
+                            <!-- Mesin Tengah dengan Roda Gigi SVG -->
+                            <div class="md:col-span-3 flex flex-col items-center">
+                                <div id="machine-box-a" class="w-full py-5 px-4 rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-600 border-4 border-emerald-300/40 shadow-xl flex flex-col items-center justify-center text-center">
+                                    <div class="flex items-center justify-center gap-1 mb-2">
+                                        <svg id="gear-a-1" class="w-9 h-9 text-amber-200" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97 0-.33-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.39-1.06-.73-1.69-.98l-.37-2.65A.506.506 0 0 0 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1 0 .33.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.06.74 1.69.99l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.17-.59 1.69-.99l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.66Z"/>
+                                        </svg>
+                                        <svg id="gear-a-2" class="w-7 h-7 text-white -ml-1 mt-3" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97 0-.33-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.39-1.06-.73-1.69-.98l-.37-2.65A.506.506 0 0 0 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1 0 .33.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.06.74 1.69.99l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.17-.59 1.69-.99l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.66Z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="font-display font-bold text-xs sm:text-sm">⚙️ Mesin Ekstraktor Jus</div>
+                                    <div id="machine-a-status" class="text-[11px] text-emerald-100 mt-1">Siap memproses</div>
+                                </div>
+                            </div>
+
+                            <!-- Jalur Output Kanan -->
+                            <div class="md:col-span-4 flex flex-col items-center">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">OUTPUT (HASIL FUNGSI)</span>
+                                <div class="w-full h-24 rounded-2xl bg-slate-800/90 border border-slate-700 flex items-center justify-center p-2 text-center">
+                                    <div id="mode-a-output-item" class="flex flex-col items-center">
+                                        <span class="text-slate-400 text-xs">Klik tombol "Jalankan Mesin!"</span>
+                                    </div>
+                                </div>
+                                <div id="belt-right-a" class="conveyor-track w-full h-3 rounded-full mt-2"></div>
+                            </div>
+                        </div>
+
+                        <!-- Kotak Penjelasan Domain / Output -->
+                        <div id="mode-a-explanation" class="mt-5 p-3.5 rounded-2xl bg-white/10 border border-white/15 text-xs sm:text-sm text-slate-100 flex items-center justify-between flex-wrap gap-3">
+                            <span>💡 Pilih bahan di atas lalu tekan <strong>Jalankan Mesin!</strong> (Coba pilih <strong>Batu</strong> untuk melihat penolakan di luar Domain).</span>
+                            <button onclick="runJuiceMachine()" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-display font-extrabold text-xs sm:text-sm shadow-md transition-all active:scale-95">
+                                ▶️ Jalankan Mesin!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== MODE B: MESIN MATEMATIKA f(x) ==================== -->
+                <div id="func-mode-b-panel" class="hidden space-y-5">
+                    <!-- Kontrol Pemilihan Rumus & Nilai Input x -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-indigo-50/70 border border-indigo-200 rounded-2xl p-4">
+                            <label class="block text-xs font-bold text-indigo-800 uppercase tracking-wider mb-2">
+                                1. Pilih Aturan Rumus Fungsi:
+                            </label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="selectMathFormula('2x+3', this)" class="math-formula-btn py-2.5 px-3 rounded-xl bg-indigo-600 text-white font-mono font-bold text-xs sm:text-sm shadow-sm transition-all">
+                                    f(x) = 2x + 3
+                                </button>
+                                <button onclick="selectMathFormula('3x-1', this)" class="math-formula-btn py-2.5 px-3 rounded-xl bg-white border border-indigo-200 text-indigo-900 font-mono font-bold text-xs sm:text-sm hover:bg-indigo-50 transition-all">
+                                    f(x) = 3x - 1
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col justify-between">
+                            <label for="math-x-input" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                                2. Masukkan Nilai Input x (Bilangan Bulat 1–20):
+                            </label>
+                            <div class="flex items-center gap-2.5">
+                                <button onclick="stepMathX(-1)" class="w-10 h-10 rounded-xl bg-white border border-slate-300 font-bold text-lg hover:bg-slate-100">-</button>
+                                <input type="number" id="math-x-input" min="1" max="20" value="4" oninput="syncMathInputFromBox(this.value)" class="w-20 h-10 rounded-xl bg-white border-2 border-indigo-400 text-center font-mono font-extrabold text-base text-slate-900 focus:outline-none">
+                                <button onclick="stepMathX(1)" class="w-10 h-10 rounded-xl bg-white border border-slate-300 font-bold text-lg hover:bg-slate-100">+</button>
+                                <button onclick="runMathMachine()" class="flex-1 h-10 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-display font-extrabold text-xs sm:text-sm shadow-sm transition-all active:scale-95">
+                                    ⚡ Proses f(x)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Mesin Komputasi Langkah demi Langkah -->
+                    <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 text-white">
+                        <div class="grid grid-cols-1 md:grid-cols-11 items-center gap-4">
+                            <!-- Input x -->
+                            <div class="md:col-span-3 flex flex-col items-center">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-300 mb-2">INPUT (DOMAIN x)</span>
+                                <div class="w-24 h-24 rounded-2xl bg-indigo-500/20 border-2 border-indigo-400 flex flex-col items-center justify-center">
+                                    <span class="text-xs text-indigo-200">Nilai x</span>
+                                    <span id="math-visual-x" class="font-mono font-extrabold text-3xl text-white">4</span>
+                                </div>
+                            </div>
+
+                            <!-- Mesin Proses Rumus -->
+                            <div class="md:col-span-5 flex flex-col items-center">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-amber-300 mb-2">PROSES DI DALAM MESIN</span>
+                                <div id="math-machine-box" class="w-full rounded-3xl bg-gradient-to-r from-indigo-600 to-purple-600 border-2 border-indigo-300/40 p-5 text-center shadow-xl">
+                                    <div id="math-formula-title" class="font-mono font-extrabold text-xl sm:text-2xl text-amber-300 mb-2">
+                                        f(x) = 2x + 3
+                                    </div>
+                                    <div id="math-step-display" class="min-h-[54px] rounded-xl bg-slate-950/60 p-2.5 font-mono text-xs sm:text-sm text-emerald-300 flex items-center justify-center">
+                                        Klik "Proses f(x)" untuk melihat alur hitungan!
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Output y -->
+                            <div class="md:col-span-3 flex flex-col items-center">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-300 mb-2">OUTPUT (RANGE y)</span>
+                                <div class="w-24 h-24 rounded-2xl bg-emerald-500/20 border-2 border-emerald-400 flex flex-col items-center justify-center">
+                                    <span class="text-xs text-emerald-200">Hasil f(x)</span>
+                                    <span id="math-visual-y" class="font-mono font-extrabold text-3xl text-emerald-300">?</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Riwayat Pasangan (x, y) Domain & Range -->
+                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-700">📋 Tabel Riwayat Pasangan (x, y) — Domain & Range</span>
+                            <button onclick="clearMathHistory()" class="text-xs font-semibold text-rose-600 hover:underline">Bersihkan Tabel</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-200/70 text-slate-700">
+                                        <th class="py-2 px-3 rounded-tl-xl font-bold">Rumus Fungsi</th>
+                                        <th class="py-2 px-3 font-bold">Input (Domain x)</th>
+                                        <th class="py-2 px-3 font-bold">Output (Range y)</th>
+                                        <th class="py-2 px-3 rounded-tr-xl font-bold">Pasangan Koordinat</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="math-history-tbody" class="divide-y divide-slate-200 bg-white">
+                                    <tr>
+                                        <td colspan="4" class="py-4 px-3 text-center text-slate-400 text-xs">
+                                            Belum ada data hitungan. Tekan tombol <strong>"Proses f(x)"</strong> di atas untuk mengisi tabel!
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigasi Bawah Tahap 1 -->
+            <div class="flex items-center justify-between gap-4">
+                <button onclick="switchStage(0)" class="px-5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50">
+                    ← Kembali ke Prasyarat
+                </button>
+                <button onclick="completeAndGo(1, 2)" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-display font-bold text-sm shadow-md transition-all">
+                    Tandai Paham & Lanjut ke Tahap 2 →
+                </button>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- TAHAP 2: HIMPUNAN & SISTEM BILANGAN (LEVEL: MENENGAH)             -->
+        <!-- ================================================================= -->
+        <section id="stage-2" class="stage-panel hidden space-y-8">
+            <!-- Header Materi Tahap 2 -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                    <span class="px-3 py-1 rounded-full bg-sky-100 text-sky-800 text-xs font-bold">Tahap 2 • Level: Menengah</span>
+                    <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">Pengelompokan Data & Representasi Bilangan</span>
+                </div>
+                <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mb-2">
+                    Himpunan & Sistem Bilangan Komputer
+                </h2>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                    Komputer mengelompokkan data berdasarkan kesamaan sifat menggunakan <strong>Himpunan</strong>, serta merepresentasikan seluruh data angka maupun huruf menggunakan <strong>Sistem Bilangan Biner (Basis 2)</strong> dan <strong>Oktal (Basis 8)</strong>.
+                </p>
+            </div>
+
+            <!-- ==================== BAGIAN 2A: HIMPUNAN & DIAGRAM VENN ==================== -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-sky-200/80 shadow-sm space-y-6">
+                <div>
+                    <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Bagian 2A • Pendataan Minat Ekstrakurikuler</span>
+                    <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 mt-0.5">
+                        🤖 Ekskul Robotik (A) & Desain Grafis (B) — Diagram Venn Interaktif
+                    </h3>
+                    <p class="text-sm text-slate-600 mt-1">
+                        Ubah pilihan ekstrakurikuler 6 siswa kelas 8 di bawah ini secara langsung, dan perhatikan bagaimana nama mereka berpindah posisi otomatis di dalam <strong>Diagram Venn SVG</strong>!
+                    </p>
+                </div>
+
+                <!-- Panel Kontrol 6 Siswa -->
+                <div id="students-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                    <!-- Dirender JS -->
+                </div>
+
+                <!-- Tombol Operasi Himpunan -->
+                <div class="flex flex-wrap items-center gap-2 pt-1">
+                    <span class="text-xs font-bold text-slate-500 uppercase mr-1">Sorot Operasi:</span>
+                    <button onclick="setVennOperation('all')" id="venn-op-all" class="venn-op-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all">
+                        Semua (Normal)
+                    </button>
+                    <button onclick="setVennOperation('intersection')" id="venn-op-intersection" class="venn-op-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-purple-100 hover:text-purple-800 transition-all">
+                        Irisan (A ∩ B)
+                    </button>
+                    <button onclick="setVennOperation('union')" id="venn-op-union" class="venn-op-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-emerald-100 hover:text-emerald-800 transition-all">
+                        Gabungan (A ∪ B)
+                    </button>
+                    <button onclick="setVennOperation('diffAB')" id="venn-op-diffAB" class="venn-op-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-sky-100 hover:text-sky-800 transition-all">
+                        Selisih (A - B)
+                    </button>
+                    <button onclick="setVennOperation('diffBA')" id="venn-op-diffBA" class="venn-op-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-amber-100 hover:text-amber-800 transition-all">
+                        Selisih (B - A)
+                    </button>
+                </div>
+
+                <!-- Diagram Venn SVG + Hasil Notasi Anggota -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div class="lg:col-span-7 bg-slate-50 rounded-2xl p-3 sm:p-4 border border-slate-200">
+                        <svg id="venn-svg" viewBox="0 0 520 300" class="w-full h-auto select-none">
+                            <!-- Kotak Semesta S -->
+                            <rect x="8" y="8" width="504" height="284" rx="18" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+                            <text x="24" y="34" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="14" fill="#475569">S (Semesta: 6 Siswa Kelas 8)</text>
+
+                            <!-- Lingkaran A: Ekskul Robotik -->
+                            <circle id="venn-circle-a" cx="195" cy="158" r="102" fill="rgba(14, 165, 233, 0.16)" stroke="#0284c7" stroke-width="3" class="transition-all duration-300"/>
+                            <text x="142" y="48" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="13" fill="#0369a1">A: Robotik 🤖</text>
+
+                            <!-- Lingkaran B: Ekskul Desain Grafis -->
+                            <circle id="venn-circle-b" cx="325" cy="158" r="102" fill="rgba(245, 158, 11, 0.16)" stroke="#d97706" stroke-width="3" class="transition-all duration-300"/>
+                            <text x="378" y="48" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="13" fill="#b45309">B: Desain Grafis 🎨</text>
+
+                            <!-- Lapisan Dinamis Nama Siswa -->
+                            <g id="venn-names-layer"></g>
+                        </svg>
+                    </div>
+
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="p-5 rounded-2xl bg-indigo-50/80 border border-indigo-200 space-y-2.5">
+                            <div id="venn-op-title" class="font-display font-extrabold text-lg text-indigo-950">
+                                Semua Anggota Semesta (S)
+                            </div>
+                            <p id="venn-op-desc" class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                Klik tombol operasi himpunan di atas untuk melihat sorotan area diagram dan daftar anggotanya.
+                            </p>
+                            <div class="pt-2 border-t border-indigo-200/70">
+                                <div class="text-xs font-bold text-indigo-700 mb-1">Notasi Anggota Himpunan:</div>
+                                <div id="venn-op-members" class="font-mono font-bold text-xs sm:text-sm text-slate-900 bg-white p-3 rounded-xl border border-indigo-100">
+                                    { Andi, Budi, Citra, Dina, Eko, Fajar }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="p-3 rounded-xl bg-sky-50 border border-sky-200">
+                                <span class="font-bold text-sky-800 block">Himpunan A (Robotik)</span>
+                                <span id="list-set-a" class="text-slate-700 font-medium mt-1 block">-</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-amber-50 border border-amber-200">
+                                <span class="font-bold text-amber-800 block">Himpunan B (Desain)</span>
+                                <span id="list-set-b" class="text-slate-700 font-medium mt-1 block">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== BAGIAN 2B: SISTEM BILANGAN (BINER, DESIMAL, OKTAL) ==================== -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-indigo-200/80 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Bagian 2B • Saklar Lampu Digital 8-Bit</span>
+                        <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 mt-0.5">
+                            💡 Simulator Saklar Lampu 8-Bit & Dekomposisi Oktal
+                        </h3>
+                        <p class="text-sm text-slate-600 mt-1">
+                            Klik saklar untuk menyalakan (<strong>1</strong>) atau mematikan (<strong>0</strong>) lampu. Komputer memecah 8 bit menjadi kelompok 3-bit dari kanan (<code>[2 bit][3 bit][3 bit]</code>) untuk diubah ke <strong>Oktal (Basis 8)</strong>.
+                        </p>
+                    </div>
+
+                    <!-- Tombol Preset Cepat -->
+                    <div class="flex items-center gap-2 flex-wrap shrink-0">
+                        <button onclick="setBinaryValue(42)" class="px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-xs font-bold text-indigo-700 border border-indigo-200">Angka 42</button>
+                        <button onclick="setBinaryValue(150)" class="px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-xs font-bold text-indigo-700 border border-indigo-200">Angka 150</button>
+                        <button onclick="setBinaryValue(255)" class="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-xs font-bold text-amber-900 border border-amber-300">Maksimum 255</button>
+                        <button onclick="setBinaryValue(0)" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700">Reset 0</button>
+                    </div>
+                </div>
+
+                <!-- 8 Saklar Lampu Biner dengan Dekomposisi 3-Bit Oktal -->
+                <div class="bg-slate-900 rounded-3xl p-5 sm:p-6 text-white">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-stretch">
+                        <!-- Grup Oktal Kiri (2 bit: 128, 64) -->
+                        <div class="md:col-span-3 bg-slate-800/90 border border-purple-500/40 rounded-2xl p-3 flex flex-col justify-between">
+                            <div class="text-center text-[11px] font-bold text-purple-300 mb-2">Dekomposisi Kiri [2 bit]</div>
+                            <div id="bit-group-left" class="grid grid-cols-2 gap-2"></div>
+                        </div>
+
+                        <!-- Grup Oktal Tengah (3 bit: 32, 16, 8) -->
+                        <div class="md:col-span-4 bg-slate-800/90 border border-sky-500/40 rounded-2xl p-3 flex flex-col justify-between">
+                            <div class="text-center text-[11px] font-bold text-sky-300 mb-2">Dekomposisi Tengah [3 bit]</div>
+                            <div id="bit-group-mid" class="grid grid-cols-3 gap-2"></div>
+                        </div>
+
+                        <!-- Grup Oktal Kanan (3 bit: 4, 2, 1) -->
+                        <div class="md:col-span-5 bg-slate-800/90 border border-emerald-500/40 rounded-2xl p-3 flex flex-col justify-between">
+                            <div class="text-center text-[11px] font-bold text-emerald-300 mb-2">Dekomposisi Kanan [3 bit]</div>
+                            <div id="bit-group-right" class="grid grid-cols-3 gap-2"></div>
+                        </div>
+                    </div>
+
+                    <!-- Kotak Output Konversi Real-Time -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                        <div class="rounded-2xl bg-slate-800 border border-slate-700 p-4">
+                            <div class="text-xs font-bold text-amber-300 uppercase tracking-wider">1. Biner (Basis 2)</div>
+                            <div id="bin-output-val" class="font-mono font-extrabold text-2xl sm:text-3xl text-white mt-1 tracking-wider">00101010₂</div>
+                            <div id="bin-output-clean" class="text-xs text-slate-400 mt-1">Bentuk ringkas: 101010₂</div>
+                        </div>
+
+                        <div class="rounded-2xl bg-slate-800 border border-slate-700 p-4">
+                            <div class="text-xs font-bold text-sky-300 uppercase tracking-wider">2. Desimal (Basis 10)</div>
+                            <div id="dec-output-val" class="font-mono font-extrabold text-2xl sm:text-3xl text-sky-300 mt-1">42₁₀</div>
+                            <div id="dec-output-steps" class="text-xs text-slate-300 font-mono mt-1 break-words">32 + 8 + 2 = 42</div>
+                        </div>
+
+                        <div class="rounded-2xl bg-slate-800 border border-slate-700 p-4">
+                            <div class="text-xs font-bold text-emerald-300 uppercase tracking-wider">3. Oktal (Basis 8)</div>
+                            <div id="oct-output-val" class="font-mono font-extrabold text-2xl sm:text-3xl text-emerald-300 mt-1">52₈</div>
+                            <div id="oct-output-steps" class="text-xs text-slate-300 font-mono mt-1">Kelompok: [00→0] [101→5] [010→2]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigasi Bawah Tahap 2 -->
+            <div class="flex items-center justify-between gap-4">
+                <button onclick="switchStage(1)" class="px-5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50">
+                    ← Kembali ke Fungsi
+                </button>
+                <button onclick="completeAndGo(2, 3)" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-display font-bold text-sm shadow-md transition-all">
+                    Tandai Paham & Lanjut ke Tahap 3 →
+                </button>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- TAHAP 3: STRUKTUR DATA (LEVEL: MENANTANG)                        -->
+        <!-- ================================================================= -->
+        <section id="stage-3" class="stage-panel hidden space-y-6">
+            <!-- Header Materi Struktur Data -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                    <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-bold">Tahap 3 • Level: Menantang</span>
+                    <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">Stack (LIFO) vs Queue (FIFO)</span>
+                </div>
+                <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mb-3">
+                    Struktur Data: Mengatur Urutan Masuk & Keluar Data
+                </h2>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+                    Komputer mengatur penyimpanan data secara terstruktur agar efisien. Dua struktur data paling mendasar adalah <strong>Stack (Tumpukan)</strong> yang menganut prinsip <strong>LIFO</strong> dan <strong>Queue (Antrean)</strong> yang menganut prinsip <strong>FIFO</strong>.
+                </p>
+
+                <!-- Kartu Perbandingan Stack vs Queue -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="p-5 rounded-2xl bg-purple-50/70 border border-purple-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-display font-extrabold text-lg text-purple-950">📚 STACK (Tumpukan)</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-purple-600 text-white font-mono text-xs font-bold">LIFO</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 mb-2">
+                            <strong>Last In, First Out</strong> — Data yang <em>terakhir masuk</em> akan <em>pertama kali keluar</em> lewat pintu atas (<strong>TOP</strong>).
+                        </p>
+                        <div class="text-xs text-purple-900 bg-white/80 p-3 rounded-xl border border-purple-100">
+                            <strong>Contoh Sehari-hari:</strong> Tumpukan piring bersih di kantin dan fitur <strong>Undo (Ctrl+Z)</strong> di aplikasi pengolah kata.
+                        </div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-display font-extrabold text-lg text-emerald-950">🎫 QUEUE (Antrean)</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-mono text-xs font-bold">FIFO</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 mb-2">
+                            <strong>First In, First Out</strong> — Data yang <em>pertama masuk</em> akan <em>pertama kali keluar</em> dilayani dari depan (<strong>FRONT</strong>).
+                        </p>
+                        <div class="text-xs text-emerald-900 bg-white/80 p-3 rounded-xl border border-emerald-100">
+                            <strong>Contoh Sehari-hari:</strong> Antrean loket pembelian tiket dan antrean dokumen cetak pada <strong>Printer</strong>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMULATOR ANIMASI BERDAMPINGAN: STACK VS QUEUE -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- SIMULATOR 1: STACK (LIFO) -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-purple-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-purple-100 text-purple-800 text-xs font-bold">Simulator 1 • Prinsip LIFO</span>
+                            <span class="font-mono text-xs font-bold text-slate-500">Kapasitas: <span id="stack-count">3</span>/6</span>
+                        </div>
+                        <h3 class="font-display font-extrabold text-xl text-slate-900 mb-1">🍽️ Tumpukan Piring Kantin (Stack)</h3>
+                        <p class="text-xs text-slate-500 mb-3">Indikator panah <strong>TOP</strong> selalu menunjuk elemen paling atas.</p>
+
+                        <!-- Input Item Custom untuk Push -->
+                        <div class="flex items-center gap-2 mb-3">
+                            <input type="text" id="stack-custom-input" placeholder="Label item (opsional, misal: Piring Merah)" class="flex-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-medium focus:border-purple-500 focus:outline-none">
+                        </div>
+
+                        <!-- Wadah Visual Stack -->
+                        <div class="bg-slate-900 rounded-2xl p-4 min-h-[275px] flex flex-col justify-end items-center relative border-b-8 border-slate-700">
+                            <div class="absolute top-3 left-3 text-[11px] font-mono text-slate-400">Pintu Masuk & Keluar: ATAS</div>
+                            <div id="stack-container" class="w-full max-w-[270px] flex flex-col-reverse gap-2 pt-8">
+                                <!-- Dirender JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 space-y-3">
+                        <div id="stack-log" class="text-xs font-medium text-purple-900 bg-purple-50 border border-purple-200 rounded-xl px-3.5 py-2.5">
+                            Log: Siap! Uji operasi <strong>Push</strong>, <strong>Pop</strong>, atau <strong>Peek</strong>.
+                        </div>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="pushStack()" class="py-2.5 px-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-display font-bold text-xs shadow-sm transition-all active:scale-95">
+                                ⬇️ Push
+                            </button>
+                            <button onclick="popStack()" class="py-2.5 px-2 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-display font-bold text-xs shadow-sm transition-all active:scale-95">
+                                ⬆️ Pop
+                            </button>
+                            <button onclick="peekStack()" class="py-2.5 px-2 rounded-xl bg-amber-400 hover:bg-amber-500 text-slate-950 font-display font-bold text-xs shadow-sm transition-all active:scale-95">
+                                👁️ Peek
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SIMULATOR 2: QUEUE (FIFO) -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 text-xs font-bold">Simulator 2 • Prinsip FIFO</span>
+                            <span class="font-mono text-xs font-bold text-slate-500">Antrean: <span id="queue-count">3</span>/5</span>
+                        </div>
+                        <h3 class="font-display font-extrabold text-xl text-slate-900 mb-1">🎫 Antrean Loket Tiket (Queue)</h3>
+                        <p class="text-xs text-slate-500 mb-3">Masuk lewat belakang (<strong>REAR</strong>) dan keluar dilayani dari depan (<strong>FRONT</strong>).</p>
+
+                        <!-- Input Nama Pengantre Custom -->
+                        <div class="flex items-center gap-2 mb-3">
+                            <input type="text" id="queue-custom-input" placeholder="Nama pengantre (opsional, misal: Zahra)" class="flex-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-medium focus:border-emerald-500 focus:outline-none">
+                        </div>
+
+                        <!-- Wadah Visual Queue -->
+                        <div class="bg-slate-900 rounded-2xl p-4 min-h-[275px] flex flex-col justify-between relative">
+                            <div class="flex items-center justify-between text-[11px] font-mono font-bold">
+                                <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">⬅️ FRONT (Keluar)</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40">REAR (Masuk) ⬅️</span>
+                            </div>
+
+                            <div class="my-auto py-3">
+                                <div id="queue-container" class="flex items-center justify-start gap-2.5 overflow-x-auto py-3 px-2 rounded-2xl bg-slate-800/80 border-y-2 border-dashed border-slate-600 min-h-[125px]">
+                                    <!-- Dirender JS -->
+                                </div>
+                            </div>
+
+                            <div class="text-center text-[11px] text-slate-400">
+                                Loket Pelayanan berada di ujung paling kiri (FRONT)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 space-y-3">
+                        <div id="queue-log" class="text-xs font-medium text-emerald-900 bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-2.5">
+                            Log: Siap! Uji operasi <strong>Enqueue</strong>, <strong>Dequeue</strong>, atau <strong>Cek Depan</strong>.
+                        </div>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="enqueueItem()" class="py-2.5 px-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-display font-bold text-xs shadow-sm transition-all active:scale-95">
+                                ➕ Enqueue
+                            </button>
+                            <button onclick="dequeueItem()" class="py-2.5 px-2 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-display font-bold text-xs shadow-sm transition-all active:scale-95">
+                                ✅ Dequeue
+                            </button>
+                            <button onclick="peekQueue()" class="py-2.5 px-2 rounded-xl bg-amber-400 hover:bg-amber-500 text-slate-950 font-display font-bold text-xs shadow-sm transition-all active:scale-95">
+                                👁️ Cek Depan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigasi Bawah Tahap 3 -->
+            <div class="flex items-center justify-between gap-4">
+                <button onclick="switchStage(2)" class="px-5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50">
+                    ← Kembali ke Himpunan & Bilangan
+                </button>
+                <button onclick="completeAndGo(3, 4)" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 to-emerald-600 hover:from-indigo-700 hover:to-emerald-700 text-white font-display font-bold text-sm shadow-md transition-all">
+                    Tandai Paham & Masuk Arena Tantangan 🏆 →
+                </button>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- TAHAP 4: ARENA TANTANGAN & RAPOR SKOR PEMAHAMAN                   -->
+        <!-- ================================================================= -->
+        <section id="stage-4" class="stage-panel hidden space-y-6">
+
+            <!-- 4A. LAYAR PEMBUKA ARENA TANTANGAN -->
+            <div id="quiz-intro-screen" class="bg-white rounded-3xl p-6 sm:p-10 border-2 border-indigo-100 shadow-md max-w-3xl mx-auto text-center">
+                <div class="w-16 h-16 rounded-3xl bg-gradient-to-br from-indigo-600 to-amber-500 text-white flex items-center justify-center text-3xl mx-auto mb-4 shadow-lg">
+                    🏆
+                </div>
+                <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider">
+                    Tahap 4 • Evaluasi & Tolok Ukur Pemahaman
+                </span>
+                <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-3 mb-2">
+                    Arena Tantangan Berpikir Komputasional
+                </h2>
+                <p class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed mb-6">
+                    Uji pemahamanmu melalui <strong>10 soal pilihan ganda berjenjang</strong> dari Mudah ke Menantang (HOTS) yang mencakup seluruh materi Bab 2. Di akhir sesi, kamu akan memperoleh <strong>Rapor Pemahaman Siswa</strong>!
+                </p>
+
+                <!-- Konfirmasi Nama & Kelas Siswa -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg mx-auto mb-6 text-left">
+                    <div class="sm:col-span-2">
+                        <label for="quiz-student-name" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                            Nama Lengkap Siswa:
+                        </label>
+                        <input type="text" id="quiz-student-name" oninput="syncFromQuizInput()" placeholder="Contoh: Raka Pratama" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border-2 border-slate-200 focus:border-indigo-500 focus:bg-white focus:outline-none text-sm font-semibold text-slate-900">
+                    </div>
+                    <div>
+                        <label for="quiz-student-class" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                            Kelas:
+                        </label>
+                        <input type="text" id="quiz-student-class" oninput="syncFromQuizInput()" placeholder="Contoh: 8A" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border-2 border-slate-200 focus:border-indigo-500 focus:bg-white focus:outline-none text-sm font-semibold text-slate-900">
+                    </div>
+                </div>
+
+                <!-- Distribusi 10 Soal -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-2xl mx-auto mb-7 text-xs">
+                    <div class="p-3 rounded-2xl bg-indigo-50 border border-indigo-200">
+                        <div class="font-extrabold text-indigo-700 text-sm">Soal 1–2</div>
+                        <div class="text-slate-700 font-semibold mt-0.5">4 Fondasi BK</div>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200">
+                        <div class="font-extrabold text-emerald-700 text-sm">Soal 3–4</div>
+                        <div class="text-slate-700 font-semibold mt-0.5">Konsep Fungsi</div>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-sky-50 border border-sky-200">
+                        <div class="font-extrabold text-sky-700 text-sm">Soal 5–7</div>
+                        <div class="text-slate-700 font-semibold mt-0.5">Himpunan & Bilangan</div>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-purple-50 border border-purple-200">
+                        <div class="font-extrabold text-purple-700 text-sm">Soal 8–10</div>
+                        <div class="text-slate-700 font-semibold mt-0.5">Struktur Data (HOTS)</div>
+                    </div>
+                </div>
+
+                <button onclick="startQuiz()" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-emerald-600 hover:from-indigo-700 hover:to-emerald-700 text-white font-display font-extrabold text-base shadow-lg transition-all active:scale-95">
+                    🚀 Mulai Arena Tantangan!
+                </button>
+            </div>
+
+            <!-- 4B. LAYAR PENGERJAAN SOAL KUIS -->
+            <div id="quiz-active-screen" class="hidden max-w-3xl mx-auto space-y-5">
+                <div class="bg-white rounded-2xl p-4 sm:px-6 border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span id="quiz-q-number" class="font-display font-extrabold text-sm sm:text-base text-slate-900">
+                            Soal 1 dari 10
+                        </span>
+                        <span id="quiz-difficulty-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                            Mudah
+                        </span>
+                        <span id="quiz-topic-badge" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">
+                            Topik: 4 Fondasi
+                        </span>
+                    </div>
+
+                    <div class="px-3.5 py-1.5 rounded-xl bg-indigo-50 border border-indigo-200 text-xs sm:text-sm font-bold text-indigo-700">
+                        Skor Sementara: <span id="quiz-live-score" class="font-mono text-base">0</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+                    <div id="quiz-question-text" class="text-base sm:text-lg font-semibold text-slate-900 leading-relaxed mb-6"></div>
+
+                    <div id="quiz-options-container" class="space-y-3"></div>
+
+                    <div id="quiz-feedback-box" class="hidden mt-6 p-5 rounded-2xl border-2 transition-all">
+                        <div id="quiz-feedback-title" class="font-display font-extrabold text-base mb-1"></div>
+                        <p id="quiz-feedback-explanation" class="text-xs sm:text-sm leading-relaxed"></p>
+                    </div>
+
+                    <div id="quiz-next-wrapper" class="hidden mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                        <button onclick="nextQuizQuestion()" id="btn-next-question" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-display font-bold text-sm shadow-md transition-all">
+                            Soal Berikutnya →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4C. LAYAR RAPOR PEMAHAMAN SISWA -->
+            <div id="quiz-result-screen" class="hidden max-w-4xl mx-auto">
+                <div id="report-card-container" class="bg-white rounded-3xl p-6 sm:p-10 border-2 border-indigo-200 shadow-lg space-y-7">
+                    <!-- Kop Rapor -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Rapor Evaluasi • Informatika SMP Kelas 8</span>
+                            <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-1">
+                                Rapor Pemahaman Bab 2
+                            </h2>
+                            <p class="text-sm text-slate-600 mt-1">
+                                Nama: <strong id="report-student-name" class="text-slate-900">Siswa Kelas 8</strong> • Kelas: <strong id="report-student-class" class="text-slate-900">8</strong> • <span id="report-date" class="text-slate-500"></span>
+                            </p>
+                        </div>
+
+                        <!-- Skor Akhir -->
+                        <div class="bg-gradient-to-br from-indigo-600 to-emerald-600 text-white px-6 py-4 rounded-2xl shadow-md self-start sm:self-auto">
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-100">Skor Akhir</div>
+                            <div class="font-mono font-extrabold text-4xl leading-none mt-1">
+                                <span id="report-final-score">0</span><span class="text-lg font-semibold text-indigo-200">/100</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Predikat Capaian -->
+                    <div id="report-badge-box" class="p-5 sm:p-6 rounded-2xl border-2 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+                        <div id="report-badge-icon" class="text-5xl shrink-0">🏆</div>
+                        <div>
+                            <div class="text-xs font-bold uppercase tracking-wider opacity-75">Predikat Capaian</div>
+                            <h3 id="report-badge-title" class="font-display font-extrabold text-xl sm:text-2xl mt-0.5">
+                                Master Berpikir Komputasional
+                            </h3>
+                            <p id="report-badge-desc" class="text-xs sm:text-sm mt-1 leading-relaxed"></p>
+                        </div>
+                    </div>
+
+                    <!-- 4 Grafik Batang Persentase Penguasaan Per Topik -->
+                    <div class="space-y-4">
+                        <h4 class="font-display font-bold text-lg text-slate-900">📊 Grafik Persentase Penguasaan Per Topik</h4>
+
+                        <!-- Bar 1: Prasyarat 4 Fondasi -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+                            <div class="flex items-center justify-between text-xs sm:text-sm font-bold mb-2">
+                                <span class="text-slate-800">1. Prasyarat: 4 Fondasi Berpikir Komputasional</span>
+                                <span id="topic-score-fondasi-text" class="text-indigo-600 font-mono">0% (0/2)</span>
+                            </div>
+                            <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                                <div id="topic-bar-fondasi" class="h-full bg-indigo-500 rounded-full transition-all duration-700" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Bar 2: Konsep Fungsi -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+                            <div class="flex items-center justify-between text-xs sm:text-sm font-bold mb-2">
+                                <span class="text-slate-800">2. Konsep Fungsi & Pemetaan Input–Output</span>
+                                <span id="topic-score-fungsi-text" class="text-emerald-600 font-mono">0% (0/2)</span>
+                            </div>
+                            <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                                <div id="topic-bar-fungsi" class="h-full bg-emerald-500 rounded-full transition-all duration-700" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Bar 3: Himpunan & Sistem Bilangan -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+                            <div class="flex items-center justify-between text-xs sm:text-sm font-bold mb-2">
+                                <span class="text-slate-800">3. Himpunan & Sistem Bilangan (Biner, Desimal, Oktal)</span>
+                                <span id="topic-score-himpunan-text" class="text-sky-600 font-mono">0% (0/3)</span>
+                            </div>
+                            <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                                <div id="topic-bar-himpunan" class="h-full bg-sky-500 rounded-full transition-all duration-700" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Bar 4: Struktur Data -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+                            <div class="flex items-center justify-between text-xs sm:text-sm font-bold mb-2">
+                                <span class="text-slate-800">4. Struktur Data (Stack LIFO & Queue FIFO)</span>
+                                <span id="topic-score-struktur-text" class="text-purple-600 font-mono">0% (0/3)</span>
+                            </div>
+                            <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                                <div id="topic-bar-struktur" class="h-full bg-purple-500 rounded-full transition-all duration-700" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rekomendasi Belajar -->
+                    <div class="p-4 sm:p-5 rounded-2xl bg-amber-50 border border-amber-200 text-xs sm:text-sm text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div id="report-recommendation-text"></div>
+                        <button id="report-review-btn" onclick="switchStage(0)" class="hidden no-print shrink-0 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs shadow-sm">
+                            Tinjau Materi
+                        </button>
+                    </div>
+
+                    <!-- Tombol Cetak Rapor & Ulangi -->
+                    <div class="no-print pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-end gap-3">
+                        <button onclick="resetAndRestartQuiz()" class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-display font-bold text-sm transition-all">
+                            🔄 Ulangi Arena Tantangan
+                        </button>
+                        <button onclick="window.print()" class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-display font-bold text-sm shadow-md transition-all">
+                            🖨️ Cetak Rapor
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="no-print max-w-6xl mx-auto px-4 sm:px-6 py-6 text-center text-xs text-slate-400">
+        Media Pembelajaran Interaktif Informatika SMP Kelas 8 • Bab 2: Berpikir Komputasional (Kurikulum Merdeka)
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- JAVASCRIPT LOGIKA INTERAKTIF, ANIMASI & EVALUASI                      -->
+    <!-- ===================================================================== -->
+    <script>
+        // =========================================================================
+        // 1. STATE APLIKASI & IDENTITAS SISWA
+        // =========================================================================
+        const state = {
+            currentStage: 0,
+            completedStages: new Set(),
+            studentName: 'Siswa Kelas 8',
+            studentClass: '8',
+
+            // Tahap 0: 4 Fondasi Demos & 4 Soal Kuis Pemanasan
+            decompExpanded: false,
+            abstractionActive: false,
+            algoDemoStep: 1,
+            warmupSolved: [false, false, false, false],
+
+            // Tahap 1: Fungsi
+            juiceInput: { id: 'jeruk', icon: '🍊', name: 'Buah Jeruk' },
+            isJuiceMachineBusy: false,
+            mathFormula: '2x+3',
+            mathX: 4,
+            mathHistory: [],
+
+            // Tahap 2A: Himpunan Ekskul Robotik (A) & Desain Grafis (B)
+            students: [
+                { name: 'Andi', robotik: true, desain: true },
+                { name: 'Budi', robotik: true, desain: false },
+                { name: 'Citra', robotik: false, desain: true },
+                { name: 'Dina', robotik: true, desain: true },
+                { name: 'Eko', robotik: false, desain: false },
+                { name: 'Fajar', robotik: true, desain: false }
+            ],
+            vennOperation: 'all',
+
+            // Tahap 2B: Saklar Lampu 8-Bit (Default 42 = 00101010)
+            bits: [0, 0, 1, 0, 1, 0, 1, 0],
+
+            // Tahap 3: Stack & Queue
+            stackItems: [
+                { id: 1, label: 'Piring #1 (Biru)', color: 'from-sky-500 to-blue-600' },
+                { id: 2, label: 'Piring #2 (Hijau)', color: 'from-emerald-500 to-teal-600' },
+                { id: 3, label: 'Piring #3 (Kuning)', color: 'from-amber-400 to-orange-500' }
+            ],
+            stackCounter: 3,
+            queueItems: [
+                { id: 'T-01', name: 'Andi', avatar: '👦' },
+                { id: 'T-02', name: 'Citra', avatar: '👧' },
+                { id: 'T-03', name: 'Budi', avatar: '🧑' }
+            ],
+            queueCounter: 3,
+
+            // Tahap 4: Arena Tantangan (10 Soal)
+            quizIndex: 0,
+            quizScore: 0,
+            quizAnswered: false,
+            topicResults: {
+                fondasi: { correct: 0, total: 2 },
+                fungsi: { correct: 0, total: 2 },
+                himpunan_bilangan: { correct: 0, total: 3 },
+                struktur_data: { correct: 0, total: 3 }
+            }
+        };
+
+        const stageSubtitles = [
+            "Tahap 0: Menguasai 4 Fondasi Berpikir Komputasional",
+            "Tahap 1: Memahami konsep Input → Proses → Output & Domain",
+            "Tahap 2: Mengelompokkan data & saklar bilangan biner/oktal",
+            "Tahap 3: Mengatur tumpukan (LIFO) & antrean (FIFO)",
+            "Tahap 4: Mengukur pemahaman lewat 10 tantangan berjenjang"
+        ];
+
+        function syncStudentIdentity() {
+            const hName = document.getElementById('header-student-name').value.trim();
+            const hClass = document.getElementById('header-student-class').value.trim();
+            state.studentName = hName || 'Siswa Kelas 8';
+            state.studentClass = hClass || '8';
+
+            document.getElementById('quiz-student-name').value = hName;
+            document.getElementById('quiz-student-class').value = hClass;
+        }
+
+        function syncFromQuizInput() {
+            const qName = document.getElementById('quiz-student-name').value.trim();
+            const qClass = document.getElementById('quiz-student-class').value.trim();
+            state.studentName = qName || 'Siswa Kelas 8';
+            state.studentClass = qClass || '8';
+
+            document.getElementById('header-student-name').value = qName;
+            document.getElementById('header-student-class').value = qClass;
+        }
+
+        function switchStage(stageIdx) {
+            state.currentStage = stageIdx;
+            for (let i = 0; i <= 4; i++) {
+                const panel = document.getElementById(`stage-${i}`);
+                const tab = document.getElementById(`nav-tab-${i}`);
+                if (i === stageIdx) {
+                    panel.classList.remove('hidden');
+                    tab.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+                    tab.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600', 'shadow-sm');
+                } else {
+                    panel.classList.add('hidden');
+                    tab.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600', 'shadow-sm');
+                    tab.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+                }
+            }
+            document.getElementById('dynamic-subtitle').textContent = stageSubtitles[stageIdx];
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function markStageComplete(stageIdx) {
+            state.completedStages.add(stageIdx);
+            const badge = document.getElementById(`badge-stage-${stageIdx}`);
+            if (badge) {
+                badge.textContent = '✓';
+                badge.className = 'w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold';
+            }
+            const pct = Math.round((state.completedStages.size / 5) * 100);
+            document.getElementById('progress-percentage').textContent = `${pct}%`;
+            document.getElementById('progress-bar-fill').style.width = `${pct}%`;
+        }
+
+        function completeAndGo(currentIdx, nextIdx) {
+            markStageComplete(currentIdx);
+            switchStage(nextIdx);
+        }
+
+        // =========================================================================
+        // 2. TAHAP 0: 4 SIMULASI MINI & 4 KUIS PEMANASAN PRASYARAT
+        // =========================================================================
+        function toggleDecompDemo() {
+            state.decompExpanded = !state.decompExpanded;
+            const box = document.getElementById('decomp-visual-box');
+            const btn = document.getElementById('btn-decomp-demo');
+
+            if (state.decompExpanded) {
+                btn.textContent = 'Gabungkan Kembali 🔄';
+                box.innerHTML = `
+                    <div class="grid grid-cols-3 gap-2 w-full">
+                        <div class="p-2.5 rounded-xl bg-indigo-100 border border-indigo-300 text-center">
+                            <div class="text-base">🎤</div>
+                            <div class="text-[11px] font-bold text-indigo-950">Tim Acara</div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-emerald-100 border border-emerald-300 text-center">
+                            <div class="text-base">🍱</div>
+                            <div class="text-[11px] font-bold text-emerald-950">Tim Konsumsi</div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-amber-100 border border-amber-300 text-center">
+                            <div class="text-base">🔊</div>
+                            <div class="text-[11px] font-bold text-amber-950">Perlengkapan</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                btn.textContent = 'Pecah Masalah ✂️';
+                box.innerHTML = `
+                    <div class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-center font-display font-bold text-sm shadow-sm">
+                        🎪 Proyek Besar: Acara Pentas Seni Sekolah
+                    </div>
+                `;
+            }
+        }
+
+        function checkPatternDemo(val, btnEl) {
+            const target = document.getElementById('pattern-demo-target');
+            const status = document.getElementById('pattern-demo-status');
+            document.querySelectorAll('.pat-demo-btn').forEach(b => {
+                b.classList.remove('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'bg-rose-100', 'border-rose-400');
+            });
+
+            if (val === 16) {
+                btnEl.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+                target.textContent = '16';
+                target.className = 'w-10 h-9 rounded-lg bg-emerald-500 text-white flex items-center justify-center font-mono font-extrabold text-xs';
+                status.textContent = '✓ Pola × 2!';
+            } else {
+                btnEl.classList.add('bg-rose-100', 'border-rose-400');
+                status.textContent = 'Coba × 2!';
+            }
+        }
+
+        function toggleAbstractionDemo() {
+            state.abstractionActive = !state.abstractionActive;
+            const clutter = document.getElementById('abs-clutter-layer');
+            const btn = document.getElementById('btn-abs-demo');
+
+            if (state.abstractionActive) {
+                clutter.style.opacity = '0.07';
+                btn.textContent = 'Tampilkan Detail Rumit 🌳';
+                btn.className = 'px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold transition-all active:scale-95';
+            } else {
+                clutter.style.opacity = '1';
+                btn.textContent = 'Aktifkan Mode Abstraksi ✨';
+                btn.className = 'px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all active:scale-95';
+            }
+        }
+
+        function clickAlgoStep(stepNum, btnEl) {
+            const fb = document.getElementById('algo-demo-feedback');
+            if (stepNum === state.algoDemoStep) {
+                btnEl.disabled = true;
+                btnEl.className = 'algo-step-btn p-2 rounded-xl bg-emerald-100 border border-emerald-500 text-[11px] font-bold text-emerald-900 text-center';
+                btnEl.innerHTML = `✓ ${state.algoDemoStep}. ${btnEl.textContent.trim()}`;
+                state.algoDemoStep++;
+                if (state.algoDemoStep > 3) {
+                    fb.innerHTML = '<span class="text-emerald-700 font-bold">🎉 Algoritma terurut sempurna!</span>';
+                } else {
+                    fb.textContent = `Bagus! Sekarang klik Langkah ${state.algoDemoStep}...`;
+                }
+            } else {
+                fb.innerHTML = `<span class="text-rose-600">⚠️ Belum tepat, cari Langkah ${state.algoDemoStep} lebih dulu!</span>`;
+            }
+        }
+
+        function resetAlgoDemo() {
+            state.algoDemoStep = 1;
+            const box = document.getElementById('algo-demo-buttons');
+            box.innerHTML = `
+                <button onclick="clickAlgoStep(2, this)" class="algo-step-btn p-2 rounded-xl bg-white border border-slate-300 hover:border-purple-500 text-[11px] font-semibold text-slate-700 text-center transition-all">
+                    👀 Tengok kanan & kiri
+                </button>
+                <button onclick="clickAlgoStep(3, this)" class="algo-step-btn p-2 rounded-xl bg-white border border-slate-300 hover:border-purple-500 text-[11px] font-semibold text-slate-700 text-center transition-all">
+                    🚶 Menyeberang saat aman
+                </button>
+                <button onclick="clickAlgoStep(1, this)" class="algo-step-btn p-2 rounded-xl bg-white border border-slate-300 hover:border-purple-500 text-[11px] font-semibold text-slate-700 text-center transition-all">
+                    🛑 Berhenti di tepi jalan
+                </button>
+            `;
+            document.getElementById('algo-demo-feedback').textContent = 'Klik kartu sesuai urutan Langkah 1 → 2 → 3';
+        }
+
+        const warmupExplanations = {
+            1: 'Tepat! Memecah 8-bit menjadi kelompok-kelompok 3-bit yang lebih kecil adalah inti dari Dekomposisi.',
+            2: 'Benar! Dari 3 km (Rp14.000) ke 5 km bertambah 2 × Rp3.000 = Rp6.000, sehingga totalnya Rp20.000.',
+            3: 'Tepat! Abstraksi menyaring detail yang tidak relevan (warna/merek mesin) dan mempertahankan inti input–output.',
+            4: 'Benar! Urutan langkah sistematis dari awal hingga akhir merupakan Desain Algoritma.'
+        };
+
+        function answerWarmupQuiz(qNum, isCorrect, btnEl) {
+            const fb = document.getElementById(`wq-fb-${qNum}`);
+            const btns = document.querySelectorAll(`.wq-btn-${qNum}`);
+            btns.forEach(b => b.classList.remove('bg-emerald-50', 'border-emerald-500', 'text-emerald-900', 'bg-rose-50', 'border-rose-400', 'text-rose-900'));
+
+            fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-900', 'bg-rose-100', 'text-rose-900');
+
+            if (isCorrect) {
+                btnEl.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900');
+                fb.classList.add('bg-emerald-100', 'text-emerald-900');
+                fb.textContent = `✅ ${warmupExplanations[qNum]}`;
+                document.getElementById(`wq-check-${qNum}`).classList.remove('hidden');
+                state.warmupSolved[qNum - 1] = true;
+                updateWarmupProgress();
+            } else {
+                btnEl.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-900');
+                fb.classList.add('bg-rose-100', 'text-rose-900');
+                fb.textContent = '❌ Kurang tepat, coba pilih jawaban satunya dan perhatikan definisi 4 fondasi di atas!';
+            }
+        }
+
+        function updateWarmupProgress() {
+            const solvedCount = state.warmupSolved.filter(Boolean).length;
+            document.getElementById('warmup-count').textContent = solvedCount;
+
+            if (solvedCount === 4) {
+                const badge = document.getElementById('warmup-status-badge');
+                badge.className = 'inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800';
+                badge.innerHTML = '✓ Siap Lanjut! (4 / 4 Fondasi)';
+
+                const nextBtn = document.getElementById('btn-to-stage-1');
+                nextBtn.className = 'w-full sm:w-auto px-6 py-3 rounded-2xl font-display font-bold text-sm bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg btn-pulse-ready transition-all flex items-center justify-center gap-2';
+                document.getElementById('stage0-hint').innerHTML = '🌟 <strong>Hebat!</strong> Kamu telah menguasai 4 Fondasi Berpikir Komputasional. Klik tombol di samping untuk lanjut!';
+                markStageComplete(0);
+            }
+        }
+
+        // =========================================================================
+        // 3. TAHAP 1: MESIN FUNGSI AJAIB (MODE A & MODE B)
+        // =========================================================================
+        function setFunctionMode(mode) {
+            const btnA = document.getElementById('btn-func-mode-a');
+            const btnB = document.getElementById('btn-func-mode-b');
+            const panelA = document.getElementById('func-mode-a-panel');
+            const panelB = document.getElementById('func-mode-b-panel');
+
+            if (mode === 'A') {
+                btnA.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 text-white shadow-sm transition-all';
+                btnB.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition-all';
+                panelA.classList.remove('hidden');
+                panelB.classList.add('hidden');
+            } else {
+                btnB.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white shadow-sm transition-all';
+                btnA.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition-all';
+                panelB.classList.remove('hidden');
+                panelA.classList.add('hidden');
+            }
+        }
+
+        function selectJuiceInput(id, icon, name, btnEl) {
+            if (state.isJuiceMachineBusy) return;
+            state.juiceInput = { id, icon, name };
+
+            document.querySelectorAll('.juice-input-btn').forEach(b => {
+                b.className = 'juice-input-btn p-3 rounded-xl bg-white border-2 border-slate-200 hover:border-emerald-300 text-center transition-all';
+            });
+            btnEl.className = id === 'batu'
+                ? 'juice-input-btn p-3 rounded-xl bg-rose-50 border-2 border-rose-500 text-center transition-all'
+                : 'juice-input-btn p-3 rounded-xl bg-emerald-50 border-2 border-emerald-500 text-center transition-all';
+
+            const itemEl = document.getElementById('mode-a-input-item');
+            itemEl.style.transform = 'translateX(0)';
+            itemEl.style.opacity = '1';
+            itemEl.innerHTML = `<span class="text-4xl">${icon}</span><span class="text-xs font-semibold ${id === 'batu' ? 'text-rose-300' : 'text-emerald-300'} mt-1">${name}</span>`;
+        }
+
+        function runJuiceMachine() {
+            if (state.isJuiceMachineBusy) return;
+            state.isJuiceMachineBusy = true;
+
+            const inputItem = document.getElementById('mode-a-input-item');
+            const outputItem = document.getElementById('mode-a-output-item');
+            const beltLeft = document.getElementById('belt-left-a');
+            const beltRight = document.getElementById('belt-right-a');
+            const machineBox = document.getElementById('machine-box-a');
+            const gear1 = document.getElementById('gear-a-1');
+            const gear2 = document.getElementById('gear-a-2');
+            const statusText = document.getElementById('machine-a-status');
+            const expBox = document.getElementById('mode-a-explanation');
+
+            inputItem.style.transition = 'none';
+            inputItem.style.transform = 'translateX(0)';
+            inputItem.style.opacity = '1';
+            outputItem.innerHTML = '<span class="text-slate-400 text-xs">Mengolah input...</span>';
+
+            requestAnimationFrame(() => {
+                beltLeft.classList.add('conveyor-active');
+                inputItem.style.transition = 'all 0.6s ease-in';
+                inputItem.style.transform = 'translateX(90px)';
+                inputItem.style.opacity = '0';
+            });
+
+            setTimeout(() => {
+                beltLeft.classList.remove('conveyor-active');
+                machineBox.classList.add('machine-working');
+                gear1.classList.add('gear-spin');
+                gear2.classList.add('gear-spin-reverse');
+                statusText.textContent = 'Memeriksa Domain & memproses...';
+            }, 600);
+
+            setTimeout(() => {
+                machineBox.classList.remove('machine-working');
+                gear1.classList.remove('gear-spin');
+                gear2.classList.remove('gear-spin-reverse');
+                beltRight.classList.add('conveyor-active');
+
+                const id = state.juiceInput.id;
+                let isValid = id !== 'batu';
+                let outTitle = '';
+                let expHtml = '';
+
+                if (id === 'jeruk') {
+                    outTitle = 'Jus Jeruk Segar 🍹';
+                } else if (id === 'mangga') {
+                    outTitle = 'Jus Mangga Manis 🥤';
+                } else if (id === 'stroberi') {
+                    outTitle = 'Jus Stroberi Dingin 🍓';
+                }
+
+                if (isValid) {
+                    statusText.textContent = 'Sukses! Output valid';
+                    outputItem.innerHTML = `<span class="text-4xl animate-bounce">🧃</span><span class="text-xs font-bold text-amber-300 mt-1">${outTitle}</span>`;
+                    expHtml = `✅ <strong>Berhasil!</strong> <em>${state.juiceInput.name}</em> adalah anggota <strong>Domain</strong> yang sah, sehingga fungsi memetakannya menjadi <strong>${outTitle}</strong>.`;
+                } else {
+                    statusText.textContent = 'Input ditolak mesin!';
+                    outputItem.innerHTML = `<span class="text-3xl">🚫</span><span class="text-xs font-bold text-rose-300 mt-1">Input ditolak: Bukan bagian dari Domain fungsi!</span>`;
+                    expHtml = `⚠️ <strong>Input ditolak: Bukan bagian dari Domain fungsi!</strong> <em>Batu Kali</em> tidak termasuk himpunan daerah asal (Domain) mesin pembuat jus.`;
+                }
+
+                expBox.innerHTML = `
+                    <span class="flex-1">${expHtml}</span>
+                    <button onclick="runJuiceMachine()" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-display font-extrabold text-xs sm:text-sm shadow-md transition-all active:scale-95 shrink-0">
+                        ▶️ Jalankan Mesin!
+                    </button>
+                `;
+
+                setTimeout(() => {
+                    beltRight.classList.remove('conveyor-active');
+                    inputItem.style.transition = 'none';
+                    inputItem.style.transform = 'translateX(0)';
+                    inputItem.style.opacity = '1';
+                    state.isJuiceMachineBusy = false;
+                }, 450);
+            }, 1550);
+        }
+
+        // Mode B: Mesin Matematika f(x) = 2x + 3 atau f(x) = 3x - 1
+        function selectMathFormula(formula, btnEl) {
+            state.mathFormula = formula;
+            document.querySelectorAll('.math-formula-btn').forEach(b => {
+                b.className = 'math-formula-btn py-2.5 px-3 rounded-xl bg-white border border-indigo-200 text-indigo-900 font-mono font-bold text-xs sm:text-sm hover:bg-indigo-50 transition-all';
+            });
+            btnEl.className = 'math-formula-btn py-2.5 px-3 rounded-xl bg-indigo-600 text-white font-mono font-bold text-xs sm:text-sm shadow-sm transition-all';
+
+            const label = formula === '2x+3' ? 'f(x) = 2x + 3' : 'f(x) = 3x - 1';
+            document.getElementById('math-formula-title').textContent = label;
+            document.getElementById('math-visual-y').textContent = '?';
+            document.getElementById('math-step-display').textContent = `Siap menghitung ${label} untuk x = ${state.mathX}`;
+        }
+
+        function syncMathInputFromBox(val) {
+            let num = parseInt(val, 10);
+            if (isNaN(num) || num < 1) num = 1;
+            if (num > 20) num = 20;
+            state.mathX = num;
+            document.getElementById('math-visual-x').textContent = num;
+            document.getElementById('math-visual-y').textContent = '?';
+        }
+
+        function stepMathX(delta) {
+            let next = state.mathX + delta;
+            if (next < 1) next = 1;
+            if (next > 20) next = 20;
+            state.mathX = next;
+            document.getElementById('math-x-input').value = next;
+            document.getElementById('math-visual-x').textContent = next;
+            document.getElementById('math-visual-y').textContent = '?';
+        }
+
+        function runMathMachine() {
+            const x = state.mathX;
+            const formula = state.mathFormula;
+            const stepBox = document.getElementById('math-step-display');
+            const machineBox = document.getElementById('math-machine-box');
+            const outVal = document.getElementById('math-visual-y');
+
+            machineBox.classList.add('machine-working');
+
+            if (formula === '2x+3') {
+                stepBox.textContent = `Langkah 1 (Input): x = ${x} → 2(${x}) + 3`;
+                setTimeout(() => {
+                    stepBox.textContent = `Langkah 2 (Kalikan): 2 × ${x} = ${2 * x}, lalu + 3`;
+                }, 400);
+                setTimeout(() => {
+                    const y = 2 * x + 3;
+                    machineBox.classList.remove('machine-working');
+                    stepBox.textContent = `Langkah 3 (Output): f(${x}) = ${y}`;
+                    outVal.textContent = y;
+                    addMathHistoryRow('f(x) = 2x + 3', x, y);
+                }, 850);
+            } else {
+                stepBox.textContent = `Langkah 1 (Input): x = ${x} → 3(${x}) - 1`;
+                setTimeout(() => {
+                    stepBox.textContent = `Langkah 2 (Kalikan): 3 × ${x} = ${3 * x}, lalu - 1`;
+                }, 400);
+                setTimeout(() => {
+                    const y = 3 * x - 1;
+                    machineBox.classList.remove('machine-working');
+                    stepBox.textContent = `Langkah 3 (Output): f(${x}) = ${y}`;
+                    outVal.textContent = y;
+                    addMathHistoryRow('f(x) = 3x - 1', x, y);
+                }, 850);
+            }
+        }
+
+        function addMathHistoryRow(formulaLabel, x, y) {
+            state.mathHistory.unshift({ formulaLabel, x, y });
+            if (state.mathHistory.length > 6) state.mathHistory.pop();
+            renderMathHistoryTable();
+        }
+
+        function clearMathHistory() {
+            state.mathHistory = [];
+            renderMathHistoryTable();
+        }
+
+        function renderMathHistoryTable() {
+            const tbody = document.getElementById('math-history-tbody');
+            if (state.mathHistory.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="py-4 px-3 text-center text-slate-400 text-xs">
+                            Belum ada data hitungan. Tekan tombol <strong>"Proses f(x)"</strong> di atas untuk mengisi tabel!
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            tbody.innerHTML = state.mathHistory.map(row => `
+                <tr class="hover:bg-indigo-50/40">
+                    <td class="py-2 px-3 font-mono font-semibold text-indigo-700">${row.formulaLabel}</td>
+                    <td class="py-2 px-3 font-mono font-bold text-slate-800">x = ${row.x}</td>
+                    <td class="py-2 px-3 font-mono font-bold text-emerald-700">y = ${row.y}</td>
+                    <td class="py-2 px-3 font-mono text-slate-600">(${row.x}, ${row.y})</td>
+                </tr>
+            `).join('');
+        }
+
+        // =========================================================================
+        // 4. TAHAP 2A: HIMPUNAN & DIAGRAM VENN INTERAKTIF
+        // =========================================================================
+        function renderStudentsCards() {
+            const grid = document.getElementById('students-grid');
+            grid.innerHTML = state.students.map((st, idx) => `
+                <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between gap-2">
+                    <div class="flex items-center justify-between">
+                        <span class="font-display font-bold text-sm text-slate-900">${st.name}</span>
+                        <span class="text-[11px] px-1.5 py-0.5 rounded bg-white border border-slate-200 text-slate-500 font-mono">#${idx + 1}</span>
+                    </div>
+                    <div class="space-y-1.5">
+                        <button onclick="toggleStudentEkskul(${idx}, 'robotik')" class="w-full py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-between border transition-all ${st.robotik ? 'bg-sky-100 border-sky-400 text-sky-900' : 'bg-white border-slate-200 text-slate-400'}">
+                            <span>🤖 Robotik</span>
+                            <span>${st.robotik ? '✓' : '×'}</span>
+                        </button>
+                        <button onclick="toggleStudentEkskul(${idx}, 'desain')" class="w-full py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-between border transition-all ${st.desain ? 'bg-amber-100 border-amber-400 text-amber-900' : 'bg-white border-slate-200 text-slate-400'}">
+                            <span>🎨 Desain</span>
+                            <span>${st.desain ? '✓' : '×'}</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleStudentEkskul(index, type) {
+            state.students[index][type] = !state.students[index][type];
+            renderStudentsCards();
+            updateVennDiagram();
+        }
+
+        function setVennOperation(op) {
+            state.vennOperation = op;
+            document.querySelectorAll('.venn-op-btn').forEach(btn => {
+                btn.className = 'venn-op-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all';
+            });
+            const activeBtn = document.getElementById(`venn-op-${op}`);
+            if (activeBtn) {
+                activeBtn.className = 'venn-op-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all';
+            }
+            updateVennDiagram();
+        }
+
+        function updateVennDiagram() {
+            const onlyA = state.students.filter(s => s.robotik && !s.desain).map(s => s.name);
+            const both = state.students.filter(s => s.robotik && s.desain).map(s => s.name);
+            const onlyB = state.students.filter(s => !s.robotik && s.desain).map(s => s.name);
+            const neither = state.students.filter(s => !s.robotik && !s.desain).map(s => s.name);
+
+            const setA = state.students.filter(s => s.robotik).map(s => s.name);
+            const setB = state.students.filter(s => s.desain).map(s => s.name);
+
+            document.getElementById('list-set-a').textContent = setA.length ? `{ ${setA.join(', ')} }` : '∅ (Kosong)';
+            document.getElementById('list-set-b').textContent = setB.length ? `{ ${setB.join(', ')} }` : '∅ (Kosong)';
+
+            const layer = document.getElementById('venn-names-layer');
+            let svgText = '';
+
+            onlyA.forEach((name, i) => {
+                svgText += `<text x="142" y="${125 + i * 24}" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="13" fill="#0369a1">${name}</text>`;
+            });
+
+            both.forEach((name, i) => {
+                svgText += `<text x="260" y="${125 + i * 24}" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="13" fill="#6d28d9">${name}</text>`;
+            });
+
+            onlyB.forEach((name, i) => {
+                svgText += `<text x="378" y="${125 + i * 24}" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="13" fill="#b45309">${name}</text>`;
+            });
+
+            if (neither.length > 0) {
+                svgText += `<text x="488" y="276" text-anchor="end" font-family="Inter, sans-serif" font-weight="600" font-size="12" fill="#64748b">Tidak ikut keduanya: ${neither.join(', ')}</text>`;
+            }
+
+            layer.innerHTML = svgText;
+
+            const circleA = document.getElementById('venn-circle-a');
+            const circleB = document.getElementById('venn-circle-b');
+            const titleEl = document.getElementById('venn-op-title');
+            const descEl = document.getElementById('venn-op-desc');
+            const membersEl = document.getElementById('venn-op-members');
+
+            circleA.setAttribute('fill', 'rgba(14, 165, 233, 0.16)');
+            circleA.setAttribute('stroke-width', '3');
+            circleB.setAttribute('fill', 'rgba(245, 158, 11, 0.16)');
+            circleB.setAttribute('stroke-width', '3');
+
+            let selectedMembers = [];
+
+            if (state.vennOperation === 'all') {
+                selectedMembers = state.students.map(s => s.name);
+                titleEl.textContent = 'Semua Anggota Semesta (S)';
+                descEl.textContent = 'Menampilkan seluruh 6 siswa yang didata dalam semesta pembicaraan.';
+            } else if (state.vennOperation === 'intersection') {
+                selectedMembers = both;
+                circleA.setAttribute('fill', 'rgba(139, 92, 246, 0.25)');
+                circleB.setAttribute('fill', 'rgba(139, 92, 246, 0.25)');
+                circleA.setAttribute('stroke-width', '4');
+                circleB.setAttribute('stroke-width', '4');
+                titleEl.textContent = 'Irisan Himpunan (A ∩ B)';
+                descEl.textContent = 'Siswa yang berada di area tengah: mengikuti ekskul Robotik DAN Desain Grafis sekaligus.';
+            } else if (state.vennOperation === 'union') {
+                selectedMembers = state.students.filter(s => s.robotik || s.desain).map(s => s.name);
+                circleA.setAttribute('fill', 'rgba(16, 185, 129, 0.28)');
+                circleB.setAttribute('fill', 'rgba(16, 185, 129, 0.28)');
+                titleEl.textContent = 'Gabungan Himpunan (A ∪ B)';
+                descEl.textContent = 'Seluruh siswa yang mengikuti minimal salah satu ekskul (Robotik ATAU Desain Grafis).';
+            } else if (state.vennOperation === 'diffAB') {
+                selectedMembers = onlyA;
+                circleA.setAttribute('fill', 'rgba(14, 165, 233, 0.36)');
+                circleB.setAttribute('fill', 'rgba(148, 163, 184, 0.08)');
+                titleEl.textContent = 'Selisih Himpunan (A - B)';
+                descEl.textContent = 'Siswa yang HANYA mengikuti ekskul Robotik saja dan tidak ikut Desain Grafis.';
+            } else if (state.vennOperation === 'diffBA') {
+                selectedMembers = onlyB;
+                circleB.setAttribute('fill', 'rgba(245, 158, 11, 0.36)');
+                circleA.setAttribute('fill', 'rgba(148, 163, 184, 0.08)');
+                titleEl.textContent = 'Selisih Himpunan (B - A)';
+                descEl.textContent = 'Siswa yang HANYA mengikuti ekskul Desain Grafis saja dan tidak ikut Robotik.';
+            }
+
+            membersEl.textContent = selectedMembers.length
+                ? `{ ${selectedMembers.join(', ')} }  (${selectedMembers.length} siswa)`
+                : '∅ (Himpunan Kosong / 0 siswa)';
+        }
+
+        // =========================================================================
+        // 5. TAHAP 2B: SAKLAR LAMPU 8-BIT & DEKOMPOSISI OKTAL
+        // =========================================================================
+        const bitWeights = [128, 64, 32, 16, 8, 4, 2, 1];
+
+        function renderBinarySwitches() {
+            const leftContainer = document.getElementById('bit-group-left');
+            const midContainer = document.getElementById('bit-group-mid');
+            const rightContainer = document.getElementById('bit-group-right');
+
+            leftContainer.innerHTML = '';
+            midContainer.innerHTML = '';
+            rightContainer.innerHTML = '';
+
+            state.bits.forEach((bit, idx) => {
+                const isOn = bit === 1;
+                const weight = bitWeights[idx];
+                const cardHtml = `
+                    <button onclick="toggleBit(${idx})" class="flex flex-col items-center justify-between p-2.5 rounded-xl border transition-all ${isOn ? 'bg-amber-500/20 border-amber-400' : 'bg-slate-900 border-slate-700 hover:border-slate-500'}">
+                        <span class="text-[10px] font-mono font-bold text-slate-400">${weight}</span>
+                        <div class="my-2 w-8 h-8 rounded-full flex items-center justify-center transition-all ${isOn ? 'bg-amber-300 text-slate-950 bulb-glow scale-105' : 'bg-slate-700 text-slate-400'}">
+                            💡
+                        </div>
+                        <span class="font-mono font-extrabold text-base ${isOn ? 'text-amber-300' : 'text-slate-400'}">${bit}</span>
+                    </button>
+                `;
+
+                if (idx < 2) {
+                    leftContainer.innerHTML += cardHtml;
+                } else if (idx < 5) {
+                    midContainer.innerHTML += cardHtml;
+                } else {
+                    rightContainer.innerHTML += cardHtml;
+                }
+            });
+
+            calculateConversions();
+        }
+
+        function toggleBit(idx) {
+            state.bits[idx] = state.bits[idx] === 1 ? 0 : 1;
+            renderBinarySwitches();
+        }
+
+        function setBinaryValue(num) {
+            const binStr = num.toString(2).padStart(8, '0');
+            state.bits = binStr.split('').map(Number);
+            renderBinarySwitches();
+        }
+
+        function calculateConversions() {
+            const binStr = state.bits.join('');
+            const decVal = parseInt(binStr, 2);
+            const octVal = decVal.toString(8);
+
+            document.getElementById('bin-output-val').textContent = `${binStr}₂`;
+            document.getElementById('bin-output-clean').textContent = `Bentuk ringkas: ${decVal.toString(2)}₂`;
+            document.getElementById('dec-output-val').textContent = `${decVal}₁₀`;
+
+            const activeWeights = [];
+            state.bits.forEach((b, idx) => {
+                if (b === 1) activeWeights.push(bitWeights[idx]);
+            });
+            document.getElementById('dec-output-steps').textContent = activeWeights.length
+                ? `${activeWeights.join(' + ')} = ${decVal}`
+                : 'Semua lampu mati = 0';
+
+            const gLeft = `${state.bits[0]}${state.bits[1]}`;
+            const gMid = `${state.bits[2]}${state.bits[3]}${state.bits[4]}`;
+            const gRight = `${state.bits[5]}${state.bits[6]}${state.bits[7]}`;
+
+            const oLeft = parseInt(gLeft, 2);
+            const oMid = parseInt(gMid, 2);
+            const oRight = parseInt(gRight, 2);
+
+            document.getElementById('oct-output-val').textContent = `${octVal}₈`;
+            document.getElementById('oct-output-steps').textContent = `Kelompok: [${gLeft}→${oLeft}] [${gMid}→${oMid}] [${gRight}→${oRight}]`;
+        }
+
+        // =========================================================================
+        // 6. TAHAP 3: SIMULATOR STRUKTUR DATA (STACK & QUEUE)
+        // =========================================================================
+        const plateColors = [
+            'from-sky-500 to-blue-600',
+            'from-emerald-500 to-teal-600',
+            'from-amber-400 to-orange-500',
+            'from-purple-500 to-indigo-600',
+            'from-rose-500 to-pink-600',
+            'from-cyan-500 to-sky-600'
+        ];
+        const plateNames = ['Biru', 'Hijau', 'Kuning', 'Ungu', 'Merah', 'Tosca'];
+
+        function renderStack() {
+            const container = document.getElementById('stack-container');
+            document.getElementById('stack-count').textContent = state.stackItems.length;
+
+            if (state.stackItems.length === 0) {
+                container.innerHTML = `<div class="text-center text-xs text-slate-400 py-10 border-2 border-dashed border-slate-700 rounded-xl">Tumpukan Kosong (Stack Empty)</div>`;
+                return;
+            }
+
+            container.innerHTML = state.stackItems.map((item, idx) => {
+                const isTop = idx === state.stackItems.length - 1;
+                return `
+                    <div id="stack-el-${item.id}" class="stack-item-enter relative flex items-center justify-between px-4 py-2.5 rounded-xl bg-gradient-to-r ${item.color} text-white font-display font-bold text-xs sm:text-sm shadow-md border border-white/25">
+                        <span class="truncate pr-2">🍽️ ${item.label}</span>
+                        ${isTop ? '<span class="shrink-0 px-2 py-0.5 rounded-md bg-slate-950/75 text-amber-300 font-mono text-[11px] font-extrabold">👈 TOP</span>' : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function pushStack() {
+            const logEl = document.getElementById('stack-log');
+            if (state.stackItems.length >= 6) {
+                logEl.innerHTML = '⚠️ <strong>Peringatan Stack Full!</strong> Kapasitas tumpukan maksimal 6 elemen.';
+                return;
+            }
+
+            state.stackCounter++;
+            const customInput = document.getElementById('stack-custom-input');
+            const customText = customInput.value.trim();
+            const colorIdx = (state.stackCounter - 1) % plateColors.length;
+
+            const newPlate = {
+                id: state.stackCounter,
+                label: customText || `Piring #${state.stackCounter} (${plateNames[colorIdx]})`,
+                color: plateColors[colorIdx]
+            };
+
+            customInput.value = '';
+            state.stackItems.push(newPlate);
+            renderStack();
+            logEl.innerHTML = `⬇️ <strong>Push:</strong> <em>${newPlate.label}</em> masuk ke posisi teratas (<strong>TOP</strong>).`;
+        }
+
+        function popStack() {
+            const logEl = document.getElementById('stack-log');
+            if (state.stackItems.length === 0) {
+                logEl.innerHTML = '⚠️ <strong>Peringatan Stack Empty!</strong> Tumpukan sudah kosong, tidak ada data untuk di-Pop.';
+                return;
+            }
+
+            const topItem = state.stackItems[state.stackItems.length - 1];
+            const el = document.getElementById(`stack-el-${topItem.id}`);
+            if (el) el.classList.add('stack-item-exit');
+
+            setTimeout(() => {
+                state.stackItems.pop();
+                renderStack();
+                logEl.innerHTML = `⬆️ <strong>Pop (LIFO):</strong> <em>${topItem.label}</em> yang terakhir masuk langsung keluar pertama!`;
+            }, 300);
+        }
+
+        function peekStack() {
+            const logEl = document.getElementById('stack-log');
+            if (state.stackItems.length === 0) {
+                logEl.innerHTML = '⚠️ <strong>Peringatan Stack Empty!</strong> Tidak ada elemen teratas untuk di-Peek.';
+                return;
+            }
+            const topItem = state.stackItems[state.stackItems.length - 1];
+            const el = document.getElementById(`stack-el-${topItem.id}`);
+            if (el) {
+                el.classList.remove('peek-pulse');
+                void el.offsetWidth;
+                el.classList.add('peek-pulse');
+            }
+            logEl.innerHTML = `👁️ <strong>Peek (Intip TOP):</strong> Elemen paling atas saat ini adalah <em>${topItem.label}</em> (tidak dihapus).`;
+        }
+
+        const customerAvatars = ['👦', '👧', '🧑', '👩', '🧒', '👨'];
+        const customerNames = ['Andi', 'Citra', 'Budi', 'Dina', 'Eko', 'Fajar', 'Zahra', 'Raka', 'Nadia', 'Dimas'];
+
+        function renderQueue() {
+            const container = document.getElementById('queue-container');
+            document.getElementById('queue-count').textContent = state.queueItems.length;
+
+            if (state.queueItems.length === 0) {
+                container.innerHTML = `<div class="w-full text-center text-xs text-slate-400">Antrean Kosong (Queue Empty)</div>`;
+                return;
+            }
+
+            container.innerHTML = state.queueItems.map((person, idx) => {
+                const isFront = idx === 0;
+                const isRear = idx === state.queueItems.length - 1;
+                return `
+                    <div id="queue-el-${person.id}" class="queue-item-enter shrink-0 w-24 p-2.5 rounded-2xl border-2 flex flex-col items-center text-center transition-all ${isFront ? 'bg-emerald-500/20 border-emerald-400' : 'bg-slate-700/80 border-slate-600'}">
+                        <span class="text-[10px] font-mono font-bold ${isFront ? 'text-emerald-300' : 'text-slate-300'}">${person.id}</span>
+                        <span class="text-2xl my-1">${person.avatar}</span>
+                        <span class="text-xs font-bold text-white truncate w-full">${person.name}</span>
+                        ${isFront ? '<span class="mt-1 px-1.5 py-0.5 rounded bg-emerald-500 text-slate-950 text-[9px] font-extrabold">FRONT</span>' : (isRear ? '<span class="mt-1 px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 text-[9px] font-extrabold">REAR</span>' : '<span class="mt-1 text-[9px] text-slate-400">Antre</span>')}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function enqueueItem() {
+            const logEl = document.getElementById('queue-log');
+            if (state.queueItems.length >= 5) {
+                logEl.innerHTML = '⚠️ <strong>Peringatan Queue Full!</strong> Kapasitas antrean loket maksimal 5 orang.';
+                return;
+            }
+
+            state.queueCounter++;
+            const customInput = document.getElementById('queue-custom-input');
+            const customName = customInput.value.trim();
+            const code = `T-0${state.queueCounter}`;
+            const name = customName || customerNames[(state.queueCounter - 1) % customerNames.length];
+            const avatar = customerAvatars[(state.queueCounter - 1) % customerAvatars.length];
+
+            customInput.value = '';
+            state.queueItems.push({ id: code, name, avatar });
+            renderQueue();
+            logEl.innerHTML = `➕ <strong>Enqueue:</strong> <em>${name} (${code})</em> masuk dari belakang antrean (<strong>REAR</strong>).`;
+        }
+
+        function dequeueItem() {
+            const logEl = document.getElementById('queue-log');
+            if (state.queueItems.length === 0) {
+                logEl.innerHTML = '⚠️ <strong>Peringatan Queue Empty!</strong> Antrean kosong, belum ada pelanggan untuk dilayani.';
+                return;
+            }
+
+            const frontPerson = state.queueItems[0];
+            const el = document.getElementById(`queue-el-${frontPerson.id}`);
+            if (el) el.classList.add('queue-item-exit');
+
+            setTimeout(() => {
+                state.queueItems.shift();
+                renderQueue();
+                logEl.innerHTML = `✅ <strong>Dequeue (FIFO):</strong> <em>${frontPerson.name} (${frontPerson.id})</em> di posisi paling depan (<strong>FRONT</strong>) selesai dilayani!`;
+            }, 300);
+        }
+
+        function peekQueue() {
+            const logEl = document.getElementById('queue-log');
+            if (state.queueItems.length === 0) {
+                logEl.innerHTML = '⚠️ <strong>Peringatan Queue Empty!</strong> Tidak ada elemen di posisi FRONT.';
+                return;
+            }
+            const frontPerson = state.queueItems[0];
+            const el = document.getElementById(`queue-el-${frontPerson.id}`);
+            if (el) {
+                el.classList.remove('peek-pulse');
+                void el.offsetWidth;
+                el.classList.add('peek-pulse');
+            }
+            logEl.innerHTML = `👁️ <strong>Cek Depan (FRONT):</strong> Antrean paling depan saat ini adalah <em>${frontPerson.name} (${frontPerson.id})</em>.`;
+        }
+
+        // =========================================================================
+        // 7. TAHAP 4: ARENA TANTANGAN (10 SOAL) & RAPOR PEMAHAMAN SISWA
+        // =========================================================================
+        const quizQuestions = [
+            // SOAL 1-2: 4 FONDASI BERPIKIR KOMPUTASIONAL (MUDAH)
+            {
+                difficulty: 'Mudah',
+                topicKey: 'fondasi',
+                topicLabel: '4 Fondasi Berpikir Komputasional',
+                question: '1. Peta jalur kereta KRL Commuter Line hanya menampilkan garis rute berwarna dan titik nama stasiun tanpa menggambar bentuk gedung, pepohonan, atau warung di sekitar rel. Penerapan fondasi berpikir komputasional yang digunakan pada peta tersebut adalah...',
+                options: [
+                    'Dekomposisi (Decomposition)',
+                    'Pengenalan Pola (Pattern Recognition)',
+                    'Abstraksi (Abstraction)',
+                    'Desain Algoritma (Algorithm Design)'
+                ],
+                correctIndex: 2,
+                explanation: 'Abstraksi adalah proses menyaring detail yang tidak relevan (gedung, pohon) dan hanya mempertahankan informasi inti (garis rute & stasiun).'
+            },
+            {
+                difficulty: 'Mudah',
+                topicKey: 'fondasi',
+                topicLabel: '4 Fondasi Berpikir Komputasional',
+                question: '2. Saat hendak membuat aplikasi pemesanan makanan kantin sekolah, tim siswa membaginya menjadi 3 bagian tugas terpisah: (1) Modul Daftar Menu, (2) Modul Hitung Total Bayar, dan (3) Modul Antrean Pesanan. Langkah memecah masalah besar menjadi bagian-bagian kecil ini disebut...',
+                options: [
+                    'Dekomposisi (Decomposition)',
+                    'Abstraksi (Abstraction)',
+                    'Pengenalan Pola (Pattern Recognition)',
+                    'Konversi Biner'
+                ],
+                correctIndex: 0,
+                explanation: 'Dekomposisi memecah sistem atau masalah kompleks menjadi sub-masalah yang lebih kecil sehingga mudah dikerjakan dan diuji.'
+            },
+
+            // SOAL 3-4: KONSEP FUNGSI & PEMETAAN INPUT-OUTPUT
+            {
+                difficulty: 'Mudah',
+                topicKey: 'fungsi',
+                topicLabel: 'Konsep Fungsi',
+                question: '3. Sebuah mesin cetak foto otomatis menghitung biaya cetak menggunakan rumus fungsi f(x) = 3x - 1 (dalam ribuan rupiah), dengan x adalah jumlah lembar foto. Jika Dina mencetak x = 6 lembar foto, berapa biaya yang harus dibayar?',
+                options: [
+                    'Rp15.000',
+                    'Rp17.000',
+                    'Rp18.000',
+                    'Rp19.000'
+                ],
+                correctIndex: 1,
+                explanation: 'Masukkan input x = 6 ke rumus: f(6) = 3(6) - 1 = 18 - 1 = 17 (dalam ribuan rupiah = Rp17.000).'
+            },
+            {
+                difficulty: 'Menengah',
+                topicKey: 'fungsi',
+                topicLabel: 'Konsep Fungsi',
+                question: '4. Sebuah mesin pengolah angka bekerja dengan fungsi f(x) = 2x + 3. Jika mesin menghasilkan Output (Range) bernilai 21, berapakah nilai Input (Domain x) yang dimasukkan ke dalam mesin?',
+                options: [
+                    '7',
+                    '8',
+                    '9',
+                    '12'
+                ],
+                correctIndex: 2,
+                explanation: 'Diketahui f(x) = 21, maka 2x + 3 = 21 → 2x = 21 - 3 → 2x = 18 → x = 9.'
+            },
+
+            // SOAL 5-7: OPERASI HIMPUNAN & SISTEM BILANGAN (MENENGAH)
+            {
+                difficulty: 'Menengah',
+                topicKey: 'himpunan_bilangan',
+                topicLabel: 'Himpunan & Sistem Bilangan',
+                question: '5. Dari pendataan 12 siswa kelas 8: 7 siswa mengikuti ekskul Robotik (Himpunan A), 6 siswa mengikuti ekskul Desain Grafis (Himpunan B), dan 3 siswa mengikuti keduanya (A ∩ B). Berapa siswa yang HANYA mengikuti Desain Grafis saja (B - A)?',
+                options: [
+                    '2 siswa',
+                    '3 siswa',
+                    '4 siswa',
+                    '6 siswa'
+                ],
+                correctIndex: 1,
+                explanation: 'Anggota B berjumlah 6 siswa, dan 3 di antaranya juga anggota A. Maka selisih B - A = 6 - 3 = 3 siswa.'
+            },
+            {
+                difficulty: 'Menengah',
+                topicKey: 'himpunan_bilangan',
+                topicLabel: 'Himpunan & Sistem Bilangan',
+                question: '6. Panel saklar lampu digital 6-bit memiliki bobot nilai tempat dari kiri ke kanan: [32, 16, 8, 4, 2, 1]. Jika lampu yang menyala membentuk bilangan biner 101010₂, berapakah nilai bilangan Desimalnya?',
+                options: [
+                    '34',
+                    '40',
+                    '42',
+                    '46'
+                ],
+                correctIndex: 2,
+                explanation: 'Saklar yang bernilai 1 berada pada bobot 32, 8, dan 2. Jumlahnya: 32 + 8 + 2 = 42.'
+            },
+            {
+                difficulty: 'Menengah',
+                topicKey: 'himpunan_bilangan',
+                topicLabel: 'Himpunan & Sistem Bilangan',
+                question: '7. Dengan menerapkan dekomposisi 3-bit dari kanan, berapakah hasil konversi bilangan biner 8-bit 10010110₂ ke dalam sistem bilangan Oktal (Basis 8)?',
+                options: [
+                    '226₈',
+                    '236₈',
+                    '426₈',
+                    '224₈'
+                ],
+                correctIndex: 0,
+                explanation: 'Pecah 10010110₂ menjadi [10][010][110]. Nilai 10₂ = 2, nilai 010₂ = 2, dan nilai 110₂ = 4+2+0 = 6. Maka hasilnya 226₈.'
+            },
+
+            // SOAL 8-10: ANALISIS KASUS STRUKTUR DATA STACK & QUEUE (MENANTANG / HOTS)
+            {
+                difficulty: 'Menantang (HOTS)',
+                topicKey: 'struktur_data',
+                topicLabel: 'Struktur Data (Stack & Queue)',
+                question: '8. Fitur Undo (Ctrl+Z) bekerja menggunakan prinsip Stack (LIFO). Citra melakukan 4 langkah berurutan: (1) Membuat Judul → (2) Mewarnai Latar → (3) Menambah Gambar → (4) Menghapus Paragraf. Jika Citra menekan Undo sebanyak 2 kali, langkah mana yang berada di posisi TOP setelah proses Undo selesai?',
+                options: [
+                    '(1) Membuat Judul',
+                    '(2) Mewarnai Latar',
+                    '(3) Menambah Gambar',
+                    '(4) Menghapus Paragraf'
+                ],
+                correctIndex: 1,
+                explanation: 'Undo ke-1 membatalkan (4) Menghapus Paragraf, dan Undo ke-2 membatalkan (3) Menambah Gambar. Maka elemen teratas (TOP) yang tersisa adalah (2) Mewarnai Latar.'
+            },
+            {
+                difficulty: 'Menantang (HOTS)',
+                topicKey: 'struktur_data',
+                topicLabel: 'Struktur Data (Stack & Queue)',
+                question: '9. Antrean cetak dokumen pada printer laboratorium menggunakan struktur Queue (FIFO). Urutan dokumen yang masuk adalah: [Laporan_1, Laporan_2, Laporan_3]. Setelah 1 dokumen selesai dicetak (Dequeue), masuk dokumen baru Laporan_4 (Enqueue). Dokumen manakah yang berada di posisi FRONT dan REAR secara berturut-turut?',
+                options: [
+                    'FRONT: Laporan_1, REAR: Laporan_4',
+                    'FRONT: Laporan_2, REAR: Laporan_4',
+                    'FRONT: Laporan_4, REAR: Laporan_2',
+                    'FRONT: Laporan_2, REAR: Laporan_3'
+                ],
+                correctIndex: 1,
+                explanation: 'Setelah Laporan_1 keluar dari depan (Dequeue), antrean terdepan (FRONT) menjadi Laporan_2, sedangkan Laporan_4 yang baru masuk berada di belakang (REAR).'
+            },
+            {
+                difficulty: 'Menantang (HOTS)',
+                topicKey: 'struktur_data',
+                topicLabel: 'Struktur Data (Stack & Queue)',
+                question: '10. Sebuah antrean Queue berisi 3 bola bernomor dari depan ke belakang: [Bola_1, Bola_2, Bola_3]. Semua bola dikeluarkan satu per satu dari antrean (Dequeue) lalu langsung dimasukkan ke dalam tabung sempit berbentuk Stack (Push). Jika setelah itu diambil 1 bola dari tabung Stack (Pop), bola nomor berapa yang keluar?',
+                options: [
+                    'Bola_1',
+                    'Bola_2',
+                    'Bola_3',
+                    'Tidak ada bola yang keluar'
+                ],
+                correctIndex: 2,
+                explanation: 'Urutan masuk ke Stack: Bola_1 (dasar tabung), Bola_2 (tengah), lalu Bola_3 (paling atas / TOP). Karena Stack bersifat LIFO, saat Pop dilakukan maka Bola_3 keluar lebih dulu!'
+            }
+        ];
+
+        function startQuiz() {
+            syncFromQuizInput();
+            state.quizIndex = 0;
+            state.quizScore = 0;
+            state.quizAnswered = false;
+            state.topicResults = {
+                fondasi: { correct: 0, total: 2 },
+                fungsi: { correct: 0, total: 2 },
+                himpunan_bilangan: { correct: 0, total: 3 },
+                struktur_data: { correct: 0, total: 3 }
+            };
+
+            document.getElementById('quiz-intro-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.add('hidden');
+            document.getElementById('quiz-active-screen').classList.remove('hidden');
+            document.getElementById('quiz-live-score').textContent = '0';
+
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const q = quizQuestions[state.quizIndex];
+            state.quizAnswered = false;
+
+            document.getElementById('quiz-q-number').textContent = `Soal ${state.quizIndex + 1} dari ${quizQuestions.length}`;
+            document.getElementById('quiz-topic-badge').textContent = `Topik: ${q.topicLabel}`;
+
+            const diffBadge = document.getElementById('quiz-difficulty-badge');
+            diffBadge.textContent = q.difficulty;
+            if (q.difficulty === 'Mudah') {
+                diffBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800';
+            } else if (q.difficulty === 'Menengah') {
+                diffBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
+            } else {
+                diffBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800';
+            }
+
+            document.getElementById('quiz-question-text').textContent = q.question;
+
+            const letters = ['A', 'B', 'C', 'D'];
+            const optionsContainer = document.getElementById('quiz-options-container');
+            optionsContainer.innerHTML = q.options.map((opt, idx) => `
+                <button onclick="handleQuizAnswer(${idx})" class="quiz-opt-btn w-full text-left p-4 rounded-2xl bg-slate-50 hover:bg-indigo-50/70 border-2 border-slate-200 hover:border-indigo-400 transition-all flex items-center gap-3.5 group">
+                    <span class="w-8 h-8 rounded-xl bg-white border border-slate-300 group-hover:border-indigo-500 group-hover:text-indigo-600 font-display font-extrabold text-sm flex items-center justify-center shrink-0 transition-colors">
+                        ${letters[idx]}
+                    </span>
+                    <span class="text-sm sm:text-base font-medium text-slate-800">${opt}</span>
+                </button>
+            `).join('');
+
+            document.getElementById('quiz-feedback-box').classList.add('hidden');
+            document.getElementById('quiz-next-wrapper').classList.add('hidden');
+        }
+
+        function handleQuizAnswer(selectedIndex) {
+            if (state.quizAnswered) return;
+            state.quizAnswered = true;
+
+            const q = quizQuestions[state.quizIndex];
+            const isCorrect = selectedIndex === q.correctIndex;
+            const allOptionBtns = document.querySelectorAll('.quiz-opt-btn');
+
+            allOptionBtns.forEach((b, idx) => {
+                b.disabled = true;
+                b.classList.remove('hover:bg-indigo-50/70', 'hover:border-indigo-400');
+
+                if (idx === q.correctIndex) {
+                    b.classList.remove('bg-slate-50', 'border-slate-200');
+                    b.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-950');
+                } else if (idx === selectedIndex && !isCorrect) {
+                    b.classList.remove('bg-slate-50', 'border-slate-200');
+                    b.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-950');
+                } else {
+                    b.classList.add('opacity-60');
+                }
+            });
+
+            const fbBox = document.getElementById('quiz-feedback-box');
+            const fbTitle = document.getElementById('quiz-feedback-title');
+            const fbExp = document.getElementById('quiz-feedback-explanation');
+
+            fbBox.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-300', 'text-emerald-950', 'bg-rose-50', 'border-rose-300', 'text-rose-950');
+
+            if (isCorrect) {
+                state.quizScore += 10;
+                state.topicResults[q.topicKey].correct += 1;
+                document.getElementById('quiz-live-score').textContent = state.quizScore;
+
+                fbBox.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-950');
+                fbTitle.textContent = '✅ Jawaban Benar! (+10 Poin)';
+            } else {
+                fbBox.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-950');
+                fbTitle.textContent = '❌ Kurang Tepat — Simak Penjelasan Pembahasannya:';
+            }
+
+            fbExp.textContent = q.explanation;
+
+            const nextBtn = document.getElementById('btn-next-question');
+            nextBtn.textContent = state.quizIndex === quizQuestions.length - 1
+                ? 'Lihat Rapor Pemahaman Siswa 🎓'
+                : 'Soal Berikutnya →';
+            document.getElementById('quiz-next-wrapper').classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            if (state.quizIndex < quizQuestions.length - 1) {
+                state.quizIndex++;
+                renderQuizQuestion();
+            } else {
+                showFinalReport();
+            }
+        }
+
+        function showFinalReport() {
+            markStageComplete(4);
+
+            document.getElementById('quiz-active-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.remove('hidden');
+
+            document.getElementById('report-student-name').textContent = state.studentName;
+            document.getElementById('report-student-class').textContent = state.studentClass;
+            const today = new Date().toLocaleDateString('id-ID', {
+                day: 'numeric', month: 'long', year: 'numeric'
+            });
+            document.getElementById('report-date').textContent = today;
+
+            // Animasi angka skor akhir
+            const scoreEl = document.getElementById('report-final-score');
+            let currentDisplay = 0;
+            const targetScore = state.quizScore;
+            const timer = setInterval(() => {
+                if (currentDisplay >= targetScore) {
+                    scoreEl.textContent = targetScore;
+                    clearInterval(timer);
+                } else {
+                    currentDisplay += 2;
+                    if (currentDisplay > targetScore) currentDisplay = targetScore;
+                    scoreEl.textContent = currentDisplay;
+                }
+            }, 20);
+
+            // Predikat Capaian
+            const badgeBox = document.getElementById('report-badge-box');
+            const badgeIcon = document.getElementById('report-badge-icon');
+            const badgeTitle = document.getElementById('report-badge-title');
+            const badgeDesc = document.getElementById('report-badge-desc');
+
+            badgeBox.className = 'p-5 sm:p-6 rounded-2xl border-2 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left';
+
+            if (targetScore >= 85) {
+                badgeBox.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-950');
+                badgeIcon.textContent = '🏆';
+                badgeTitle.textContent = 'Sangat Mahir • Master Berpikir Komputasional';
+                badgeDesc.textContent = 'Luar biasa! Kamu menguasai 4 fondasi berpikir komputasional, fungsi, himpunan & konversi bilangan, serta analisis Stack & Queue dengan sangat baik.';
+            } else if (targetScore >= 70) {
+                badgeBox.classList.add('bg-sky-50', 'border-sky-300', 'text-sky-950');
+                badgeIcon.textContent = '🧭';
+                badgeTitle.textContent = 'Mahir • Arsitek Logika';
+                badgeDesc.textContent = 'Bagus sekali! Pemahamanmu sudah melampaui kriteria ketuntasan. Latih kembali bagian HOTS untuk hasil sempurna.';
+            } else {
+                badgeBox.classList.add('bg-amber-50', 'border-amber-300', 'text-amber-950');
+                badgeIcon.textContent = '🚀';
+                badgeTitle.textContent = 'Perlu Penguatan • Penjelajah Algoritma';
+                badgeDesc.textContent = 'Terus semangat! Eksplorasi kembali simulator interaktif pada topik yang persentasenya masih di bawah 70%.';
+            }
+
+            // 4 Grafik Batang Penguasaan Topik
+            const pFondasi = Math.round((state.topicResults.fondasi.correct / state.topicResults.fondasi.total) * 100);
+            const pFungsi = Math.round((state.topicResults.fungsi.correct / state.topicResults.fungsi.total) * 100);
+            const pHimpunan = Math.round((state.topicResults.himpunan_bilangan.correct / state.topicResults.himpunan_bilangan.total) * 100);
+            const pStruktur = Math.round((state.topicResults.struktur_data.correct / state.topicResults.struktur_data.total) * 100);
+
+            document.getElementById('topic-score-fondasi-text').textContent = `${pFondasi}% (${state.topicResults.fondasi.correct}/${state.topicResults.fondasi.total})`;
+            document.getElementById('topic-score-fungsi-text').textContent = `${pFungsi}% (${state.topicResults.fungsi.correct}/${state.topicResults.fungsi.total})`;
+            document.getElementById('topic-score-himpunan-text').textContent = `${pHimpunan}% (${state.topicResults.himpunan_bilangan.correct}/${state.topicResults.himpunan_bilangan.total})`;
+            document.getElementById('topic-score-struktur-text').textContent = `${pStruktur}% (${state.topicResults.struktur_data.correct}/${state.topicResults.struktur_data.total})`;
+
+            setTimeout(() => {
+                document.getElementById('topic-bar-fondasi').style.width = `${pFondasi}%`;
+                document.getElementById('topic-bar-fungsi').style.width = `${pFungsi}%`;
+                document.getElementById('topic-bar-himpunan').style.width = `${pHimpunan}%`;
+                document.getElementById('topic-bar-struktur').style.width = `${pStruktur}%`;
+            }, 150);
+
+            // Saran Belajar Berdasarkan Topik Terlemah
+            const recText = document.getElementById('report-recommendation-text');
+            const recBtn = document.getElementById('report-review-btn');
+            const topics = [
+                { name: 'Tahap 0: Prasyarat 4 Fondasi', pct: pFondasi, stage: 0 },
+                { name: 'Tahap 1: Konsep Fungsi', pct: pFungsi, stage: 1 },
+                { name: 'Tahap 2: Himpunan & Sistem Bilangan', pct: pHimpunan, stage: 2 },
+                { name: 'Tahap 3: Struktur Data (Stack & Queue)', pct: pStruktur, stage: 3 }
+            ];
+            topics.sort((a, b) => a.pct - b.pct);
+
+            if (topics[0].pct < 100) {
+                recText.innerHTML = `💡 <strong>Rekomendasi Evaluasi:</strong> Topik yang paling disarankan untuk ditinjau ulang adalah <strong>${topics[0].name} (${topics[0].pct}%)</strong>.`;
+                recBtn.classList.remove('hidden');
+                recBtn.onclick = () => switchStage(topics[0].stage);
+            } else {
+                recText.innerHTML = `🌟 <strong>Luar Biasa!</strong> Seluruh topik Bab 2 dikuasai 100%. Kamu siap melanjutkan ke Bab berikutnya!`;
+                recBtn.classList.add('hidden');
+            }
+        }
+
+        function resetAndRestartQuiz() {
+            document.getElementById('quiz-result-screen').classList.add('hidden');
+            document.getElementById('quiz-intro-screen').classList.remove('hidden');
+        }
+
+        // =========================================================================
+        // 8. INISIALISASI SAAT HALAMAN DIMUAT
+        // =========================================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            renderStudentsCards();
+            updateVennDiagram();
+            renderBinarySwitches();
+            renderStack();
+            renderQueue();
+        });
+    </script>
+</body>
+</html>
