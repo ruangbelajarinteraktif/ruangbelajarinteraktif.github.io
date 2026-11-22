@@ -1,0 +1,571 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Rakit Cuci Tangan Otomatis</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: panduan di kiri, lembar kerja di tengah, alat dan bahan di kanan. Di layar sempit: lembar kerja, alat, panduan. */
+:root{
+  --bg:#e8f0f1; --panel:#f8fbfb; --card:#ffffff; --ink:#12272b; --muted:#506569; --line:#c8d8da; --grid:#d6e3e5;
+  --accent:#0b7a86; --accent-ink:#ffffff; --accent-soft:#d2eef0;
+  --power:#c93a2e; --signal:#d08600; --gnd:#243538; --ok:#1f8a4c; --warn:#a85a14;
+  --board:#2b6fb5; --board-d:#1d4f85; --cardboard:#cfa877; --cardboard-d:#a8825a; --tube:#8fc9d1; --water:#2fa4d6;
+  --skin:#e2a779; --glass:#dff1f4; --glass-line:#6f9ea6; --batt:#2f3b40; --pump:#f1f5f6;
+  --font-body:'Inter',system-ui,sans-serif; --font-head:'Space Grotesk','Inter',system-ui,sans-serif; --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1618; --panel:#132326; --card:#1a3236; --ink:#e3f0f2; --muted:#93adb1; --line:#27393d; --grid:#193035;
+  --accent:#4cc3cf; --accent-ink:#06282c; --accent-soft:#12383c;
+  --power:#ff6b5e; --signal:#f5b53d; --gnd:#aab9bc; --ok:#4cc884; --warn:#e8a15a;
+  --board:#3b86d1; --board-d:#2a62a0; --cardboard:#a98355; --cardboard-d:#876440; --tube:#3f8590; --water:#52bdf0;
+  --skin:#d79c6f; --glass:#1f4147; --glass-line:#5c8f97; --batt:#4a5a5f; --pump:#cfd9db; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0c1618; --panel:#132326; --card:#1a3236; --ink:#e3f0f2; --muted:#93adb1; --line:#27393d; --grid:#193035;
+  --accent:#4cc3cf; --accent-ink:#06282c; --accent-soft:#12383c;
+  --power:#ff6b5e; --signal:#f5b53d; --gnd:#aab9bc; --ok:#4cc884; --warn:#e8a15a;
+  --board:#3b86d1; --board-d:#2a62a0; --cardboard:#a98355; --cardboard-d:#876440; --tube:#3f8590; --water:#52bdf0;
+  --skin:#d79c6f; --glass:#1f4147; --glass-line:#5c8f97; --batt:#4a5a5f; --pump:#cfd9db; color-scheme:dark;}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 var(--font-body);
+  padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.app{max-width:1380px;margin:0 auto}
+.top{margin-bottom:16px}
+.eyebrow{margin:0 0 4px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{margin:0;font:700 clamp(24px,3.4vw,34px)/1.15 var(--font-head);text-wrap:balance}
+.lede{margin:6px 0 0;color:var(--muted);max-width:62ch}
+h2{margin:0 0 10px;font:700 17px/1.3 var(--font-head)}
+h3{margin:18px 0 8px;font:600 12px/1.3 var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.grid{display:grid;grid-template-columns:minmax(250px,300px) minmax(0,1fr) minmax(230px,272px);gap:14px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.stage{min-width:0}
+@media (max-width:1020px){.grid{grid-template-columns:minmax(0,1fr)}.stage{order:1}.tray{order:2}.info{order:3}}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.btn{font:600 13px var(--font-body);padding:8px 13px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.btn:hover:not(:disabled){border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.board-wrap{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
+#scene{display:block;width:100%;height:auto;touch-action:none;user-select:none}
+.toast{position:absolute;left:12px;right:12px;top:12px;padding:9px 12px;border-radius:8px;background:var(--ink);color:var(--bg);font-weight:500;
+  opacity:0;transform:translateY(-8px);transition:opacity .2s,transform .2s;pointer-events:none}
+.toast.show{opacity:1;transform:none}
+.toast.ok{background:var(--ok);color:#fff}.toast.warn{background:var(--warn);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:10px 2px 0;color:var(--muted);font-size:12.5px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:26px;height:0;border-top:4px solid var(--power);border-radius:2px}
+.legend i.s{border-top:4px dotted var(--signal)}.legend i.g{border-top-color:var(--gnd)}
+
+/* panduan */
+.hintbox{background:var(--accent-soft);border-radius:8px;padding:12px}
+.hintbox .k{font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.04em}
+.hintbox h3{margin:2px 0 4px;font:700 16px/1.3 var(--font-head);letter-spacing:0;text-transform:none;color:var(--ink)}
+.hintbox p{margin:0;color:var(--ink)}
+.bar{height:6px;background:var(--line);border-radius:3px;margin:10px 0 0;overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:var(--accent);transition:width .4s}
+pre.code{margin:10px 0 0;padding:10px;border-radius:6px;background:var(--panel);border:1px solid var(--line);font:12px/1.55 var(--font-mono);white-space:pre-wrap;overflow-x:auto}
+#steps{list-style:none;margin:0;padding:0;font-size:13px}
+#steps li{display:flex;gap:8px;align-items:flex-start;padding:3px 0;color:var(--muted)}
+#steps li::before{content:"";flex:none;width:14px;height:14px;margin-top:3px;border-radius:50%;border:2px solid var(--line)}
+#steps li.grp{font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding-top:8px;color:var(--muted);font-weight:600}
+#steps li.grp::before{display:none}
+#steps li.cur{color:var(--ink);font-weight:600}
+#steps li.cur::before{border-color:var(--accent);background:var(--accent-soft)}
+#steps li.done{color:var(--ink)}
+#steps li.done::before{border-color:var(--ok);background:var(--ok) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 5.2l2 2 4-4.4' fill='none' stroke='white' stroke-width='1.6'/%3E%3C/svg%3E") center/10px no-repeat}
+.stat{display:grid;grid-template-columns:1fr auto;gap:5px 10px;margin:0;font-size:13px}
+.stat dt{color:var(--muted)}.stat dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.stat dd.on{color:var(--ok)}
+#log{list-style:none;margin:0;padding:0;font:12px/1.5 var(--font-mono);color:var(--muted)}
+#log li{padding:4px 0;border-top:1px solid var(--line)}
+#log li:first-child{color:var(--ink);border-top:0}
+
+/* alat dan bahan */
+.small{margin:-4px 0 10px;color:var(--muted);font-size:13px}
+#cards{display:grid;gap:8px}
+.card{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:grab;touch-action:none;position:relative}
+.card:hover{border-color:var(--accent)}
+.card svg{flex:none;width:68px;height:52px;background:var(--panel);border-radius:6px}
+.card .ct{display:flex;flex-direction:column;min-width:0}
+.card strong{font-weight:600;font-size:13.5px}.card small{color:var(--muted);font-size:12px;line-height:1.35}
+.card .tag{display:none;position:absolute;bottom:6px;right:8px;font-size:11px;font-weight:600;color:var(--ok)}
+.card.done{opacity:.5;cursor:default}.card.done .tag{display:block}
+.card.hint{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.jumper{margin-top:10px;padding:10px;border:1px dashed var(--line);border-radius:8px;font-size:12.5px;color:var(--muted)}
+.jumper strong{color:var(--ink);font-size:13.5px}.jumper p{margin:4px 0 0}
+.ghost{position:fixed;left:0;top:0;z-index:60;pointer-events:none;filter:drop-shadow(0 8px 10px rgba(0,0,0,.28))}
+.ghost svg{width:100%;height:100%;display:block;overflow:visible}
+
+/* gambar komponen */
+.cb{fill:var(--cardboard);stroke:var(--cardboard-d);stroke-width:1.5}.cbd{fill:var(--cardboard-d);stroke:var(--cardboard-d);stroke-width:1.5}
+.glass{fill:var(--glass);fill-opacity:.55;stroke:var(--glass-line);stroke-width:2}
+.wtr{fill:var(--water);fill-opacity:.5}.rim{fill:none;stroke:var(--glass-line);stroke-width:2}
+.pump{fill:var(--pump);stroke:var(--glass-line);stroke-width:1.5}.pumpd{fill:var(--batt)}
+.board{fill:var(--board);stroke:var(--board-d);stroke-width:1.5}.boardd{fill:var(--board-d)}
+.batt{fill:var(--batt)}.tw{fill:#fff;font:600 9px var(--font-body);text-anchor:middle}.te{text-anchor:end}.tb{font-size:10px}
+.tube{fill:none;stroke:var(--tube);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.bulb{fill:#e8f1f5}.bulbd{fill:#243b50}.pot{fill:#e8c36a}.t-r{fill:var(--power)}.t-g{fill:var(--gnd)}
+
+/* lembar kerja */
+.slot .shape{fill:none;stroke:var(--muted);stroke-width:1.6;stroke-dasharray:6 5;opacity:.85}
+.slot .tubeline{stroke-width:7;stroke-linecap:round;stroke-dasharray:2 10;opacity:.7}
+.slot text{display:none;fill:var(--accent);font:600 12px var(--font-body);text-anchor:middle}
+.slot.over .shape{stroke:var(--accent);fill:var(--accent-soft);fill-opacity:.5;opacity:1}
+.slot.hint .shape{stroke:var(--accent);opacity:1;animation:pulse 1s ease-in-out infinite}
+.slot.hint text,.slot.over text{display:block}
+.slot.done{display:none}
+.placed{display:none}.placed.on{display:inline;animation:drop .45s ease-out}
+.placed.run{animation:jit .12s linear infinite}
+@keyframes drop{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+@keyframes jit{50%{transform:translate(1.2px,-1px)}}
+@keyframes pulse{50%{opacity:.3}}
+@keyframes flow{to{stroke-dashoffset:calc(var(--p) * -1)}}
+.wire{fill:none;stroke-width:4.5;stroke-linecap:round}
+.wire.power{stroke:var(--power)}.wire.gnd{stroke:var(--gnd)}.wire.signal{stroke:var(--signal);stroke-dasharray:3 7}
+.flow{fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-dasharray:1 12;--p:13;opacity:0}
+.live .flow{opacity:.95;animation:flow .6s linear infinite}
+.wire.temp{stroke:var(--accent);stroke-dasharray:4 6;pointer-events:none}
+.pin{display:none;cursor:crosshair}.pin.on{display:inline}
+.pin .dot{fill:var(--card);stroke:var(--ink);stroke-width:2}
+.pin:hover .dot,.pin.over .dot{stroke:var(--accent);stroke-width:3.5}
+.pin.conn .dot{fill:var(--accent)}
+.pin.hint .dot{animation:pulse .9s ease-in-out infinite;stroke:var(--accent);stroke-width:3.5}
+.beam{display:none;fill:var(--signal);fill-opacity:.07;stroke:var(--signal);stroke-width:1.2;stroke-dasharray:4 5;stroke-opacity:.7}
+.beam.on{display:inline}.beam.det{fill-opacity:.24}
+.led{display:none;fill:var(--line);stroke:var(--board-d);stroke-width:1}.led.vis{display:inline}.led.lit{fill:var(--ok)}
+#water{display:none}#water.on{display:inline}
+.stream{stroke:var(--water);stroke-width:4;stroke-linecap:round;stroke-dasharray:12 8;--p:20;animation:flow .45s linear infinite}
+.splash{fill:var(--water);fill-opacity:.6;animation:pulse .5s ease-in-out infinite}
+.hand{transform:translateY(170px);transition:transform .9s cubic-bezier(.25,.8,.25,1)}.hand.in{transform:none}
+.skin{fill:var(--skin)}.sleeve{fill:var(--card);stroke:var(--line);stroke-width:1.5}
+.temp-g{pointer-events:none}
+@media (prefers-reduced-motion:reduce){.live .flow,.stream,.splash,.slot.hint .shape,.pin.hint .dot,.placed.run,.placed.on{animation:none}.hand{transition:none}}
+</style>
+
+<div class="app">
+  <header class="top">
+    <p class="eyebrow">Informatika · Kelas 9</p>
+    <h1>Rakit Cuci Tangan Otomatis</h1>
+    <p class="lede">Seret komponen ke lembar kerja, sambungkan kabelnya dari pin ke pin, lalu uji dengan tangan. Atau putar animasinya untuk melihat urutan perakitan.</p>
+  </header>
+
+  <main class="grid">
+    <aside class="panel info" aria-label="Panduan perakitan">
+      <h2>Panduan</h2>
+      <div class="hintbox" id="hintbox" aria-live="polite"></div>
+      <h3>Langkah</h3>
+      <ol id="steps"></ol>
+      <h3>Status rangkaian</h3>
+      <dl class="stat">
+        <dt>Komponen terpasang</dt><dd id="st-comp">0/7</dd>
+        <dt>Kabel terpasang</dt><dd id="st-wire">0/8</dd>
+        <dt>Sensor IR</dt><dd id="st-ir">OFF</dd>
+        <dt>Relay</dt><dd id="st-relay">OFF</dd>
+        <dt>Pompa</dt><dd id="st-pump">OFF</dd>
+        <dt>Air mengalir</dt><dd id="st-air">TIDAK</dd>
+      </dl>
+      <h3>Log alur sinyal</h3>
+      <ul id="log"></ul>
+    </aside>
+
+    <section class="stage" aria-label="Lembar kerja">
+      <div class="toolbar">
+        <button class="btn primary" id="btnAuto" type="button">Putar animasi rakit</button>
+        <button class="btn" id="btnHint" type="button">Petunjuk</button>
+        <button class="btn" id="btnHand" type="button">Dekatkan tangan</button>
+        <button class="btn" id="btnReset" type="button">Ulangi dari awal</button>
+      </div>
+      <div class="board-wrap">
+        <svg id="scene" viewBox="0 0 640 540" role="img" aria-label="Lembar kerja penyusunan prototipe cuci tangan otomatis">
+          <defs>
+            <pattern id="gridp" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" style="stroke:var(--grid)" stroke-width="1"/></pattern>
+          </defs>
+          <rect width="640" height="540" fill="url(#gridp)"/>
+          <rect x="0" y="500" width="640" height="40" style="fill:var(--line)"/>
+          <g id="slots"></g>
+          <g id="placed"></g>
+          <polygon id="beam" class="beam" points="440,258 470,258 522,402 412,402"/>
+          <circle id="led" class="led" cx="279" cy="304" r="3.5"/>
+          <g id="hand" class="hand">
+            <rect class="sleeve" x="490" y="380" width="82" height="24" rx="10"/>
+            <ellipse class="skin" cx="450" cy="392" rx="46" ry="12"/>
+            <ellipse class="skin" cx="432" cy="383" rx="14" ry="6"/>
+          </g>
+          <g id="wires"></g>
+          <g id="water">
+            <line class="stream" x1="420" y1="200" x2="420" y2="378"/>
+            <ellipse class="splash" cx="420" cy="381" rx="15" ry="3"/>
+          </g>
+          <g id="pins"></g>
+          <g id="temp" class="temp-g"></g>
+        </svg>
+        <div class="toast" id="toast" role="status"></div>
+      </div>
+      <div class="legend">
+        <span><i></i>Kabel daya (+)</span><span><i class="s"></i>Kabel sinyal</span><span><i class="g"></i>Kabel negatif (−)</span>
+        <span>VCC sensor dan relay dari (+) baterai. GND sensor, relay, dan pompa ke (−) baterai.</span>
+      </div>
+    </section>
+
+    <aside class="panel tray" aria-label="Alat dan bahan">
+      <h2>Alat dan bahan</h2>
+      <p class="small">Seret kartu ke siluet putus-putus di lembar kerja. Dengan keyboard, tekan Enter pada kartu.</p>
+      <div id="cards"></div>
+      <div class="jumper">
+        <strong>Kabel jumper · 8 buah</strong>
+        <p>Tarik dari satu pin ke pin lain. Pin muncul setelah komponennya dipasang. Terpasang <span id="jcount">0</span> dari 8. Kabel (+) baterai ke VCC sensor, VCC relay, dan COM relay boleh memakai pin (+) mana saja.</p>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="art-rangka">
+    <rect class="cb" x="250" y="490" width="170" height="10" rx="2"/>
+    <rect class="cb" x="310" y="186" width="22" height="304"/>
+    <rect class="cbd" x="290" y="160" width="212" height="26" rx="3"/>
+  </g>
+  <g id="art-tandon">
+    <path class="wtr" d="M95 385 L205 385 L198 500 L102 500 Z"/>
+    <path class="glass" d="M90 340 L210 340 L198 500 L102 500 Z"/>
+    <ellipse class="rim" cx="150" cy="340" rx="60" ry="6"/>
+  </g>
+  <g id="art-pompa">
+    <rect class="pump" x="105" y="452" width="80" height="40" rx="7"/>
+    <circle class="pumpd" cx="144" cy="480" r="9"/>
+    <rect class="pumpd" x="185" y="466" width="9" height="8" rx="2"/>
+    <text class="tw tb" x="125" y="468" style="fill:var(--ink)">+</text>
+    <text class="tw tb" x="160" y="468" style="fill:var(--ink)">−</text>
+  </g>
+  <g id="art-sensor">
+    <rect class="board" x="432" y="186" width="80" height="72" rx="4"/>
+    <circle class="pot" cx="452" cy="202" r="6"/>
+    <circle class="bulb" cx="446" cy="243" r="5"/>
+    <circle class="bulbd" cx="464" cy="243" r="5"/>
+    <text class="tw te" x="504" y="207">VCC</text>
+    <text class="tw te" x="504" y="223">GND</text>
+    <text class="tw te" x="504" y="239">OUT</text>
+  </g>
+  <g id="art-relay">
+    <rect class="board" x="270" y="296" width="90" height="70" rx="4"/>
+    <rect class="boardd" x="282" y="312" width="40" height="34" rx="3"/>
+    <rect class="boardd" x="284" y="350" width="20" height="14" rx="2"/>
+    <rect class="boardd" x="308" y="350" width="20" height="14" rx="2"/>
+    <text class="tw" x="294" y="360" style="font-size:8px">NO</text>
+    <text class="tw" x="318" y="360" style="font-size:8px">COM</text>
+    <text class="tw te" x="352" y="315">VCC</text>
+    <text class="tw te" x="352" y="331">GND</text>
+    <text class="tw te" x="352" y="347">IN</text>
+    <text class="tw" x="302" y="326" style="font-size:8px">RELAY</text>
+  </g>
+  <g id="art-baterai">
+    <rect class="batt" x="480" y="440" width="120" height="60" rx="6"/>
+    <text class="tw tb" x="512" y="459">− − −</text>
+    <text class="tw tb" x="568" y="459">+ + +</text>
+    <text class="tw" x="540" y="486">BATERAI DC</text>
+  </g>
+  <g id="art-selang"><path class="tube" d="M185 470 C 250 470 240 340 250 250 S 270 172 300 172 L 420 172 L 420 200"/></g>
+</defs></svg>
+<script>
+(function(){
+var NS='http://www.w3.org/2000/svg';
+var $=function(id){return document.getElementById(id)};
+var svg=$('scene');
+var TUBE='M185 470 C 250 470 240 340 250 250 S 270 172 300 172 L 420 172 L 420 200';
+
+var COMPS=[
+ {id:'rangka',n:'Rangka kardus',d:'Menopang sensor dan relay',s:[240,150,280,355],t:'Pasang rangka kardus',h:'Tiang dan lengannya menopang sensor di atas dan relay di sisi tiang. Mulai dari sini.',log:'Rangka kardus berdiri sebagai penopang.'},
+ {id:'tandon',n:'Tandon air',d:'Gelas penampung air',s:[80,330,140,175],t:'Letakkan tandon air',h:'Taruh gelas di sisi kiri tiang. Di sinilah air disimpan.',log:'Tandon terisi air dan siap dihisap pompa.'},
+ {id:'pompa',n:'Pompa mini DC',d:'Menghisap dan menyemprotkan air',s:[100,446,100,50],t:'Masukkan pompa ke tandon',h:'Pompa harus berada di dalam air agar bisa menghisapnya.',log:'Pompa terpasang di dasar tandon.'},
+ {id:'sensor',n:'Sensor IR',d:'Membaca gerakan tangan',s:[426,182,92,80],t:'Pasang sensor IR',h:'Letakkan di ujung lengan, menghadap ke bawah, ke arah tempat tangan nanti berada.',log:'Sensor IR terpasang dan membentuk area deteksi.'},
+ {id:'relay',n:'Modul relay 5V',d:'Saklar elektronik untuk pompa',s:[264,292,102,82],t:'Tempelkan modul relay',h:'Relay jadi saklar: sinyal kecil dari sensor mengatur arus besar ke pompa.',log:'Modul relay menempel pada tiang.'},
+ {id:'baterai',n:'Baterai DC',d:'Sumber daya rangkaian',s:[474,430,132,76],t:'Letakkan baterai',h:'Baterai menyediakan arus DC untuk sensor dan pompa.',log:'Baterai DC siap menjadi sumber daya.'},
+ {id:'selang',n:'Selang',d:'Mengalirkan air dari pompa',s:[185,165,245,315],t:'Pasang selang',h:'Sambungkan keluaran pompa ke ujung lengan supaya air keluar tepat di bawah sensor.',log:'Selang menghubungkan pompa ke ujung lengan.'}
+];
+var PINS=[
+ {id:'b-n1',x:495,y:440,c:'baterai',g:'B-'},{id:'b-n2',x:512,y:440,c:'baterai',g:'B-'},{id:'b-n3',x:529,y:440,c:'baterai',g:'B-'},
+ {id:'b-p1',x:551,y:440,c:'baterai',g:'B+'},{id:'b-p2',x:568,y:440,c:'baterai',g:'B+'},{id:'b-p3',x:585,y:440,c:'baterai',g:'B+'},
+ {id:'ir-vcc',x:512,y:204,c:'sensor'},{id:'ir-gnd',x:512,y:220,c:'sensor'},{id:'ir-out',x:512,y:236,c:'sensor'},
+ {id:'rl-vcc',x:360,y:312,c:'relay'},{id:'rl-gnd',x:360,y:328,c:'relay'},{id:'rl-in',x:360,y:344,c:'relay'},
+ {id:'rl-no',x:294,y:366,c:'relay'},{id:'rl-com',x:318,y:366,c:'relay'},
+ {id:'pm+',x:125,y:452,c:'pompa'},{id:'pm-',x:160,y:452,c:'pompa'}
+];
+var WIRES=[
+ {id:'w1',a:'b-p3',b:'ir-vcc',type:'power',pts:[[585,440],[585,204],[512,204]],t:'Daya untuk sensor',label:'Baterai (+) ke VCC sensor',h:'Hubungkan salah satu pin (+) baterai ke pin VCC sensor IR. VCC adalah kaki yang menerima muatan positif.',log:'VCC sensor IR mendapat (+) dari baterai.'},
+ {id:'w2',a:'b-n3',b:'ir-gnd',type:'gnd',pts:[[529,440],[529,220],[512,220]],t:'Ground sensor',label:'Baterai (\u2212) ke GND sensor',h:'Hubungkan pin (\u2212) baterai ke GND sensor agar arus sensor punya jalan pulang.',log:'GND sensor tersambung ke (\u2212) baterai.'},
+ {id:'w3',a:'b-p2',b:'rl-vcc',type:'power',pts:[[568,440],[568,312],[360,312]],t:'Daya untuk relay',label:'Baterai (+) ke VCC relay',h:'Modul relay juga punya VCC. Hubungkan pin (+) baterai ke VCC relay.',log:'VCC relay mendapat (+) dari baterai.'},
+ {id:'w4',a:'b-n2',b:'rl-gnd',type:'gnd',pts:[[512,440],[512,328],[360,328]],t:'Ground relay',label:'Baterai (\u2212) ke GND relay',h:'Hubungkan pin (\u2212) baterai ke GND relay.',log:'GND relay tersambung ke (\u2212) baterai.'},
+ {id:'w5',a:'ir-out',b:'rl-in',type:'signal',pts:[[512,236],[520,236],[520,284],[392,284],[392,344],[360,344]],t:'Jalur sinyal',label:'OUT sensor ke IN relay',h:'Hubungkan OUT sensor ke IN relay. Kabel putus-putus ini hanya membawa sinyal kontrol, bukan daya.',log:'Jalur sinyal OUT sensor ke IN relay tersambung.'},
+ {id:'w6',a:'b-p1',b:'rl-com',type:'power',pts:[[551,440],[551,420],[318,420],[318,366]],t:'Daya menuju saklar relay',label:'Baterai (+) ke COM relay',h:'Pompa mendapat (+) dari baterai lewat relay. Hubungkan pin (+) baterai ke COM, kaki masuk saklar relay.',log:'COM relay menerima (+) baterai untuk pompa.'},
+ {id:'w7',a:'rl-no',b:'pm+',type:'power',pts:[[294,366],[294,410],[125,410],[125,452]],t:'Relay ke pompa',label:'NO relay ke (+) pompa',h:'Hubungkan NO relay ke kutub (+) pompa. Saat relay menutup, (+) dari COM mengalir lewat NO ke pompa.',log:'(+) pompa tersambung ke NO relay.'},
+ {id:'w8',a:'pm-',b:'b-n1',type:'gnd',pts:[[160,452],[160,428],[495,428],[495,440]],t:'Tutup rangkaian pompa',label:'(\u2212) pompa ke (\u2212) baterai',h:'Hubungkan kutub (\u2212) pompa ke pin (\u2212) baterai agar arus pompa punya jalan pulang.',log:'Rangkaian pompa tertutup.'}
+];
+var PINHINT={
+ 'ir-vcc':'VCC sensor harus mendapat (+) dari baterai.','ir-gnd':'GND sensor kembali ke (\u2212) baterai.','ir-out':'OUT sensor mengirim sinyal ke pin IN relay.',
+ 'rl-vcc':'VCC relay harus mendapat (+) dari baterai.','rl-gnd':'GND relay kembali ke (\u2212) baterai.','rl-in':'IN relay menerima sinyal dari OUT sensor.',
+ 'rl-com':'COM relay menerima (+) dari baterai untuk diteruskan ke pompa.','rl-no':'NO relay meneruskan (+) ke kutub (+) pompa.',
+ 'pm+':'Kutub (+) pompa menerima arus dari NO relay.','pm-':'Kutub (\u2212) pompa kembali ke (\u2212) baterai.',
+ 'B+':'Pin (+) baterai menuju VCC sensor, VCC relay, dan COM relay.','B-':'Pin (\u2212) baterai menerima GND sensor, GND relay, dan (\u2212) pompa.'
+};
+var PIN={};PINS.forEach(function(p){PIN[p.id]=p});
+var STEPS=COMPS.map(function(c){return{k:'c',id:c.id,label:c.t,title:c.t,text:c.h}})
+ .concat(WIRES.map(function(w){return{k:'w',id:w.id,label:w.label,title:w.t,text:w.h}}))
+ .concat([{k:'t',id:'test',label:'Uji dengan tangan',title:'Rangkaian lengkap, saatnya uji',text:'Tekan Dekatkan tangan, lalu amati urutannya: sensor, sinyal, relay, pompa, air.'}]);
+
+var placed=new Set(),wired=new Set(),handIn=false,busy=false,testDone=false,announced=false;
+var S={sensor:false,relay:false,pump:false};
+var run=0,autoId=0,toastT=0,hintT=0;
+
+function el(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+function complete(){return placed.size===COMPS.length&&wired.size===WIRES.length}
+function toSvg(cx,cy){var p=svg.createSVGPoint();p.x=cx;p.y=cy;return p.matrixTransform(svg.getScreenCTM().inverse())}
+function toClient(x,y){var p=svg.createSVGPoint();p.x=x;p.y=y;return p.matrixTransform(svg.getScreenCTM())}
+function pathD(a,b){return 'M'+a.x+' '+a.y+' L '+b.x+' '+b.y}
+function roundPath(pts,r){
+ var d='M'+pts[0][0]+' '+pts[0][1];
+ for(var i=1;i<pts.length-1;i++){
+  var p=pts[i-1],c=pts[i],n=pts[i+1];
+  var l1=Math.hypot(c[0]-p[0],c[1]-p[1]),l2=Math.hypot(n[0]-c[0],n[1]-c[1]),k=Math.min(r,l1/2,l2/2);
+  var a=[c[0]-(c[0]-p[0])/l1*k,c[1]-(c[1]-p[1])/l1*k],b=[c[0]+(n[0]-c[0])/l2*k,c[1]+(n[1]-c[1])/l2*k];
+  d+=' L'+a[0]+' '+a[1]+' Q'+c[0]+' '+c[1]+' '+b[0]+' '+b[1];
+ }
+ var e=pts[pts.length-1];return d+' L'+e[0]+' '+e[1];
+}
+
+/* bangun lembar kerja */
+COMPS.forEach(function(c){
+ var x=c.s[0],y=c.s[1],w=c.s[2];
+ var g=el('g',{'class':'slot',id:'slot-'+c.id},$('slots'));
+ if(c.id==='selang')el('path',{d:TUBE,'class':'shape tubeline'},g);
+ else el('rect',{x:x,y:y,width:w,height:c.s[3],rx:8,'class':'shape'},g);
+ var t=el('text',{x:x+w/2,y:Math.max(14,y-6)},g);t.textContent=c.n;
+ el('use',{href:'#art-'+c.id,id:'p-'+c.id,'class':'placed'},$('placed'));
+ var b=document.createElement('button');b.className='card';b.type='button';b.dataset.comp=c.id;
+ b.innerHTML='<svg viewBox="'+(x-8)+' '+(y-8)+' '+(w+16)+' '+(c.s[3]+16)+'" aria-hidden="true"><use href="#art-'+c.id+'"/></svg><span class="ct"><strong>'+c.n+'</strong><small>'+c.d+'</small></span><span class="tag">Terpasang</span>';
+ $('cards').appendChild(b);
+});
+PINS.forEach(function(p){
+ var g=el('g',{'class':'pin',id:'pin-'+p.id,'data-pin':p.id},$('pins'));
+ el('circle',{cx:p.x,cy:p.y,r:8,fill:'transparent'},g);
+ el('circle',{cx:p.x,cy:p.y,r:6,'class':'dot'},g);
+});
+var gi=0;
+STEPS.forEach(function(s,i){
+ var grp=i===0?'Komponen':i===COMPS.length?'Kabel':i===COMPS.length+WIRES.length?'Uji':null;
+ if(grp){var h=document.createElement('li');h.className='grp';h.textContent=grp;$('steps').appendChild(h)}
+ var li=document.createElement('li');li.id='step-'+i;li.textContent=s.label;$('steps').appendChild(li);
+});
+
+/* pesan */
+function toast(msg,kind){var t=$('toast');t.textContent=msg;t.className='toast show '+(kind||'');clearTimeout(toastT);toastT=setTimeout(function(){t.className='toast'},3800)}
+function log(msg){var li=document.createElement('li');li.textContent=msg;var u=$('log');u.insertBefore(li,u.firstChild);while(u.children.length>7)u.removeChild(u.lastChild)}
+
+/* langkah dan status */
+function stepDone(s){return s.k==='c'?placed.has(s.id):s.k==='w'?wired.has(s.id):testDone}
+function curIndex(){for(var i=0;i<STEPS.length;i++)if(!stepDone(STEPS[i]))return i;return -1}
+var CODE='JIKA sensor_IR mendeteksi tangan:\n    kirim sinyal ke relay\n    relay menutup, pompa menyala\nJIKA TIDAK:\n    pompa mati';
+function updateUI(){
+ var ci=curIndex(),done=0;
+ STEPS.forEach(function(s,i){var li=$('step-'+i),d=stepDone(s);if(d)done++;li.className=d?'done':(i===ci?'cur':'')});
+ $('barfill')&&0;
+ var hb=$('hintbox');
+ if(ci<0){hb.innerHTML='<div class="k">Selesai</div><h3>Prototipe berfungsi</h3><p>Alur yang baru kamu lihat sama dengan logika program pada mikrokontroler:</p><pre class="code">'+CODE+'</pre><div class="bar"><span style="width:100%"></span></div>'}
+ else{var s=STEPS[ci];hb.innerHTML='<div class="k">Langkah '+(ci+1)+' dari '+STEPS.length+'</div><h3>'+s.title+'</h3><p>'+s.text+'</p>'+(s.k==='t'?'<pre class="code">'+CODE+'</pre>':'')+'<div class="bar"><span style="width:'+(done/STEPS.length*100)+'%"></span></div>'}
+ $('st-comp').textContent=placed.size+'/'+COMPS.length;
+ $('st-wire').textContent=wired.size+'/'+WIRES.length;$('jcount').textContent=wired.size;
+ function on(id,v,a,b){var e=$(id);e.textContent=v?a:b;e.className=v?'on':''}
+ on('st-ir',S.sensor,'ON','OFF');on('st-relay',S.relay,'ON','OFF');on('st-pump',S.pump,'ON','OFF');on('st-air',S.pump,'YA','TIDAK');
+}
+function render(){
+ $('beam').classList.toggle('det',S.sensor);
+ $('led').classList.toggle('lit',S.relay);
+ $('p-pompa').classList.toggle('run',S.pump);
+ $('water').classList.toggle('on',S.pump);
+ var sp=wired.has('w1')&&wired.has('w2'),rp=wired.has('w3')&&wired.has('w4');
+ var live={w1:sp,w2:sp,w3:rp,w4:rp,w5:S.sensor,w6:S.pump,w7:S.pump,w8:S.pump};
+ WIRES.forEach(function(w){var g=$('wg-'+w.id);if(g)g.classList.toggle('live',!!live[w.id])});
+ if(S.pump&&!testDone){testDone=true}
+ updateUI();
+}
+
+/* aksi */
+function place(id){
+ if(placed.has(id))return;placed.add(id);
+ var c=COMPS.filter(function(x){return x.id===id})[0];
+ var u=$('p-'+id);u.classList.add('on');
+ $('slot-'+id).classList.add('done');
+ var card=document.querySelector('.card[data-comp="'+id+'"]');card.classList.add('done');card.classList.remove('hint');
+ PINS.forEach(function(p){if(p.c===id)$('pin-'+p.id).classList.add('on')});
+ if(id==='sensor')$('beam').classList.add('on');
+ if(id==='relay')$('led').classList.add('vis');
+ log(c.log);clearHint();afterChange();
+}
+function connect(w,quick){
+ wired.add(w.id);
+ var a=PIN[w.a],b=PIN[w.b],d=roundPath(w.pts,9);
+ var g=el('g',{'class':'wg',id:'wg-'+w.id},$('wires'));
+ var base=el('path',{d:d,'class':'wire '+w.type},g);el('path',{d:d,'class':'flow'},g);
+ $('pin-'+a.id).classList.add('conn');$('pin-'+b.id).classList.add('conn');
+ log(w.log);clearHint();afterChange();
+ if(quick)return Promise.resolve();
+ var len=base.getTotalLength();
+ var an=base.animate([{strokeDasharray:len+'',strokeDashoffset:len},{strokeDasharray:len+'',strokeDashoffset:0}],{duration:600,easing:'ease-out'});
+ return an.finished.catch(function(){});
+}
+function afterChange(){
+ render();
+ if(complete()&&!announced){announced=true;toast('Rangkaian lengkap. Dekatkan tangan ke sensor untuk mengujinya.','ok');log('Rangkaian lengkap.')}
+ if(complete()&&handIn)chain();
+}
+async function chain(){
+ var id=++run;
+ if(handIn&&complete()){
+  await sleep(550);if(id!==run)return;
+  S.sensor=true;render();log('Sensor IR mendeteksi tangan dan mengirim sinyal lewat pin OUT.');
+  await sleep(450);if(id!==run)return;
+  S.relay=true;render();log('Relay menerima sinyal dan menutup saklar. Arus DC mengalir ke pompa.');
+  await sleep(450);if(id!==run)return;
+  S.pump=true;render();log('Pompa menyala. Air keluar dari selang.');
+ }else{
+  if(!(S.sensor||S.relay||S.pump))return;
+  await sleep(450);if(id!==run)return;
+  S.pump=false;render();await sleep(250);if(id!==run)return;
+  S.relay=false;render();await sleep(250);if(id!==run)return;
+  S.sensor=false;render();log('Tangan menjauh. Sinyal berhenti, relay membuka, pompa mati.');
+ }
+}
+function setHand(v){
+ handIn=v;$('hand').classList.toggle('in',v);$('btnHand').textContent=v?'Jauhkan tangan':'Dekatkan tangan';
+ log(v?'Tangan didekatkan ke sensor.':'Tangan dijauhkan dari sensor.');
+ if(v&&!complete())toast('Rangkaian belum lengkap, jadi pompa belum bisa menyala.','warn');
+ chain();
+}
+
+/* petunjuk */
+function clearHint(){clearTimeout(hintT);document.querySelectorAll('.hint').forEach(function(e){e.classList.remove('hint')})}
+function showHint(){
+ clearHint();var ci=curIndex();if(ci<0)return;var s=STEPS[ci];
+ if(s.k==='c'){$('slot-'+s.id).classList.add('hint');document.querySelector('.card[data-comp="'+s.id+'"]').classList.add('hint')}
+ else if(s.k==='w'){var w=WIRES.filter(function(x){return x.id===s.id})[0];$('pin-'+w.a).classList.add('hint');$('pin-'+w.b).classList.add('hint')}
+ else{toast(s.text)}
+ if(s.k!=='t')toast(s.text);
+ hintT=setTimeout(clearHint,5000);
+}
+
+/* seret komponen */
+function makeGhost(c){
+ var k=svg.getBoundingClientRect().width/640,x=c.s[0],y=c.s[1],w=c.s[2],h=c.s[3];
+ var gw=Math.min(220,(w+16)*k),gh=gw*(h+16)/(w+16);
+ var d=document.createElement('div');d.className='ghost';d.style.width=gw+'px';d.style.height=gh+'px';
+ d.innerHTML='<svg viewBox="'+(x-8)+' '+(y-8)+' '+(w+16)+' '+(h+16)+'"><use href="#art-'+c.id+'"/></svg>';
+ document.body.appendChild(d);return{el:d,w:gw,h:gh};
+}
+function inSlot(c,cx,cy){var p=toSvg(cx,cy),s=c.s;return p.x>=s[0]-22&&p.x<=s[0]+s[2]+22&&p.y>=s[1]-22&&p.y<=s[1]+s[3]+22}
+function overStage(cx,cy){var r=svg.getBoundingClientRect();return cx>=r.left&&cx<=r.right&&cy>=r.top&&cy<=r.bottom}
+$('cards').addEventListener('pointerdown',function(e){
+ var b=e.target.closest('.card');if(!b||busy||e.button>0)return;
+ var c=COMPS.filter(function(x){return x.id===b.dataset.comp})[0];
+ if(placed.has(c.id)){toast('Komponen ini sudah terpasang.','warn');return}
+ e.preventDefault();clearHint();
+ var g=makeGhost(c),sx=e.clientX,sy=e.clientY,moved=false,slot=$('slot-'+c.id);
+ function mv(ev){
+  if(Math.hypot(ev.clientX-sx,ev.clientY-sy)>5)moved=true;
+  g.el.style.transform='translate('+(ev.clientX-g.w/2)+'px,'+(ev.clientY-g.h/2)+'px)';
+  slot.classList.toggle('over',inSlot(c,ev.clientX,ev.clientY));
+ }
+ function up(ev){
+  window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);
+  g.el.remove();slot.classList.remove('over');
+  if(!moved){toast('Tahan dan seret kartu ini ke siluet putus-putus di lembar kerja.');return}
+  if(ev.type==='pointercancel')return;
+  if(inSlot(c,ev.clientX,ev.clientY))place(c.id);
+  else if(overStage(ev.clientX,ev.clientY))toast('Belum tepat. Cari siluet putus-putus yang bentuknya mirip komponen ini, atau tekan Petunjuk.','warn');
+ }
+ mv(e);
+ window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up);window.addEventListener('pointercancel',up);
+});
+$('cards').addEventListener('click',function(e){
+ if(e.detail!==0||busy)return;var b=e.target.closest('.card');if(!b)return;
+ var id=b.dataset.comp;if(!placed.has(id))place(id);
+});
+
+/* tarik kabel */
+$('pins').addEventListener('pointerdown',function(e){
+ var g=e.target.closest('[data-pin]');if(!g||busy||e.button>0)return;
+ e.preventDefault();clearHint();
+ var a=PIN[g.dataset.pin],tmp=el('path',{'class':'wire temp',d:pathD(a,a)},$('temp'));
+ function pinAt(cx,cy){var t=document.elementFromPoint(cx,cy);return t&&t.closest?t.closest('[data-pin]'):null}
+ function mv(ev){
+  var p=toSvg(ev.clientX,ev.clientY);tmp.setAttribute('d',pathD(a,p));
+  document.querySelectorAll('.pin.over').forEach(function(n){n.classList.remove('over')});
+  var h=pinAt(ev.clientX,ev.clientY);if(h&&h!==g)h.classList.add('over');
+ }
+ function up(ev){
+  window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);
+  tmp.remove();document.querySelectorAll('.pin.over').forEach(function(n){n.classList.remove('over')});
+  if(ev.type==='pointercancel')return;
+  var h=pinAt(ev.clientX,ev.clientY);if(!h||h===g)return;
+  tryWire(a,PIN[h.dataset.pin]);
+ }
+ window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up);window.addEventListener('pointercancel',up);
+});
+function grp(id){return PIN[id].g||id}
+function tryWire(a,b){
+ var w=WIRES.filter(function(x){
+  return !wired.has(x.id)&&((grp(a.id)===grp(x.a)&&grp(b.id)===grp(x.b))||(grp(a.id)===grp(x.b)&&grp(b.id)===grp(x.a)));
+ })[0];
+ var dup=WIRES.filter(function(x){return wired.has(x.id)&&((grp(a.id)===grp(x.a)&&grp(b.id)===grp(x.b))||(grp(a.id)===grp(x.b)&&grp(b.id)===grp(x.a)))})[0];
+ if(!w&&dup)toast('Kabel itu sudah terpasang.','warn');
+ else if(!w)toast('Belum tepat. '+(PINHINT[grp(a.id)]||PINHINT[grp(b.id)]),'warn');
+ else{connect(w);toast('Tersambung. '+w.log,'ok')}
+}
+
+/* animasi rakit otomatis */
+function fly(c){
+ return new Promise(function(res){
+  var card=document.querySelector('.card[data-comp="'+c.id+'"]'),r=card.getBoundingClientRect(),g=makeGhost(c);
+  var s=toClient(c.s[0]+c.s[2]/2,c.s[1]+c.s[3]/2),sx=r.left+40,sy=r.top+r.height/2;
+  var an=g.el.animate([
+   {transform:'translate('+(sx-g.w/2)+'px,'+(sy-g.h/2)+'px) scale(.5)'},
+   {transform:'translate('+(s.x-g.w/2)+'px,'+(s.y-g.h/2)+'px) scale(1)'}
+  ],{duration:850,easing:'cubic-bezier(.4,.1,.2,1)',fill:'forwards'});
+  card.classList.add('hint');
+  an.finished.then(function(){g.el.remove();card.classList.remove('hint');res()},function(){g.el.remove();res()});
+ });
+}
+function setBusy(b){busy=b;['btnAuto','btnHint','btnHand'].forEach(function(i){$(i).disabled=b})}
+async function autoPlay(){
+ reset();var my=autoId;setBusy(true);log('Animasi rakit dimulai.');
+ for(var i=0;i<COMPS.length;i++){
+  await fly(COMPS[i]);if(my!==autoId)return;place(COMPS[i].id);await sleep(300);if(my!==autoId)return;
+ }
+ for(var j=0;j<WIRES.length;j++){
+  await connect(WIRES[j]);if(my!==autoId)return;await sleep(250);if(my!==autoId)return;
+ }
+ await sleep(600);if(my!==autoId)return;
+ setHand(true);await sleep(4600);if(my!==autoId)return;
+ setHand(false);await sleep(1800);if(my!==autoId)return;
+ setBusy(false);toast('Animasi selesai. Coba rakit sendiri lewat Ulangi dari awal.','ok');
+}
+function reset(){
+ run++;autoId++;clearHint();setBusy(false);
+ placed.clear();wired.clear();handIn=false;testDone=false;announced=false;S.sensor=S.relay=S.pump=false;
+ document.querySelectorAll('.placed,.slot,.card,.pin,#beam,#led,#water,#hand,.slot,.pin').forEach(function(e){e.classList.remove('on','done','conn','hint','over','vis','lit','det','in','run')});
+ $('wires').innerHTML='';$('log').innerHTML='';$('btnHand').textContent='Dekatkan tangan';
+ log('Lembar kerja siap. Seret komponen pertama.');render();
+}
+$('btnAuto').addEventListener('click',autoPlay);
+$('btnReset').addEventListener('click',reset);
+$('btnHint').addEventListener('click',showHint);
+$('btnHand').addEventListener('click',function(){if(!busy)setHand(!handIn)});
+reset();
+})();
+</script>
+
+</body></html>
