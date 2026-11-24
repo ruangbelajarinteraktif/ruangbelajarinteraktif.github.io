@@ -1,0 +1,986 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Bengkel Bilangan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Tata letak: satu kolom 880px. Desimal biru, biner hijau-biru, oktal jingga, konsisten di semua bagian. Alat interaktif berada di panel, penjelasan di luar panel. */
+:root {
+  --bg: #F2F5F7;
+  --surface: #FFFFFF;
+  --fg: #0F1E2B;
+  --muted: #53697A;
+  --line: #D5DEE5;
+  --dec: #2D4A9E;
+  --dec-soft: #E3E9F8;
+  --bin: #0A7770;
+  --bin-soft: #DDF1EF;
+  --oct: #B4510A;
+  --oct-soft: #FBE9D9;
+  --on-acc: #FFFFFF;
+  --ok: #1B7A3E;
+  --bad: #B3261E;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C1820; --surface: #13242E; --fg: #E7EFF3; --muted: #93A8B5; --line: #2A4251;
+    --dec: #8FB0FF; --dec-soft: #1B2A52; --bin: #52D1C7; --bin-soft: #12383A;
+    --oct: #FFA763; --oct-soft: #41291A; --on-acc: #08141A; --ok: #5FD18A; --bad: #FF8A80;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C1820; --surface: #13242E; --fg: #E7EFF3; --muted: #93A8B5; --line: #2A4251;
+  --dec: #8FB0FF; --dec-soft: #1B2A52; --bin: #52D1C7; --bin-soft: #12383A;
+  --oct: #FFA763; --oct-soft: #41291A; --on-acc: #08141A; --ok: #5FD18A; --bad: #FF8A80;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.6 var(--font-body);
+  padding-block: 20px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 880px; margin: 0 auto; }
+h1, h2 { font-family: var(--font-display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.1rem, 7vw, 3.2rem); font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.4rem, 4vw, 1.8rem); font-weight: 700; letter-spacing: -0.01em; }
+p { margin: 0; }
+sub, sup { font-size: 0.6em; line-height: 0; }
+code, .mono { font-family: var(--font-mono); }
+:focus-visible { outline: 3px solid var(--dec); outline-offset: 2px; }
+.lead { color: var(--muted); max-width: 60ch; margin-top: 10px; }
+
+/* Hero */
+.eq-label { margin-top: 26px; font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.equation {
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: clamp(1.3rem, 5.4vw, 2.3rem); line-height: 1.35;
+  margin-top: 4px; overflow-wrap: anywhere;
+}
+.equation .d { color: var(--dec); }
+.equation .b { color: var(--bin); }
+.equation .o { color: var(--oct); }
+.bases { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.bases li { flex: 1 1 230px; min-width: 0; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; }
+.bases strong { font-family: var(--font-display); font-size: 1.05rem; }
+.bases span { font-size: 0.85rem; color: var(--muted); }
+.bases code { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.08em; overflow-wrap: anywhere; }
+.bases .dec { background: var(--dec-soft); } .bases .dec strong, .bases .dec code { color: var(--dec); }
+.bases .bin { background: var(--bin-soft); } .bases .bin strong, .bases .bin code { color: var(--bin); }
+.bases .oct { background: var(--oct-soft); } .bases .oct strong, .bases .oct code { color: var(--oct); }
+
+/* Sections */
+section { padding-block: 34px 6px; margin-top: 34px; border-top: 1px solid var(--line); }
+section > h2 + p { color: var(--muted); max-width: 64ch; margin-top: 8px; }
+.recipe { margin: 14px 0 20px; padding-left: 1.3em; max-width: 64ch; }
+.recipe li { margin-bottom: 4px; padding-left: 4px; }
+
+/* Panels and controls */
+.panel {
+  --acc: var(--dec); --acc-soft: var(--dec-soft);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  padding: 18px; display: flex; flex-direction: column; gap: 16px; margin-top: 18px;
+}
+.panel[data-base="2"] { --acc: var(--bin); --acc-soft: var(--bin-soft); }
+.panel[data-base="8"] { --acc: var(--oct); --acc-soft: var(--oct-soft); }
+.row { display: flex; flex-wrap: wrap; gap: 14px 16px; align-items: flex-end; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field > label, .field > .flabel { font-size: 0.74rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.numin {
+  font: 700 1.5rem var(--font-mono); width: 9ch; max-width: 100%;
+  padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 8px;
+  background: var(--bg); color: var(--fg);
+}
+.btn {
+  font: 600 0.95rem var(--font-body); padding: 9px 14px; min-height: 42px;
+  border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer;
+}
+.btn:hover:not(:disabled) { border-color: var(--acc); }
+.btn.primary { background: var(--acc); border-color: transparent; color: var(--on-acc); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button {
+  font: 600 0.95rem var(--font-body); padding: 9px 16px; min-height: 42px; border: 0;
+  background: var(--bg); color: var(--fg); cursor: pointer;
+}
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--acc); color: var(--on-acc); }
+.seg { max-width: 100%; }
+.seg.compact button { padding: 9px 11px; font-size: 0.9rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font: 600 0.9rem var(--font-mono); padding: 6px 12px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer;
+}
+.chip:hover { border-color: var(--dec); }
+.err { color: var(--bad); font-size: 0.9rem; }
+
+/* Steps table */
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th {
+  font: 600 0.72rem var(--font-body); text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--muted); text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); white-space: nowrap;
+}
+td { padding: 8px 10px; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-weight: 500; white-space: nowrap; }
+td.rem, td.prod { color: var(--acc); background: var(--acc-soft); font-weight: 700; }
+tr.new { animation: rowIn 0.35s ease-out; }
+@keyframes rowIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.note { font-size: 0.88rem; color: var(--muted); }
+.stepbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.status { font-size: 0.9rem; color: var(--muted); flex-basis: 100%; }
+
+.result {
+  background: var(--acc-soft); border-radius: 8px; padding: 14px 16px;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px;
+}
+.result .rl { font-size: 0.85rem; font-weight: 600; }
+.rvalue { font: 700 clamp(1.7rem, 7vw, 2.5rem) var(--font-mono); color: var(--acc); overflow-wrap: anywhere; line-height: 1.2; }
+.check { font-family: var(--font-mono); font-size: 0.9rem; color: var(--muted); overflow-wrap: anywhere; }
+
+/* Why it matters */
+#mengapa > h2 + p { color: var(--fg); }
+.why {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 24px 28px; margin-top: 22px;
+}
+.why > div {
+  min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+  border-top: 2px solid var(--line); padding-top: 12px;
+}
+.why h3 { font: 700 1.05rem/1.25 var(--font-display); margin: 0; }
+.why p { font-size: 0.95rem; color: var(--muted); }
+.why code {
+  margin-top: auto; font-size: 0.9rem; font-weight: 700; color: var(--dec); background: var(--dec-soft);
+  padding: 3px 10px; border-radius: 6px; overflow-wrap: anywhere;
+}
+
+/* Bit switches */
+.bitrow { display: flex; gap: 12px; justify-content: center; align-items: flex-start; }
+.grp { flex: 1 1 0; min-width: 0; max-width: 240px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.cells { display: flex; gap: 4px; width: 100%; }
+.cell { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.pv { font: 500 0.7rem var(--font-mono); color: var(--muted); }
+.bit {
+  width: 100%; max-width: 56px; aspect-ratio: 1 / 1.15; padding: 0;
+  font: 700 1.3rem var(--font-mono); border-radius: 8px;
+  border: 1.5px solid var(--line); background: var(--bg); color: var(--muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.bit[aria-pressed="true"] { background: var(--bin); border-color: var(--bin); color: var(--on-acc); }
+.bit.ghost { border-style: dashed; cursor: default; opacity: 0.55; }
+.gcap { font: 500 0.78rem var(--font-mono); color: var(--muted); letter-spacing: 0.1em; }
+.odigit {
+  width: 100%; max-width: 100%; text-align: center; font: 700 1.5rem var(--font-mono);
+  color: var(--oct); background: var(--oct-soft); border-radius: 8px; padding: 4px 0;
+}
+.sum { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 16px; margin: 0; align-items: baseline; }
+.sum dt { font-size: 0.74rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.sum dd { margin: 0; font: 700 1.1rem var(--font-mono); overflow-wrap: anywhere; }
+.sum .vd { color: var(--dec); } .sum .vb { color: var(--bin); } .sum .vo { color: var(--oct); }
+
+/* Quiz */
+.question { font-size: 1.15rem; }
+.question strong.mono { font-size: 1.35rem; color: var(--dec); }
+.feedback { min-height: 1.6em; font-weight: 600; }
+.feedback.ok { color: var(--ok); }
+.feedback.bad { color: var(--bad); }
+.hints { margin: 0; padding-left: 1.2em; font-family: var(--font-mono); font-size: 0.92rem; }
+.score { font-size: 0.9rem; color: var(--muted); }
+
+/* Reference table */
+.reftable { max-width: 420px; margin-top: 18px; }
+.reftable td:nth-child(1) { color: var(--dec); font-weight: 700; }
+.reftable td:nth-child(2) { color: var(--bin); font-weight: 700; }
+.reftable td:nth-child(3) { color: var(--oct); font-weight: 700; }
+
+/* Everyday quiz */
+.rules { margin: 12px 0 0; padding-left: 1.2em; max-width: 64ch; color: var(--muted); font-size: 0.95rem; }
+.rules li { margin-bottom: 2px; }
+.scorehead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+.scorenum { font: 700 clamp(2.2rem, 9vw, 3.2rem) var(--font-mono); color: var(--dec); line-height: 1; }
+.of { color: var(--muted); font-weight: 600; }
+.rank { font: 600 0.85rem var(--font-body); background: var(--dec-soft); color: var(--dec); padding: 4px 12px; border-radius: 999px; }
+.bar { height: 10px; background: var(--line); border-radius: 999px; overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--dec); transition: width 0.35s ease-out; }
+.shareinput { font: 500 0.9rem var(--font-mono); width: 100%; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--fg); }
+.qpanel { padding-block: 4px; }
+.qlist { list-style: none; margin: 0; padding: 0; }
+.qi { padding: 18px 0; border-top: 1px solid var(--line); }
+.qi:first-child { border-top: 0; }
+.qhead { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.qn { font: 700 1rem var(--font-display); }
+.qctx { color: var(--muted); font-size: 0.9rem; }
+.lvl, .pts { font: 600 0.74rem var(--font-body); padding: 2px 9px; border-radius: 999px; }
+.lvl { border: 1px solid var(--line); color: var(--muted); }
+.pts { background: var(--dec-soft); color: var(--dec); }
+.qtxt { margin: 8px 0 12px; max-width: 62ch; }
+.qtxt code { font-size: 0.95em; font-weight: 700; background: var(--bg); padding: 1px 6px; border-radius: 4px; overflow-wrap: anywhere; }
+.qrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.qin { width: 12ch; }
+.qhint, .qexp { margin-top: 8px; font-size: 0.9rem; color: var(--muted); max-width: 62ch; }
+.qfb { margin-top: 8px; font-weight: 600; min-height: 1.4em; }
+.qfb.ok { color: var(--ok); }
+.qfb.bad { color: var(--bad); }
+
+@media (prefers-reduced-motion: reduce) { tr.new { animation: none; } .bar > i { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Bengkel Bilangan</h1>
+    <p class="lead">Ubah bilangan desimal menjadi biner dan oktal, ubah kembali ke desimal, ikuti setiap langkahnya, lalu coba sendiri.</p>
+    <p class="eq-label">Satu bilangan dalam tiga basis</p>
+    <p class="equation" id="heroEq" aria-live="polite"></p>
+    <ul class="bases">
+      <li class="dec"><strong>Desimal</strong><span>basis 10, sepuluh angka</span><code>0 1 2 3 4 5 6 7 8 9</code></li>
+      <li class="bin"><strong>Biner</strong><span>basis 2, dua angka</span><code>0 1</code></li>
+      <li class="oct"><strong>Oktal</strong><span>basis 8, delapan angka</span><code>0 1 2 3 4 5 6 7</code></li>
+    </ul>
+  </header>
+
+  <section id="mengapa">
+    <h2>Mengapa perlu belajar konversi bilangan?</h2>
+    <p>Manusia berhitung dengan sepuluh angka karena memiliki sepuluh jari. Komputer dibangun dari rangkaian elektronik yang hanya punya dua keadaan, yaitu arus mengalir atau tidak. Dua keadaan itu ditulis sebagai 1 dan 0, sehingga teks, foto, dan lagu pada akhirnya tersimpan sebagai deretan biner. Konversi bilangan menjadi jembatan antara cara manusia membaca angka dan cara komputer menyimpannya.</p>
+    <div class="why">
+      <div>
+        <h3>Memahami cara data disimpan</h3>
+        <p>Satu byte terdiri dari 8 bit dan menyimpan 256 nilai, yaitu 0 sampai 255. Karena itu takaran warna merah, hijau, dan biru pada layar berkisar 0 sampai 255.</p>
+        <code>255 = 11111111<sub>2</sub></code>
+      </div>
+      <div>
+        <h3>Menulis biner dengan ringkas</h3>
+        <p>Deretan biner cepat menjadi panjang dan melelahkan dibaca. Satu angka oktal mewakili tepat tiga bit, jadi biner bisa ditulis lebih pendek. Izin berkas di Linux memakai cara ini, misalnya chmod 755.</p>
+        <code>755<sub>8</sub> = 111 101 101<sub>2</sub></code>
+      </div>
+      <div>
+        <h3>Membaca alamat jaringan</h3>
+        <p>Alamat IP seperti 192.168.1.1 terdiri dari empat bagian, masing-masing satu byte. Mengubahnya ke biner dibutuhkan untuk memahami pembagian jaringan (subnet).</p>
+        <code>192 = 11000000<sub>2</sub></code>
+      </div>
+      <div>
+        <h3>Melatih berpikir komputasional</h3>
+        <p>Pembagian berulang adalah algoritma. Langkahnya jelas, diulang, dan berhenti pada syarat tertentu. Melatihnya membantu menyusun penyelesaian masalah dengan runtut.</p>
+        <code>45 ÷ 2 = 22 sisa 1</code>
+      </div>
+    </div>
+  </section>
+
+  <section id="konversi">
+    <h2>Ubah dengan pembagian berulang</h2>
+    <p>Cara yang sama berlaku untuk biner dan oktal. Hanya pembaginya yang berbeda.</p>
+    <ol class="recipe">
+      <li>Bagi bilangan dengan basis tujuan (2 untuk biner, 8 untuk oktal).</li>
+      <li>Catat sisa pembagiannya.</li>
+      <li>Bagi lagi hasil baginya, lalu ulangi sampai hasil bagi sama dengan 0.</li>
+      <li>Baca semua sisa dari bawah ke atas.</li>
+    </ol>
+
+    <div class="panel" id="convPanel" data-base="2">
+      <div class="row">
+        <div class="field">
+          <label for="num">Bilangan desimal</label>
+          <input id="num" class="numin" type="text" inputmode="numeric" autocomplete="off" maxlength="4" value="45">
+        </div>
+        <div class="field">
+          <span class="flabel" id="segLabel">Ubah ke</span>
+          <div class="seg" id="baseSeg" role="group" aria-labelledby="segLabel">
+            <button type="button" data-b="2" aria-pressed="true">Biner (÷ 2)</button>
+            <button type="button" data-b="8" aria-pressed="false">Oktal (÷ 8)</button>
+          </div>
+        </div>
+      </div>
+      <div class="chips" id="presets" aria-label="Contoh bilangan">
+        <button type="button" class="chip" data-n="10">10</button>
+        <button type="button" class="chip" data-n="45">45</button>
+        <button type="button" class="chip" data-n="100">100</button>
+        <button type="button" class="chip" data-n="255">255</button>
+        <button type="button" class="chip" data-n="1000">1000</button>
+      </div>
+      <p class="err" id="numErr" role="alert" hidden>Ketik bilangan bulat 0 sampai 9999.</p>
+
+      <div class="tablewrap">
+        <table id="stepsTable">
+          <thead><tr><th>Langkah</th><th>Pembagian</th><th>Hasil bagi</th><th>Sisa ↑</th></tr></thead>
+          <tbody id="stepsBody"></tbody>
+        </table>
+      </div>
+      <p class="note">Pembagian berhenti ketika hasil bagi sudah 0.</p>
+
+      <div class="stepbar">
+        <button type="button" class="btn primary" id="btnNext">Langkah berikutnya</button>
+        <button type="button" class="btn" id="btnAll">Tampilkan semua</button>
+        <button type="button" class="btn" id="btnReplay">Ulangi dari awal</button>
+        <p class="status" id="convStatus" aria-live="polite"></p>
+      </div>
+
+      <div class="result">
+        <span class="rl" id="resLabel">Baca sisa dari bawah ke atas:</span>
+        <span class="rvalue" id="resVal" aria-live="polite"></span>
+      </div>
+      <p class="check" id="checkLine" hidden></p>
+    </div>
+  </section>
+
+  <section id="ke-desimal">
+    <h2>Kembali ke desimal dengan nilai tempat</h2>
+    <p>Setiap posisi angka punya nilai tempat berupa pangkat dari basis. Posisi dihitung dari kanan, mulai dari 0. Caranya sama untuk biner dan oktal.</p>
+    <ol class="recipe">
+      <li>Tulis angka-angka bilangan itu, lalu beri nomor posisi dari kanan mulai 0.</li>
+      <li>Hitung nilai tempat tiap posisi, yaitu basis dipangkatkan nomor posisinya (misalnya 2<sup>3</sup> = 8 atau 8<sup>2</sup> = 64).</li>
+      <li>Kalikan setiap angka dengan nilai tempatnya.</li>
+      <li>Jumlahkan semua hasil kali. Jumlah itu adalah bilangan desimalnya.</li>
+    </ol>
+
+    <div class="panel" id="revPanel" data-base="2">
+      <div class="row">
+        <div class="field">
+          <label for="rev">Bilangan yang diubah</label>
+          <input id="rev" class="numin" style="width: 14ch;" type="text" inputmode="numeric" autocomplete="off" maxlength="14" value="101101">
+        </div>
+        <div class="field">
+          <span class="flabel" id="revSegLabel">Basis bilangan</span>
+          <div class="seg" id="revSeg" role="group" aria-labelledby="revSegLabel">
+            <button type="button" data-b="2" aria-pressed="true">Biner (basis 2)</button>
+            <button type="button" data-b="8" aria-pressed="false">Oktal (basis 8)</button>
+          </div>
+        </div>
+      </div>
+      <div class="chips" id="revPresets" aria-label="Contoh bilangan">
+        <button type="button" class="chip" data-b="2" data-v="1100">1100<sub>2</sub></button>
+        <button type="button" class="chip" data-b="2" data-v="101101">101101<sub>2</sub></button>
+        <button type="button" class="chip" data-b="2" data-v="11111111">11111111<sub>2</sub></button>
+        <button type="button" class="chip" data-b="8" data-v="55">55<sub>8</sub></button>
+        <button type="button" class="chip" data-b="8" data-v="377">377<sub>8</sub></button>
+        <button type="button" class="chip" data-b="8" data-v="755">755<sub>8</sub></button>
+      </div>
+      <p class="note" id="revHint"></p>
+      <p class="err" id="revErr" role="alert" hidden></p>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Angka</th><th>Posisi</th><th>Nilai tempat</th><th>Angka × nilai tempat</th></tr></thead>
+          <tbody id="revBody"></tbody>
+        </table>
+      </div>
+
+      <div class="result">
+        <span class="rl">Jumlahkan semua hasil kali:</span>
+        <span class="rvalue" id="revRes" aria-live="polite"></span>
+      </div>
+      <p class="check" id="revSum"></p>
+    </div>
+  </section>
+
+  <section id="saklar">
+    <h2>Saklar bit</h2>
+    <p>Setiap bit punya nilai tempat. Nyalakan bit untuk menjumlahkan nilainya. Kelompokkan tiga bit dari kanan, setiap kelompok menjadi satu angka oktal dengan bobot 4, 2, dan 1.</p>
+    <div class="panel" style="--acc: var(--bin); --acc-soft: var(--bin-soft);">
+      <div class="bitrow" id="bitRow"></div>
+      <dl class="sum">
+        <dt>Desimal</dt><dd class="vd" id="outDec"></dd>
+        <dt>Biner</dt><dd class="vb" id="outBin"></dd>
+        <dt>Oktal</dt><dd class="vo" id="outOct"></dd>
+      </dl>
+      <div class="stepbar">
+        <button type="button" class="btn" id="bitClear">Kosongkan</button>
+        <button type="button" class="btn" id="bitFill">Nyalakan semua</button>
+        <button type="button" class="btn primary" id="bitRandom">Acak</button>
+      </div>
+      <p class="note">Delapan bit mewakili bilangan 0 sampai 255. Kotak putus-putus adalah nol tambahan supaya bit terbagi rata menjadi tiga kelompok.</p>
+    </div>
+  </section>
+
+  <section id="latihan">
+    <h2>Latihan</h2>
+    <p>Jawab soal acak ke dua arah, dan minta petunjuk langkah demi langkah jika macet.</p>
+    <form class="panel" id="quizForm" autocomplete="off">
+      <div class="field">
+        <span class="flabel" id="modeLabel">Arah soal</span>
+        <div class="seg compact" id="modeSeg" role="group" aria-labelledby="modeLabel">
+          <button type="button" data-m="mix" aria-pressed="true">Campuran</button>
+          <button type="button" data-m="to" aria-pressed="false">Ke biner/oktal</button>
+          <button type="button" data-m="from" aria-pressed="false">Ke desimal</button>
+        </div>
+      </div>
+      <p class="question" id="qText"></p>
+      <div class="row">
+        <div class="field">
+          <label for="ans">Jawabanmu</label>
+          <input id="ans" class="numin" style="width: 14ch;" type="text" inputmode="numeric" autocomplete="off" maxlength="12">
+        </div>
+        <button type="submit" class="btn primary">Periksa</button>
+      </div>
+      <p class="feedback" id="fb" role="status" aria-live="polite"></p>
+      <ul class="hints" id="hints"></ul>
+      <div class="stepbar">
+        <button type="button" class="btn" id="btnHint">Petunjuk</button>
+        <button type="button" class="btn" id="btnReveal">Lihat jawaban</button>
+        <button type="button" class="btn" id="btnNextQ">Soal berikutnya</button>
+      </div>
+      <p class="score" id="score"></p>
+    </form>
+  </section>
+
+  <section id="tabel">
+    <h2>Tabel 0 sampai 16</h2>
+    <p>Pola kenaikan angka terlihat jelas di sini. Biner naik seperti odometer dua angka, oktal berganti puluhan setelah 7.</p>
+    <div class="tablewrap reftable">
+      <table>
+        <thead><tr><th>Desimal</th><th>Biner</th><th>Oktal</th></tr></thead>
+        <tbody id="refBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="kuis">
+    <h2>Kuis sehari-hari</h2>
+    <p>Sepuluh soal dari lift, jam, parkiran, layar, jaringan, dan sistem berkas. Total nilai maksimal 100 poin.</p>
+    <ul class="rules">
+      <li>Jawaban benar tanpa pernah salah dan tanpa petunjuk mendapat poin penuh.</li>
+      <li>Jika sempat salah atau memakai petunjuk, poin soal itu menjadi setengah (dibulatkan ke atas).</li>
+      <li>Tombol “Lihat jawaban” mengakhiri soal dengan 0 poin.</li>
+    </ul>
+
+    <div class="panel">
+      <div class="scorehead">
+        <span><span class="scorenum" id="kzNum">0</span><span class="of" id="kzOf"> / 100 poin</span></span>
+        <span class="rank" id="kzRank">Belum mulai</span>
+      </div>
+      <div class="bar" aria-hidden="true"><i id="kzBar"></i></div>
+      <p class="note" id="kzInfo"></p>
+      <div class="stepbar">
+        <button type="button" class="btn primary" id="kzCopy">Salin hasil</button>
+        <button type="button" class="btn" id="kzReset">Mulai ulang</button>
+        <p class="status" id="kzMsg" aria-live="polite"></p>
+      </div>
+      <input id="kzShare" class="shareinput" type="text" readonly hidden aria-label="Teks hasil kuis">
+    </div>
+
+    <div class="panel qpanel">
+      <ol class="qlist" id="kzList"></ol>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  function $(id) { return document.getElementById(id); }
+  function sub(b) { return '<sub>' + b + '</sub>'; }
+  function sup(e) { return '<sup>' + e + '</sup>'; }
+  function rand(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+  function steps(n, b) {
+    if (n === 0) { return [{ x: 0, q: 0, r: 0 }]; }
+    var out = [], x = n;
+    while (x > 0) { var q = Math.floor(x / b); out.push({ x: x, q: q, r: x % b }); x = q; }
+    return out;
+  }
+  function line(s, b) { return s.x + ' ÷ ' + b + ' = ' + s.q + ' sisa ' + s.r; }
+
+  /* ---------- Hero ---------- */
+  var heroEq = $('heroEq');
+  function renderHero(n) {
+    heroEq.innerHTML =
+      '<span class="d">' + n + sub(10) + '</span> = ' +
+      '<span class="b">' + n.toString(2) + sub(2) + '</span> = ' +
+      '<span class="o">' + n.toString(8) + sub(8) + '</span>';
+  }
+
+  /* ---------- Konverter ---------- */
+  var n = 45, base = 2, shown = 0, fresh = false, list = [];
+  var panel = $('convPanel'), body = $('stepsBody'), numIn = $('num'), numErr = $('numErr');
+  var resVal = $('resVal'), checkLine = $('checkLine'), statusEl = $('convStatus');
+  var btnNext = $('btnNext'), btnAll = $('btnAll'), btnReplay = $('btnReplay');
+  var segBtns = $('baseSeg').querySelectorAll('button');
+
+  function compute() { list = steps(n, base); }
+
+  function renderConv() {
+    panel.setAttribute('data-base', String(base));
+    var h = '', i;
+    for (i = 0; i < shown; i++) {
+      var s = list[i];
+      h += '<tr' + (fresh && i === shown - 1 ? ' class="new"' : '') + '><td>' + (i + 1) + '</td><td>' +
+        s.x + ' ÷ ' + base + '</td><td>' + s.q + '</td><td class="rem">' + s.r + '</td></tr>';
+    }
+    body.innerHTML = h;
+
+    var digits = [];
+    for (i = 0; i < shown; i++) { digits.unshift(list[i].r); }
+    var done = shown === list.length;
+    resVal.innerHTML = (shown ? digits.join('') : '?') + sub(base);
+
+    if (done) {
+      var len = digits.length, sum = 0, terms = [];
+      for (i = 0; i < len; i++) {
+        var e = len - 1 - i;
+        sum += digits[i] * Math.pow(base, e);
+        terms.push(digits[i] + '×' + base + sup(e));
+      }
+      checkLine.innerHTML = 'Pemeriksaan: ' + terms.join(' + ') + ' = ' + sum;
+      checkLine.hidden = false;
+      statusEl.textContent = 'Selesai. Hasil bagi sudah 0, jadi pembagian berhenti.';
+    } else {
+      checkLine.hidden = true;
+      statusEl.textContent = shown === 0
+        ? 'Tekan “Langkah berikutnya” untuk memulai.'
+        : 'Langkah ' + shown + ' dari ' + list.length + '. Sisa yang sudah didapat ditulis dari kanan ke kiri.';
+    }
+    btnNext.disabled = done;
+    btnAll.disabled = done;
+    btnReplay.disabled = shown === 0;
+    segBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(Number(b.getAttribute('data-b')) === base)); });
+    renderHero(n);
+  }
+
+  function resetConv(showAll) { compute(); shown = showAll ? list.length : 0; fresh = false; renderConv(); }
+
+  numIn.addEventListener('input', function () {
+    var v = numIn.value.replace(/\D/g, '').slice(0, 4);
+    if (v !== numIn.value) { numIn.value = v; }
+    if (v === '') { numErr.hidden = false; return; }
+    numErr.hidden = true;
+    n = parseInt(v, 10);
+    resetConv(true);
+  });
+  $('presets').addEventListener('click', function (ev) {
+    var t = ev.target.closest('button');
+    if (!t) { return; }
+    n = parseInt(t.getAttribute('data-n'), 10);
+    numIn.value = String(n);
+    numErr.hidden = true;
+    resetConv(true);
+  });
+  segBtns.forEach(function (b) {
+    b.addEventListener('click', function () { base = Number(b.getAttribute('data-b')); resetConv(true); });
+  });
+  btnNext.addEventListener('click', function () { if (shown < list.length) { shown++; fresh = true; renderConv(); } });
+  btnAll.addEventListener('click', function () { shown = list.length; fresh = false; renderConv(); });
+  btnReplay.addEventListener('click', function () { shown = 0; fresh = false; renderConv(); });
+  resetConv(true);
+
+  /* ---------- Biner / oktal ke desimal ---------- */
+  var rev = { b: 2, v: '101101' };
+  var REV = {
+    2: { re: /[^01]/g, max: 14, def: '101101', name: 'Bilangan biner', digits: '0 dan 1', hint: 'Bilangan biner hanya memakai angka 0 dan 1, maksimal 14 digit.' },
+    8: { re: /[^0-7]/g, max: 6, def: '55', name: 'Bilangan oktal', digits: '0 sampai 7', hint: 'Bilangan oktal hanya memakai angka 0 sampai 7, maksimal 6 digit.' }
+  };
+  var revPanel = $('revPanel'), revIn = $('rev'), revErr = $('revErr'), revHint = $('revHint');
+  var revBody = $('revBody'), revRes = $('revRes'), revSum = $('revSum');
+  var revSeg = $('revSeg').querySelectorAll('button');
+
+  function renderRev() {
+    var cfg = REV[rev.b], v = rev.v, len = v.length, h = '', total = 0, parts = [];
+    revPanel.setAttribute('data-base', String(rev.b));
+    revIn.maxLength = cfg.max;
+    revHint.textContent = cfg.hint;
+    for (var i = 0; i < len; i++) {
+      var d = parseInt(v.charAt(i), 10), k = len - 1 - i;
+      var pv = Math.pow(rev.b, k), pr = d * pv;
+      total += pr; parts.push(pr);
+      h += '<tr><td>' + d + '</td><td>' + k + '</td><td>' + rev.b + sup(k) + ' = ' + pv +
+        '</td><td class="prod">' + d + ' × ' + pv + ' = ' + pr + '</td></tr>';
+    }
+    revBody.innerHTML = h;
+    revRes.innerHTML = v + sub(rev.b) + ' = ' + total + sub(10);
+    revSum.textContent = parts.join(' + ') + ' = ' + total;
+    revSeg.forEach(function (b) { b.setAttribute('aria-pressed', String(Number(b.getAttribute('data-b')) === rev.b)); });
+  }
+  revIn.addEventListener('input', function () {
+    var cfg = REV[rev.b], raw = revIn.value, clean = raw.replace(cfg.re, '');
+    var stripped = clean !== raw;
+    clean = clean.slice(0, cfg.max);
+    if (clean !== raw) { revIn.value = clean; }
+    if (stripped) {
+      revErr.textContent = cfg.name + ' hanya memakai angka ' + cfg.digits + '.';
+      revErr.hidden = false;
+    } else if (clean === '') {
+      revErr.textContent = 'Ketik minimal satu angka.';
+      revErr.hidden = false;
+    } else {
+      revErr.hidden = true;
+    }
+    if (clean === '') { return; }
+    rev.v = clean;
+    renderRev();
+  });
+  revSeg.forEach(function (b) {
+    b.addEventListener('click', function () {
+      rev.b = Number(b.getAttribute('data-b'));
+      var cfg = REV[rev.b], v = revIn.value.replace(cfg.re, '').slice(0, cfg.max);
+      if (v === '') { v = cfg.def; }
+      revIn.value = v; rev.v = v; revErr.hidden = true;
+      renderRev();
+    });
+  });
+  $('revPresets').addEventListener('click', function (ev) {
+    var t = ev.target.closest('button');
+    if (!t) { return; }
+    rev.b = Number(t.getAttribute('data-b'));
+    rev.v = t.getAttribute('data-v');
+    revIn.value = rev.v; revErr.hidden = true;
+    renderRev();
+  });
+  renderRev();
+
+  /* ---------- Saklar bit ---------- */
+  var bits = [0, 0, 1, 0, 1, 1, 0, 1];
+  var groups = [[-1, 0, 1], [2, 3, 4], [5, 6, 7]];
+  var bitRow = $('bitRow'), bitBtns = [], gDigits = [], gCaps = [];
+
+  groups.forEach(function (g) {
+    var grp = document.createElement('div'); grp.className = 'grp';
+    var cells = document.createElement('div'); cells.className = 'cells';
+    g.forEach(function (idx) {
+      var cell = document.createElement('div'); cell.className = 'cell';
+      var pv = document.createElement('span'); pv.className = 'pv';
+      var el;
+      if (idx < 0) {
+        pv.textContent = '+';
+        el = document.createElement('div'); el.className = 'bit ghost'; el.textContent = '0';
+        el.setAttribute('aria-hidden', 'true');
+      } else {
+        pv.textContent = String(128 >> idx);
+        el = document.createElement('button'); el.type = 'button'; el.className = 'bit';
+        el.addEventListener('click', function () { bits[idx] = bits[idx] ? 0 : 1; updateBits(); });
+        bitBtns[idx] = el;
+      }
+      cell.appendChild(pv); cell.appendChild(el); cells.appendChild(cell);
+    });
+    var cap = document.createElement('span'); cap.className = 'gcap';
+    var dg = document.createElement('div'); dg.className = 'odigit';
+    gCaps.push(cap); gDigits.push(dg);
+    grp.appendChild(cells); grp.appendChild(cap); grp.appendChild(dg);
+    bitRow.appendChild(grp);
+  });
+
+  function updateBits() {
+    var parts = [], total = 0, bin = '', octs = [];
+    bits.forEach(function (b, i) {
+      var v = 128 >> i;
+      bitBtns[i].setAttribute('aria-pressed', b ? 'true' : 'false');
+      bitBtns[i].setAttribute('aria-label', 'Bit bernilai ' + v + ', saat ini ' + b);
+      bitBtns[i].textContent = String(b);
+      if (b) { parts.push(v); total += v; }
+      bin += b;
+    });
+    groups.forEach(function (g, gi) {
+      var s = '', d = 0;
+      g.forEach(function (idx, pos) {
+        var b = idx < 0 ? 0 : bits[idx];
+        s += b; d += b * (4 >> pos);
+      });
+      gCaps[gi].textContent = s;
+      gDigits[gi].textContent = String(d);
+      octs.push(d);
+    });
+    $('outDec').textContent = (parts.length ? parts.join(' + ') + ' = ' : '') + total;
+    $('outBin').innerHTML = bin + sub(2);
+    $('outOct').innerHTML = octs.join('').replace(/^0+(?=.)/, '') + sub(8);
+  }
+  $('bitClear').addEventListener('click', function () { bits = [0, 0, 0, 0, 0, 0, 0, 0]; updateBits(); });
+  $('bitFill').addEventListener('click', function () { bits = [1, 1, 1, 1, 1, 1, 1, 1]; updateBits(); });
+  $('bitRandom').addEventListener('click', function () {
+    var v = rand(0, 255);
+    bits = bits.map(function (_, i) { return (v >> (7 - i)) & 1; });
+    updateBits();
+  });
+  updateBits();
+
+  /* ---------- Latihan ---------- */
+  var q = { n: 0, b: 2, dir: 'to', s: '' }, counted = false, hintN = 0, qLines = [], score = { r: 0, t: 0 }, mode = 'mix';
+  var qText = $('qText'), ans = $('ans'), fb = $('fb'), hints = $('hints'), scoreEl = $('score');
+
+  function setFb(html, cls) { fb.className = 'feedback ' + (cls || ''); fb.innerHTML = html; }
+  function renderScore() {
+    scoreEl.textContent = score.t === 0
+      ? 'Belum ada soal yang dijawab.'
+      : 'Skor: ' + score.r + ' benar dari ' + score.t + ' soal.';
+  }
+  function hintLines() {
+    var out = [], i;
+    if (q.dir === 'to') {
+      var st = steps(q.n, q.b);
+      for (i = 0; i < st.length; i++) { out.push(line(st[i], q.b)); }
+    } else {
+      var len = q.s.length;
+      for (i = 0; i < len; i++) {
+        var d = parseInt(q.s.charAt(i), 10), k = len - 1 - i;
+        out.push(d + ' × ' + q.b + sup(k) + ' = ' + d * Math.pow(q.b, k));
+      }
+    }
+    return out;
+  }
+  function renderHints() {
+    var h = '';
+    for (var i = 0; i < hintN; i++) { h += '<li>' + qLines[i] + '</li>'; }
+    if (hintN >= qLines.length) {
+      h += '<li>' + (q.dir === 'to' ? 'Baca semua sisa dari bawah ke atas.' : 'Jumlahkan semua hasil kali.') + '</li>';
+    }
+    hints.innerHTML = h;
+  }
+  function newQ(focusIt) {
+    var dir = mode === 'mix' ? (Math.random() < 0.5 ? 'to' : 'from') : mode;
+    var b = Math.random() < 0.5 ? 2 : 8;
+    var n = b === 2 ? rand(6, 127) : rand(8, 511);
+    q = { b: b, n: n, dir: dir, s: n.toString(b) };
+    qLines = hintLines();
+    counted = false; hintN = 0;
+    if (dir === 'to') {
+      qText.innerHTML = 'Ubah <strong class="mono">' + n + '</strong>' + sub(10) + ' menjadi bilangan <strong>' + (b === 2 ? 'biner' : 'oktal') + '</strong>.';
+    } else {
+      qText.innerHTML = 'Ubah <strong class="mono">' + q.s + '</strong>' + sub(b) + ' menjadi bilangan <strong>desimal</strong>.';
+    }
+    ans.value = '';
+    setFb('', '');
+    renderHints();
+    renderScore();
+    if (focusIt !== false) { ans.focus({ preventScroll: true }); }
+  }
+  function count(ok) {
+    if (counted) { return; }
+    counted = true; score.t++;
+    if (ok) { score.r++; }
+    renderScore();
+  }
+  $('quizForm').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var v = ans.value.replace(/\s/g, '');
+    if (!v) { setFb('Ketik jawabanmu dulu.', ''); return; }
+    var from = q.dir === 'from';
+    var re = from ? /^[0-9]+$/ : (q.b === 2 ? /^[01]+$/ : /^[0-7]+$/);
+    if (!re.test(v)) {
+      setFb(from ? 'Bilangan desimal hanya memakai angka 0 sampai 9.'
+        : (q.b === 2 ? 'Bilangan biner hanya memakai angka 0 dan 1.' : 'Bilangan oktal hanya memakai angka 0 sampai 7.'), 'bad');
+      return;
+    }
+    var ok, full;
+    if (from) {
+      ok = parseInt(v, 10) === q.n;
+      full = q.s + sub(q.b) + ' = ' + q.n + sub(10);
+    } else {
+      ok = v.replace(/^0+(?=.)/, '') === q.s;
+      full = q.n + sub(10) + ' = ' + q.s + sub(q.b);
+    }
+    if (ok) {
+      count(!counted);
+      setFb('Benar! ' + full + '.', 'ok');
+    } else {
+      count(false);
+      setFb(from
+        ? 'Belum tepat. Kalikan tiap angka dengan nilai tempatnya, lalu jumlahkan, atau minta petunjuk.'
+        : 'Belum tepat. Coba cek lagi sisa pembagianmu, atau minta petunjuk.', 'bad');
+    }
+  });
+  $('btnHint').addEventListener('click', function () {
+    if (hintN < qLines.length) { hintN++; }
+    renderHints();
+  });
+  $('btnReveal').addEventListener('click', function () {
+    count(false);
+    setFb('Jawabannya ' + (q.dir === 'from' ? q.n + sub(10) : q.s + sub(q.b)) + '.', '');
+    hintN = qLines.length;
+    renderHints();
+  });
+  $('btnNextQ').addEventListener('click', function () { newQ(true); });
+  var modeBtns = $('modeSeg').querySelectorAll('button');
+  modeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      mode = b.getAttribute('data-m');
+      modeBtns.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      newQ(true);
+    });
+  });
+  newQ(false);
+
+  /* ---------- Kuis sehari-hari ---------- */
+  var TYPES = {
+    bin: { re: /^[01]+$/, msg: 'Bilangan biner hanya memakai angka 0 dan 1.', unit: 'biner' },
+    oct: { re: /^[0-7]+$/, msg: 'Bilangan oktal hanya memakai angka 0 sampai 7.', unit: 'oktal' },
+    dec: { re: /^[0-9]+$/, msg: 'Bilangan desimal hanya memakai angka 0 sampai 9.', unit: 'desimal' }
+  };
+  var KUIS = [
+    { ctx: 'Lift', lvl: 'Mudah', pts: 5, type: 'bin', ans: '1101',
+      text: 'Panel lift menampilkan nomor lantai dengan lampu biner. Tulis lantai <code>13</code> dalam bilangan biner.',
+      hint: 'Bagi 13 dengan 2 berulang, lalu baca sisanya dari bawah ke atas.',
+      exp: '13 ÷ 2 = 6 sisa 1, 6 ÷ 2 = 3 sisa 0, 3 ÷ 2 = 1 sisa 1, 1 ÷ 2 = 0 sisa 1. Dibaca dari bawah: 1101.' },
+    { ctx: 'Papan skor', lvl: 'Mudah', pts: 5, type: 'dec', ans: '15',
+      text: 'Papan skor lomba kelas memakai 4 lampu biner. Jika semua lampu menyala (<code>1111</code>), skor berapa yang tampil? Tulis dalam desimal.',
+      hint: 'Nilai tempat empat bit dari kiri adalah 8, 4, 2, 1. Jumlahkan yang bernilai 1.',
+      exp: '8 + 4 + 2 + 1 = 15.' },
+    { ctx: 'Jam biner', lvl: 'Mudah', pts: 5, type: 'dec', ans: '39',
+      text: 'Jam biner menampilkan menit dengan 6 lampu. Lampu menyala sesuai pola <code>100111</code>. Menit ke berapa yang tampil? Tulis dalam desimal.',
+      hint: 'Nilai tempat enam bit dari kiri: 32, 16, 8, 4, 2, 1. Jumlahkan yang bernilai 1.',
+      exp: '32 + 4 + 2 + 1 = 39.' },
+    { ctx: 'Izin berkas', lvl: 'Mudah', pts: 5, type: 'oct', ans: '6',
+      text: 'Di Linux, izin berkas ditulis dengan angka oktal. Baca bernilai 4, tulis bernilai 2, dan jalankan bernilai 1. Izin <code>rw-</code> (baca dan tulis, tanpa jalankan) menjadi satu angka oktal. Berapa angkanya?',
+      hint: 'Jumlahkan nilai huruf yang ada, yaitu r dan w. Tanda minus bernilai 0.',
+      exp: '4 + 2 + 0 = 6. Dalam biner 110, yang juga bernilai 6.' },
+    { ctx: 'Parkiran', lvl: 'Sedang', pts: 10, type: 'bin', ans: '100011',
+      text: 'Sensor parkiran menghitung 35 sepeda motor dan menyimpannya dalam biner. Tulis <code>35</code> dalam bilangan biner.',
+      hint: 'Bagi 35 dengan 2 berulang. Sisa pertama adalah 1.',
+      exp: '35 ÷ 2 = 17 sisa 1, 17 ÷ 2 = 8 sisa 1, 8 ÷ 2 = 4 sisa 0, 4 ÷ 2 = 2 sisa 0, 2 ÷ 2 = 1 sisa 0, 1 ÷ 2 = 0 sisa 1. Dibaca dari bawah: 100011.' },
+    { ctx: 'Lampu aula', lvl: 'Sedang', pts: 10, type: 'dec', ans: '178',
+      text: 'Delapan lampu aula, dari kiri ke kanan, berkeadaan menyala, mati, menyala, menyala, mati, mati, menyala, mati. Menyala berarti 1 dan mati berarti 0, sehingga polanya <code>10110010</code>. Berapa nilainya dalam desimal?',
+      hint: 'Nilai tempat: 128, 64, 32, 16, 8, 4, 2, 1. Jumlahkan hanya yang bernilai 1.',
+      exp: '128 + 32 + 16 + 2 = 178.' },
+    { ctx: 'Warna layar', lvl: 'Sedang', pts: 10, type: 'bin', ans: '11001000',
+      text: 'Kadar warna merah sebuah piksel bernilai <code>200</code> (skala 0 sampai 255) dan disimpan dalam 8 bit. Tulis dalam biner.',
+      hint: '200 = 128 + 64 + 8. Bit bernilai berapa saja yang menyala?',
+      exp: '200 = 128 + 64 + 8, jadi bit 128, 64, dan 8 menyala: 11001000.' },
+    { ctx: 'Alamat IP', lvl: 'Sedang', pts: 10, type: 'bin', ans: '10101100',
+      text: 'Salah satu bagian alamat IP sekolah adalah <code>172</code>. Setiap bagian disimpan dalam 8 bit. Tulis dalam biner.',
+      hint: '172 = 128 + 32 + 8 + 4.',
+      exp: '128 + 32 + 8 + 4 = 172, jadi bit 128, 32, 8, dan 4 menyala: 10101100.' },
+    { ctx: 'Izin berkas lengkap', lvl: 'Sulit', pts: 20, type: 'oct', ans: '755',
+      text: 'Izin berkas <code>rwxr-xr-x</code> dibaca per tiga huruf untuk pemilik, grup, dan pengguna lain. Huruf r bernilai 4, w bernilai 2, x bernilai 1, dan tanda minus bernilai 0. Tulis angka oktal tiga digitnya.',
+      hint: 'Pemilik rwx = 4 + 2 + 1. Grup r-x = 4 + 0 + 1.',
+      exp: 'rwx = 7, r-x = 5, r-x = 5, jadi 755. Dalam biner: 111 101 101.' },
+    { ctx: 'Sensor suhu', lvl: 'Sulit', pts: 20, type: 'oct', ans: '326',
+      text: 'Sensor suhu mesin cuci mengirim data biner <code>11010110</code>. Tulis bilangan itu dalam oktal.',
+      hint: 'Kelompokkan bit tiga-tiga dari kanan, lalu ubah tiap kelompok menjadi satu angka.',
+      exp: 'Kelompokkan: 011 | 010 | 110 = 3 | 2 | 6, jadi 326. Cek lewat desimal: 11010110 = 214 dan 3×64 + 2×8 + 6 = 214.' }
+  ];
+  var MAX = KUIS.reduce(function (a, k) { return a + k.pts; }, 0);
+  var kzList = $('kzList'), st = [];
+
+  function half(k) { return Math.ceil(k.pts / 2); }
+  function kzEl(i) {
+    var li = $('qi-' + i);
+    return {
+      li: li, input: $('qa-' + i),
+      hintEl: li.querySelector('.qhint'), fb: li.querySelector('.qfb'), exp: li.querySelector('.qexp'),
+      btns: li.querySelectorAll('button')
+    };
+  }
+  function kzTotals() {
+    var total = 0, doneN = 0;
+    st.forEach(function (s) { total += s.earned; if (s.done) { doneN++; } });
+    return { total: total, doneN: doneN };
+  }
+  function kzScore() {
+    var t = kzTotals();
+    $('kzNum').textContent = String(t.total);
+    $('kzOf').textContent = ' / ' + MAX + ' poin';
+    $('kzBar').style.width = (t.total / MAX * 100) + '%';
+    $('kzRank').textContent = t.doneN === 0 ? 'Belum mulai'
+      : t.total >= 90 ? 'Ahli Bilangan' : t.total >= 70 ? 'Mahir' : t.total >= 40 ? 'Berkembang' : 'Pemula';
+    $('kzInfo').textContent = t.doneN + ' dari ' + KUIS.length + ' soal selesai.' + (t.doneN === KUIS.length ? ' Kuis selesai.' : '');
+  }
+  function kzFinish(i, cls, msg) {
+    var it = kzEl(i);
+    it.fb.className = 'qfb ' + cls;
+    it.fb.textContent = msg;
+    it.exp.textContent = 'Pembahasan: ' + KUIS[i].exp;
+    it.exp.hidden = false;
+    it.input.disabled = true;
+    it.btns.forEach(function (b) { b.disabled = true; });
+    kzScore();
+  }
+  function kzCheck(i) {
+    var k = KUIS[i], s = st[i];
+    if (s.done) { return; }
+    var it = kzEl(i), v = it.input.value.replace(/\s/g, ''), T = TYPES[k.type];
+    if (!v) { it.fb.className = 'qfb'; it.fb.textContent = 'Ketik jawabanmu dulu.'; return; }
+    if (!T.re.test(v)) { it.fb.className = 'qfb bad'; it.fb.textContent = T.msg; return; }
+    if (v.replace(/^0+(?=.)/, '') === k.ans) {
+      s.done = true;
+      s.earned = (s.wrong === 0 && !s.hint) ? k.pts : half(k);
+      kzFinish(i, 'ok', 'Benar! +' + s.earned + ' poin' + (s.earned < k.pts ? ' (setengah, karena sempat salah atau memakai petunjuk).' : '.'));
+    } else {
+      s.wrong++;
+      it.fb.className = 'qfb bad';
+      it.fb.textContent = 'Belum tepat. Coba lagi. Poin soal ini sekarang maksimal ' + half(k) + '.';
+    }
+  }
+  function kzHint(i) {
+    var k = KUIS[i], s = st[i];
+    if (s.done) { return; }
+    s.hint = true;
+    var it = kzEl(i);
+    it.hintEl.hidden = false;
+    it.hintEl.textContent = 'Petunjuk: ' + k.hint + ' Poin soal ini sekarang maksimal ' + half(k) + '.';
+  }
+  function kzReveal(i) {
+    var k = KUIS[i], s = st[i];
+    if (s.done) { return; }
+    s.done = true; s.earned = 0;
+    kzFinish(i, '', 'Jawabannya ' + k.ans + ' (' + TYPES[k.type].unit + '). Soal ini bernilai 0 poin.');
+  }
+  function kzBuild() {
+    st = KUIS.map(function () { return { wrong: 0, hint: false, done: false, earned: 0 }; });
+    kzList.innerHTML = '';
+    KUIS.forEach(function (k, i) {
+      var T = TYPES[k.type];
+      var li = document.createElement('li');
+      li.className = 'qi'; li.id = 'qi-' + i;
+      li.innerHTML =
+        '<div class="qhead"><span class="qn">Soal ' + (i + 1) + '</span><span class="qctx">' + k.ctx + '</span>' +
+        '<span class="lvl">' + k.lvl + '</span><span class="pts">' + k.pts + ' poin</span></div>' +
+        '<p class="qtxt">' + k.text + '</p>' +
+        '<div class="qrow">' +
+        '<input id="qa-' + i + '" class="numin qin" type="text" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="' + T.unit + '" aria-label="Jawaban soal ' + (i + 1) + ' dalam ' + T.unit + '">' +
+        '<button type="button" class="btn primary" data-act="check" data-i="' + i + '">Periksa</button>' +
+        '<button type="button" class="btn" data-act="hint" data-i="' + i + '">Petunjuk</button>' +
+        '<button type="button" class="btn" data-act="reveal" data-i="' + i + '">Lihat jawaban</button>' +
+        '</div>' +
+        '<p class="qhint" hidden></p><p class="qfb" role="status" aria-live="polite"></p><p class="qexp" hidden></p>';
+      kzList.appendChild(li);
+    });
+    kzScore();
+  }
+  kzList.addEventListener('click', function (ev) {
+    var t = ev.target.closest('button');
+    if (!t || !t.hasAttribute('data-act')) { return; }
+    var i = parseInt(t.getAttribute('data-i'), 10), act = t.getAttribute('data-act');
+    if (act === 'check') { kzCheck(i); } else if (act === 'hint') { kzHint(i); } else { kzReveal(i); }
+  });
+  kzList.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter' && ev.target.classList.contains('qin')) {
+      ev.preventDefault();
+      kzCheck(parseInt(ev.target.id.split('-')[1], 10));
+    }
+  });
+  $('kzReset').addEventListener('click', function () {
+    kzBuild();
+    $('kzShare').hidden = true;
+    $('kzMsg').textContent = 'Kuis dimulai ulang.';
+  });
+  $('kzCopy').addEventListener('click', function () {
+    var t = kzTotals(), box = $('kzShare');
+    var txt = 'Bengkel Bilangan, kuis sehari-hari: ' + t.total + ' dari ' + MAX + ' poin (' + t.doneN + ' dari ' + KUIS.length + ' soal selesai).';
+    box.value = txt;
+    function fallback() {
+      box.hidden = false; box.focus(); box.select();
+      $('kzMsg').textContent = 'Salin teks di atas secara manual.';
+    }
+    try {
+      navigator.clipboard.writeText(txt).then(function () {
+        box.hidden = true;
+        $('kzMsg').textContent = 'Hasil disalin.';
+      }, fallback);
+    } catch (e) { fallback(); }
+  });
+  kzBuild();
+
+  /* ---------- Tabel acuan ---------- */
+  var ref = '';
+  for (var k = 0; k <= 16; k++) {
+    ref += '<tr><td>' + k + '</td><td>' + k.toString(2) + '</td><td>' + k.toString(8) + '</td></tr>';
+  }
+  $('refBody').innerHTML = ref;
+})();
+</script>
+
+</body></html>
